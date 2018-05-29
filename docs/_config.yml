@@ -2,5 +2,3 @@ theme: jekyll-theme-slate
 markdown: kramdown
 plugins:
   - jekyll-sitemap
-  - jekyll-numbered-headings
-  
