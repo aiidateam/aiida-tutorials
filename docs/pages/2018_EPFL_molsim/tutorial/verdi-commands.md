@@ -32,7 +32,7 @@ ongoing calculations, which should be empty. The first output line
 should look like
 
 ```bash
-    # Last daemon state_updater check: 0h:00m:18s ago (at 17:17:26 on 2016-05-31)
+# Last daemon state_updater check: 0h:00m:18s ago (at 17:17:26 on 2016-05-31)
 ```
 
 In order to print a list with all calculations that finished correctly
@@ -85,7 +85,7 @@ nodes (e.g. output parameters, etc.). An example of RASPA calculation
     output_parameters  1131  ParameterData
     component_0        1130  ParameterData
 
-A typical AiiDA graph {#sec:aiida_graph}
+A typical AiiDA graph
 ---------------------
 
 Note that pk number shown in the examples may be different for your
@@ -94,7 +94,7 @@ database.
 AiiDA stores in the database the inputs required by a calculation as
 well as the its outputs.
 
-![Dependency graph of a Raspa calculation.](img/graph/3006)
+![Dependency graph of a Raspa calculation.](/assets/2018_EPFL_molsim/raspa_sample_graph.png "Dependency graph of a Raspa calculation.")
 
 You can create a similar graph for any calculation node by using the
 utility <span>`verdi graph  <pk>`</span>. For example, before
@@ -110,7 +110,8 @@ This command creates the file <pk>.dot that can be rendered by means
 of the utility <span>`dot`</span>. Convert it to PDF and have a look:
 
 ```bash
-dot -Tpdf -o <pk>.pdf <pk>.dot evince <pk>.pdf
+dot -Tpdf -o <pk>.pdf <pk>.dot 
+evince <pk>.pdf
 ```
 
 Spend some time to familiarize with the graph structure. Identify the
@@ -121,7 +122,7 @@ the different elements of this graph.
 Inspecting the nodes of a graph
 -------------------------------
 
-### ParameterData and Calculations {#parameterdata-and-calculations .unnumbered}
+### ParameterData and Calculations
 
 Now, let us have a closer look to the some of the nodes appearing in the
 graph. Choose the node of the type `ParameterData` with input link name
@@ -168,7 +169,7 @@ path. For instance, to see the submission script, you can do:
 verdi calculation inputcat <pk> -p ~a~iidasubmit.sh
 ```
 
-### CifData {#cifdata .unnumbered}
+### CifData
 
 Now let us focus on CifData objects, such as node pk=2886 of the graph.
 A CifData object contains a crystal structure and can be inspected
@@ -180,7 +181,7 @@ verdi data cif show –format jmol 2886
 
 to show the selected structure.
 
-### Codes and computers {#codes-and-computers .unnumbered}
+### Codes and computers
 
 Let us focus now on the nodes of type `code`. A code represents (in the
 database) the actual executable used to run the calculation. Find the pk
@@ -221,7 +222,7 @@ Now you have the tools to answer the question:
 What is the scheduler installed on the computer where the calculations
 of the graph have run?
 
-### Calculation results {#calculation-results .unnumbered}
+### Calculation results
 
 The results of a calculation can be accessed directly from the
 calculation node. Type in the terminal

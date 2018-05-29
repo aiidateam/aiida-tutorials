@@ -14,7 +14,7 @@ methane.
     -   Import the `deneb-molsim` computer and its codes into AiiDA
 
         ```bash
-        verdi import https://www.dropbox.com/s/wb2z22ich0ajbdl/setup.aiida?dl=1
+        verdi import {{ site.url }}/assets/2018_EPFL_molsim/deneb-molsim.aiida
         verdi computer list -a  # should show 'deneb-molsim'
         verdi code list -A   # should show 'zeopp@deneb-molsim', 'raspa@deneb-molsim'
         ```

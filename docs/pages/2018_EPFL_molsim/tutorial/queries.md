@@ -8,7 +8,7 @@ some simple examples and tasks on how to explore your database. Then we
 will proceed to a more concrete exercise on the screening of magnetic
 and metallic perovskites.\
 
-Task 1 - Introduction to QueryBuilder {#task-1---introduction-to-querybuilder .unnumbered}
+Task 1 - Introduction to QueryBuilder
 -------------------------------------
 
 | Node & subclasses |  Number in DB
@@ -94,7 +94,7 @@ typing `qb.`) to see the available options.
 **Comment:** After you run a query, a new `QueryBuilder` instance needs
 to be defined if you want to make a new query.
 
-Task 2 - Projections and filters {#task-2---projections-and-filters .unnumbered}
+Task 2 - Projections and filters
 --------------------------------
 
 |  Operator   |         Datatype         |               Example
@@ -181,6 +181,7 @@ qb.all()
 In the above example we added an "or" keyword between the two filters.
 The query return every structure in the database that was created in the
 last 12 days or is named "graphene".
+
 **Hints for the exercises:**
 
 -   The operator '>', '<' works with date-type properties with the

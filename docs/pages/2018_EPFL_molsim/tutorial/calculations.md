@@ -1,5 +1,5 @@
-[sec:qe]Submit, monitor and debug calculations
-==============================================
+Submit, monitor and debug calculations
+======================================
 
 The goal of this section is to understand how to create new data in
 AiiDA. We will launch a Grand Canonical Monte Carlo simulation and check
@@ -163,11 +163,10 @@ verdi daemon start
 
 to start the daemon.
 
-Creating a new calculation[sec:create~c~alc]
---------------------------------------------
+Creating a new calculation
+--------------------------
 
-To start please download the AiiDA submission script following [this
-link](https://www.dropbox.com/s/4u2fam28mnxyuz5/raspa_calc.zip?dl=1). To
+To start please [download the AiiDA submission script](/assets/2018_EPFL_molsim/raspa_submission.zip). To
 launch a calculation, you will need to interact with AiiDA mainly in the
 <span>`verdi shell`</span>. We strongly suggest you to first try the
 commands in the shell, and then copy them in a script “test\_pw.py”

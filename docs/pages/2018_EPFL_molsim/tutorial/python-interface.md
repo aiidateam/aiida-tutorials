@@ -1,5 +1,5 @@
-The AiiDA python interface[shell]
-=================================
+The AiiDA python interface
+==========================
 
 In this section we will use an interactive python environment with all
 the basic AiiDA classes already loaded. There are two variants of this:
@@ -60,8 +60,8 @@ the notebook adding an exclamation mark before the command itself
 !some bash command
 ```
 
-Loading a node[load~n~ode]
---------------------------
+Loading a node
+--------------
 
 Most AiiDA objects are represented by nodes, identified in the database
 by its pk number (an integer). You can access a node using the following
