@@ -1,0 +1,2 @@
+# handle .aiida files with git lfs
+*.aiida filter=lfs diff=lfs merge=lfs -text
