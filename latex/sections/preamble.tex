@@ -1,0 +1,104 @@
+% !TEX root = ../AiiDA_tutorial.tex
+
+\usepackage[T1]{fontenc} % Use type 1 (vector) fonts
+\usepackage{upquote}
+\usepackage{ae,aecompl}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}% Include figure files
+% \usepackage{subfig}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage[left=1cm,right=1cm,top=1.9cm,bottom=1.5cm]{geometry}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{titling}
+\usepackage{tcolorbox}
+\usepackage{listings}
+%\usepackage{lscape}
+\usepackage{rotating}
+\usepackage{appendix}
+\usepackage{subcaption}
+
+
+\usepackage{caption}
+\captionsetup[figure]{margin=20pt,font=footnotesize,labelfont=bf,labelsep=endash}
+
+\usepackage{cleveref} % Clever references, needs to come after hyperref
+
+% Define some colours I want to use throughout
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\definecolor{orange}{rgb}{1,0.6,0}
+\definecolor{blue}{rgb}{0,0,1}
+
+\definecolor{acolour}{HTML}{E66101}
+\definecolor{bcolour}{HTML}{B2ABD2}
+\definecolor{ccolour}{HTML}{5E3C99}
+
+\definecolor{linkcolor}{HTML}{2222EE}
+\definecolor{urlcolor}{HTML}{2222EE}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\setlength\headheight{15pt}
+\fancyhead[LE,RO]{\fancyplain{}{\small\textsf{\aiidaouterheader}}}
+\fancyhead[RE,LO]{\fancyplain{}{\small\textsf{\aiidainnerheader}}}
+%\fancyhead[RO,LE]{\fancyplain{}{\textsc{\leftmark}}}
+%\fancyhead[RE,LO]{\fancyplain{}{\textsc{\rightmark}}}
+\fancyfoot[C]{\textbf{\thepage}}
+
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\plainheadrulewidth}{0pt}
+%\renewcommand{\footrulewidth}{0.5pt}
+\renewcommand{\footrulewidth}{0.pt}
+\renewcommand{\plainfootrulewidth}{0pt}
+
+\title{\aiidatutorialtitle}
+
+\date{\aiidatutorialdate}      % Deleting this command produces today's date
+\author{\aiidatutorialauthors}
+
+% Set up link colours
+\hypersetup{
+    unicode=true,          % non-Latin characters in Acrobat’s bookmarks
+    pdftoolbar=true,        % show Acrobat’s toolbar?
+    pdfmenubar=true,        % show Acrobat’s menu?
+    pdffitwindow=false,     % window fit to page when opened
+    pdfstartview={FitH},    % fits the width of the page to the window
+    pdftitle={AiiDA tutorial},    % title
+    pdfauthor={The AiiDA Team},     % author
+    pdfsubject={},   % subject of the document
+    pdfcreator={The AiiDA Team},   % creator of the document
+    pdfproducer={The AiiDA Team}, % producer of the document
+    pdfkeywords={}, % list of keywords
+    pdfnewwindow=true,      % links in new PDF window
+    colorlinks=true,
+%    colorlinks=false,        % false: boxed links; true: colored links
+    linkcolor=linkcolor,          % color of internal links (change box color with linkbordercolor)
+    citecolor=acolour,        % color of links to bibliography
+    filecolor=magenta,      % color of file links
+    urlcolor=urlcolor           % color of external links
+}
+
+
+\newcommand{\cmd}[1]{\texttt{#1}}
+
+\newenvironment{pythoncommand}
+{\VerbatimEnvironment%
+\begin{Verbatim}[frame=leftline]}
+{\end{Verbatim}}
+
+\newenvironment{bashcommandinner}
+{\VerbatimEnvironment%
+\begin{Verbatim}[frame=lines]}
+{\end{Verbatim}}
+
+\newenvironment{bashcommand}
+{\VerbatimEnvironment%
+\begin{center}\begin{minipage}{\linewidth}\begin{bashcommandinner}}
+{\end{bashcommandinner}\end{minipage}\end{center}}
+
