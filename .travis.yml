@@ -1,0 +1,22 @@
+dist: trusty
+sudo: required
+
+language: python
+
+addons:
+    apt:
+        packages:
+            - texlive-base
+            - texlive-generic-recommended
+            - texlive-fonts-recommended
+            - texlive-latex-base
+            - texlive-latex-recommended
+            - texlive-latex-extra
+            - dvipng
+            - dvidvi   
+
+## Check that the documentation compiles correctly
+script:
+    - cd latex
+    - make all
+    - cd ..
