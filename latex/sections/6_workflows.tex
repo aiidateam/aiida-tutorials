@@ -366,10 +366,10 @@ for label, factor in zip(labels, scale_facs):
     [...]
     calcs[label] = submit(PwCalculation, **inputs)
 [...]
-    # Wait for the calculations to finish
-    for calc in calcs.values():
-        while not calc.is_finished:
-            sleep(1)
+# Wait for the calculations to finish
+for calc in calcs.values():
+    while not calc.is_finished:
+        sleep(1)
 
 eos = []
 for label in labels:
