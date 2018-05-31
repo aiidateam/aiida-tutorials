@@ -4,7 +4,7 @@ temp_files = $(shell find . -name "*aux" -o -name "*log" -o -name "*toc" -o -nam
 all: $(patsubst %.tex, %.pdf, $(wildcard *.tex))
 
 %.pdf: %.tex $(deps)
-	pdflatex $< && pdflatex $< && pdflatex $<
+	pdflatex $LATEX_INTERACTION_MODE $< && pdflatex $< && pdflatex $<
 
 
 .PHONY: all clean distclean 

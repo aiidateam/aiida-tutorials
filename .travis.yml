@@ -15,6 +15,9 @@ addons:
             - dvipng
             - dvidvi   
 
+env:
+- LATEX_INTERACTION_MODE="-interaction=nonstopmode"
+
 ## Check that the documentation compiles correctly
 script:
     - cd latex
