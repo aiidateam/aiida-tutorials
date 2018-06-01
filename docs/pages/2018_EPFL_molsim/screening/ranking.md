@@ -8,7 +8,7 @@ and visualizing the structures. Use at your convenience.
 To get the app please download it using the following link:
 
 ```bash
-wget {{ site.url }}/assets/2018_EPFL_molsim/ranking.tar.gz
+wget {{ "/assets/2018_EPFL_molsim/ranking.tar.gz" | absolute_url }}
 tar -xf ranking.tar.gz
 ```
 

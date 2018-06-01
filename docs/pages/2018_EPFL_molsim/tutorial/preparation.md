@@ -22,5 +22,5 @@ Before we start creating data ourselves, we are going to look at an
 existing AiiDA database. Let’s import one from the web:
 
 ```bash
-verdi import {{ site.url }}/assets/2018_EPFL_molsim/isotherms.aiida
+verdi import {{ "/assets/2018_EPFL_molsim/isotherms.aiida" | absolute_url }}
 ```

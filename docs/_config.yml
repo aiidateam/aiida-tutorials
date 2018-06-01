@@ -2,3 +2,6 @@ theme: jekyll-theme-slate
 markdown: kramdown
 plugins:
   - jekyll-sitemap
+
+baseurl: /aiida-tutorials
+url: https://ltalirz.github.io

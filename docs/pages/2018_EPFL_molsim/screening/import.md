@@ -4,7 +4,7 @@ Import the structures
 You can download a tar file containing the structures from
 
 ```bash
-wget {{ site.url}}/assets/2018_EPFL_molsim/mof_structures.tar.gz 
+wget {{ "/assets/2018_EPFL_molsim/mof_structures.tar.gz" | absolute_url }} 
 tar -xf mof_structures.tar.gz
 ```
 
