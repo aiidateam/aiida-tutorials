@@ -94,7 +94,7 @@ database.
 AiiDA stores in the database the inputs required by a calculation as
 well as the its outputs.
 
-![Dependency graph of a Raspa calculation.](/assets/2018_EPFL_molsim/raspa_sample_graph.png "Dependency graph of a Raspa calculation.")
+![Dependency graph of a Raspa calculation.]({{ site.baseurl}}/assets/2018_EPFL_molsim/raspa_sample_graph.png "Dependency graph of a Raspa calculation.")
 
 You can create a similar graph for any calculation node by using the
 utility <span>`verdi graph  <pk>`</span>. For example, before
