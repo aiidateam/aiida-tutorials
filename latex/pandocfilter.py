@@ -4,8 +4,7 @@ Filters for conversion from LaTeX to MarkDown.
 
  * handle bash/python code blocks
 """
-import sys
-from pandocfilters import toJSONFilter, Link, CodeBlock
+from pandocfilters import toJSONFilter, CodeBlock
 
 def log(foo):
     with open('/tmp/dump', 'w') as f:
