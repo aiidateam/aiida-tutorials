@@ -3,6 +3,23 @@
 This repository contains a collection of texts used for
 various AiiDA tutorials.
 
+## Export to markdown
+
+The LaTeX source can be converted to markdown (for use in github pages).
+
+### Prerequisites
+
+ * pandoc
+ * python3
+
+### Conversion
+
+```
+cd latex
+pip install -r requirements.txt
+make markdown
+```
+
 # Acknowledgements
 
 This work is supported by the [MARVEL National Centre for Competency in Research](<http://nccr-marvel.ch>)

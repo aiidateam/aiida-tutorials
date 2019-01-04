@@ -10,3 +10,5 @@
 AiiDA_tutorial.pdf
 AiiDA_tutorial_online.pdf
 AiiDA_tutorial_addition.pdf
+*-clean.tex
+*.db
