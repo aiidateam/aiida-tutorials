@@ -13,16 +13,16 @@ methane.
 
     -   Import the `deneb-molsim` computer and its codes into AiiDA
 
-        ```bash
-        verdi import {{ "/assets/2018_EPFL_molsim/deneb-molsim.aiida" | absolute_url }} 
-        verdi computer list -a  # should show 'deneb-molsim'
-        verdi code list -A   # should show 'zeopp@deneb-molsim', 'raspa@deneb-molsim'
+        ```console
+        $ verdi import {{ "/assets/2018_EPFL_molsim/deneb-molsim.aiida" | absolute_url }} 
+        $ verdi computer list -a  # should show 'deneb-molsim'
+        $ verdi code list -A   # should show 'zeopp@deneb-molsim', 'raspa@deneb-molsim'
         ```
 
     -   Generate an SSH key pair for passwordless connection
 
-        ```bash
-        ssh-keygen
+        ```console
+        $ ssh-keygen
 
         Generating public/private rsa key pair. 
         Enter file in which to save the key (/home/max/.ssh/id_rsa): <Enter> 
@@ -34,15 +34,15 @@ methane.
         The key's randomart image is: ... 
         ```
 
-        ```bash
-        ssh-copy-id <user>@deneb1.epfl.ch 
-        ssh <user>@deneb1.epfl.ch  # should now work without password
+        ```console
+        $ ssh-copy-id <user>@deneb1.epfl.ch 
+        $ ssh <user>@deneb1.epfl.ch  # should now work without password
         ```
 
     -   configure your personal access to the `deneb-molsim` computer
 
-        ```bash
-        verdi computer configure deneb-molsim
+        ```console
+        $ verdi computer configure deneb-molsim
 
         Configuring computer 'deneb-molsim' for the AiiDA user '<your-aiida-user>@epfl.ch' 
         Computer deneb-molsim has transport of type ssh 
@@ -66,8 +66,8 @@ methane.
 
     -   Finally, test your new computer
 
-        ```bash
-        verdi computer test deneb-molsim
+        ```console
+        $ verdi computer test deneb-molsim
         ``` 
 
 -   Compute the density, accessible volume and [accessible surface
@@ -115,4 +115,3 @@ methane.
 
 **Remember:** Use `verdi run <script.py>` to run python scripts in the
 same environment as in the `verdi shell`.
-

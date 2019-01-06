@@ -3,16 +3,16 @@ Import the structures
 
 You can download a tar file containing the structures from
 
-```bash
-wget {{ "/assets/2018_EPFL_molsim/mof_structures.tar.gz" | absolute_url }} 
-tar -xf mof_structures.tar.gz
+```console
+$ wget {{ "/assets/2018_EPFL_molsim/mof_structures.tar.gz" | absolute_url }} 
+$ tar -xf mof_structures.tar.gz
 ```
 
 -   Visualize a few structures using `jmol`:
 
-    ```bash
-    cd struct/
-    jmol <structure>.cif
+    ```console
+    $ cd struct/
+    $ jmol <structure>.cif
     ```
 
     Can you think of two criteria for a high deliverable methane

@@ -15,8 +15,8 @@ elastic cloud, where you can submit your calculations.
 
 Please set up the computer as follows:
 
-```bash
-verdi computer setup 
+```console
+$ verdi computer setup 
 At any prompt, type ? to get some help.
 ————————————— 
 => Computer name: aws Creating new computer with name 'aws' 
@@ -25,7 +25,7 @@ At any prompt, type ? to get some help.
 => Enabled: True 
 => Transport type: ssh 
 => Scheduler type: torque 
-=> shebang line at the beginning of the submission script: \#!/bin/bash 
+=> shebang line at the beginning of the submission script: \#!/bin/console 
 => AiiDA work directory: /tmp/{username}/aiida~r~un/ 
 => mpirun command: mpirun -np {tot_num_mpiprocs}
 => Default number of CPUs per machine: 2 
@@ -48,22 +48,22 @@ Computer 'aws' successfully stored in DB.
 
 At this point, the computer node has been created in the database, see
 
-```bash
-verdi computer list -a
+```console
+$ verdi computer list -a
 ```
 
 but it hasn't yet been configured.
 
 In order to access the computer, download the SSH key
 
-```bash
-wget https://www.dropbox.com/s/.../aiida_tutorial_aiidaaccount?dl=1 -O /home/max/.ssh/aws.pem
+```console
+$ wget https://www.dropbox.com/s/.../aiida_tutorial_aiidaaccount?dl=1 -O /home/max/.ssh/aws.pem
 ```
 
 and use it to configure the `aws` computer:
 
-```bash
-verdi computer configure aws 
+```console
+$ verdi computer configure aws 
 Configuring computer 'aws' for the AiiDA user 'aiida@localhost' 
 Computer aws has transport of type ssh
 
@@ -88,8 +88,8 @@ Configuration stored for your user on computer 'aws'.
 
 Finally, let aiida test the computer:
 
-```bash
-verdi computer test aws
+```console
+$ verdi computer test aws
 ```
 
 Code setup and configuration
@@ -101,8 +101,8 @@ our “virtual supercomputer”.
 Let's set up the [RASPA2](https://github.com/numat/RASPA2) code as follows:
 
 
-```bash
-verdi code setup 
+```console
+$ verdi code setup 
 At any prompt, type ? to get some help. 
 —————————————
 => Label: raspa 
@@ -131,8 +131,8 @@ Code 'raspa' successfully stored in DB.
 
 The list of codes should now include your new code `raspa@aws`
 
-```bash
-verdi computer test aws
+```console
+$ verdi computer test aws
 ```
 
 The AiiDA daemon
@@ -145,8 +145,8 @@ daemon also takes care of all the necessary operations before the
 calculation submission, and after the calculation has completed on the
 cluster. Type in the terminal
 
-```bash
-verdi daemon status
+```console
+$ verdi daemon status
 ```
 
 If the daemon is running, the output should look like
@@ -157,8 +157,8 @@ If the daemon is running, the output should look like
 
 If this is not the case, type in the terminal
 
-```bash
-verdi daemon start
+```console
+$ verdi daemon start
 ```
 
 to start the daemon.
@@ -176,8 +176,8 @@ similar series of commands.
 **The best way to run python scripts using AiiDA functionalities is to
 run them in a terminal by means of the command**
 
-```bash
-verdi run <scriptname>
+```console
+$ verdi run <scriptname>
 ```
 
 Every calculation sent to a cluster is linked to a code, which describes

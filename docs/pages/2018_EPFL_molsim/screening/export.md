@@ -20,9 +20,9 @@ report.add_nodes([ n[0] for n in cifs + children ])
 Once you've grouped your nodes, check the contents of the group and
 export it:
 
-```bash
-verdi group show report
-verdi export create -g report database.aiida
+```console
+$ verdi group show report
+$ verdi export create -g report database.aiida
 ```
 
 *Note:* AiiDA automatically exports the direct outputs of calculations,
