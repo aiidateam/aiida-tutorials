@@ -15,7 +15,7 @@ elastic cloud, where you can submit your calculations.
 
 Please set up the computer as follows:
 
-```console
+```terminal
 $ verdi computer setup 
 At any prompt, type ? to get some help.
 ————————————— 
@@ -48,7 +48,7 @@ Computer 'aws' successfully stored in DB.
 
 At this point, the computer node has been created in the database, see
 
-```console
+```terminal
 $ verdi computer list -a
 ```
 
@@ -56,13 +56,13 @@ but it hasn't yet been configured.
 
 In order to access the computer, download the SSH key
 
-```console
+```terminal
 $ wget https://www.dropbox.com/s/.../aiida_tutorial_aiidaaccount?dl=1 -O /home/max/.ssh/aws.pem
 ```
 
 and use it to configure the `aws` computer:
 
-```console
+```terminal
 $ verdi computer configure aws 
 Configuring computer 'aws' for the AiiDA user 'aiida@localhost' 
 Computer aws has transport of type ssh
@@ -88,7 +88,7 @@ Configuration stored for your user on computer 'aws'.
 
 Finally, let aiida test the computer:
 
-```console
+```terminal
 $ verdi computer test aws
 ```
 
@@ -101,7 +101,7 @@ our “virtual supercomputer”.
 Let's set up the [RASPA2](https://github.com/numat/RASPA2) code as follows:
 
 
-```console
+```terminal
 $ verdi code setup 
 At any prompt, type ? to get some help. 
 —————————————
@@ -131,7 +131,7 @@ Code 'raspa' successfully stored in DB.
 
 The list of codes should now include your new code `raspa@aws`
 
-```console
+```terminal
 $ verdi computer test aws
 ```
 
@@ -145,7 +145,7 @@ daemon also takes care of all the necessary operations before the
 calculation submission, and after the calculation has completed on the
 cluster. Type in the terminal
 
-```console
+```terminal
 $ verdi daemon status
 ```
 
@@ -157,7 +157,7 @@ If the daemon is running, the output should look like
 
 If this is not the case, type in the terminal
 
-```console
+```terminal
 $ verdi daemon start
 ```
 
@@ -176,7 +176,7 @@ similar series of commands.
 **The best way to run python scripts using AiiDA functionalities is to
 run them in a terminal by means of the command**
 
-```console
+```terminal
 $ verdi run <scriptname>
 ```
 

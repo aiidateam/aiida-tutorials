@@ -13,7 +13,7 @@ methane.
 
     -   Import the `deneb-molsim` computer and its codes into AiiDA
 
-        ```console
+        ```terminal
         $ verdi import {{ "/assets/2018_EPFL_molsim/deneb-molsim.aiida" | absolute_url }} 
         $ verdi computer list -a  # should show 'deneb-molsim'
         $ verdi code list -A   # should show 'zeopp@deneb-molsim', 'raspa@deneb-molsim'
@@ -21,7 +21,7 @@ methane.
 
     -   Generate an SSH key pair for passwordless connection
 
-        ```console
+        ```terminal
         $ ssh-keygen
 
         Generating public/private rsa key pair. 
@@ -34,14 +34,14 @@ methane.
         The key's randomart image is: ... 
         ```
 
-        ```console
+        ```terminal
         $ ssh-copy-id <user>@deneb1.epfl.ch 
         $ ssh <user>@deneb1.epfl.ch  # should now work without password
         ```
 
     -   configure your personal access to the `deneb-molsim` computer
 
-        ```console
+        ```terminal
         $ verdi computer configure deneb-molsim
 
         Configuring computer 'deneb-molsim' for the AiiDA user '<your-aiida-user>@epfl.ch' 
@@ -66,7 +66,7 @@ methane.
 
     -   Finally, test your new computer
 
-        ```console
+        ```terminal
         $ verdi computer test deneb-molsim
         ``` 
 
