@@ -7,7 +7,8 @@ body{counter-reset: section}
 
 // Based on https://stackoverflow.com/a/535390/1069467
 // Rewrite only in main_content_wrap div
-#main_content_wrap {
+//#main_content_wrap {
+#disabled {
 
     h2{counter-reset: sub-section}
     h3{counter-reset: composite}
