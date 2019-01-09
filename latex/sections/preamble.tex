@@ -51,12 +51,6 @@
 %\fancyhead[RE,LO]{\fancyplain{}{\textsc{\rightmark}}}
 \fancyfoot[C]{\textbf{\thepage}}
 
-\renewcommand{\headrulewidth}{0.5pt}
-\renewcommand{\plainheadrulewidth}{0pt}
-%\renewcommand{\footrulewidth}{0.5pt}
-\renewcommand{\footrulewidth}{0.pt}
-\renewcommand{\plainfootrulewidth}{0pt}
-
 \title{\aiidatutorialtitle}
 
 \date{\aiidatutorialdate}      % Deleting this command produces today's date
@@ -83,22 +77,3 @@
     filecolor=magenta,      % color of file links
     urlcolor=urlcolor           % color of external links
 }
-
-
-\newcommand{\cmd}[1]{\texttt{#1}}
-
-\newenvironment{pythoncommand}
-{\VerbatimEnvironment%
-\begin{Verbatim}[frame=leftline]}
-{\end{Verbatim}}
-
-\newenvironment{bashcommandinner}
-{\VerbatimEnvironment%
-\begin{Verbatim}[frame=lines]}
-{\end{Verbatim}}
-
-\newenvironment{bashcommand}
-{\VerbatimEnvironment%
-\begin{center}\begin{minipage}{\linewidth}\begin{bashcommandinner}}
-{\end{bashcommandinner}\end{minipage}\end{center}}
-
