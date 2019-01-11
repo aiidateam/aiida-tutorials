@@ -9,8 +9,8 @@ Visit http://ltalirz.github.io/aiida-tutorials
 
 Prerequisites:
 - ruby >= 2.1.0
-  - Homebrew on Mac: 'brew install ruby'
-  - Macports on Mac: 'sudo port install ruby25'
+  - Homebrew on Mac: `brew install ruby`
+  - Macports on Mac: `sudo port install ruby25`
 - `gem install bundler --user`  
 - `cd docs; bundle install`  
 
@@ -21,7 +21,7 @@ bundle config build.nokogiri --with-xml2-include=/Applications/Xcode.app/Content
 
 Build website locally:
 - `bundle exec jekyll serve`
-- connect with your browser to `http://localhost:4000`
+- connect with your browser to `http://127.0.0.1:4000/aiida-tutorials/`
 
 ## Acknowledgements
 
