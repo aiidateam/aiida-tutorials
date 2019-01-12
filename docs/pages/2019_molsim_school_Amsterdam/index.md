@@ -1,6 +1,6 @@
 # Metal-organic frameworks for methane storage applications
 
-This tutorial is part of the 
+This tutorial is part of the
 [Understanding molecular simulation](http://www.acmm.nl/molsim/molsim2019/)
 school held at the University of Amsterdam from January 7-18 2019.
 
@@ -9,6 +9,8 @@ using a compute resource with [zeo++](http://www.zeoplusplus.org/) and [RASPA2](
 
 **Note:** This tutorial requires a basic knowledge of python. If you are
 not familiar with python, partner with someone who is.
+
+### Using AiiDA:
 
  1. [Getting started](./tutorial/getting-started)
  1. [Using the verdi command line](./tutorial/verdi-commands)
@@ -21,3 +23,12 @@ not familiar with python, partner with someone who is.
  1. [Screening](./screening/screening)
  1. [Ranking](./screening/ranking)
  1. [Exporting your database](./screening/export)
+
+### Theoretical background:
+
+  1. [Reference for the 502 CoRE-MOFs](./theoretical/502-mofs)
+  1. [Geometric properties](./theoretical/geometric-properties)
+  1. [Geometric/performances relationship](./theoretical/geometric-performance)
+  1. [Multiply the unit cell](./theoretical/multiply-uc)
+  1. [Settings for Raspa](./theoretical/settings-raspa)
+  1. [Extra: working with adsorbates with partial charges](./theoretical/charged-adsorbates)
