@@ -8,11 +8,8 @@ Visit http://ltalirz.github.io/aiida-tutorials
 ## Building locally
 
 Prerequisites:
-- ruby >= 2.1.0
-  - Homebrew on Mac: `brew install ruby`
-  - Macports on Mac: `sudo port install ruby25`
-- `gem install bundler --user`  
-- `cd docs; bundle install`  
+- Follow the [jekyll installation instructions](https://jekyllrb.com/docs/installation/) for your operating system
+- `cd docs; sudo bundle install`  
 
 Note: If the installation of `nokogiri` is failing, try
 ```
