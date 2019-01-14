@@ -19,7 +19,9 @@ familiar with python, we suggest you partner with someone who is.
 ### Using AiiDA:
 
  1. [Getting set up](./tutorial/setup.md)
+ 1. [Browsing the provenance graph](./tutorial/provenance-graph)
  1. [Using the verdi command line](./tutorial/verdi-commands)
+ 1. [Browsing the provenance graph](./tutorial/provenance-graph)
  1. [Submit, monitor and debug calculations](./tutorial/calculations)
  1. [The AiiDA python interface](./tutorial/python-interface)
  1. [Queries in AiiDA: The QueryBuilder](./tutorial/queries)
