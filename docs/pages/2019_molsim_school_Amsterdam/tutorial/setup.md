@@ -19,7 +19,7 @@ some aiida plugins we are going to need. Let’s install them (this can
 take 3 minutes):
 
 ```terminal
-$ pip install aiidalab==19.01.1
+$ pip install aiidalab==19.01.2
 ```
 
 Furthermore, you are currently using the `default` AiiDA profile.

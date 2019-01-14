@@ -5,17 +5,16 @@ Before we start creating data ourselves, we are going to look at an
 AiiDA database already created by someone else. Let’s import one from the web:
 
 ```terminal
-$ verdi import https://www.dropbox.com/s/3f4895jq9eskqw3/export.aiida?dl=1
+$ verdi import https://www.dropbox.com/s/9xzpzb3mzg16jqy/mof_database.aiida?dl=1
 ```
 
-While the database (90 MB) is importing, let's recall a few things:
 Contrary to most databases, AiiDA databases contain not only results of
 calculations but also their inputs and information on how a particular
 result was obtained.
 This information (provenance) is stored in the form of a directed acyclic graph (DAG).
  (provenance).
 
-In the following, we are going to introduce different ways of browsing this graph
+In the following, we are going to introduce you to different ways of browsing this graph
 and ask you find out some information regarding the database you just imported.
 
 The EXPLORE interface
@@ -36,16 +35,18 @@ $ verdi restapi
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-Now we can [connect our REST API](www.materialscloud.org/explore/connect) to the 
+Now we can [connect our REST API](http://34.244.178.26:5001/explore/connect) to the 
 provenance explorer by providing the (local) URL 
 `http://127.0.0.1:5000/api/v2` of our REST API.
 
 > **Note**  
-> Once the provenance explorer has been loaded by your browser, it is communicating directly with the
-> REST API and your data never leaves your computer.
+> The provenance browser is also [available on Materials Cloud](https://www.materialscloud.org/explore/connect) but we are using a more recent development version.
 
-Start by clicking on the Details of a `RaspaCalculation` node
-(if you ever get lost, [here](https://www.materialscloud.org/explore/ownrestapi/details/66dc9791-27e5-411b-b414-5224023f8ee1?nodeType=CALCULATION) 
+Once the provenance explorer has been loaded by your browser, it is communicating directly with the
+REST API and your data never leaves your computer.
+
+Start by clicking on the Details of a `NetworkCalculation` node
+(if you ever get lost, [here](http://34.244.178.26:5001/explore/ownrestapi/details/5a92d1e2-e243-4386-8ba1-e6c540e93b20?nodeType=CALCULATION) 
 is a link to one).
 
 ---
