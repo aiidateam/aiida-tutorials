@@ -1,0 +1,484 @@
+% !TEX root = ../AiiDA_tutorial_addition.tex
+%%%%%%%%%%%
+%Various Installation and setup procedures
+%%%%%%%%%%%
+
+
+\section[Installation and Setup]{Various installation and setup procedures}
+\subsection{\label{sec:codesetup}Setting up a new computer and code in AiiDA: NWChem}
+
+To be able to run a calculation, AiiDA needs to know certain information such as which computer the code can be found on and what the executable name is. In the main tutorial, for instance, you have been using an existing Quantum ESPRESSO pw code. 
+You can check its name calling 
+\begin{bashcommand}
+verdi code list
+\end{bashcommand}
+and then inpsect its properties using
+\begin{bashcommand}
+verdi code show <CODENAME>
+\end{bashcommand}
+
+\begin{tcolorbox}
+\textbf{Exercises:}
+\begin{itemize}
+\item
+Setup a new code (for the simulation package NWChem)
+\end{itemize}
+\end{tcolorbox}
+
+To learn how to setup a new code, let us configure AiiDA to be able to run NWChem, an open source computational chemistry package.  First we can check which calculation plugins are available:
+
+\begin{bashcommand}
+verdi calculation plugins
+\end{bashcommand}
+
+You will see an entry called \texttt{nwchem.pymatgen}.  This plugin creates the input and parses the output files and acts as the interface between AiiDA and NWChem (the parsing part is delegated to the pymatgen code, which explains the name of the plugin). To configure the code type:
+
+\begin{bashcommand}
+verdi code setup
+\end{bashcommand}
+
+Provide the following details to tell AiiDA about the code (if you want to learn more details on the \texttt{verdi code setup} command, refer to Appendix~\ref{app:codesetup} at page \pageref{app:codesetup}):
+
+\begin{bashcommand}
+=> Label: NWChem
+=> Description: NWChem computational chemistry code
+=> Local: False
+=> Default input plugin: nwchem.pymatgen
+=> Remote computer name: localhost
+=> Remote absolute path: /usr/bin/nwchem
+=> Text to prepend to each command execution
+[Press CTRL+D for the next two steps]
+\end{bashcommand}
+
+If you want to inspect the details of the code you just generated, you can run
+\begin{bashcommand}
+verdi code show NWChem@localhost
+\end{bashcommand}
+
+\textbf{Note} Similarly, also new computers (e.g., a new cluster) can be configured using the \texttt{verdi computer setup} command, as we will see in Sec.~\ref{sec:computersetuptask}.
+
+\subsubsection*{Task (optional, if you want to use the code you just created)}
+
+\begin{tcolorbox}
+\textbf{Exercise:}
+\begin{itemize}
+\item Run a simple simulation with the code NWChem
+\end{itemize}
+\end{tcolorbox}
+
+
+Use the following \texttt{ParametersData} dict to run an NWChem calculation on silicon carbide:
+
+\begin{pythoncommand}
+parameters = ParameterData(dict={
+    'directives': [
+        ['set nwpw:minimizer', '2'],
+        ['set nwpw:psi_nolattice', '.true.'],
+        ['set includestress', '.true.']
+    ],
+    'geometry_options': [
+        'units',
+        'au',
+        'center',
+        'noautosym',
+        'noautoz',
+        'print'
+    ],
+    'memory_options': [],
+    'symmetry_options': [],
+    'tasks': [
+        {
+            'alternate_directives': {
+                'driver': {'clear': '', 'maxiter': 40},
+                'nwpw': {'ewald_ncut': 8, 
+                         'simulation_cell': '\n  ngrid 16 16 16\n end'}
+            },
+            'basis_set': {},
+            'basis_set_option': 'cartesian',            
+            'charge': 0,
+            'operation': 'optimize',
+            'spin_multiplicity': None,
+            'theory': 'pspw',
+            'theory_directives': {},
+            'title': None
+        }
+    ],
+    'add_cell': True
+})
+\end{pythoncommand}
+
+and we can use an ASE \texttt{Atoms} object to create the structure like so:
+
+\begin{pythoncommand}
+from ase import Atoms
+asestruc = Atoms(['Si', 'Si', 'Si' ,'Si', 'C', 'C', 'C', 'C'],
+    cell=[8.277, 8.277, 8.277])
+asestruc.set_scaled_positions([
+    (-0.5, -0.5, -0.5),
+    (0.0, 0.0, -0.5),
+    (0.0, -0.5, 0.0),
+    (-0.5, 0.0, 0.0),
+    (-0.25, -0.25, -0.25),
+    (0.25 ,0.25 ,-0.25),
+    (0.25, -0.25, 0.25),
+    (-0.25 ,0.25 ,0.25),
+])
+structure = StructureData(ase=asestruc)
+\end{pythoncommand}
+
+The procedure is the same as before with QuantumEspresso except for fetching the NWCode.  This should take about a minute to run.
+
+\begin{tcolorbox}
+\textbf{Exercise:}
+\begin{itemize}
+\item Inspect the results.
+\end{itemize}
+\end{tcolorbox}
+
+Once the calculation is done you can retrieve the calculation node using the PK from \texttt{verdi calculation list -a -p1}.  After loading the node have a look at \texttt{node.out.trajectory}.  This stores information about the positions of the atoms at each relaxation steps.  You can for instance see how the cell evolved by printing
+\cmd{node.out.trajectory.get\_cells()}, and how the positions changed with 
+\cmd{node.out.trajectory.get\_positions()}.
+
+
+\section{\label{sec:computersetuptask}Setup a new computer}
+\subsection{Setting up the computer in the database}
+Until now, we just had on computer configured in the test machine, called \texttt{localhost}. To see all computers configured, you can use
+\begin{bashcommand}
+verdi computer list
+\end{bashcommand}
+
+\begin{tcolorbox}
+\textbf{Exercise:}
+\begin{itemize}
+\item Install a new computer (the test machine of your neighbor).
+\item Check if the installation was successful.
+\end{itemize}
+\end{tcolorbox}
+
+\subsubsection*{Preliminary steps}
+\begin{itemize}
+\item As a first step, choose a computer you have. You can try to setup this machine.
+If you don't have one, or you want to try a tested setup, you can setup the same computer on which
+you are running the tests, but this time not with a local transport, but via SSH, as an example. The instructions below are for this use case. We will call the computer \texttt{localhost-ssh}.
+
+\item Generate a new ssh key pair, without passphrase:
+\begin{verbatim}
+    ssh-keygen
+\end{verbatim}
+and press enter when asked. 
+Copy the content of the \texttt{$\sim$/.ssh/id\_rsa.pub} file that was created and 
+paste it as a new line into the file \texttt{$\sim$/.ssh/authorized\_keys}. \textbf{IMPORTANT!}
+Append it to the file, without modifying the current content, otherwise you will 
+not be able to ssh into the machine again.
+
+\item Check that you can connect to the computer: from the shell, run \texttt{ssh localhost} and check that you can connect. Then, logout (only once to close the ssh session;
+you should remain on the tutorial machine).
+\end{itemize}
+
+Now you are ready to setup the computer.
+
+\begin{tcolorbox}
+\textbf{Exercise:}
+\begin{itemize}
+\item Run the command \texttt{verdi computer setup} to install the computer called \texttt{localhost-ssh}. See below for some hints.
+\end{itemize}
+\end{tcolorbox}
+
+Hints:
+\begin{itemize}
+\item Read appendix~\ref{app:computersetup} for an explanation of the various items you will be asked for
+\item Type \texttt{localhost} when you are asked for the fully-qualified hostname
+\item As transport, use SSH; as scheduler, write \texttt{torque}
+\item As work directory, you can use \texttt{/home/\{username\}/.aiida\_run}
+\item As MPI run command, the default value should be OK: \texttt{mpirun -np \{tot\_num\_mpiprocs\}}
+\item set only 2 CPU per machine for this tutorial
+\item Leave empty the next two prepend/append strings (you need to press CTRL+D as indicated)
+\end{itemize}
+
+\subsection{Configuring the computer connection credentials}
+
+You can now type \texttt{verdi computer list -a} to see that you computer is now present (\texttt{-a} to show all computers, also the unconfigured ones and the ones not setup by you). 
+
+You will notice that your computer is marked as ``unconfigured'' (and you might see also other unconfigured computers, coming with the import data that we used in earlier parts of this tutorial). Indeed, the command \cmd{verdi computer setup} just creates a reference for the computer in your database. Something similar also happens when you import data. However, if you want to run simulations with a computer, you need also to specify the credentials of how to connect to it. 
+
+To do this, you need to run 
+\begin{bashcommand}
+verdi computer configure COMPUTERNAME
+\end{bashcommand}
+
+\begin{tcolorbox}
+\textbf{Exercise:}
+\begin{itemize}
+\item Configure your computer with the above command (see hints below)
+\item Check if AiiDA can connect to the computer
+\end{itemize}
+\end{tcolorbox}
+
+Hints:
+\begin{itemize}
+\item If you properly set up the \texttt{$\sim$/.ssh/config} file in the step before, AiiDA will read that information and all parameters will be already set by default. You just need to press Enter. 
+\item Still, try to understand each item---you can refer to Appendix~\ref{sec:computerconfigure} for a detailed explanation of each item.
+\end{itemize}
+
+When you are done, you can test if everything worked by running
+\begin{bashcommand}
+verdi computer test COMPUTERNAME
+\end{bashcommand}
+If everything worked, The last line should read something like ``Test completed (all tests succeeded)''.
+
+\subsection{Final useful commands}
+To get information on a specific computer, run:
+\begin{bashcommand}
+verdi computer show COMPUTERNAME
+\end{bashcommand}
+
+It is also possible to enable/disable a computer with the command
+\begin{bashcommand}
+verdi computer enable COMPUTERNAME
+verdi computer disable COMPUTERNAME
+\end{bashcommand}
+The last two commands might be useful when new resources might
+or not be available (e.g. during maintenance), 
+so that you can still submit calculations to
+AiiDA, but AiiDA will not try to connect to the computer until when
+you enable the computer again.
+
+\begin{tcolorbox}
+\textbf{Exercise (optional):}
+\begin{itemize}
+\item Configure the Quantum ESPRESSO code as explained in Sec.~\ref{sec:codesetup}. 
+To know the \texttt{pw.x} executable path, that you will need during the 
+code configuration, you can find it in the output of \texttt{verdi code show CODENAME} for the code that was already setup for you and that you used during the tutorial (on the machine \texttt{localhost} that uses a \texttt{local} transport -- you are instead
+setting up the same code but on the \texttt{localhost-ssh} machine, that uses a \texttt{ssh} transport).
+\item Try to run a simulation with this code, to see if it works, as explained in the main tutorial.
+\end{itemize}
+\end{tcolorbox}
+
+
+
+
+
+\begin{appendices}
+\section{\label{app:computersetup}Options when setting up and configuring a computer}
+\subsection{\texttt{verdi computer setup}} 
+Here is a list of what is asked during the execution of \cmd{verdi computer setup}, together with an explanation of each item.
+
+\begin{itemize}
+
+\item {} 
+\textbf{Computer name}: the (user-friendly) name of the new computer instance
+which is about to be created in the DB (the name is used for instance when
+you have to pick up a computer to launch a calculation on it). Names must
+be unique. This command should be thought as a AiiDA-wise configuration of
+computer, independent of the AiiDA user that will actually use it.
+
+\item {} 
+\textbf{Fully-qualified hostname}: the fully-qualified hostname of the computer
+to which you want to connect. 
+
+\item {} 
+\textbf{Description}:  A human-readable description of this computer; this is
+useful if you have a lot of computers and you want to add some text to
+distinguish them (e.g.: ``cluster of computers at EPFL, with 434 nodes, 2 GB of RAM per CPU'')
+
+\item {} 
+\textbf{Enabled}: either True or False; if False, the computer is disabled
+and calculations associated with it will not be submitted. This allows to
+disable temporarily a computer if it is giving problems or it is down for
+maintenance, without the need to delete it from the DB.
+
+\item {} 
+\textbf{Transport type}: The name of the transport to be used. A list of valid
+transport types can be obtained typing \textit{?}
+
+\item {} 
+\textbf{Scheduler type}: The name of the plugin to be used to manage the
+job scheduler on the computer. A list of valid
+scheduler plugins can be obtained typing \textit{?}.
+
+\item {}
+\textbf{shebang line at the beginning of the submission script}: 
+The first line of any submission script. The default is \texttt{\#!/bin/bash}.
+This is often used by the scheduler to decide which shell to use. AiiDA expects
+this to be bash, but some supercomputer need a login shell, and then you need
+to specify \texttt{\#!/bin/bash -l}.
+
+\item {} 
+\textbf{AiiDA work directory}: The absolute path of the directory on the
+remote computer where AiiDA will run the calculations
+(often, it is the scratch of the computer). You can (should) use the
+\textit{\{username\}} replacement, that will be replaced by your username on the
+remote computer automatically: this allows the same computer to be used
+by different users, without the need to setup a different computer for
+each one.
+
+\item {} 
+\textbf{mpirun command}: The \cmd{mpirun} command needed on the cluster to run parallel MPI
+programs. You can (should) use the \textit{\{tot\_num\_mpiprocs\}} replacement,
+that will be replaced by the total number of cpus, or the other
+scheduler-dependent fields. 
+
+\item {}
+\textbf{Default number of CPUs}: Setup the number of CPUs per node of the cluster. In this way, if you specify to use one node (a 'machine' in AiiDA), the calculation will try by default to use all the CPUs of the node.
+
+\item {} 
+\textbf{Text to prepend to each command execution}: This is a multiline string,
+whose content will be prepended inside the submission script before the
+real execution of the job. It is your responsibility to write proper \cmd{bash} code!
+This is intended for computer-dependent code, like for instance loading a
+module that should always be loaded on that specific computer. \emph{Remember}
+\emph{to end the input by pressing} \textit{\textless{}CTRL\textgreater{}+D}.
+
+\item {} 
+\textbf{Text to append to each command execution}: This is a multiline string,
+whose content will be appended inside the submission script after the
+real execution of the job. It is your responsibility to write proper \cmd{bash} code!
+This is intended for computer-dependent code. \emph{Remember}
+\emph{to end the input by pressing} \textit{\textless{}CTRL\textgreater{}+D}.
+
+\end{itemize}
+
+\subsection{\label{sec:computerconfigure}\texttt{verdi computer configure}}
+To setup the credentials to be able to run on a computer, you should use the following command:
+\begin{bashcommand}
+verdi computer configure COMPUTERNAME
+\end{bashcommand}
+
+When using the SSH transport, the command will try to provide automatically default answers, mainly reading
+the existing ssh configuration in \textbf{\textasciitilde{}/.ssh/config}, and in most cases one
+simply need to press enter a few times.
+
+At the moment, the in-line help (i.e., just typing \textbf{?} to get
+some help) is not yet supported in \cmd{verdi configure}, but only in
+\cmd{verdi setup}.
+
+The following options will be asked for ssh transport type.
+
+\begin{itemize}
+\item {} 
+\textbf{username}: your username on the remote machine
+
+\item {} 
+\textbf{port}: the port to connect to (the default SSH port is 22)
+
+\item {} 
+\textbf{look\_for\_keys}: automatically look for the private key in \textbf{\textasciitilde{}/.ssh}.
+Default: True.
+
+\item {} 
+\textbf{key\_filename}: the absolute path to your private SSH key. You can leave
+it empty to use the default SSH key, if you set \textbf{look\_for\_keys} to True.
+
+\item {} 
+\textbf{timeout}: A timeout in seconds if there is no response (e.g., the
+machine is down). You can leave it empty to use the default value.
+
+\item {} 
+\textbf{allow\_agent}: If True, it will try to use an SSH agent.
+
+\item {} 
+\textbf{proxy\_command}: Leave empty if you do not need a proxy command (i.e.,
+if you can directly connect to the machine).
+
+\item {} 
+\textbf{compress}: True to compress the traffic (recommended)
+
+\item {} 
+\textbf{gss\_auth, gss\_kex, gss\_deleg\_creds, gss\_host}: These are parameters needed if your cluster requires authentication via Kerberos. If you don't know what Kerberos is, just ignore these four variables and leave their value to the default one (in particular, \texttt{gss\_auth = no}). Otherwise, read the documentation of AiiDA (and of the paramiko python package) online for more details.
+
+\item {} 
+\textbf{load\_system\_host\_keys}: True to load the known hosts keys from the
+default SSH location (recommended)
+
+\item {} 
+\textbf{key\_policy}: What is the policy in case the host is not known.
+It is a string among the following:
+\begin{itemize}
+\item {} 
+\textbf{RejectPolicy} (default, recommended): reject the connection if the
+host is not known.
+
+\item {} 
+\textbf{WarningPolicy} (\emph{not} recommended): issue a warning if the
+host is not known.
+
+\item {} 
+\textbf{AutoAddPolicy} (\emph{not} recommended): automatically add the host key
+at the first connection to the host.
+
+\end{itemize}
+
+\end{itemize}
+
+\section{\label{app:codesetup}Setting up a code: \texttt{verdi code setup} options}
+
+Once you have at least one computer configured, you can configure the codes, using the command \cmd{verdi code setup}.
+
+In AiiDA, for full reproducibility of each calculation, we store each code in the database, and attach to each calculation a given code. This has the further advantage to make it very easy to query for all calculations that were run with a given code (for instance because I am looking for phonon calculations, or because I discovered that a specific version had a bug and I want to rerun the calculations).
+
+In AiiDA there are two types of codes:
+
+\begin{itemize}
+ \item \textbf{Remote codes} are installed on a remote computer like a supercomputer.
+ \item \textbf{Local codes} are not already present on the remote machine and must be copied for every submission. 
+\end{itemize}
+
+The command \cmd{verdi code setup} will ask several values. Here is a description of their meaning.
+
+\begin{itemize}
+\item {} 
+\textbf{label}:  A label to refer to this code. Note: this label is not enforced
+to be unique. However, if you try to keep it unique, you can use it later
+to refer and use to your code. Otherwise, you need to remember its ID or UUID.
+
+\item {} 
+\textbf{description}: A human-readable description of this code (for instance ``Quantum
+Espresso v.5.0.2 with 5.0.3 patches, pw.x code, compiled with openmpi'')
+
+\item {} 
+\textbf{default input plugin}: A string that identifies the default input plugin to
+used to generate new calculations to use with this code.
+This string has to be a valid string recognised by the \textbf{CalculationFactory}
+function. To get the list of all available Calculation plugin strings,
+use the \cmd{verdi calculation plugins} command. Note: if you do not want to
+specify a default input plugin, you can write the string ``None'', but this is
+discouraged, because then you will not be able to use
+the \textbf{.get\_builder()} method of the \textbf{Code} object.
+
+\item {} 
+\textbf{local}: either True (for local codes) or False (for remote
+codes). For the meaning of the distinction, see above. Depending
+on your choice, you will be asked for:
+\begin{itemize}
+\item {} 
+LOCAL CODES:
+\begin{itemize}
+\item {} 
+\textbf{Folder with the code}: The folder on your local computer in which there
+are the files to be stored in the AiiDA repository, and that will then be
+copied over to the remote computers for every submitted calculation.
+This must be an absolute path on your computer.
+
+\item {} 
+\textbf{Relative path of the executable}: The relative path of the executable
+file inside the folder entered in the previous step.
+
+\end{itemize}
+
+\item {} 
+REMOTE CODES:
+\begin{itemize}
+\item {} 
+\textbf{Remote computer name}: The computer name as on which the code resides,
+as configured and stored in the AiiDA database
+
+\item {} 
+\textbf{Remote absolute path}: The (full) absolute path of the code executable
+on the remote machine
+
+\end{itemize}
+
+\end{itemize}
+
+\end{itemize}
+\end{appendices}

@@ -1,0 +1,427 @@
+% !TEX root = ../AiiDA_tutorial.tex
+%%%%%%%%%INTRO%%%%%%%%%
+\section[Submit, monitor and debug calculations]{\label{sec:qe}Submit, monitor and debug calculations}
+The goal of this section is to understand how to create new data in AiiDA. We will launch a total energy calculation and check its results. We will introduce intentionally some common mistakes along the process of defining and submitting a calculation and we will explain you how to recognize and correct them. While this debugging is done here `manually', workflows  (that we will learn later in this tutorial) can automate this procedure considerably. 
+%Optionally, you will run a band structure calculation using a previous (``parent'') calculation.
+For computing the DFT energy of the silicon crystal (with a PBE functional) we will use Quantum ESPRESSO~\cite{ref:QE}, in particular the PWscf code (\texttt{pw.x}).
+Besides the AiiDA-core package, a number of plugins exist for many different codes.
+These are listed in the \href{https://aiidateam.github.io/aiida-registry/}{AiiDA plugin registry}\footnote{\url{https://aiidateam.github.io/aiida-registry/}}.
+In particular, the ``aiida-quantumespresso'' plugin (already installed in your machine) provides a very extensive set of plugins, covering most (if not all) the functionalities of the underlying codes.
+
+
+\subsection{The AiiDA daemon}
+
+First of all, check that the AiiDA daemon is actually running. The AiiDA daemon is a program running all the time in the background, checking if new calculations appear and need to be submitted to the scheduler\footnote[1]{i.e. first queued on the cluster, and then run when the queuing system allows it}. The daemon also takes care of all the necessary operations before the calculation submission\footnote[2]{creating a directory where to run and copying there the input files}, and after the calculation has completed on the cluster.\footnote[3]{retrieving and copying some of the output files in the database repository, parsing one or several output files, attaching some data to the calculation and storing them in the database.}
+Type in the terminal
+\begin{bashcommand}
+verdi daemon status
+\end{bashcommand}
+If the daemon is running, the output should look like
+
+\begin{verbatim}
+    Profile: default
+    Daemon is running as PID 1650 since 2018-05-16 16:26:04
+    Active workers [1]:
+      PID    MEM %    CPU %  started
+    -----  -------  -------  -------------------
+     1653    8.225        0  2018-05-16 16:26:04
+    Use verdi daemon [incr | decr] [num] to increase / decrease the amount of workers
+\end{verbatim}
+If this is not the case, type in the terminal
+\begin{bashcommand}
+verdi daemon start
+\end{bashcommand}
+to start the daemon.
+
+
+%%%%%%%%%%%%%%CREATE AND SUBMIT CALCULATION%%%%%%%%%%%%%
+%N.B. In the old tutorial calculation are submitted via the interactive shell, whereas here users will do it via verdi run <script_name>
+%%%%%%%%%%%%%%%
+\subsection{Creating a new calculation\label{sec:create_calc}}
+To launch a calculation, you will need to interact with AiiDA mainly in the \cmd{verdi shell}.
+We strongly suggest you to first try the commands in the shell, and then copy them in a script ``test\_pw.py'' using a text editor. This will be very useful for later execution of a similar series of commands.
+
+\textbf{The best way to run python scripts using AiiDA functionalities is to run them in a terminal by means of the command}
+\begin{bashcommand}
+ verdi run <scriptname>
+\end{bashcommand}
+
+Every calculation sent to a cluster is linked to a code, which describes the executable file to be used.
+Therefore, first load the suitable code:
+\begin{pythoncommand}
+ code = Code.get_from_string(<codename>)
+\end{pythoncommand}
+Here \texttt{Code} is the general AiiDA class handling all possible codes, and \texttt{code} is a class instance tagged as \texttt{<codename>} (see the first part of the tutorial for listing all codes installed in your AiiDA machine).
+You might also want to list only the codes that define a default calculation plugin for the pw.x code of Quantum ESPRESSO. You can do this with the following command:
+\begin{bashcommand}
+verdi code list -p quantumespresso.pw
+\end{bashcommand}
+Pick the correct codename, that might look like, e.g. \texttt{qe-pw-6.2.1@localhost}.
+
+Once run, AiiDA calculations are instances of the class \texttt{Calculation}, more precisely of one of its subclasses, each corresponding to a code specific plugin (for example, the PWscf plugin). You have already seen \texttt{Calculation} classes in the previous sections.
+
+However, to create a new calculation, rather than manually creating a new class, 
+the suggested way is to use a \texttt{Builder}, that helps in setting the various
+calculation inputs and parameters, and provides TAB-completion.
+
+To obtain a new builder, we can use the \texttt{get\_builder} method of the \texttt{code} object:
+\begin{pythoncommand}
+ builder = code.get_builder()
+\end{pythoncommand}
+This returns a builder that helps in setting up the inputs for the \texttt{PwCalculation} class (associated to the \texttt{quantumespresso.pw} plugin, i.e. the default 
+plugin for the code you chose before).
+
+As the first step, you can assign a (short) label or a (long) description
+to the calculation that you are going to create, that you might find 
+convenient in the future. This can be achieved with:
+\begin{pythoncommand}
+ builder.label = "PW test"
+ builder.description = "My first AiiDA calc with Quantum ESPRESSO on BaTiO3"
+\end{pythoncommand}
+This information will be saved in the database for later query or inspection.
+Note that you can press TAB after writing \texttt{builder.} to see all available inputs.
+
+Now you have to specify the number of machines (a.k.a. cluster nodes) you are going to run on and the maximum time allowed for the calculation. These general calculation options,
+that are independent of the code or plugin, but rather mainly passed later to the scheduler
+that handles the queue, are all grouped under ``builder.options'':
+\begin{pythoncommand}
+ builder.options.resources = {'num_machines': 1}
+ builder.options.max_wallclock_seconds = 30*60
+\end{pythoncommand}
+Just like the normal inputs, these builder options are also TAB-completed.
+Type "builder.options." and hit the TAB button to see the list of available options.
+
+%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Preparation of inputs}
+Quantum ESPRESSO requires an input file containing Fortran namelists and variables, plus some cards sections (the documentation is available \href{http://www.quantum-espresso.org/wp-content/uploads/Doc/INPUT_PW.html}{online}\footnote{\url{http://www.quantum-espresso.org/wp-content/uploads/Doc/INPUT_PW.html}}).
+The Quantum ESPRESSO plugin of AiiDA requires quite a few nodes in input, which are documented 
+\href{http://aiida-core.readthedocs.io/en/latest/plugins/quantumespresso/pw.html}{online}\footnote{\url{http://aiida-core.readthedocs.io/en/latest/plugins/quantumespresso/pw.html}}.
+Here we will instruct our calculation with a minimal configuration for computing the energy of silicon. We need:
+\begin{enumerate}
+\item Pseudopotentials
+\item a structure
+\item the k-points
+\item the input parameters
+\end{enumerate}
+We leave the parameters as the last thing to setup and start with structure, k-points, and pseudopotentials.
+
+\begin{tcolorbox}
+Use what you learned in the previous section and define these two kinds of objects in this script.
+Define in particular a silicon structure and a 2$\times$2$\times$2 mesh of k-points.
+Notice that if you just copy and paste the code that you executed previously, you will create duplicated information in the database (i.e. every time you will execute the script, you will create another StructureData, another KpointsData, \dots).
+In fact, you already have the opportunity to re-use an already existing structure.\footnote{However, to avoid duplication of KpointsData, you should first learn how to query the database, therefore we will ignore this duplication issue for now.}
+Use therefore a combination of the bash command \cmd{verdi data structure list} and of the shell command \texttt{load\_node()} to get an object representing the structure created earlier.
+%For the KpointsData instead we will ignore this duplication for the time being, and you can simply use the same code of this morning.
+\end{tcolorbox}
+
+\subsubsection{Attaching the input information to the calculation}
+So far we have defined (or loaded) some of the input data, but we haven't instructed the calculation to use them.
+To do this, let's just set the appropriate attributes of the builder (we assume here 
+that you created the structure and k-points AiiDA nodes before and called them 
+\texttt{structure} and \texttt{kpoints}, respectively):
+\begin{pythoncommand}
+ builder.structure = structure
+ builder.kpoints = kpoints
+\end{pythoncommand}
+Note that you can set in the builder both stored and unstored nodes.
+AiiDA will take care of storing the unstored nodes upon submission. Otherwise,
+if you decide not to submit, nothing will be stored in the database.
+
+Moreover, PWscf also needs information on the pseudopotentials, specified by UpfData objects.
+This is set by storing a dictionary in ``builder.pseudo'', with keys being the
+kind names, and value being the UpfData pseudopotential nodes.
+To simplify the task of choosing pseudopotentials, we can however use a helper
+function that automatically returns this dictionary picking the pseudopotentials
+from a given UPF family.
+
+You can list the preconfigured families from the command line:
+\begin{bashcommand}
+ verdi data upf listfamilies
+\end{bashcommand}
+Pick the one you configured earlier or one of the \texttt{SSSP} families that we provide, and link it to the calculation using the command:
+\begin{pythoncommand}
+ from aiida.orm.data.upf import get_pseudos_from_structure
+ builder.pseudo = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY_NAME>')
+\end{pythoncommand}
+
+
+
+\subsubsection{Preparing and debugging input parameters}
+The last thing we miss is a set of parameters (i.e. cutoffs, convergence thresholds, etc\dots) to launch the Quantum ESPRESSO calculation.
+This part requires acquaintance with Quantum ESPRESSO and, very often, this is the part to tune when a calculation shows a problem.
+Let's therefore use this part of the tutorial to learn how to debug problems, and {\bf let's introduce errors intentionally}.
+Note also that some of the problems we will investigate appear the first times you launch calculations and can be systematically avoided by using workflows.
+
+
+Let's define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of the form:
+\begin{pythoncommand}
+parameters_dict = {
+    'CONTROL': {
+        'calculation': 'scf',
+        'tstress': True,
+        'tprnfor': True,
+    },
+    'SYSTEM': {
+        'ecutwfc': 30.,
+        'ecutrho': 200.,
+        'mickeymouse': 240.,
+    },
+    'ELECTRONS': {
+        'conv_thr': 1.e-8,
+    },
+}
+\end{pythoncommand}
+This dictionary is almost a valid input for the Quantum ESPRESSO plugin, except for an invalid key called ``mickeymouse''.
+When Quantum ESPRESSO receives an unrecognized key (even when you misspell one) its behavior is to stop almost immediately.
+By default, the AiiDA plugin will not validate your input and simply pass it over.
+Therefore let's pass this dictionary to the calculation and observe this unsuccessful behavior.
+
+As done before, load the ParameterData class
+\begin{pythoncommand}
+ ParameterData = DataFactory("parameter") 
+\end{pythoncommand}
+and create an instance of the class containing all the input parameters you just defined
+\begin{pythoncommand}
+ parameters = ParameterData(dict=parameters_dict)
+\end{pythoncommand}
+Finally, set the parameters in the builder
+\begin{pythoncommand}
+ builder.parameters = parameters
+\end{pythoncommand}
+
+
+
+
+
+
+\subsubsection{Simulate submission}
+At this stage, you have recreated in memory (it's not yet stored in the database) the input of the graph shown in Fig.~\ref{fig:graph}a, whereas the outputs will be created later by the daemon.
+
+In order to check how AiiDA creates the actual input files for the calculation, we can simulate the submission process with the (otherwise optional) command
+\begin{pythoncommand}
+ builder.submit_test()
+\end{pythoncommand}
+This creates a folder of the form \texttt{submit\_test/[date]-0000[x]} in the current directory. Check (in your second terminal) the input file \texttt{aiida.in} within this folder, comparing it with the content of the input data nodes you created earlier, and that the `pseudo' folder contains the needed pseudopotentials. You can also check the submission script \texttt{\_aiidasubmit.sh} (the scheduler that is installed on the machine is Torque, so AiiDA creates the files with the proper format for this scheduler).
+Note: you cannot correct the input file from the ``submit\_test'' folder: you have to correct the script and re-execute it; the files created by \texttt{submit\_test()} are only for final inspection.
+
+
+
+
+
+
+
+
+
+\subsubsection{Storing and submitting the calculation}
+Up to now the calculation \texttt{calc} is kept in memory and not in the database. 
+We will now submit it, that will implicitly create a \texttt{PwCalculation} class, 
+store it in the database, store also all its inputs parameters, k-points, structure,
+and properly link them.
+To submit it, run
+\begin{pythoncommand}
+    from aiida.work.launch import submit
+    calc = submit(builder)
+\end{pythoncommand}
+\texttt{calc} will now be the stored \texttt{PwCalculation}, already submitted 
+to the daemon. The calculation has now a ``database primary key" or \texttt{pk} 
+(an integer ID) to the calculation (typing \texttt{calc.pk} will print this number). 
+Moreover, it also gets a universally-unique ID (\texttt{UUID}), 
+visible with \texttt{calc.uuid} that does not change even upon sharing
+the data with collaborators (while the \texttt{pk} will change in that case).
+
+Now that the calculation is stored, you can also attach any additional attributes 
+of your choice, which are called ``extra'' and defined in as key-value pairs.
+For example, you can add an extra attribute called \texttt{element}, with value \texttt{Si} through
+\begin{pythoncommand}
+ calc.set_extra("element","Si")
+\end{pythoncommand}
+You will see later the advantage of doing so for querying.
+
+In the meantine, as soon as you submitted your calculation,  the daemon picked it up
+and started to perform all the operations to do the actual submission, going through
+input file generation, submission to the queue, waiting for it to run and finish,
+retrieving the output files, parsing them, storing them in the database and setting the
+state of the calculation to \texttt{Finished}.
+
+\textbf{N.B.} If the daemon is not running the calculation will remain in the \texttt{NEW} state until when you start it.
+
+
+
+%%%%%%%%%%%%%%%%%%%MONITOR CALCULATION%%%%
+%Add here parts on troubleshooting failed caluclations
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Checking the status of the calculation}
+You can check the calculation status from the command line:
+\begin{bashcommand}
+ verdi calculation list                                   
+\end{bashcommand}
+Note that \cmd{verdi} commands can be slow in this tutorial when the calculation is running (because you just have one CPU which is also used by the PWscf calculation). 
+
+By now, it is possible that the calculation you submitted has already finished,
+and therefore that you don't see any calculation in the output. In fact, 
+by default, the command only prints calculations that are still being handled by the daemon, i.e.\ those with a state that is not \texttt{FINISHED} yet\footnote{For JobCalculations (i.e., calculations that are submitted to a remote computer through a scheduler) there is an additional "Job state" (last column of the output of \texttt{verdi calculation list}) that can either be FINISHED if all went well, or one of the possible failure states (FAILED, PARSINGFAILED, SUBMISSIONFAILED, RETRIEVALFAILED). These states are represented as
+a Finished state (third column of \texttt{verdi calculation list}, with a zero/non-zero
+error code depending if they finished/did not finish correctly). This latter state
+is more general than just JobCalculations and also applies to workflows, as we will
+see later in the tutorial.}.
+
+To see also (your) calculations that have finished (and limit those only to the one created in the past day), use instead
+\begin{bashcommand}
+ verdi calculation list -a -p1                                  
+\end{bashcommand}
+as explained in the first section.
+
+To inspect the list of input files generated by the AiiDA (this can be done even
+when the calculation did not finish yet), type
+\begin{bashcommand}
+ verdi calculation inputls <pk_number> -c
+\end{bashcommand}
+with \texttt{pk\_number} the pk number of your calculation. This will show the contents of the input directory (\cmd{-c} prints directories in colour). Then you can also check the content of the actual input file with
+\begin{bashcommand}
+ verdi calculation inputcat <pk_number> | less
+\end{bashcommand}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{Troubleshooting}
+After all this work the calculation should end up in a FAILED Job state (last column of
+\texttt{verdi calculation list}), and 
+correspondingly the error code near the ``Finished" status of the State should be non-zero
+(400 for FAILED calculations). This was expected, since we used an invalid key in the input parameters.
+Situations like this happen (probably often...) in real life, so we built in AiiDA the tools to traceback the problem source and correct it.
+
+A first way to proceed is the manual inspection of the output file of PWscf. You can visualize it with:
+\begin{bashcommand}
+ verdi calculation outputcat <pk_number> | less
+\end{bashcommand}
+This can be a good primer for problem inspection.
+For something more compact, you can also try to inspect the calculation log (from AiiDA):
+\begin{bashcommand}
+ verdi calculation logshow <pk_number>
+\end{bashcommand}
+If the calculation has encountered a mistake, this log shows a handful of warnings coming from various processes, such as the daemon, the parser of the output or the scheduler on the cluster.
+In production runs, errors will mostly come from an unexpected termination of the PWscf calculation.
+The most programmatic way to handle these errors is to inspect the warnings key by loading the calculation object, say \texttt{calc}, and the using the following method:
+\begin{pythoncommand}
+calc.res.warnings
+\end{pythoncommand}
+This will print a list of strings reporting errors experienced during the execution, that can be easily read in python (and thus addressed programmatically), but are also reported in the calculation log.
+With any of these three methods you can understand that the problem is something like an `invalid input key', which is exactly what we did.
+
+Let's use a parameters dictionary that actually works.
+Modify the script \texttt{test\_pw.py} script modifying the parameter dictionary as
+\begin{pythoncommand}
+parameters_dict = {
+    "CONTROL": {"calculation": "scf",
+                },
+    "SYSTEM": {"ecutwfc": 30.,
+               "ecutrho": 200.,
+               },
+    "ELECTRONS": {"conv_thr": 1.e-6,
+                  }
+    }
+\end{pythoncommand}
+
+If you launch the modified script by typing
+\begin{bashcommand}
+ verdi run test_pw.py
+\end{bashcommand}
+you should now be able to see a calculation reaching successfully the FINISHED state.
+Now you can access the results as you have seen earlier.
+For example, note down the pk of the calculation so that you can load it in the \texttt{verdi shell} and check the total energy with the commands:
+\begin{pythoncommand}
+calc=load_node(<pk>)
+calc.res.energy
+\end{pythoncommand}
+
+% As a last thing for this section you can run it via the \cmd{verdi run} command. You may substitute the last command by something like 
+% \begin{pythoncommand}
+%  print calc.res.energy
+% \end{pythoncommand}
+% in order to print the final energy. and verify that it corresponds to what obtained via the stepwise ``shell submission''.
+% 
+% We remind that to run an AiiDA script you need to type
+% \begin{bashcommand}
+%  verdi run pw_test.py
+% \end{bashcommand}
+
+
+
+
+
+
+
+%
+%
+%\subsection{Optional: band structure calculation}
+%
+%Now that you know how to restart a calculation, with a few extra commands you can compute the band structure of silicon.
+%Identify a calculation that successfully computed the total energy of silicon and load it.
+%Now, we create a restart calculation, but this time we let the calculation use the charge density of the `parent' calculation.
+%\begin{pythoncommand}
+%c1 = load_node(PK)
+%c2 = c1.create_restart(use_output_structure=True)
+%\end{pythoncommand}
+%PWscf requires to set a flag to signal that you want to obtain the energy of bands (and not the total energy).
+%Therefore, modify the input dictionary with
+%\begin{pythoncommand}
+%new_dict = c2.inp.parameters.get_dict()
+%new_dict['CONTROL']['calculation'] = 'bands'
+%new_parameters = ParameterData(dict=parameter_dict)
+%\end{pythoncommand}
+%By default, the AiiDA plugin of PWscf does not retrieve the files containing the entire band structure (mainly for concerns of disk space usage).
+%If you want to see the band structure, you need to set also an additional input node called \texttt{settings}
+%\begin{pythoncommand}
+%settings_dict = {'also_bands': True,
+%                 'PARENT_FOLDER_SYMLINK': True}
+%settings = ParameterData(dict=settings_dict)
+%\end{pythoncommand}
+%Notice that we also set another (optional) key \texttt{PARENT\_FOLDER\_SYMLINK}, so that the new calculation \texttt{c2} will not copy the old charge density file in a new folder, but will use the old one via a symlink (helping you to save space on the cluster).
+%Lastly, we want to compute the band structure along the high symmetry paths of the Brillouin zone.
+%In this case you do not need to provide explicitely the coordinates of the k-points. Type instead
+%\begin{pythoncommand}
+%kpoints = KpointsData()
+%kpoints.set_cell(c2.inp.structure.cell, c2.inp.structure.pbc)
+%kpoints.set_kpoints_path(kpoint_distance = 0.05)
+%\end{pythoncommand}
+%In this way, you passed the crystal structure to the kpoints class, which has a built in utility to build the list of k-points on high symmetry directions of the Brillouin zone. 
+%\texttt{kpoint\_distance} is simply a parameter determining the resolution: the smaller, the more k-points.
+%Now, don't forget to set the calculation to use these new nodes
+%\begin{pythoncommand}
+%c2.use_kpoints(kpoints)
+%c2.use_parameters(new_parameters)
+%c2.use_settings(settings)
+%\end{pythoncommand}
+%And the band structure is ready to be computed.
+%
+%After the calculation has run, checked that it finished successfully.
+%In this case, the AiiDA parser has read the output files containing the band structure and has inserted this information in the database. 
+%To visually inspect the band structure, load the calculation (previously \texttt{c2}) and look for an output node at linkname \texttt{output\_band}.
+%\begin{pythoncommand}
+%band = c2.out.output_band
+%\end{pythoncommand}
+%In this way you loaded the \texttt{BandsData} object that contains all the information concerning the band structure.
+%Take your time to explore the methods of this class.
+%Here we just mention the command
+%\begin{pythoncommand}
+%band.export('silicon_band_structure.agr')
+%\end{pythoncommand}
+%This command should have created an xmgrace plot, which you can open and inspect from the bash shell:
+%\begin{bashcommand}
+%xmgrace silicon_band_structure.agr
+%\end{bashcommand}
+%
+
+
+
