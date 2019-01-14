@@ -49,7 +49,7 @@ Start by clicking on the Details of a `RaspaCalculation` node
 is a link to one).
 
 ---
-**Exercise**
+### Exercise
 
 Use the graph explorer in order to figure out:
 

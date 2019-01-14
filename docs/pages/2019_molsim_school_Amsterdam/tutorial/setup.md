@@ -74,7 +74,7 @@ Use `verdi profile list` to verify that you've switched to your new personal Aii
 If you encounter any issues throughout the tutorial, please consider
 
  * consulting the extensive [AiiDA documentation](https://aiida-core.readthedocs.io/en/stable/)
- * opening a new issue on the [tutorial issue tracker](https://github.com/ltalirz/aiida-tutorials/issues)
+ * opening a new issue on the [tutorial issue tracker](https://github.com/aiidateam/aiida-tutorials/issues)
  * asking your neighbor 
  * asking a tutor
 
