@@ -1,79 +1,81 @@
-The AiiDA python interface
-==========================
+# The AiiDA python interface
 
-In this section we will use an interactive python environment with all
-the basic AiiDA classes already loaded. There are two variants of this:
+AiiDA is written in python, and while the `verdi` command line interface
+provides handy shortcuts for everyday operations, AiiDA provides its
+full power only via the python interface.
 
-The first is a customized ipython shell where all the AiiDA classes,
-methods and functions are accessible. Type in the terminal
+There are three practical ways of using the python interface:
 
-```bash
-verdi shell
+ 1. python scripts that `import` the `aiida` python package
+ 2. the interactive `verdi shell`
+ 3. jupyter notebooks 
+
+While we will get back to 1. at the end of the tutorial,
+we recommend you use either the `verdi shell` or, even better, jupyter notebooks
+for now: recording your actions in a jupyter notebook, will allow you to 
+keep track of what you've done.
+
+## The verdi shell
+
+The `verdi shell` is a customized ipython shell, where all the AiiDA classes,
+methods and functions are already accessible. Type in the terminal
+
+```terminal
+$ verdi shell
 ```
 
-For everyday AiiDA-based operations, i.e. creating, querying and using
-AiiDA objects, the <span>`verdi shell`</span> is probably the best tool.
-You would usually use two terminals, one for the
-<span>`verdi shell`</span> and one to execute bash commands.
+The `verdi shell` is handy for everyday AiiDA-based operations, e.g. creating,
+querying and using AiiDA objects.
+You would typically use two terminals, one for the
+`verdi shell` and one to execute bash commands.
 
-The second option is based on `jupyter` notebooks and is great for
-tutorial purposes. Double click on the `Jupyter Apps` icon on the
-Desktop to start a jupyter notebook server. After a few seconds, the
-browser will open and display the home app. Click on `File Browser` and
-select `New -> Python 2` (top right corner). You are now inside a
-jupyter notebook, made of cells where you can type portions of python
-code. The code will not be executed until you press `Shift+Enter` from
-within a cell. Type in the first cell
+> **Note**  
+> Press `Ctrl+Shift+T` in order to open a new terminal tab.  
+> Don't forget to `workon aiida` in the new tab before using the shell.
 
-and execute it. This will set exactly the same environment as the
-<span>`verdi shell`</span>. The notebook will be automatically saved
-upon any modification and when you think you are done, you can export
-your notebook in many formats by going to `File -> Download as`. We
-suggest you to have a look to the drop-down menus `Insert` and `Cell`
-where you will find the main commands to manage the cells of your
-notebook. **The <span>`verdi shell`</span> and the
-<span>`jupyter`</span> notebook are completely equivalent. Use either
-according to your personal convenience.**
+## Jupyter notebooks
 
-Note: you will still need sometimes to type command-line instructions in
-<span>`bash`</span> in the first terminal you opened today. To
-differentiate these from the commands to be typed in the
-<span>`verdi shell`</span>, the latter will be marked in this document
-by a vertical line on the left, like:
+`jupyter` notebooks are great for tutorial purposes.
+Start a jupyter notebook server:
+
+```terminal
+$ jupyter notebook
+```
+
+In the new browser window, select `New -> Python 2` (top right corner).  
+You are now inside a jupyter notebook, consisting of cells where you can type
+portions of python code. The code will not be executed until you press
+`Shift+Enter` from within a cell. 
+
+In order to load the same environment as in the `verdi shell`, type `%aiida`
+in the first cell and execute it. 
+
+> **Note**  
+> The `verdi shell` and the `jupyter notebook` are completely equivalent. 
+> Use either according to your personal preference.
+
+You will still need sometimes to type command-line instructions in
+the terminal.
+Either keep a terminal open on the side or use execute terminal commands
+directly from the `verdi shell` or `jupyter notebook` by prefixing the 
+command by an exclamation mark:
 
 ```python
-some verdi shell command
+!verdi profile list
 ```
 
-while command-line instructions in <span>`bash`</span> to be typed on a
-terminal will be encapsulated between horizontal lines:
-
-```bash
-some bash command
-```
-
-Alternatively, to avoid changing terminal, you can execute
-<span>`bash`</span> commands within the <span>`verdi shell`</span> or
-the notebook adding an exclamation mark before the command itself
-
-```python
-!some bash command
-```
-
-Loading a node
---------------
+## Loading a node
 
 Most AiiDA objects are represented by nodes, identified in the database
-by its pk number (an integer). You can access a node using the following
+by its PK number (an integer). You can access a node using the following
 command in the shell:
 
 ```python
 node = load_node(<PK>)
 ```
 
-Load a node using one of the calculation pks visible in the graph you
-displayed in the previous section of the tutorial. Then get the energy
-of the calculation with the command
+Load one of the calculation nodes you played around with before.
+Then get the density computed with the command
 
 ```python
 node.out.output_parameters.get_dict()
@@ -82,8 +84,7 @@ node.out.output_parameters.get_dict()
 You can also type
 
 ```python
-node.out.
+node.res.
 ```
 
-and then press <span>`TAB`</span> to see all the possible output results
-of the calculation.
+and then press `TAB` to directly access the keys of the output dictionary.
