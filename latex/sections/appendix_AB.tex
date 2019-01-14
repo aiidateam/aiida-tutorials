@@ -1,0 +1,157 @@
+% !TEX root = ../AiiDA_tutorial.tex
+\section{Calculation input validation}
+This appendix shows additional ways to debug possible errors with QE, how to use a useful tool that we included in AiiDA to validate the input to Quantum ESPRESSO (and possibly suggest the correct name to mispelled keywords)
+
+There are various reasons why you might end up providing a wrong input to a Quantum ESPRESSO calculation.
+Let's check for example this input dictionary, where we inserted two mistakes:
+\begin{pythoncommand}
+parameters_dict = {
+    "CTRL": {
+        "calculation": "scf",
+        "restart_mode": "from_scratch",
+    },
+    "SYSTEM": {
+        "nat": 2,
+        "ecutwfc": 30.,
+        "ecutrho": 200.,
+    },
+    "ELECTRONS": {
+        "conv_thr": 1.e-6,
+    }
+}
+\end{pythoncommand}
+
+The two mistakes in the dictionary are the following.
+First, we wrote a wrong namelist name ('CTRL' instead of 'CONTROL').
+Second, we inserted the number of atoms explicitly: while that is how the number of atoms is specified in Quantum ESPRESSO, in AiiDA this key is reserved by the system: in fact this information is already contained in the StructureData. Modify the script with this ParameterData. 
+In this case, we use a tool (the input validator that we provide in AiiDA) to check the input file before submitting. Therefore, the behavior will be slightly different from the previous example: the plugin will check for some keys and will refuse to submit the calculation.
+This kind of mistakes is revealed by either
+\begin{itemize}
+\item Submitting a calculation. You will see the calculation ending up in the SUBMISSIONFAILED status. Check therefore the logs to recognize the source of the error.
+\item Submitting a test. You will not be able to successfully create the test and the traceback will guide you to the problem.
+\end{itemize}
+
+
+Over the time this kind of trivial mistakes can be annoying, but they can be avoided with a utility function that checks the ``grammar'' of the input parameters.
+In your script, after you defined the parameters\_dict, you can validate it with the command
+(note that you need to pass also the input crystal structure, \texttt{s}, to
+allow the validator to perform all needed checks):
+
+\begin{pythoncommand}
+PwCalculation = CalculationFactory('quantumespresso.pw')
+validated_dict = PwCalculation.input_helper(parameters_dict, structure=s)
+parameters = ParameterData(dict=validated_dict)
+\end{pythoncommand}
+
+The \texttt{input\_helper} method will check for the correctness of the input parameters.
+If misspelling or incorrect keys are detected, the method raises an exception, which stops the script before submitting the calculation and thus allows for a more effective debugging.
+
+With this utility, you can also provide a list of keys, without providing the namelists (useful if you don't remember where to put some variables in the input file).
+Hence, you can provide to \texttt{input\_helper()} a dictionary like this one:
+\begin{pythoncommand}
+parameters_dict = {
+    'calculation': 'scf',
+    'tstress': True,
+    'tprnfor': True,
+    'ecutwfc': 30.,
+    'ecutrho': 200.,
+    'conv_thr': 1.e-6,
+}
+validated_dict = PwCalculation.input_helper(
+    parameters_dict, structure=s, flat_mode=True)
+\end{pythoncommand}
+If you print the \texttt{validated\_dict}, it will look like:
+\begin{pythoncommand}
+{
+    "CONTROL": {
+        "calculation": "scf",
+        "tstress": True,
+        "tprnfor": True,
+    },
+    "SYSTEM": {
+        "ecutwfc": 30.,
+        "ecutrho": 200.,
+    },
+    "ELECTRONS": {
+        "conv_thr": 1.e-6,
+    }
+ }
+\end{pythoncommand}
+
+
+
+\section{Restarting calculations}
+Up to now, we have only presented cases in which we were passing wrong input parameters to the calculations, which required us to modify the input scripts and relaunch calculations from scratch.
+There are several other scenarios in which, more generally, we need to restart calculations from the last step that they have executed.
+For example when we run molecular dynamics, we might want to add more time steps than we initially thought, or as another example you might want to refine the relaxation of a structure with tighter parameters.
+
+In this section, you will learn how to restart and/or modify a calculation that has run previously. As an example, let us first submit a total energy calculation using a parameters dictionary of the form:
+\begin{pythoncommand}
+parameters_dict = {
+    'CONTROL': {
+        'calculation': 'scf',
+        'tstress': True,
+        'tprnfor': True,
+    },
+    'SYSTEM': {
+        'ecutwfc': 30.,
+        'ecutrho': 200.,
+    },
+    'ELECTRONS': {
+        'conv_thr': 1.e-14,
+        'electron_maxstep': 3,
+    },
+}
+\end{pythoncommand}
+and submit the calculation with this input.
+In this case, we set a very low number of self consistent iterations (3), too small to be able to reach the desired accuracy of 10$^{-14}$: therefore the calculation will not reach a complete end and will be flagged in a FAILED state. However, there is no mistake in the parameter dictionary.
+
+Now, create a new script file, where you will try to restart and correct the input dictionary.
+We first load the calculation that has just failed (let's call it \texttt{c1})
+\begin{pythoncommand}
+old_calc = load_node(PK)
+\end{pythoncommand}
+(take care of using the correct PK).
+Then, create a new Builder \texttt{builder} which is set to reuse all inputs
+from the previous step, with a few adaptations to the input parameters
+that might be needed by the code to properly deal with restarts. 
+\begin{pythoncommand}
+from aiida_quantumespresso.utils.restart import create_restart_pw
+builder = create_restart_pw(                                     
+   old_calc,                            
+   use_output_structure=False,  
+   restart_from_beginning=False, 
+   force_restart=True)
+\end{pythoncommand}
+The flag usage (most of them are optional) is:
+\begin{itemize}
+ \item \texttt{use\_output\_structure}: if True and \texttt{old\_calc} has an output structure, the new calculation will use it as input; 
+ \item \texttt{restart\_from\_beginning}: if False the new calculation will start from the charge density of \texttt{old\_calc}, it will start from the beginning otherwise;
+ \item \texttt{force\_restart}: if True, the new calculation will be created even 
+ if \texttt{old\_calc} is not in a FINISHED job state.
+\end{itemize}
+
+Since this calculation has exactly the same parameters of before, we have to modify the input parameters and increase \texttt{electron\_maxstep} to a larger value.
+To this aim, let's load the dictionary of values and change it
+\begin{pythoncommand}
+old_parameters = builder.parameters
+parameters_dict = old_parameters.get_dict()
+parameters_dict['ELECTRONS']['electron_maxstep'] = 100
+\end{pythoncommand}
+Note that you cannot modify the \texttt{old\_parameters} object: it has been used by calculation \texttt{c1} and is saved in the database; hence a modification would break the provenance.
+We have to create a new ParameterData and pass it to c2:
+\begin{pythoncommand}
+ParameterData = DataFactory('parameter')
+new_parameters = ParameterData(dict=parameters_dict)
+builder.parameters = new_parameters
+\end{pythoncommand}
+Now you can launch the new calculation
+\begin{pythoncommand}
+from aiida.work.run import submit    
+new_calc = submit(builder)
+print new_calc.pk
+\end{pythoncommand}
+that this time can proceed until the end and return converged total energy.
+Using the restart method, the script is much shorter than the one needed to launch a new one from scratch: you didn't need to define pseudopotentials, structures and k-points, which are the same as before. 
+You can indeed inspect the new calculation to check that now it actually 
+completed successfully.

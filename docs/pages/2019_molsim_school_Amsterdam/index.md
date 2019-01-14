@@ -1,5 +1,10 @@
 # Metal-organic frameworks for methane storage applications
 
+In this tutorial, we will screen metal-organic frameworks (MOFs) for their possible application
+as methane adsorbents, allowing to store natural gas at increased density and lower storage pressure.
+We will use the [AiiDA framework](www.aiida.net) in order to automate the screening workflow
+and to record the full provenance of the calculations for reproducibility.
+
 This tutorial is part of the
 [Understanding molecular simulation](http://www.acmm.nl/molsim/molsim2019/)
 school held at the University of Amsterdam from January 7-18 2019.
@@ -7,13 +12,16 @@ school held at the University of Amsterdam from January 7-18 2019.
 It is meant to be run inside the [Quantum Mobile](https://www.materialscloud.org/work/quantum-mobile) virtual machine,
 using a compute resource with [zeo++](http://www.zeoplusplus.org/) and [RASPA2](https://github.com/numat/RASPA2) installed.
 
-**Note:** This tutorial requires a basic knowledge of python. If you are
-not familiar with python, partner with someone who is.
+**Note:** This tutorial requires a basic knowledge of
+[python](https://docs.python.org/2.7/tutorial/index.html). If you are not
+familiar with python, we suggest you partner with someone who is.
 
 ### Using AiiDA:
 
- 1. [Getting started](./tutorial/getting-started)
+ 1. [Getting set up](./tutorial/setup.md)
+ 1. [Browsing the provenance graph](./tutorial/provenance-graph)
  1. [Using the verdi command line](./tutorial/verdi-commands)
+ 1. [Browsing the provenance graph](./tutorial/provenance-graph)
  1. [Submit, monitor and debug calculations](./tutorial/calculations)
  1. [The AiiDA python interface](./tutorial/python-interface)
  1. [Queries in AiiDA: The QueryBuilder](./tutorial/queries)

@@ -1,6 +1,13 @@
 Using the verdi command line
 ============================
 
+Before we start creating data ourselves, we are going to look at an
+AiiDA database already created by someone else. Let’s import one from the web:
+
+```terminal
+$ verdi import https://www.dropbox.com/s/3f4895jq9eskqw3/export.aiida?dl=1
+```
+
 This part of the tutorial will help you familiarize with the command
 line utility `verdi`, one of the most common ways to
 interact with AiiDA. `verdi` with its subcommands enables a

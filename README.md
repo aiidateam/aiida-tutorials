@@ -3,7 +3,7 @@
 This repository contains a collection of texts used for
 various AiiDA tutorials.
 
-Visit http://ltalirz.github.io/aiida-tutorials
+Visit http://aiidateam.github.io/aiida-tutorials
 
 ## Building locally
 

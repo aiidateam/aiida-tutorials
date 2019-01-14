@@ -1,0 +1,35 @@
+% !TEX root = ../AiiDA_tutorial.tex
+\subsection*{Before starting}
+
+Once connected to your machine, type in the remote terminal
+\begin{bashcommand}
+ workon aiida
+\end{bashcommand}
+This will enable the virtual environment in which AiiDA is installed, allowing you to use AiiDA. %You will need to type this command at every new connection you open to the Amazon machine.
+
+Now type in the same terminal
+\begin{bashcommand}
+ jupyter notebook --no-browser
+\end{bashcommand}
+This will run a server with a web application called \texttt{jupyter}, which is used to create interactive python notebooks. To connect to this application, copy the URL that has been printed to the terminal (it will be something like \texttt{http://localhost:8888/?token=2a3ba37cd1...}) and paste it into the URL bar of a web browser. You will see a list of folders: these are folders on the remote Amazon computer.
+We will use \texttt{jupyter} in section \ref{sec:querybuilder} and optionally in other sections as well.
+
+Now launch an identical \cmd{ssh} connection (again, as explained above) in another terminal, and type \texttt{workon aiida} here too. This terminal is the one you will actually use in this tutorial.
+
+Note: Since the port listening is set to a specific port (8888) in the section \ref{sec:sshintro}, you have to make sure on the server the Jupiter notebook is running on the port 8888. Otherwise, use an alternative port for listening. 
+
+% \textbf{We suggest to open two terminals with such an \cmd{ssh} connection}:
+
+A final note: for details on AiiDA that may not be fully explained here, you can refer to the full AiiDA documentation, available online at \url{http://aiida-core.readthedocs.io/en/latest/}.
+
+\subsection*{Troubleshooting tips (in case you have issues later)} 
+% Should some of these also be in the online version?
+\begin{itemize}
+\item If you get an error like \texttt{ImportError: No module named aiida} or \texttt{No command 'verdi' found} double check that you have loaded the virtual environment with \texttt{workon aiida} before launching python, ipython or the jupyter server.
+\item If your browser cannot connect to the jupyter instance, check that you have correctly configured SSH tunneling/forwarding as described above. Also note that you should run the jupyter server from the terminal connected to the Amazon machine, while the web browser should be opened locally on your laptop or worstation.
+\item The Jupyter Notebook officially supports the latest stable versions of Chrome, Safari and Firefox. See \url{http://jupyter-notebook.readthedocs.io/en/4.x/notebook.html#browser-compatibility} for more information on broswer compatibility (and update your browser if it is too old).
+% Marco: tested and working on Firefox 53.0.2
+% Change this link if we switch to jupyter 5 or later
+\end{itemize}
+
+

@@ -15,4 +15,4 @@ plugins:
   - jekyll-sitemap
 
 baseurl: /aiida-tutorials
-url: https://ltalirz.github.io
+url: https://aiidateam.github.io
