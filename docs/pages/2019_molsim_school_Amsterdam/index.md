@@ -26,9 +26,9 @@ not familiar with python, partner with someone who is.
 
 ### Theoretical background:
 
+  1. [Methane storage](./theoretical/methane-storage)
   1. [Reference for the 502 CoRE-MOFs](./theoretical/502-mofs)
   1. [Geometric properties](./theoretical/geometric-properties)
-  1. [Geometric/performances relationship](./theoretical/geometric-performance)
   1. [Multiply the unit cell](./theoretical/multiply-uc)
   1. [Settings for Raspa](./theoretical/settings-raspa)
   1. [Extra: working with adsorbates with partial charges](./theoretical/charged-adsorbates)
