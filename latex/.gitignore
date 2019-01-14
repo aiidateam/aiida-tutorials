@@ -1,2 +1,14 @@
+*.synctex.gz
+*.aux
+*.log
+*.out
+*.toc
 *~
-.DS_Store
+*.backup
+*.fls
+*.fdb_latexmk
+AiiDA_tutorial.pdf
+AiiDA_tutorial_online.pdf
+AiiDA_tutorial_addition.pdf
+*-clean.tex
+*.db
