@@ -35,8 +35,8 @@ $ verdi restapi
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-Now we can [connect our REST API](http://34.244.178.26:5001/explore/connect) to the 
-provenance explorer by providing the (local) URL 
+Now [open the provenance browser](http://34.244.178.26:5001/explore/connect){:target="_blank"} 
+and connect your REST API to it by pasting the (local) URL
 `http://127.0.0.1:5000/api/v2` of our REST API.
 
 > **Note**  
@@ -46,7 +46,7 @@ Once the provenance explorer has been loaded by your browser, it is communicatin
 REST API and your data never leaves your computer.
 
 Start by clicking on the Details of a `NetworkCalculation` node
-(if you ever get lost, [here](http://34.244.178.26:5001/explore/ownrestapi/details/8dc42025-adb4-4c44-931f-455cee809c43?nodeType=CALCULATION)
+(if you ever get lost, [here](http://34.244.178.26:5001/explore/ownrestapi/details/bba8402d-6559-4fd8-ad32-84625a6221f0?nodeType=CALCULATION) 
 is a link to one).
 
 ---
