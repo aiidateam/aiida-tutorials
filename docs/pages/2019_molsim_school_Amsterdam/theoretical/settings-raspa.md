@@ -31,12 +31,14 @@ ExternalTemperature           ***
 ExternalPressure              ***
 
 Component 0 MoleculeName             methane
-	          MoleculeDefinition       TraPPE
-	          TranslationProbability   ***
-	          RotationProbability      ***
-	          ReinsertionProbability   ***
-	          SwapProbability          ***
-	          CreateNumberOfMolecules  ***
+            MoleculeDefinition       TraPPE
+            BlockPockets             yes/no
+            BlockPocketsFileName     *****
+            TranslationProbability   ***
+            RotationProbability      ***
+            ReinsertionProbability   ***
+            SwapProbability          ***
+            CreateNumberOfMolecules  ***
 ```
 
 These settings are imported in AiiDA as a ParameterData object,
@@ -65,7 +67,12 @@ You can even modify, create or import your own forcefield: just create the folde
 `$RASPA_DIR/share/raspa/forcefield/{ffname}/`, copy the file formatting of the other
 forcefield .def files and specify `Forcefield {ffname}` in the input.
 
-### A few hints for the settings
+### A few hints for the settings:
+
+* `BlockPockets` and `BlockPocketsFileName` will be filled by AiiDA: if Zeo++ finds
+some non accessible pore volume, it can generate a .block file with the positions
+and the radii of blocking spheres. These spheres are inserted in the framework to prevent
+Raspa from inserting molecules in the non accessible pore.
 
 * You need to choose `NumberOfInitializationCycles` and `NumberOfCycles`. Consider
 that for every cycle every molecule of your system is selected to perform a MC movement
@@ -77,7 +84,7 @@ the average number of particles for `NumberOfCycles` cycles. Therefore, the numb
 should be large enough to compute statistics correctly but not too large to waist computational
 times after your uncertainty is already low. Standard deviation is computed using Block Averages (see UMS pag. 529).
 
-| ![gcmc.png](../../../assets/2019_molsim_school_Amsterdam/gcmc.png) |
+|![gcmc.png](../../../assets/2019_molsim_school_Amsterdam/gcmc.png){:width="98%"}|
 |:--:|
 | Here an example of the value fluctuation and average, with the averaging starting after 10k cycles. |
 
@@ -93,7 +100,7 @@ The maximum displacement is scaled during the simulation to achieve an acceptanc
 decided randomly with a probability of 50% for each. The swap move imposes a chemical
 equilibrium between the system and an imaginary particle reservoir for the current component.
 
-* Choose a reasonable `cutoff` (Angstrom) to exclude Lennard-Jones negligible interaction between far particles.
+* Choose a reasonable `cutoff` (Angstrom) to exclude negligible Lennard-Jones interaction between far particles.
 Consider that the higher the cutoff the more you will have to expand your structures!
 
 * You can choose `ChargeMethod` to `None` or `Ewald`, depending if you want or not to

@@ -12,7 +12,7 @@ pore of the structure
 can fit along the channel where the largest free sphere was evaluated.
 Therefore Di = Dif if there is only one channel or if the largest pore is along the largest channel.
 
-| ![spheres.png](../../../assets/2019_molsim_school_Amsterdam/spheres.png) |
+|![spheres.png](../../../assets/2019_molsim_school_Amsterdam/spheres.png)|
 |:--:|
 | Graphical explanation for Di, Df and Dif. |
 
@@ -40,7 +40,9 @@ this quantity.
 However, using helium to compute the void fraction is not very physically meaningful
 [(Ongari2017)](https://pubs.acs.org/doi/10.1021/acs.langmuir.7b01682).
 
-| ![pore_volume.png](../../../assets/2019_molsim_school_Amsterdam/pore_volume.png) |
+|![pore_volume.png](../../../assets/2019_molsim_school_Amsterdam/pore_volume.png){:width="60%"}|
+|:--:|
+| Explanation of the different kind of pore volumes. |
 
 It is very interesting to compare these metrics to the performance of your materials
 for a certain application,

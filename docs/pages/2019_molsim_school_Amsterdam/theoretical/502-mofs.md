@@ -14,8 +14,10 @@ The database was named [Computational Ready Experimental (CoRE) MOF database](ht
 [(Nazarian2016a)](https://pubs.acs.org/doi/abs/10.1021/acs.chemmater.5b03836)
 * From 5109 3D MOFs, 838 survived a DFT geometry optimization in CP2K
 [(Nazarian2016b)](https://pubs.acs.org/doi/abs/10.1021/acs.chemmater.6b04226)
-* 502 are the intersection of the two, having an optimized geometry from CP2K and charges from Quantum Espresso
+* 502 MOFs are the intersection of the two sets,
+having optimized geometry from CP2K and charges from Quantum Espresso
 
 Do you wonder if there are duplicated in this 502? [Read here!](https://pubs.acs.org/doi/abs/10.1021/acs.cgd.7b01663)
 
-These structures are provided with atomic partial charges, do you need them?
+These structures are provided with atomic partial charges.
+Do you need them to evaluate the methane deliverable capacity?
