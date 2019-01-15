@@ -16,10 +16,11 @@ Therefore Di = Dif if there is only one channel or if the largest pore is along 
 |:--:|
 | Graphical explanation for Di, Df and Dif. |
 
-* *internal surface*, considering the atoms of the frameworks as spheres,
+* *internal surface area*, considering the atoms of the frameworks as spheres,
 and rolling a spherical probe on their surface. By convention the probe has a radius
 of 1.86 Angstrom, half the kinetic diameter of the nitrogen molecule.
-This is a purely geometrical quantity and may differ a lot with the measured BET surface.
+This is a purely geometrical quantity and may differ a lot with the measured BET surface
+[(Rouquerol2007)](http://www.sciencedirect.com/science/article/pii/S0167299107800085).
 
 * *geometric pore volume*, considering the atoms of the frameworks as spheres,
 all the volume outside the spheres.
@@ -35,7 +36,13 @@ in Monte Carlo algorithms.
 * *void fraction*, fraction of pore volume over the total volume of the unit cell.
 If you wonder why sometimes it is called "helium void fraction", it was a convention
 to use the helium atom as probe to compute (BC: NOT measure experimentally!)
-this quantity. However, how explained [here](https://pubs.acs.org/doi/10.1021/acs.langmuir.7b01682),
-using helium to compute the void fraction is not very physically meaningful.
+this quantity.
+However, using helium to compute the void fraction is not very physically meaningful
+[(Ongari2017)](https://pubs.acs.org/doi/10.1021/acs.langmuir.7b01682).
 
 | ![pore_volume.png](../../../assets/2019_molsim_school_Amsterdam/pore_volume.png) |
+
+It is very interesting to compare these metrics to the performance of your materials
+for a certain application,
+to be able to find any correlation that could help to discover the best framework
+for that application. See for example [Wilmer2012](http://xlink.rsc.).

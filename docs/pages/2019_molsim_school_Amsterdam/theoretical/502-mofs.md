@@ -5,12 +5,15 @@ These structures have been uploaded in the [Cambridge Structural Database (CSD)]
 and have been parsed to reject messy structures and remove the solvent molecules inside the pores.
 The database was named [Computational Ready Experimental (CoRE) MOF database](http://gregchung.github.io/CoRE-MOFs/).
 
-* from a total of >600k structure in the CSD,
-* >60k were identified as MOF
-* >20k having a 3D network
+* In 2014 the CSD reported more than 600k structures
+* About 60k structures were identified as MOFs
+* About 20k MOFs structures were identified having a 3D network topology
 * 5109 were identified as "not messy" and porous (i.e., having pore limiting diameter > 2.4 Angstrom)
-* from 5109, 2932 survived a DFT calculation, using Quantum Espresso, to compute DDEC point charges
-* from 5109, 838 survived a DFT geometry optimization in CP2K
+[(Chung2014)](https://pubs.acs.org/doi/abs/10.1021/cm502594j)
+* From 5109 3D MOFs, 2932 survived a DFT calculation, using Quantum Espresso, to compute DDEC point charges
+[(Nazarian2016a)](https://pubs.acs.org/doi/abs/10.1021/acs.chemmater.5b03836)
+* From 5109 3D MOFs, 838 survived a DFT geometry optimization in CP2K
+[(Nazarian2016b)](https://pubs.acs.org/doi/abs/10.1021/acs.chemmater.6b04226)
 * 502 are the intersection of the two, having an optimized geometry from CP2K and charges from Quantum Espresso
 
 Do you wonder if there are duplicated in this 502? [Read here!](https://pubs.acs.org/doi/abs/10.1021/acs.cgd.7b01663)
