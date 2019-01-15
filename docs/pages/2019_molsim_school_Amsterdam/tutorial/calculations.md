@@ -10,8 +10,7 @@ considerably.
 Computer setup and configuration
 --------------------------------
 
-For the tutorial, we've created a “virtual supercomputer” on the Amazon
-elastic cloud, where you can submit your calculations.
+For the tutorial, we've created a have access to a supercomputer from the University of Amsterdam
 
 Please set up the computer as follows:
 
@@ -19,15 +18,16 @@ Please set up the computer as follows:
 $ verdi computer setup 
 At any prompt, type ? to get some help.
 ————————————— 
-=> Computer name: aws Creating new computer with name 'aws' 
-=> Fully-qualified hostname: 34.244.10.104 
-=> Description: AWS instance for tutorial 
+=> Computer name: bazis
+bazis computer for the molsim courseCreating new computer with name 'bazis'
+=> Fully-qualified hostname: bazis.science.uva.nl
+=> Description: bazis computer for the molsim course
 => Enabled: True 
 => Transport type: ssh 
-=> Scheduler type: torque 
+=> Scheduler type: slurm
 => shebang line at the beginning of the submission script: \#!/bin/console 
-=> AiiDA work directory: /tmp/{username}/aiida~r~un/ 
-=> mpirun command: mpirun -np {tot_num_mpiprocs}
+=> AiiDA work directory: /home/{username}/aiida_run/
+=> mpirun command: srun -n {tot_num_mpiprocs}
 => Default number of CPUs per machine: 2 
 => Text to prepend to each command execution: 
 # This is a multiline input, press CTRL+D on a 
@@ -43,7 +43,7 @@ At any prompt, type ? to get some help.
 # End of old input. You can keep adding 
 # lines, or press CTRL+D to store this value 
 # ——————————————
-Computer 'aws' successfully stored in DB.
+Computer 'bazis' successfully stored in DB.
 ```
 
 At this point, the computer node has been created in the database, see
@@ -57,39 +57,39 @@ but it hasn't yet been configured.
 In order to access the computer, download the SSH key
 
 ```terminal
-$ wget https://www.dropbox.com/s/.../aiida_tutorial_aiidaaccount?dl=1 -O /home/max/.ssh/aws.pem
+$ wget https://www.dropbox.com/s/.../aiida_tutorial_aiidaaccount?dl=1 -O /home/max/.ssh/bazis.pem
 ```
 
-and use it to configure the `aws` computer:
+and use it to configure the `bazis` computer:
 
 ```terminal
-$ verdi computer configure aws 
-Configuring computer 'aws' for the AiiDA user 'aiida@localhost' 
-Computer aws has transport of type ssh
+$ verdi computer configure bazis
+Configuring computer 'bazis' for the AiiDA user 'aiida@localhost'
+Computer bazis has transport of type ssh
 
 Note: to leave a field unconfigured, leave it empty and press [Enter]
 
-=> username = aiida 
-=> port = 22 
-=> look for keys = True 
-=> key filename = /home/max/.ssh/aws.pem 
-=> timeout = 60 
-=> allow agent = 
-=> proxy command = 
-=> compress = True 
-=> gssauth = no 
-=> gsskex = no 
-=> gssdelegcreds = no 
-=> gsshost = 34.244.10.104
-=> load system hostkeys = True 
+=> username = molsim<n>
+=> port = 22
+=> look for keys = True
+=> key filename = /home/max/.ssh/bazis.pem
+=> timeout = 60
+=> allow agent =
+=> proxy command =
+=> compress = True
+=> gssauth = no
+=> gsskex = no
+=> gssdelegcreds = no
+=> gsshost = bazis.science.uva.nl
+=> load system hostkeys = True
 => key policy = AutoAddPolicy
-Configuration stored for your user on computer 'aws'.
+Configuration stored for your user on computer 'bazis'.
 ```
 
 Finally, let aiida test the computer:
 
 ```terminal
-$ verdi computer test aws
+$ verdi computer test bazis
 ```
 
 Code setup and configuration
@@ -102,23 +102,24 @@ Let's set up the [RASPA2](https://github.com/numat/RASPA2) code as follows:
 
 
 ```terminal
-$ verdi code setup 
-At any prompt, type ? to get some help. 
+$ verdi code setup
+At any prompt, type ? to get some help.
 —————————————
-=> Label: raspa 
-=> Description: Raspa code for molsim course
-=> Local: False 
-=> Default input plugin: raspa 
-=> Remote computer name: aws 
-=> Remote absolute path: /home/aiida/.local/bin/simulate 
-=> Text to prepend to each command execution 
-FOR INSTANCE, MODULES TO BE LOADED FOR THIS CODE: 
-# This is a multiline input, press CTRL+D on a 
-# empty line when you finish 
+=> Label: raspa
+=> Description: Raspa code for the molsim course
+=> Local: False
+=> Default input plugin: raspa
+=> Remote computer name: bazis
+=> Remote absolute path: /home/molsim20/raspa/bin/simulate
+=> Text to prepend to each command execution
+FOR INSTANCE, MODULES TO BE LOADED FOR THIS CODE:
+# This is a multiline input, press CTRL+D on a
+# empty line when you finish
 # —————————————— 
 # End of old input. You can keep adding 
 # lines, or press CTRL+D to store this value 
 # —————————————— 
+export RASPA_DIR=/home/molsim20/raspa/
 => Text to append to each command execution: 
 # This is a multiline input, press CTRL+D on a 
 # empty line when you finish 
@@ -129,10 +130,10 @@ FOR INSTANCE, MODULES TO BE LOADED FOR THIS CODE:
 Code 'raspa' successfully stored in DB.
 ```
 
-The list of codes should now include your new code `raspa@aws`
+The list of codes should now include your new code `raspa@bazis`
 
 ```terminal
-$ verdi computer test aws
+$ verdi code list
 ```
 
 The AiiDA daemon
@@ -163,10 +164,42 @@ $ verdi daemon start
 
 to start the daemon.
 
+> **Note**
+> In case the daemon did not start and error message was printed
+> ```terminal
+> You are not the daemon user! I will not start the daemon.
+> (The daemon user is 'aiida@localhost', you are 'some.body@xyz.com')
+>
+> ** FOR ADVANCED USERS ONLY: **
+> To change the current default user, use 'verdi install --only-config'
+> To change the daemon user, use 'verdi daemon configureuser'
+> ```
+> You should follow the instructions and run
+> ```terminal
+> $ verdi daemon configureuser
+> ```
+> And allow your user to run the daemon
+>
+> ```terminal
+> > Current default user: some.body@xyz.com
+> > Currently configured user who can run the daemon: aiida@localhost
+>   (therefore, you cannot run the daemon, at the moment)
+> ****************************************************************************
+> * WARNING! Change this setting only if you are sure of what you are doing. *
+> * Moreover, make sure that the daemon is stopped.                          *
+> ****************************************************************************
+> Are you really sure that you want to change the daemon user? [y/N] y
+>
+> Enter below the email of the new user who can run the daemon.
+> New daemon user: some.body@xyz.com
+> The new user that can run the daemon is now Some Body.
+> ```
+
+
 Creating a new calculation
 --------------------------
 
-To start please [download the AiiDA submission script](/assets/2018_EPFL_molsim/raspa_submission.zip). To
+To start please [download the AiiDA submission script]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/test_raspa.py). To
 launch a calculation, you will need to interact with AiiDA mainly in the
 <span>`verdi shell`</span>. We strongly suggest you to first try the
 commands in the shell, and then copy them in a script “test\_pw.py”
@@ -191,7 +224,7 @@ code = test_and_get_code(codename, expected_code_type='raspa')
 Here `test_and_get_code` is an AiiDA function handling all possible
 codes, and `code` is a class instance provided as `codename` (see the
 first part of the tutorial for listing all codes installed in your AiiDA
-machine). For this example use codename `raspa@aws`.
+machine). For this example use codename `raspa@bazis`.
 
 AiiDA calculations are instances of the class `Calculation`, more
 precisely of one of its subclasses, each corresponding to a code
