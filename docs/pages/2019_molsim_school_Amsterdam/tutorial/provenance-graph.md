@@ -5,7 +5,7 @@ Before we start creating data ourselves, we are going to look at an
 AiiDA database already created by someone else. Let’s import one from the web:
 
 ```terminal
-$ verdi import https://www.dropbox.com/s/9xzpzb3mzg16jqy/mof_database.aiida?dl=1
+$ verdi import https://www.dropbox.com/s/xz7h6m7dd91v3da/mof_database.aiida?dl=1
 ```
 
 Contrary to most databases, AiiDA databases contain not only results of
@@ -46,7 +46,7 @@ Once the provenance explorer has been loaded by your browser, it is communicatin
 REST API and your data never leaves your computer.
 
 Start by clicking on the Details of a `NetworkCalculation` node
-(if you ever get lost, [here](http://34.244.178.26:5001/explore/ownrestapi/details/5a92d1e2-e243-4386-8ba1-e6c540e93b20?nodeType=CALCULATION) 
+(if you ever get lost, [here](http://34.244.178.26:5001/explore/ownrestapi/details/8dc42025-adb4-4c44-931f-455cee809c43?nodeType=CALCULATION)
 is a link to one).
 
 ---
