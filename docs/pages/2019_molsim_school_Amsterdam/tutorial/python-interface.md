@@ -4,6 +4,8 @@ AiiDA is written in python, and while the `verdi` command line interface
 provides handy shortcuts for everyday operations, AiiDA provides its
 full power only via the python interface.
 
+## Using the python interface
+
 There are three practical ways of using the python interface:
 
  1. python scripts that `import` the `aiida` python package
@@ -15,7 +17,7 @@ we recommend you use either the `verdi shell` or, even better, jupyter notebooks
 for now: recording your actions in a jupyter notebook, will allow you to 
 keep track of what you've done.
 
-## The verdi shell
+### The verdi shell
 
 The `verdi shell` is a customized ipython shell, where all the AiiDA classes,
 methods and functions are already accessible. Type in the terminal
@@ -33,7 +35,7 @@ You would typically use two terminals, one for the
 > Press `Ctrl+Shift+T` in order to open a new terminal tab.  
 > Don't forget to `workon aiida` in the new tab before using the shell.
 
-## Jupyter notebooks
+### Jupyter notebooks
 
 `jupyter` notebooks are great for tutorial purposes.
 Start a jupyter notebook server:
@@ -88,3 +90,4 @@ node.res.
 ```
 
 and then press `TAB` to directly access the keys of the output dictionary.
+

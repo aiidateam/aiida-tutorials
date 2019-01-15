@@ -11,62 +11,44 @@ TODO:
      * put them inside a group "candidate_structures"
  * add task: consider blocked pockets for the selected candidates
 
-In this part of the tutorial we will focus on how to query our database
-using a querying tool for AiiDA called the *QueryBuilder*. Queries are,
-very loosely defined, questions to your database. We will first show you
-some simple examples and tasks on how to explore your database. Then we
-will proceed to a more concrete exercise on the screening of magnetic
-and metallic perovskites.\
+We will now learn how to *query* the AiiDA database using the python interface.
+Queries are, in essence, questions to your database and you will use the
+answers you obtain in order to identify good candidate materials for methane
+storage.
 
-Task 1 - Introduction to QueryBuilder
--------------------------------------
+## The AiiDA QueryBuilder
 
-| Node & subclasses |  Number in DB
-|-------------------| --------------
-|       Node        |      4707
-|   StructureData   |      621
-|   ParameterData   |      1338
-|    KpointsData    |      861
-|      UpfData      |       99
-|  JobCalculation   |      448
+AiiDA provides a querying tool called the *QueryBuilder*.
+When working in the `verdi shell` or a jupyter notebook with `%aiida` enabled,
+the `QueryBuilder` class has already been imported.
 
-  : List of some Node subclasses and how many times they occur in our
-  test database.
-
-[fig.types]
-
-In this task we will use the QueryBuilder to do some basic queries and
-understand our database. As a first step we should import our querying
-tool, the *QueryBuilder*.
-
-from aiida.orm.querybuilder import QueryBuilder
-
-After the above import, we create our first query. To do so, we will
-have to instantiate a QueryBuilder instance:
-
+Let's create a new querybuilder for our query:
 ```python
 qb = QueryBuilder()
 ```
 
-Our query is still empty, we have not yet defined what we want to see.
-For example, we will ask for all the nodes of our database. This is as
-simple as appending the Node class to the query that we construct.
+Now we need to say which nodes of the AiiDA graph we are interested in.
+All node types of the AiiDA graph derive from the `Node` class, so in order to select the most
+generic type of node, simply append `Node`:
 
 ```python
 qb.append(Node)
 ```
 
-At this point, we can finish our query by asking back all nodes and by
-typing
+At this point, we can finish our query by asking for all nodes matching these criteria:
 
 ```python
 qb.all() # Returns all nodes in the database
 ```
 
-However, this command will return us all the Nodes directly, which may
+> **Note**  
+> We could also have used `qb.first()` to get the first node.
+> Always use tab-completion when in doubt which functions can be used on a python object.
+
+This command will return us all the Nodes directly, which may
 not be the most wise thing to do considering that is the biggest family
-of AiiDA stored objects that we can query. To understand the size of the
-result, we can type the following command:
+of AiiDA stored objects that we can query. 
+To understand the size of the result, we can type the following command:
 
 ```python
 qb.count() # Returns an integer, the number of nodes in the database
@@ -82,57 +64,49 @@ qb.append(CifData) # Telling the QueryBuilder instance that I want a cif data ty
 qb.all() # Asking for all the results!
 ```
 
-**Exercise:**
+> **Note**  
+> Remember to create a new `qb = QueryBuilder()` instance for each new query.
 
--   Try now to find the number of instances for some subclasses of Node
-    (e.g. StructureData, ParameterData, etc.) that are stored in your
-    database. The result should look like . Of course, the numbers can
-    be different!
 
-**Comment:** If you are familiar with the SQL (Structured Query
-Language) syntax then you may wonder what the issued SQL command is.
-This can be easily seen by typing:
-
-```python
-str(qb)
+Other data types we will need in the tutorial are:
+```
+ParameterData = DataFactory('parameter')
+NetworkCalculation = CalculationFactory('zeopp.network')
+RaspaCalculation = CalculationFactory('raspa')
 ```
 
-**Comment:** If you want to get inspired by the available QueryBuilder
-options you can just press the *tab* key in an interactive shell (after
-typing `qb.`) to see the available options.
+---
+### Exercise
 
-**Comment:** After you run a query, a new `QueryBuilder` instance needs
-to be defined if you want to make a new query.
+Find the number of `CifData` and `NetworkCalculation` nodes in the database.  
+Is there one calculation for every structure?
 
-Task 2 - Projections and filters
---------------------------------
+---
 
-|  Operator   |         Datatype         |               Example
-|-------------| -------------------------| ------------------------------------
-|     ==      |            All           |              {'==':12}
-|     in      |            All           |    {'in':['FINISHED', 'PARSING']}
-| >,<,<=,>= |  floats, integers, dates |             {'>':5.2}
-|    like     |           Chars          |       {'like':'calculation%'}
-|    ilike    |           Chars          |       {'ilike':'caLculAtioN%'}
-|     or      |                          |  {'or':[{'<':5.3}, {'>':6.3}]}
-|     and     |                          |  {'and':[{'>':5.3}, {'<':6.3}]}
+| Node & subclasses |  Number in DB
+|-------------------| --------------
+|       Node        |      4707
+|   StructureData   |      621
+|   ParameterData   |      1338
+|    KpointsData    |      861
+|      UpfData      |       99
+|  JobCalculation   |      448
 
-  : Operators currently implemented for all backends.
+*List of some Node subclasses and how many times they occur in our test database.*
 
-[tab.filterops]
+> **Note**  
+> Advanced users who are familiar with SQL 
+> (Structured Query Language) syntax, can inspect the generated SQL query via:
+> ```python
+> str(qb)
+> ```
+ 
+## Projections
 
-In database language performing a projection means to extract one or
-more specific columns from a table. In the AiiDA language this is
-equivalent to say that we select what properties a query should return
-out of the queried objects. For example, we might be interested only in
-the id of a set of nodes (or their creation date, or any stored value).
-To this purpose we should suitably instruct a QueryBuilder object by
-means of the "project" key. For example, if we would like to get all the
-ids of the nodes, we would type the following:
-
-```python
-qb = QueryBuilder() qb.append(Node, project=["id"]) qb.all()
-```
+So far, we've retrieved node objects but we are interested in the information they contain.
+In database language, performing a projection means to extract one or
+more specific columns from a table. In AiiDA language it means to
+specify which properties of the selected nodes our query should return.
 
 |---------| -------------------------|
 |Entity   | Properties               |
@@ -143,37 +117,56 @@ qb = QueryBuilder() qb.append(Node, project=["id"]) qb.all()
 |Group    | id, uuid, name, type, time, description|
 |---------| -------------------------|
 
-  : A selection of entities and some of their properties.
+*<center>A selection of entities and some of their properties.</center>*
 
-[tab.properties]
-
-Please note that if you would like to perform an operation on the *pk*
-of a node, you should use the keyword *id* in QueryBuilder queries.
-
-Most likely, performing a query implies to select only those elements
-that fulfill certain criteria. For example, we might want to select all
-the calculations that were launched on a specific date. In database
-language, this is called "adding a filter" to a query. A filter is a
-boolean operator that returns True or False. lists all operators that we
-implemented. A selection of entities and some of their properties that
-you can use at your projections and filters can be found at table .
-
-If you want to add filters to your query, you simply add the *filters*
-keyword with a dictionary. Suppose you want to know the creation date of
-a structure of which you know the uuid:
+For example, we might be interested only in type and universally unique
+identifier (UUID) of each node:
 
 ```python
-qb = QueryBuilder() # Instantiating a new QueryBuilder 
-qb.append(CifData, # I want structures! 
+qb = QueryBuilder() 
+qb.append(Node, project=["type", "uuid"]) 
+qb.all()
+```
+> **Note**  
+> Please use the `id` keyword in QueryBuilder queries to access the PK of a node.
+
+## Filters
+
+We already know how to filter by the type of node,
+but often we would like to filter the results by other node properties.
+
+For example, we might want to select all
+the calculations that were launched on a specific date. In database
+language, this is called "adding a filter" to a query. A filter is a
+boolean operator that returns `True` or `False`. 
+
+|  Operator   |         Datatype         |               Example
+|-------------| -------------------------| ------------------------------------
+|     ==      |            All           |              `{'==':12}`
+|     in      |            All           |    `{'in':['FINISHED', 'PARSING']}`
+| >,<,<=,>= |  floats, integers, dates |             `{'>':5.2}`
+|    like     |           Chars          |       `{'like':'calculation%'}`
+|    ilike    |           Chars          |       `{'ilike':'caLculAtioN%'}`
+|     or      |                          |  `{'or':[{'<':5.3}, {'>':6.3}]}` 
+|     and     |                          |  `{'and':[{'>':5.3}, {'<':6.3}]}`
+
+*<center>Selection of filter operators.</center>*
+
+If you want to add filters to your query, use the `filters`
+and provide a dictionary with the filters you would like to apply.
+Let's filter out the structure with label "HKUST1":
+
+```python
+qb = QueryBuilder()  # Instantiating a new QueryBuilder 
+qb.append(CifData,   # I want structures! 
   project=["ctime"], # I'm interested in creation time! 
-  filters={"uuid": {"==":"b84e8d4c-908b-45b4-8015-3ace540f7dd6"}}
-)  # I want the structure with this UUID 
+  filters={"label": {"==":"HKUST-1"}})  # Only structures with this label
 qb.all()
 ```
 
-Try it out! There is also the possibility to combine multiple filters on
+There is also the possibility to combine multiple filters on
 the same object using the "and" or the "or" keyword in the filter
-section. Let's see an example.
+section:
 
 ```python
 from datetime import datetime, timedelta 
