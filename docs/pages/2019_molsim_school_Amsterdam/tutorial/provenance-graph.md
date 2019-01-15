@@ -46,8 +46,7 @@ Once the provenance explorer has been loaded by your browser, it is communicatin
 REST API and your data never leaves your computer.
 
 Start by clicking on the Details of a `NetworkCalculation` node
-(if you ever get lost, [here](http://34.244.178.26:5001/explore/ownrestapi/details/bba8402d-6559-4fd8-ad32-84625a6221f0?nodeType=CALCULATION) 
-is a link to one).
+(if you ever get lost, just go to Details subpage, enter `bba8402d-6559-4fd8-ad32-84625a6221f0` and click on the GO button).
 
 ---
 ### Exercise
