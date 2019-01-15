@@ -75,6 +75,8 @@ RaspaCalculation = CalculationFactory('raspa')
 Find the number of `CifData` and `NetworkCalculation` nodes in the database.  
 Is there one calculation for every structure?
 
+You may also be interested to learn [where the structures are coming from](../theoretical/502-mofs).
+
 ---
 
 | Node & subclasses |  Number in DB

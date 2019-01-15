@@ -110,9 +110,9 @@ $ evince <pk>.pdf                  # open pdf
 
 ---
 
-
-![Dependency graph of a zeo++ calculation.]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/zeopp_sample_graph.png){:width="640px"}
-<center>*Dependency graph of a zeo++ calculation*</center>
+|![Dependency graph of a zeo++ calculation.]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/zeopp_sample_graph.png){:width="620px"}|
+|:--:|
+| Dependency graph of a zeo++ calculation. |
 
 Contrary to the interactive graph browser,
 `verdi graph generate` can show not only the direct

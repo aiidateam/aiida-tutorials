@@ -17,7 +17,15 @@ This database was named [Computational Ready Experimental (CoRE) MOF database](h
 * 502 MOFs are the intersection of the two sets,
 having optimized geometry from CP2K and charges from Quantum Espresso
 
-Do you wonder if there are any duplicates in the 502? [Read here!](https://pubs.acs.org/doi/abs/10.1021/acs.cgd.7b01663)
+In case you you wonder if there are duplicates in the 502, see [(Barthel2018)](https://pubs.acs.org/doi/abs/10.1021/acs.cgd.7b01663)
 
-These structures are provided with atomic partial charges.
-Do you need them to evaluate the methane deliverable capacity?
+
+---
+### Exercise
+
+The 502 structures are provided with atomic partial charges.
+
+Do you need them to evaluate the methane deliverable capacity?  
+How are the interactions between molecule and framework described?
+
+---
