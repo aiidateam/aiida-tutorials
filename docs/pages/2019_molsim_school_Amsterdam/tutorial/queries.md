@@ -3,13 +3,7 @@ Querying the AiiDA database {#sec:querybuilder}
 
 TODO:
 
- * update table 1
- * add task: 
-   rank structures by pore volume, surface, pore distribution, elements
- * add task: find good candidate materials for methane storage
-     * pick 2 good ones, 2 bad ones and HKUST-1
-     * put them inside a group "candidate_structures"
- * add task: consider blocked pockets for the selected candidates
+ * update table with occurence of node classes (or remove it)
 
 We will now learn how to *query* the AiiDA database using the python interface.
 Queries are, in essence, questions to your database and you will use the
