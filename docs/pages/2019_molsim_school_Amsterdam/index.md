@@ -27,7 +27,6 @@ familiar with python, we suggest you partner with someone who is.
  1. [Perform geometric analysis](./screening/geometry)
  1. [Compute methane loading](./screening/methane-loading)
  1. [Screening](./screening/screening)
- 1. [Ranking](./screening/ranking)
  1. [Upload your results](./screening/export)
 
 ## Theoretical background
