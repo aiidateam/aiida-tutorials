@@ -81,8 +81,8 @@ qb.append(CifData, filters={ 'label': {'in': candidate_labels}})
 cifs = qb.all()
 
 candidates = Group(name='candidates')  # create new group 
+candidates.store()   # store group node
 candidates.add_nodes([ cif[0] for cif in cifs])
-candidates.store()
 ```
 > **Note**  
 > So far, we've been working with nodes that were already stored in the database.
