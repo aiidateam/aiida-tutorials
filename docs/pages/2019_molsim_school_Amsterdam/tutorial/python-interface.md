@@ -73,6 +73,9 @@ command in the shell:
 ```python
 node = load_node(<PK>)
 ```
+> **Note**  
+> In the following, we'll use a dark gray border to indicate python code
+> and a light gray border to indicate the terminal.
 
 Load one of the calculation nodes you played around with before.
 Then get the density computed with the command

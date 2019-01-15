@@ -31,3 +31,8 @@ body{counter-reset: section}
       content: counter(section) "." counter(sub-section) "." counter(composite) "." counter(detail) " ";
     }
 }
+
+div.language-python pre {
+    background-color: #c3c3c3;
+}
+
