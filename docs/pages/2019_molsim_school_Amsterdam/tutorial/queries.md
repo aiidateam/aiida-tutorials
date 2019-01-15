@@ -1,5 +1,15 @@
-Queries in AiiDA: The QueryBuilder {#sec:querybuilder}
-==================================
+Querying the AiiDA database {#sec:querybuilder}
+===========================
+
+TODO:
+
+ * update table 1
+ * add task: 
+   rank structures by pore volume, surface, pore distribution, elements
+ * add task: find good candidate materials for methane storage
+     * pick 2 good ones, 2 bad ones and HKUST-1
+     * put them inside a group "candidate_structures"
+ * add task: consider blocked pockets for the selected candidates
 
 In this part of the tutorial we will focus on how to query our database
 using a querying tool for AiiDA called the *QueryBuilder*. Queries are,
