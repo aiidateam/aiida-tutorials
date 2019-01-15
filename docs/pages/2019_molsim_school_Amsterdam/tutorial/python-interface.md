@@ -10,12 +10,11 @@ There are three practical ways of using the python interface:
 
  1. python scripts that `import` the `aiida` python package
  2. the interactive `verdi shell`
- 3. jupyter notebooks 
+ 3. `Jupyter` notebooks 
 
-While we will get back to 1. at the end of the tutorial,
-we recommend you use either the `verdi shell` or, even better, jupyter notebooks
-for now: recording your actions in a jupyter notebook, will allow you to 
-keep track of what you've done.
+For this tutorial we recommend using the `verdi shell` (explained below)
+but if you're already familiar with `Jupyter` notebooks you may use those as well.
+We will get back to option 1 (python scripts) towards the end of the tutorial.
 
 ### The verdi shell
 
@@ -37,7 +36,6 @@ You would typically use two terminals, one for the
 
 ### Jupyter notebooks
 
-`jupyter` notebooks are great for tutorial purposes.
 Start a jupyter notebook server:
 
 ```terminal
@@ -69,7 +67,7 @@ command by an exclamation mark:
 ## Loading a node
 
 Most AiiDA objects are represented by nodes, identified in the database
-by its PK number (an integer). You can access a node using the following
+by their PK number (an integer). You can access a node using the following
 command in the shell:
 
 ```python

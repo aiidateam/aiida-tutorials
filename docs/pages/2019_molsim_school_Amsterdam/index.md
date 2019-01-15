@@ -12,13 +12,17 @@ using a compute resource with [zeo++](http://www.zeoplusplus.org/) and [RASPA2](
 [python](https://docs.python.org/2.7/tutorial/index.html). If you are not
 familiar with python, we suggest you partner with someone who is.
 
-### Using AiiDA:
+### Analyzing the database:
 
  1. [Getting set up](./tutorial/setup.md)
  1. [Browsing the provenance graph](./tutorial/provenance-graph)
  1. [The verdi command line](./tutorial/verdi-commands)
  1. [The AiiDA python interface](./tutorial/python-interface)
  1. [Querying the AiiDA database](./tutorial/queries)
+ 1. [Selecting candidate materials](./tutorial/candidate-selection)
+
+### Computing properties of candidate materials:
+
  1. [Submit, monitor and debug calculations](./tutorial/calculations)
  1. [Import the structures](./screening/import)
  1. [Perform geometric analysis](./screening/geometry)
@@ -29,8 +33,7 @@ familiar with python, we suggest you partner with someone who is.
 
 ### Theoretical background:
 
-  1. [Methane storage](./theoretical/methane-storage)
-  1. [Reference for the 502 CoRE-MOFs](./theoretical/502-mofs)
+  1. [Origin of the MOF database](./theoretical/502-mofs)
   1. [Geometric properties](./theoretical/geometric-properties)
   1. [Multiply the unit cell](./theoretical/multiply-uc)
   1. [Settings for Raspa](./theoretical/settings-raspa)

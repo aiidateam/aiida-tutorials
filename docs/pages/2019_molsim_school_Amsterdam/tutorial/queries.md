@@ -144,7 +144,7 @@ boolean operator that returns `True` or `False`.
 |-------------| -------------------------| ------------------------------------
 |     ==      |            All           |              `{'==':12}`
 |     in      |            All           |    `{'in':['FINISHED', 'PARSING']}`
-| >,<,<=,>= |  floats, integers, dates |             `{'>':5.2}`
+| >,<,<=,>=   |  floats, integers, dates |             `{'>':5.2}`
 |    like     |           Chars          |       `{'like':'calculation%'}`
 |    ilike    |           Chars          |       `{'ilike':'caLculAtioN%'}`
 |     or      |                          |  `{'or':[{'<':5.3}, {'>':6.3}]}` 
@@ -158,51 +158,8 @@ Let's filter out the structure with label "HKUST1":
 
 ```python
 qb = QueryBuilder()  # Instantiating a new QueryBuilder 
-qb.append(CifData,   # I want structures! 
-  project=["ctime"], # I'm interested in creation time! 
-  filters={"label": {"==":"HKUST-1"}})  # Only structures with this label
+qb.append(CifData,   # I want structures
+  project=["id"],    # I want to know the id
+  filters={"label": {"==":"HKUST1"}})  # Only structures with this label
 qb.all()
 ```
-
-There is also the possibility to combine multiple filters on
-the same object using the "and" or the "or" keyword in the filter
-section:
-
-```python
-from datetime import datetime, timedelta 
-qb = QueryBuilder() 
-qb.append(CifData, 
-  project=["uuid"],   # I want to see only the UUID
-  filters={ "or":[    # First filter is an or statement 
-            { "ctime": {">":datetime.now() - timedelta(days=12) }},
-            { "label": "Raspa test" } 
-           ]}
-) 
-qb.all()
-```
-
-In the above example we added an "or" keyword between the two filters.
-The query return every structure in the database that was created in the
-last 12 days or is named "graphene".
-
-**Hints for the exercises:**
-
--   The operator '>', '<' works with date-type properties with the
-    expected behavior.
-
--   For your date comparisons you will need to create a `datetime`
-    object to which you can assign a date of your preference. You will
-    have to do the necessary import (`from datetime import datetime`)
-    and create an object by giving a specific date. E.g. 
-    `datetime(2015, 12, 26)`. For further information, you can consult the Python's
-    online documentation.
-
-**Exercises:**
-
--   Write a query that returns all instances of StructureData that have
-    been created after the 1st of January 2016.
-
--   Write a query that returns all instances of Group whose name starts
-    with "tutorial".
-
-
