@@ -12,7 +12,7 @@ storage.
 
 ## The AiiDA QueryBuilder
 
-AiiDA provides a querying tool called the *QueryBuilder*.
+AiiDA provides a querying tool called the [QueryBuilder](http://aiida-core.readthedocs.io/en/latest/querying/querybuilder/usage.html).
 When working in the `verdi shell` or a jupyter notebook with `%aiida` enabled,
 the `QueryBuilder` class has already been imported.
 

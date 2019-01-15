@@ -91,3 +91,11 @@ candidates.store()
 
 After this, your group should show up in `verdi group list` 
 and you can use `verdi group show candidates` to inspect its content.
+
+In the python interface you can retrieve them back like so:
+```python
+candidates = Group.get_from_string('candidates')
+
+for cif in candidates.nodes:
+    print(cif)
+```

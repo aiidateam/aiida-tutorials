@@ -12,7 +12,7 @@ using a compute resource with [zeo++](http://www.zeoplusplus.org/) and [RASPA2](
 [python](https://docs.python.org/2.7/tutorial/index.html). If you are not
 familiar with python, we suggest you partner with someone who is.
 
-### Analyzing the database:
+## Analyzing the database
 
  1. [Getting set up](./tutorial/setup.md)
  1. [Browsing the provenance graph](./tutorial/provenance-graph)
@@ -21,17 +21,16 @@ familiar with python, we suggest you partner with someone who is.
  1. [Querying the AiiDA database](./tutorial/queries)
  1. [Selecting candidate materials](./tutorial/candidate-selection)
 
-### Computing properties of candidate materials:
+## Computing properties of candidate materials
 
  1. [Submit, monitor and debug calculations](./tutorial/calculations)
- 1. [Import the structures](./screening/import)
  1. [Perform geometric analysis](./screening/geometry)
  1. [Compute methane loading](./screening/methane-loading)
  1. [Screening](./screening/screening)
  1. [Ranking](./screening/ranking)
  1. [Exporting your database](./screening/export)
 
-### Theoretical background:
+## Theoretical background
 
   1. [Origin of the MOF database](./theoretical/502-mofs)
   1. [Geometric properties](./theoretical/geometric-properties)
