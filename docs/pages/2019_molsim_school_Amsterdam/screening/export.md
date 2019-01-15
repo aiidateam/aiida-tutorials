@@ -33,3 +33,10 @@ and compare your result to those of the others.
 Since the upload includes the provenance of your calculations,
 you'll be able to check which parameters the others used
 by clicking on the points in the scatter plot.
+
+
+That's it -- you've completed the AiiDA molsim tutorial, well done!
+
+If you're interested in continuing along these lines, you may want
+to have a look at the [extra challenge on CO2 capture](../theoretical/charged-adsorbates.md)
+(optional, and with less detailed instructions).

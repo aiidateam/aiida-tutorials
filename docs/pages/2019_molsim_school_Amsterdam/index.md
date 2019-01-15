@@ -35,7 +35,7 @@ familiar with python, we suggest you partner with someone who is.
   1. [Geometric properties](./theoretical/geometric-properties)
   1. [Multiply the unit cell](./theoretical/multiply-uc)
   1. [Settings for Raspa](./theoretical/settings-raspa)
-  1. [Extra: working with adsorbates with partial charges](./theoretical/charged-adsorbates)
+  1. [Extra challenge: MOFs for CO2 capture](./theoretical/charged-adsorbates)
 
 
 This tutorial is part of the
