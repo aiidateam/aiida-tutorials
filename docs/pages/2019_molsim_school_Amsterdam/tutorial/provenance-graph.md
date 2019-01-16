@@ -12,7 +12,6 @@ Contrary to most databases, AiiDA databases contain not only results of
 calculations but also their inputs and information on how a particular
 result was obtained.
 This information (provenance) is stored in the form of a directed acyclic graph (DAG).
- (provenance).
 
 In the following, we are going to introduce you to different ways of browsing this graph
 and ask you find out some information regarding the database you just imported.
@@ -46,7 +45,7 @@ Once the provenance explorer has been loaded by your browser, it is communicatin
 REST API and your data never leaves your computer.
 
 Start by clicking on the Details of a `NetworkCalculation` node
-(if you ever get lost, just go to Details subpage, enter `bba8402d-6559-4fd8-ad32-84625a6221f0` and click on the GO button).
+(if you ever get lost, just go to the Details subpage, enter `bba8402d-6559-4fd8-ad32-84625a6221f0` and click on the GO button).
 
 ---
 ### Exercise

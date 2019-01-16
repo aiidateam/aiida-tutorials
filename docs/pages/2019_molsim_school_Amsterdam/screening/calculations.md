@@ -109,15 +109,15 @@ Note: to leave a field unconfigured, leave it empty and press [Enter]
 
 => username = molsim<n>
 => port = 22
-=> look for keys = True
-=> key filename = /home/max/.ssh/bazis.pem
+=> look for keys =
+=> key filename =
 => timeout = 60
 => allow agent =
 => proxy command =
 => compress = True
-=> gssauth = no
-=> gsskex = no
-=> gssdelegcreds = no
+=> gssauth = False
+=> gsskex = False
+=> gssdelegcreds = False
 => gsshost = bazis-h1.science.uva.nl
 => load system hostkeys = True
 => key policy = AutoAddPolicy

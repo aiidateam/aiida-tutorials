@@ -1,10 +1,6 @@
 Querying the AiiDA database {#sec:querybuilder}
 ===========================
 
-TODO:
-
- * update table with occurence of node classes (or remove it)
-
 We will now learn how to *query* the AiiDA database using the python interface.
 Queries are, in essence, questions to your database and you will use the
 answers you obtain in order to identify good candidate materials for methane
@@ -81,12 +77,13 @@ You may also be interested to learn [where the structures are coming from](../th
 
 | Node & subclasses |  Number in DB
 |-------------------| --------------
-|       Node        |      4707
-|   StructureData   |      621
-|   ParameterData   |      1338
-|    KpointsData    |      861
-|      UpfData      |       99
-|  JobCalculation   |      448
+|       Node        |      2519
+|   StructureData   |       0
+|      CifData      |      503
+|   ParameterData   |      503
+|  SinglefileData   |       1
+|       Code        |       1
+|  JobCalculation   |      503
 
 *List of some Node subclasses and how many times they occur in our test database.*
 
