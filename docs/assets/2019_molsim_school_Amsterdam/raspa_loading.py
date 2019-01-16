@@ -15,8 +15,8 @@ RaspaCalculation = CalculationFactory('raspa')
 parameters = ParameterData(dict={
     "GeneralSettings": {
          "SimulationType"                : "MonteCarlo",
-         "NumberOfCycles"                : <int>,  
-         "NumberOfInitializationCycles"  : <int>, 
+         "NumberOfCycles"                : 1000,  
+         "NumberOfInitializationCycles"  : 1000, 
          "PrintEvery"                    : 100,
 
          "CutOff"                        : 12.0,

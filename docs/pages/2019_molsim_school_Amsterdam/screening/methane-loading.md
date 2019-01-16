@@ -21,8 +21,8 @@ to specify the input parameters of RASPA:
 parameters = ParameterData(dict={
     "GeneralSettings": {
          "SimulationType"                : "MonteCarlo",
-         "NumberOfCycles"                : <int>,
-         "NumberOfInitializationCycles"  : <int>,
+         "NumberOfCycles"                : 1000,
+         "NumberOfInitializationCycles"  : 1000,
          "PrintEvery"                    : 100,
 
          "CutOff"                        : 12.0,
@@ -137,4 +137,16 @@ $ verdi run <scriptname>
 > By default, the daemon polls for new calculations every 30 seconds,
 > i.e. you may need to wait up to 30 seconds before your calculation starts running.
 
+Use `verdi calculation list -a` to monitor the state of the calculation.
 Once running, the calculation should finish within 5 minutes.
+
+## Analyzing your results
+
+Once the calculation shows up as `FINISHED`, have a look at the result.
+
+TODO (Daniele/Leo):
+ * how to compute loading from output
+ * mention standard deviation of relevant quantity and ask them to re-run the calculation
+   so that it goes below 5%  
+  
+
