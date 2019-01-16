@@ -14,7 +14,7 @@ ParameterData = DataFactory('parameter')
 RaspaCalculation = CalculationFactory('raspa')
 
 # code
-codelabel = "raspa@fidis"
+codelabel = "raspa@bazis"
 code = test_and_get_code(codelabel, expected_code_type='raspa')
 
 # calc object

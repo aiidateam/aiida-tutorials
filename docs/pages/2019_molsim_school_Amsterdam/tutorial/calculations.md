@@ -20,12 +20,12 @@ At any prompt, type ? to get some help.
 ————————————— 
 => Computer name: bazis
 bazis computer for the molsim courseCreating new computer with name 'bazis'
-=> Fully-qualified hostname: bazis.science.uva.nl
+=> Fully-qualified hostname: bazis-h1.science.uva.nl
 => Description: bazis computer for the molsim course
 => Enabled: True 
 => Transport type: ssh 
 => Scheduler type: slurm
-=> shebang line at the beginning of the submission script: \#!/bin/console 
+=> shebang line at the beginning of the submission script: #!/bin/bash
 => AiiDA work directory: /home/{username}/aiida_run/
 => mpirun command: srun -n {tot_num_mpiprocs}
 => Default number of CPUs per machine: 2 
