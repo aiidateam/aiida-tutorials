@@ -1,11 +1,8 @@
 from __future__ import absolute_import
-from aiida.orm import CalculationFactory, DataFactory
-from aiida.orm.code import Code
-from aiida.orm.data.cif import CifData
+from aiida.orm import CalculationFactory, DataFactory, Code
 from aiida.orm.data.base import Float
-from aiida.work import workfunction as wf
-from aiida.work.workchain import WorkChain, ToContext, Outputs
-from aiida.work.run import submit
+from aiida.work import WorkChain, workfunction, submit
+from aiida.work.workchain import ToContext, Outputs
 
 CifData = DataFactory('cif')
 ParameterData = DataFactory('parameter')
@@ -14,8 +11,15 @@ SingleFile = DataFactory('singlefile')
 RaspaCalculation = CalculationFactory('raspa')
 ZeoppCalculation = CalculationFactory('zeopp.network')
 
-@wf
+@workfunction
 def update_raspa_parameters(parameters, pressure):
+    """Store input parameters of Raspa for given pressure.
+    
+    Note: In order to keep the provenance of both Raspa calculations,
+    changing the pressure force us to create a new ParameterData node.
+    "workfunctions" will take care of linking the user-provided ParameterData
+    node to the new one containing the pressure.
+    """
     param_dict = parameters.get_dict()
     param_dict['GeneralSettings']['ExternalPressure'] = pressure.value
     return ParameterData(dict=param_dict)
@@ -70,17 +74,18 @@ class DcMethane(WorkChain):
 
         self.ctx.options = {
             "resources": {
-                "num_machines": 1,
-                "tot_num_mpiprocs": 1,
+                "num_machines": 1,                 # run on 1 node
+                "tot_num_mpiprocs": 1,             # use 1 process
                 "num_mpiprocs_per_machine": 1,
             },
-            "max_wallclock_seconds": 4 * 60 * 60,
-            "max_memory_kb": 2000000,
-            "withmpi": False,
+            "max_wallclock_seconds": 4 * 60 * 60,  # 1h walltime
+            "max_memory_kb": 2000000,              # 2GB memory
+            "queue_name": "molsim",                # slurm partition to use
+            "withmpi": False,                      # we run in serial mode
         }
 
     def run_block_zeopp(self):
-        """This function will perform a zeo++ calculation to obtain the blocked pockets."""
+        """This function will perform a zeo++ calculation to block inaccessible pockets."""
 
         # Create the input dictionary
         inputs = {
