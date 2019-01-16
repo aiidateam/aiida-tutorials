@@ -6,16 +6,15 @@ and then do some simple math - in other words, a simple *workflow*.
 
 AiiDA provides [WorkChains](https://aiida-core.readthedocs.io/en/stable/work/index.html#workchains)
  to orchestrate the running of calculations.  
-We've prepared a WorkChain to compute the deliverable methane capacity, download it 
-[from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py). 
+We've prepared a WorkChain to compute the deliverable methane capacity,
 
-In the following, we will go through each step of the WorkChain.
-Your task will be to write a script to run the WorkChain for each of your candidate structures.
+download it [from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py).
 
+We analyze it step by step, and we will see later how to run it.
 
 ## Step 0: define inputs, outputs and the steps
 First, when setting up the class one should define the list of input types using spec.input()
-function. 
+function.
 
 In our case the workflow takes as an input the following objects:
 1. CifData object (named `structure`)
@@ -30,7 +29,7 @@ class DcMethane(WorkChain):
     @classmethod
     def define(cls, spec):
         """Define workflow specification.
-        
+
         This is the most important method of a Workchain, which defines the
         inputs it takes, the logic of the execution and the outputs
         that are generated in the process.
@@ -67,13 +66,9 @@ class DcMethane(WorkChain):
 ```
 
 Using the spec.outline() function we specify the steps of the workchain.
-All **7 steps** will be executed consequently. 
+All **7 steps** will be executed consequently.
 
-The outputs of the workchain can be specified either using `spec.output()` function, in case 
-we want to keep a fixed list of the output parameters. Otherwise we call `spec.dynamic_output()`
-emphasizing any number of AiiDA object can be outputed.
-
-Now, we shift our focus to every step of the `DcMethane` workchain and will try understand them better.
+The outputs of the workchain are specified using `spec.dynamic_output()`.
 
 ## Step 1: Prepare input parameters and variables
 
@@ -96,12 +91,13 @@ Now, we shift our focus to every step of the `DcMethane` workchain and will try 
             "withmpi": False,
         }
    ```
-Please notice the usage of the **context** (`self.ctx`) variable -- a container that is accesible
-along the whole life of the `DcMethane` workchain. Using `self.ctx` we can
-pass information to the other steps of it.
+
+   > **Note**    
+   > The **context** (`self.ctx`) variable is a container that is accessible
+   > by every function in the `DcMethane` workchain.
 
 In this particular case we are
-creating two empty dictionaries to store the loading average and its deviation 
+creating two empty dictionaries to store the loading average and its deviation
 at different pressures. We also specify the code options that will be used by every calculation:
 
 
@@ -112,8 +108,6 @@ at different pressures. We also specify the code options that will be used by ev
 some non accessible pore volume, it can generate a .block file with the positions
 and the radii of blocking spheres. These spheres are inserted in the framework to prevent
 Raspa from inserting molecules in the non accessible pore.
-
-
 
 Here we will compute blocked pockets of a particular material employing the Zeo++ code.
 ```python
@@ -142,11 +136,12 @@ parameters and atomic\_radii file that are all directly taken from the workflow 
 job submission happens in exactly the same way as it was for the [single raspa calculation]({{site.baseurl}}/pages/2019_molsim_school_Amsterdam/screening/methane-loading#submitting-the-calculation)
 that we tried previously.
 
-A new function that you may notice in this step is the `self.report()` that provides a report message, a 
-convinient way to monitor the stage of the workflow. 
+A new function that you may notice in this step is the `self.report()` that provides
+a report message, a convenient way to monitor the stage of the workflow.
 
-## Step 3, 5: Compute the methane loading 
-Steps 3 (`run_loading_raspa_low_p`) and 5 (`run_loading_raspa_high_p`) compute the methane loading at 5.8 and 65 bars respectively in [molecules/cell] units.
+## Step 3, 5: Compute the methane loading
+Steps 3 (`run_loading_raspa_low_p`) and 5 (`run_loading_raspa_high_p`) compute the
+methane loading at 5.8 and 65 bars respectively in [molecules/cell] units.
 The functions are defined as follows:
 
 ```python
@@ -160,12 +155,12 @@ The functions are defined as follows:
         self.ctx.current_pressure_label = "high"
         return self._run_loading_raspa()
 ```
-Since the same calculation is performed twice in this workchain, we put the common part of those steps into a separate function:
+and finally execute the same `_run_loading_raspa` function.
 
 ```python
     def _run_loading_raspa(self):
         """Perform raspa calculation at given pressure.
-        
+
         Most of the runtime will be spent in this function.
         """
         # Create the input dictionary
@@ -187,10 +182,10 @@ Since the same calculation is performed twice in this workchain, we put the comm
         return ToContext(raspa=Outputs(future))
 ```
 
-Again, please notice here the usage of the **context**. Thanks to it the results
-computed by raspa will be available in every part of the workchain. In this particular
-case `ToContext()` will create a variable `self.ctx.raspa` that will contain the results
-of the calculation. `Outputs()` function will wait fot the calculation to be completed.
+`ToContext()` will create a variable `self.ctx.raspa` that will contain the results
+of the calculation.
+
+`Outputs()` function will wait for the calculation to be completed.
 
 
 ## Step 4, 6: Extract pressure and methane loading
@@ -213,19 +208,18 @@ Steps 4 and 6 extract pressure and methane loading (with deviation) and puts the
 
 ## Step 7: Store the selected computed parameters as the output node
 This final step is to prepare the results of the `DcMethane` workchain extracting the
-most relevant information and putting it in a `ParameterData` object (the AiiDA way to store
-python dictionaries).
+most relevant information and putting it in a `ParameterData` object.
 
 In particular, we extract the deliverable capacities at low and high pressures
 that are computed in previous steps. We transform data from [molecule/unit cell] units
 to [cm^3\_STP/cm^3] using the conversion factor provided by raspa (`conversion_factor_molec_uc_to_cm3stp_cm3`).
-We also compute the standard deviation of the deliverable capacity assuming loading averages to be
-[independent normally distributed random variables](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables).
+We also [compute] (https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables)
+the standard deviation of the difference.
 
 ```python
     def extract_results(self):
         """Extract results of the workflow.
-        
+
         Attaches the results of the raspa calculation and the initial structure to the outputs.
         """
         from math import sqrt
@@ -239,7 +233,7 @@ We also compute the standard deviation of the deliverable capacity assuming load
             "deliverable_capacity_dev":  dc_dev * cf,
             "loading_absolute_average_low_p" : self.ctx.loading_average["low"] * cf,
             "loading_absolute_dev_low_p" : self.ctx.loading_dev["low"] * cf,
-            "loading_units" : "cm^3_STP/cm^3", 
+            "loading_units" : "cm^3_STP/cm^3",
             "loading_absolute_average_high_p" : self.ctx.loading_average["high"] * cf,
             "loading_absolute_dev_high_p" : self.ctx.loading_dev["high"] * cf,
         }
@@ -249,7 +243,6 @@ We also compute the standard deviation of the deliverable capacity assuming load
             self.calc.pk))
         return
 ```
-We pack our results into the `result` object of type `ParameterData` and set it as the input of the WorkChain.
 
 ## Exercises
 
@@ -264,7 +257,7 @@ We pack our results into the `result` object of type `ParameterData` and set it 
     * Used by:        1 calculations
     * Type:           remote
     * Remote machine: bazis
-    * Remote absolute path: 
+    * Remote absolute path:
       /home/molsim20/network
     * prepend text:
       # No prepend text.
@@ -274,66 +267,94 @@ We pack our results into the `result` object of type `ParameterData` and set it 
    Should you have any doubts, just consult the
    [Computer setup and configuration]({{ site.baseurl}}/pages/2019_molsim_school_Amsterdam/screening/calculations#computer-setup-and-configuration) part of our tutorial.
 
- 
-2. Adapt the following script and submit the `DcMethane` workchain.  
- 
+
+2. The following script is necessary to run the `DcMethane` workchain.
+You need to save it as `run_DcMethane.py`, edit it with your settings and
+run it with `verdi run run_DcMethane.py`.
 
    ```python
    from aiida.backends.utils import load_dbenv, is_dbenv_loaded
    if not is_dbenv_loaded():
            load_dbenv()
-   
+
    import os
    import sys
    import time
    from deliverable_capacity import DcMethane
-   
+
    from aiida.orm import DataFactory
    from aiida.orm.data.cif import CifData
    from aiida.orm.data.base import Float
    from aiida.work.run import run, submit
-   
+
    NetworkParameters = DataFactory('zeopp.parameters')
    ParameterData = DataFactory('parameter')
-   
-   
-   cutoff = <float (A)>
-   probe_radius = <float (A)>
-   
+
+   def multiply_unit_cell(cif, cutoff):
+       """Returns the multiplication factors (tuple of 3 int) for the cell vectors
+       that are needed to respect: min(perpendicular_width) > threshold
+       """
+       from math import cos, sin, sqrt, pi
+       import numpy as np
+       deg2rad=pi/180.
+
+       struct=cif.values.dictionary.itervalues().next()
+
+       a = float(struct['_cell_length_a'])
+       b = float(struct['_cell_length_b'])
+       c = float(struct['_cell_length_c'])
+
+       alpha = float(struct['_cell_angle_alpha'])*deg2rad
+       beta  = float(struct['_cell_angle_beta'])*deg2rad
+       gamma = float(struct['_cell_angle_gamma'])*deg2rad
+
+       v = sqrt(1-cos(alpha)**2-cos(beta)**2-cos(gamma)**2+2*cos(alpha)*cos(beta)*cos(gamma))
+       cell=np.zeros((3,3))
+       cell[0,:] = [a, 0, 0]
+       cell[1,:] = [b*cos(gamma), b*sin(gamma),0]
+       cell[2,:] = [c*cos(beta), c*(cos(alpha)-cos(beta)*cos(gamma))/(sin(gamma)),c*v/sin(gamma)]
+       cell=np.array(cell)
+
+       diag = np.diag(cell)
+       return tuple(int(i) for i in np.ceil(cutoff/diag*2.))
+
+   cutoff = 8.0         #to change
+   probe_radius = 1.865 #Why this value?
+
    zeopp_params = NetworkParameters(dict={
        'ha': True,
        'block': [probe_radius, 100],
    })
-       
+
    raspa_params = ParameterData(dict={
        "GeneralSettings":
        {
        "SimulationType"                   : "MonteCarlo",
-       "NumberOfCycles"                   : <int>,  
-       "NumberOfInitializationCycles"     : <int>, 
-       "PrintEvery"                       : <int>,
-   
+       "NumberOfCycles"                   : 100,  #to change
+       "NumberOfInitializationCycles"     : 100,  #to change
+       "PrintEvery"                       : 100,
+
        "CutOff"                           : cutoff,
-   
+
        "Forcefield"                       : "UFF-TraPPE",
        "ChargeMethod"                     : "None",
        "UnitCells"                        : "<int> <int> <int>",
-       "ExternalTemperature"              : <float (K)>,
-   
+       "ExternalTemperature"              : 298,
+
        },
        "Component":
        [{
        "MoleculeName"                     : "methane",
        "MoleculeDefinition"               : "TraPPE",
        "MolFraction"                      : 1.0,
-       "TranslationProbability"           : <float>, # between 0 and 1
-       "RotationProbability"              : <float>, # between 0 and 1
-       "ReinsertionProbability"           : <float>, # between 0 and 1
-       "SwapProbability"                  : <float>, # between 0 and 1
+       "TranslationProbability"           : 1.0, #to change
+       "RotationProbability"              : 1.0, #to change
+       "ReinsertionProbability"           : 1.0, #to change
+       "SwapProbability"                  : 1.0, #to change
        "CreateNumberOfMolecules"          : 0,
        }],
    })
-   
+
    q = QueryBuilder()
    q.append(CifData, filters={}) # find a way to specify particular Structures
    for item in q.all():
@@ -344,18 +365,25 @@ We pack our results into the `result` object of type `ParameterData` and set it 
                structure=cif,
                zeopp_parameters = zeopp_params,
                raspa_parameters = raspa_params,
-               atomic_radii = load_node('27d2af72-3af0-48a6-a563-24d1d6d6eb60'), # already present in your database
+               atomic_radii = load_node('27d2af72-3af0-48a6-a563-24d1d6d6eb60'),
                zeopp_code=Code.get_from_string('zeopp@bazis1'),
                raspa_code=Code.get_from_string('raspa@bazis1'),
            )
        time.sleep(40)
    ```
-   
-   In order to automatically determine how many unit cells to use in the simulation (`UnitCells` input parameter), you may employ
-   [this function]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/multiply_unitcell.py) for your convenience. The function takes as the input parameter a `CifData`
-   object and a cutoff of the intermolecular interactions.
-   
-   > **Note**    
+
+   > **Note**
+   > The function `multiply_unit_cell` is automatically computing the number of `UnitCells` needed.
+   > It contains the math to [deal also with non-orthogonal unit cells]({{site.baseurl}}/pages/2019_molsim_school_Amsterdam/theoretical/multiply-uc).
+   >
+   > Consult the [Querying the AiiDA database]({{ site.baseurl}}/pages/2019_molsim_school_Amsterdam/tutorial/queries) part of the tutorial
+   > in order to find out which filter you should put in `q.append(CifData, filters={})` to select the appropriate
+   > structures.
+
+
+   DANIELE: this part should be avoided. Let's tell them where they have to put this DcMethane file. And let's do it before introducing run_DcMethane
+
+   > **Note**
    > The file containing the `DcMethane` workchain should be accessible
    > from the python shell. To achieve that just place the file into a folder
    > listed in `PYTHONPATH` system variable and rename it to
@@ -369,7 +397,3 @@ We pack our results into the `result` object of type `ParameterData` and set it 
    > ```terminal
    >    $ verdi daemon restart
    > ```
-   
-   Consult the [Querying the AiiDA database]({{ site.baseurl}}/pages/2019_molsim_school_Amsterdam/tutorial/queries) part of the tutorial
-   in order to find out which filter you should put in `q.append(CifData, filters={})` to select the appropriate
-   structures.
