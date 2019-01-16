@@ -10,12 +10,28 @@ once how to connect to the remote computer and how to run the simulation codes.
 ## Computer setup and configuration
 
 For the tutorial, we have access to a compute cluster from the University of Amsterdam.
+Let's set up passwordless access using the secure shell (SSH) protocol.
 
-Let's set up passwordless access using the secure shell (SSH) protocol:
+First, generate a new public/private SSH key pair.
 
 ```terminal
-$ ssh-keygen -t rsa # Be careful to not overwrite your own key pairs
-$ ssh-copy-id molsim<n>@bazis-h1.science.uva.nl # send public key to the server
+$ ssh-keygen -t rsa
+Generating public/private rsa key pair. 
+Enter file in which to save the key (/home/max/.ssh/id_rsa): <Enter> 
+Enter passphrase (empty for no passphrase): <Enter> 
+Enter same passphrase again: <Enter> 
+Your identification has been savedin /home/max/.ssh/id_rsa. 
+Your public key has been saved in /home/max/.ssh/id_rsa.pub. 
+The key fingerprint is: ... 
+The key's randomart image is: ... 
+```
+> **Note**  
+> Be careful not to overwrite your own key pairs when running this
+> outside Quantum Mobile.
+
+Then, copy the public key to the compute cluster:
+```terminal
+$ ssh-copy-id molsim<n>@bazis-h1.science.uva.nl
 
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
 /usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
