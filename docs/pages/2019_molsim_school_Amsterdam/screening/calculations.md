@@ -1,16 +1,15 @@
-Submit, monitor and debug calculations
-======================================
+# Submit, monitor and debug calculations
 
-The goal of this section is to understand how to create new data in
-AiiDA. We will launch a Grand Canonical Monte Carlo simulation and check
-its results. While for now we will do it ‘manually', workflows (that we
-will learn later in this tutorial) can automate this procedure
-considerably.
+AiiDA manages calculations from start to finish, submitting input files to
+remote (super)computers, monitoring the job queue and getting results back
+to your computer.
 
-Computer setup and configuration
---------------------------------
+In order for AiiDA to take care of this for you, you'll need to tell AiiDA
+once how to connect to the remote computer and how to run the simulation codes.
 
-For the tutorial, we've created a have access to a supercomputer from the University of Amsterdam
+## Computer setup and configuration
+
+For the tutorial, we have access to a compute cluster from the University of Amsterdam
 
 Please set up the computer as follows:
 
@@ -52,7 +51,7 @@ At this point, the computer node has been created in the database, see
 $ verdi computer list -a
 ```
 
-but it hasn't yet been configured.
+but it hasn't been configured yet.
 
 In order to access the computer, download the SSH key
 

@@ -23,7 +23,7 @@ familiar with python, we suggest you partner with someone who is.
 
 ## Computing properties of candidate materials
 
- 1. [Submit, monitor and debug calculations](./screening/calculations)
+ 1. [Setting up remote computers and codes](./screening/calculations)
  1. [Perform geometric analysis](./screening/geometry) (TO DELETE/MERGE)
  1. [Compute methane loading](./screening/methane-loading)
  1. [Screening](./screening/screening)
