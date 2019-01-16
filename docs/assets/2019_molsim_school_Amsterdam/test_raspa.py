@@ -54,7 +54,7 @@ options = {
 }
 
 submit(RaspaCalculation.process(), 
-    code=test_and_get_code("raspa@bazis", expected_code_type='raspa')
+    code=test_and_get_code("raspa@bazis", expected_code_type='raspa'),
     structure=load_node('31037e3c-6b15-4a5d-90e3-16c6e0951159'),  # HKUST1
     parameters=parameters,
     _options=options

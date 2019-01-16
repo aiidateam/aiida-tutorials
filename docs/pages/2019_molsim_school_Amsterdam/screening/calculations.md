@@ -1,4 +1,4 @@
-# Submit, monitor and debug calculations
+# Setting up remote computers and codes
 
 AiiDA manages calculations from start to finish, submitting input files to
 remote (super)computers, monitoring the job queue and getting results back
@@ -91,11 +91,10 @@ Finally, let aiida test the computer:
 $ verdi computer test bazis
 ```
 
-Code setup and configuration
-----------------------------
+## Code setup and configuration
 
 Next, we need to let AiiDA know about the computer codes available on
-our “virtual supercomputer”.
+our “supercomputer”.
 
 Let's set up the [RASPA2](https://github.com/numat/RASPA2) code as follows:
 
@@ -135,8 +134,7 @@ The list of codes should now include your new code `raspa@bazis`
 $ verdi code list
 ```
 
-The AiiDA daemon
-----------------
+## The AiiDA daemon
 
 First of all check that the AiiDA daemon is actually running. The AiiDA
 daemon is a program running all the time in the background, checking if
