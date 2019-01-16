@@ -83,6 +83,7 @@ Use `verdi profile list` to verify that you've switched to your new personal Aii
 If you encounter any issues throughout the tutorial, please consider
 
  * consulting the extensive [AiiDA documentation](https://aiida-core.readthedocs.io/en/stable/)
+ * asking in the [Slack channel of the tutorial](http://bit.ly/molsim2019-slack) of the tutorial
  * opening a new issue on the [tutorial issue tracker](https://github.com/aiidateam/aiida-tutorials/issues)
  * asking your neighbor 
  * asking a tutor
