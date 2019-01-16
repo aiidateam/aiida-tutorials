@@ -18,7 +18,7 @@ $ verdi computer setup
 At any prompt, type ? to get some help.
 ————————————— 
 => Computer name: bazis
-bazis computer for the molsim courseCreating new computer with name 'bazis'
+Creating new computer with name 'bazis'
 => Fully-qualified hostname: bazis-h1.science.uva.nl
 => Description: bazis computer for the molsim course
 => Enabled: True 
@@ -53,13 +53,39 @@ $ verdi computer list -a
 
 but it hasn't been configured yet.
 
-In order to access the computer, download the SSH key
+To proceed futher, however, we first need to make sure that AiiDA can access the computer without password. We do
 
 ```terminal
-$ wget https://www.dropbox.com/s/.../aiida_tutorial_aiidaaccount?dl=1 -O /home/max/.ssh/bazis.pem
+$ ssh-keygen -t rsa # Be careful to not overwrite your own key pairs
+$ ssh-copy-id molsim<n>@bazis-h1.science.uva.nl # send public key to the server
+
+/usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
+/usr/bin/ssh-copy-id: INFO: 1 key(s) remain to be installed -- if you are prompted now it is to install the new keys
+**********************************************************************
+          Welcome to the Amsterdam/UvA FNWI research cluster.
+                         Faculty of Science
+                    (http://www.science.uva.nl)
+              University of Amsterdam,  The Netherlands
+
+
+             Only AUTHORIZED USERS may access this site.
+
+All actions are logged. If you don't like this policy, disconnect now.
+
+       Note: The bazis-h1 defq has access to 32 cores per node
+
+**********************************************************************
+  Faculty Expert-IT Support Group (mailto:feiog-tech-science@uva.nl)
+**********************************************************************
+molsim<n>@bazis-h1.science.uva.nl's password:
+
+Number of key(s) added: 1
+
+Now try logging into the machine, with:   "ssh 'bazis-h1.science.uva.nl'"
+and check to make sure that only the key(s) you wanted were added.
 ```
 
-and use it to configure the `bazis` computer:
+Once the password-free access is enabled we can move forward and configure the `bazis` computer:
 
 ```terminal
 $ verdi computer configure bazis
@@ -79,7 +105,7 @@ Note: to leave a field unconfigured, leave it empty and press [Enter]
 => gssauth = no
 => gsskex = no
 => gssdelegcreds = no
-=> gsshost = bazis.science.uva.nl
+=> gsshost = bazis-h1.science.uva.nl
 => load system hostkeys = True
 => key policy = AutoAddPolicy
 Configuration stored for your user on computer 'bazis'.
