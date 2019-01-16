@@ -39,13 +39,15 @@ result = qb.all()
 > **Note**  
 > We are using `Density` and `Number_of_channels` here but this combination
 > is just an example (and not an ideal choice).
+> If you are wondering how to set up `ParameterData` and `CifData`, see
+> [the previous section](queries#the-aiida-querybuilder).
 
 Plot the result using the plotting library of your choice.
 Using `matplotlib` you would do something like
 
 ```python
 import matplotlib.pyplot as plt
-x,y = zip(*results)
+x,y = zip(*result)
 plt.plot(x,y,'o')
 plt.show()
 ```
@@ -62,10 +64,12 @@ get the `label`s of the structure in this range.
 Note that you can combine filters like so:
 ```
   filters = { "and": [
-      { 'attributes.Density': {'>': 1.0}},
+      { 'attributes.Density': {'and': [{'>': 1.0}, {'<': 1.5}] } },
       { 'attributes.Number_of_channels': {'>': 1}},
   ]},
 ```
+
+For explanations on filters, see [the previous section](queries#filters).
 
 ---
 

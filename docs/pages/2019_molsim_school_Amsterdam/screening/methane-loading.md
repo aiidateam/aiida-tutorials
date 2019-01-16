@@ -25,7 +25,7 @@ parameters = ParameterData(dict={
          "NumberOfInitializationCycles"  : 1000,
          "PrintEvery"                    : 100,
 
-         "CutOff"                        : <float (A)>,
+         "CutOff"                        : 12.0,  # (Angstroms)
 
          "Forcefield"                    : "UFF-TraPPE",
          "ChargeMethod"                  : "None",
@@ -38,10 +38,10 @@ parameters = ParameterData(dict={
          "MoleculeName"                  : "methane",
          "MoleculeDefinition"            : "TraPPE",
          "MolFraction"                   : 1.0,
-         "TranslationProbability"        : <float>, # between 0 and 1
-         "RotationProbability"           : <float>, # between 0 and 1
-         "ReinsertionProbability"        : <float>, # between 0 and 1
-         "SwapProbability"               : <float>, # between 0 and 1
+         "TranslationProbability"        : 1.0,
+         "RotationProbability"           : 1.0,
+         "ReinsertionProbability"        : 1.0,
+         "SwapProbability"               : 1.0,
          "CreateNumberOfMolecules"       : 0,
     }],
 })
@@ -53,9 +53,9 @@ parameters = ParameterData(dict={
 The `ParameterData` dictionary is missing a number of parameters 
 for which you'll need to figure out reasonable values.
 
--   Our simulations are performed under periodic boundary
+ -  `UnitCells`: Our simulations are performed under periodic boundary
     conditions. This means, we need to make our simulation cell
-    large enough that a molecule will never interact with a two
+    large enough that a molecule will never interact with two
     periodic copies of any of its neighbors. Given the cutoff radius
     of 12 Angstroms, how often do you need to replicate the unit
     cell of the material?
@@ -63,15 +63,25 @@ for which you'll need to figure out reasonable values.
     *Hint:* The CIF files include information on the size of the
     unit cell.
 
+ - For `ExternalTemperature`/`ExternalPressure`: Use ambient temperature
+   and standard methane desorption pressure for natural gas vehicles.
+
+ - Currently, the probabilies for translation, rotation, reinsertion and swap
+   Monte Carlo moves are all equal, which is suboptimal.
+   How would optimize them?
+   
 ---
 
-Another input to the calculation is the structure we want to use --
-you can start e.g. with `HKUST1`, which can be loaded using its uuid:
+Another input of the calculation is the atomic structure of the MOF we want to use.
+Find the structure labelled "ABUWOJ" (hint: filter by the `label`)
+and note down its PK or UUID. 
 
-```python
-# using uuid of HKUST1
-structure = load_node('31037e3c-6b15-4a5d-90e3-16c6e0951159')
-```
+> **Note**  
+> Once you know the PK or UUID of a node, you can always load it using
+> ```python
+> structure = load_node(<pk>)     # load using PK (specific to your database)
+> structure = load_node('<uuid>') # load using UUID (same for everyone)
+> ```
 
 ## Creating the calculation
 
@@ -88,7 +98,7 @@ Now we'll specify a few pieces of information to
 pass on to the [slurm](https://slurm.schedmd.com/) scheduler
 that manages calculations on the cluster,
 such as how many compute nodes to use
-or the maximum time allowed for the calculation
+or the maximum time allowed for the calculation:
 
 ```python
 options = {
@@ -99,8 +109,8 @@ options = {
     },
     "max_wallclock_seconds": 1 * 60 * 60,  # 1h walltime
     "max_memory_kb": 2000000,              # 2GB memory
-    "queue_name": "molsim",
-    "withmpi": False,
+    "queue_name": "molsim",                # slurm partition to use
+    "withmpi": False,                      # we run in serial mode
 }
 ```
 > **Note**  

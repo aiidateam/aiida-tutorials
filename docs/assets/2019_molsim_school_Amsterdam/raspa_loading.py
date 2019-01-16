@@ -15,11 +15,11 @@ RaspaCalculation = CalculationFactory('raspa')
 parameters = ParameterData(dict={
     "GeneralSettings": {
          "SimulationType"                : "MonteCarlo",
-         "NumberOfCycles"                : 1000,  
-         "NumberOfInitializationCycles"  : 1000, 
+         "NumberOfCycles"                : 1000,
+         "NumberOfInitializationCycles"  : 1000,
          "PrintEvery"                    : 100,
 
-         "CutOff"                        : 12.0,
+         "CutOff"                        : 12.0,  # (Angstroms)
 
          "Forcefield"                    : "UFF-TraPPE",
          "ChargeMethod"                  : "None",
@@ -31,15 +31,14 @@ parameters = ParameterData(dict={
     "Component": [{
          "MoleculeName"                  : "methane",
          "MoleculeDefinition"            : "TraPPE",
-         "MolFraction"                   : "TraPPE",
-         "TranslationProbability"        : <float>, # between 0 and 1
-         "RotationProbability"           : <float>, # between 0 and 1
-         "ReinsertionProbability"        : <float>, # between 0 and 1
-         "SwapProbability"               : <float>, # between 0 and 1
+         "MolFraction"                   : 1.0,
+         "TranslationProbability"        : 1.0,
+         "RotationProbability"           : 1.0,
+         "ReinsertionProbability"        : 1.0,
+         "SwapProbability"               : 1.0,
          "CreateNumberOfMolecules"       : 0,
     }],
 })
-
 
 # Calculation resources
 options = {
@@ -50,8 +49,8 @@ options = {
     },
     "max_wallclock_seconds": 1 * 60 * 60,  # 1h walltime
     "max_memory_kb": 2000000,              # 2GB memory
-    "queue_name": "molsim",
-    "withmpi": False,
+    "queue_name": "molsim",                # slurm partition to use
+    "withmpi": False,                      # we run in serial mode
 }
 
 submit(RaspaCalculation.process(), 
