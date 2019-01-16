@@ -25,7 +25,7 @@ $ pip install aiidalab==19.01.2
 > You may encounter warnings about version conflicts.
 > As long as the command finishes with `Successfully installed ...` don't worry and proceed.
 
-> **Note**
+> **Note**  
 > To make sure that AiiDA noticed all the plugin updates please run
 > ```terminal
 > $ reentry scan

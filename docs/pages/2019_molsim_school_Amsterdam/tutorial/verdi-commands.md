@@ -40,11 +40,9 @@ See 'verdi help' for more help.
 > **Note**  
 > `verdi` has tab completion. Just type a command and press Tab twice to list the availble subcommands.  
 >  Whenever you need help with a command, add the `-h` flag.
-
-
-subcommands. Finally, fields enclosed in angular brackets, such as
-`<pk>`, are placeholders to be replaced by the actual value of that
-field (an integer, a string, etc...).
+> Fields enclosed in angular brackets, such as
+> `<pk>`, are placeholders to be replaced by the actual value of that
+> field (an integer, a string, etc...).
 
 Let's try to get a list of calculations using `verdi`:
 
@@ -134,9 +132,9 @@ verdi computer show <label>  # for Computer labels
 ```
 and use them to answer the questions below:
 
-What are the density and unit cell volume of the structure used in the calculation you picked?
-Which version of zeo++ was used to compute the geometric properties?  
-What is the scheduler installed on the computer where the calculations were run?  
+ * What are the density and unit cell volume of the structure used in the calculation you picked?
+ * Which version of zeo++ was used to compute the geometric properties?  
+ * What is the scheduler installed on the computer where the calculations were run?  
 
 ---
 

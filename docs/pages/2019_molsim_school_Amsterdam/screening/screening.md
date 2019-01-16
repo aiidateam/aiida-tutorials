@@ -89,7 +89,7 @@ Now, we shift our focus to every step of the `DcMethane` workchain and will try 
             "withmpi": False,
         }
    ```
-Here we are using the **context** (`self.ctx`) variable -- a container that is accesible
+Please notice the usage of the **context** (`self.ctx`) variable -- a container that is accesible
 along the whole life of the `DcMethane` workchain. Using `self.ctx` we can
 pass information to the other steps of it.
 
@@ -121,16 +121,17 @@ Here we will compute blocked pockets of a particular material employing the Zeo+
 
         return ToContext(zeopp=Outputs(future))
 ```
-As you can see: in order to run the calculation we just need to provide code, structure,
+As you can see: in order to run the calculation one just needs to provide code, structure,
 parameters and atomic\_radii file that are all directly taken from the workflow inputs. The
-sumittion happens in exactly the same way as it was for a single raspa calculation.
+job submission happens in exactly the same way as it was for the [single raspa calculation]({{site.baseurl}}/pages/2019_molsim_school_Amsterdam/screening/methane-loading#submitting-the-calculation)
+that we tried previously.
 
 A new function that you may notice in this step is the `self.report()` that provides a report message, a 
 convinient way to monitor the stage of the workflow. 
 
 ## Step 3, 5: Compute the methane loading 
 Steps 3 (`run_loading_raspa_low_p`) and 5 (`run_loading_raspa_high_p`) compute the methane loading at 5.8 and 65 bars respectively in [molecules/cell] units.
-The and  functions are defined as follows:
+The functions are defined as follows:
 
 ```python
     def run_loading_raspa_low_p(self):
@@ -194,7 +195,7 @@ Steps 4 and 6 extract pressure and methane loading (with deviation) and puts the
 ```
 
 
-## Step 7 stores the selected computed parameters as the output of the
+## Step 7: Store the selected computed parameters as the output node
 This final step is to prepare the results of the `DcMethane` workchain extracting the
 most relevant information and putting it in a `ParameterData` object (the AiiDA way to store
 python dictionaries).
@@ -238,117 +239,121 @@ We pack our results into the `result` object of type `ParameterData` and set it 
 
 1. Before you actually start doing the calculations please setup the zeo++ code as shown here:
 
-    ```terminal
-     * PK:             60109
-     * UUID:           8a37224a-1247-4484-b3c8-ce3e8f37cee7
-     * Label:          zeopp
-     * Description:    zeo++ code for the molsim course
-     * Default plugin: zeopp.network
-     * Used by:        1 calculations
-     * Type:           remote
-     * Remote machine: bazis
-     * Remote absolute path: 
-       /home/molsim20/network
-     * prepend text:
-       # No prepend text.
-     * append text:
-       # No append text.
-    ```
+   ```terminal
+    * PK:             60109
+    * UUID:           8a37224a-1247-4484-b3c8-ce3e8f37cee7
+    * Label:          zeopp
+    * Description:    zeo++ code for the molsim course
+    * Default plugin: zeopp.network
+    * Used by:        1 calculations
+    * Type:           remote
+    * Remote machine: bazis
+    * Remote absolute path: 
+      /home/molsim20/network
+    * prepend text:
+      # No prepend text.
+    * append text:
+      # No append text.
+   ```
+   Should you have any doubts, just consult the
+   [Computer setup and configuration]({{ site.baseurl}}/pages/2019_molsim_school_Amsterdam/screening/calculations#computer-setup-and-configuration) part of our tutorial.
 
-2. Adapt the following script and submit the `DcMethane` workchain. 
+ 
+2. Adapt the following script and submit the `DcMethane` workchain.  
+ 
 
-
-```python
-from aiida.backends.utils import load_dbenv, is_dbenv_loaded
-if not is_dbenv_loaded():
-        load_dbenv()
-
-import os
-import sys
-import time
-from deliverable_capacity import DcMethane
-
-from aiida.orm import DataFactory
-from aiida.orm.data.cif import CifData
-from aiida.orm.data.base import Float
-from aiida.work.run import run, submit
-
-NetworkParameters = DataFactory('zeopp.parameters')
-ParameterData = DataFactory('parameter')
-
-
-cutoff = <float (A)>
-probe_radius = <float (A)>
-
-zeopp_params = NetworkParameters(dict={
-    'ha': True,
-    'block': [probe_radius, 100],
-})
-    
-raspa_params = ParameterData(dict={
-    "GeneralSettings":
-    {
-    "SimulationType"                   : "MonteCarlo",
-    "NumberOfCycles"                   : <int>,  
-    "NumberOfInitializationCycles"     : <int>, 
-    "PrintEvery"                       : <int>,
-
-    "CutOff"                           : cutoff,
-
-    "Forcefield"                       : "UFF-TraPPE",
-    "ChargeMethod"                     : "None",
-    "UnitCells"                        : "<int> <int> <int>",
-    "ExternalTemperature"              : <float (K)>,
-
-    },
-    "Component":
-    [{
-    "MoleculeName"                     : "methane",
-    "MoleculeDefinition"               : "TraPPE",
-    "MolFraction"                      : 1.0,
-    "TranslationProbability"           : <float>, # between 0 and 1
-    "RotationProbability"              : <float>, # between 0 and 1
-    "ReinsertionProbability"           : <float>, # between 0 and 1
-    "SwapProbability"                  : <float>, # between 0 and 1
-    "CreateNumberOfMolecules"          : 0,
-    }],
-})
-
-q = QueryBuilder()
-q.append(CifData, filters={}) # find a way to specify particular Structures
-for item in q.all():
-    cif = item[0]
-    print (cif)
-    outputs = submit(
-            DcMethane,
-            structure=cif,
-            zeopp_parameters = zeopp_params,
-            raspa_parameters = raspa_params,
-            atomic_radii = load_node('4890c050-8668-4bca-b172-e396f4d71140'), # already present in your database
-            zeopp_code=Code.get_from_string('zeopp@fidis'),
-            raspa_code=Code.get_from_string('raspa@fidis'),
-        )
-    time.sleep(40)
-```
-
-In order to automatically determine how many unit cells to use in the simulation (`UnitCells` input parameter), you may employ
-[this function]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/multiply_unitcell.py) for your convenience. The function takes as a parameter a `CifData`
-object and a cutoff of the intermolecular interactions.
-
-> Note: The file containing the `DcMethane` workchain should be accessible
-> from the python shell. To achieve that just place the file into a folder
-> listed in `PYTHONPATH` system variable and rename it to
-> `deliverable_capacity.py`.
-> In case you want to place the python file in your own directory, just add
-> the path to it into `PYTHONPATH` variable running
-> ```terminal
->    $ export PYTHONPATH=/path/to/your/directory/:$PYTHONPATH
-> ```
-> and do not forget to restart the AiiDA daemon **in the same shell**
-> ```terminal
->    $ verdi daemon restart
-> ```
-
-Consult the [QueryBuilder page of AiiDA](https://aiida-core.readthedocs.io/en/stable/querying/querybuilder/usage.html)
-and find out which filter you should put in `q.append(CifData, filters={})` to select the appropriate
-structures.
+   ```python
+   from aiida.backends.utils import load_dbenv, is_dbenv_loaded
+   if not is_dbenv_loaded():
+           load_dbenv()
+   
+   import os
+   import sys
+   import time
+   from deliverable_capacity import DcMethane
+   
+   from aiida.orm import DataFactory
+   from aiida.orm.data.cif import CifData
+   from aiida.orm.data.base import Float
+   from aiida.work.run import run, submit
+   
+   NetworkParameters = DataFactory('zeopp.parameters')
+   ParameterData = DataFactory('parameter')
+   
+   
+   cutoff = <float (A)>
+   probe_radius = <float (A)>
+   
+   zeopp_params = NetworkParameters(dict={
+       'ha': True,
+       'block': [probe_radius, 100],
+   })
+       
+   raspa_params = ParameterData(dict={
+       "GeneralSettings":
+       {
+       "SimulationType"                   : "MonteCarlo",
+       "NumberOfCycles"                   : <int>,  
+       "NumberOfInitializationCycles"     : <int>, 
+       "PrintEvery"                       : <int>,
+   
+       "CutOff"                           : cutoff,
+   
+       "Forcefield"                       : "UFF-TraPPE",
+       "ChargeMethod"                     : "None",
+       "UnitCells"                        : "<int> <int> <int>",
+       "ExternalTemperature"              : <float (K)>,
+   
+       },
+       "Component":
+       [{
+       "MoleculeName"                     : "methane",
+       "MoleculeDefinition"               : "TraPPE",
+       "MolFraction"                      : 1.0,
+       "TranslationProbability"           : <float>, # between 0 and 1
+       "RotationProbability"              : <float>, # between 0 and 1
+       "ReinsertionProbability"           : <float>, # between 0 and 1
+       "SwapProbability"                  : <float>, # between 0 and 1
+       "CreateNumberOfMolecules"          : 0,
+       }],
+   })
+   
+   q = QueryBuilder()
+   q.append(CifData, filters={}) # find a way to specify particular Structures
+   for item in q.all():
+       cif = item[0]
+       print (cif)
+       outputs = submit(
+               DcMethane,
+               structure=cif,
+               zeopp_parameters = zeopp_params,
+               raspa_parameters = raspa_params,
+               atomic_radii = load_node('4890c050-8668-4bca-b172-e396f4d71140'), # already present in your database
+               zeopp_code=Code.get_from_string('zeopp@fidis'),
+               raspa_code=Code.get_from_string('raspa@fidis'),
+           )
+       time.sleep(40)
+   ```
+   
+   In order to automatically determine how many unit cells to use in the simulation (`UnitCells` input parameter), you may employ
+   [this function]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/multiply_unitcell.py) for your convenience. The function takes as the input parameter a `CifData`
+   object and a cutoff of the intermolecular interactions.
+   
+   > **Note**    
+   > The file containing the `DcMethane` workchain should be accessible
+   > from the python shell. To achieve that just place the file into a folder
+   > listed in `PYTHONPATH` system variable and rename it to
+   > `deliverable_capacity.py`.
+   > In case you want to place the python file in your own directory, just add
+   > the path to it into `PYTHONPATH` variable running
+   > ```terminal
+   >    $ export PYTHONPATH=/path/to/your/directory/:$PYTHONPATH
+   > ```
+   > and do not forget to restart the AiiDA daemon **in the same shell**
+   > ```terminal
+   >    $ verdi daemon restart
+   > ```
+   
+   Consult the [Querying the AiiDA database]({{ site.baseurl}}/pages/2019_molsim_school_Amsterdam/tutorial/queries) part of the tutorial
+   in order to find out which filter you should put in `q.append(CifData, filters={})` to select the appropriate
+   structures.
