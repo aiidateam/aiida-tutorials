@@ -14,7 +14,8 @@ capacities you are going to compute.
 You've already learned this morning about some key descriptors that can be used to guess whether a nanoporous material can be suitable for methane storage.
 You may want to consult the 
 [SLIDES](https://docs.google.com/presentation/d/1F_bczGaH8n3CSR6rFoP3z8d6rPbRY1B7t_YuiaO0qgw/edit?usp=sharing)
-in order to refresh your memory.
+in order to refresh your memory,
+and have a look at a [brief description](../theoretical/geometric-properties) of some important geometrical properties computed by zeo++.
 
 ---
 ### Exercise
