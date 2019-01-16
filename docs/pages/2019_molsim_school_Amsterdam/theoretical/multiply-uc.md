@@ -23,8 +23,8 @@ to compute the Raspa input "UnitCells".
 Note that if you do not multiply correctly the unit cell,
 Raspa will complain in the output:
 
-'''terminal
+```terminal
 WARNING: INAPPROPRIATE NUMBER OF UNIT CELLS USED
-'''
+```
 
 and you will (usually) get an uptake that is less then the correct one. Why?

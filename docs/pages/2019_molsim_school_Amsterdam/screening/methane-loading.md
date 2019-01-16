@@ -154,9 +154,19 @@ Once running, the calculation should finish within 5 minutes.
 
 Once the calculation shows up as `FINISHED`, have a look at the result.
 
-TODO (Daniele/Leo):
- * how to compute loading from output
- * mention standard deviation of relevant quantity and ask them to re-run the calculation
-   so that it goes below 5%  
-  
+Raspa produces two types of output: Outputs related to the whole system (e.g. total energy, temperature) and outputs related to the component -- in our case, there is only one component: methane.
 
+Find the `component_0` output of the calculation and use `verdi data parameter
+show` to extract the average and standard deviation of the absolute methane
+loading.
+
+---
+### Exercise
+
+What is the relative standard deviation of the loading?
+How could you decrease it?
+
+Re-run the calculation with adapted settings in order to decrease the
+relative standard deviation below 5%
+
+---
