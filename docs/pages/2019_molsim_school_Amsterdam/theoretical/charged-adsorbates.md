@@ -15,3 +15,5 @@ Can you find the best MOF for [carbon capture](https://en.wikipedia.org/wiki/Car
    CO2 uptake that you can achieve at 298K and 0.2bar.
 
 What do you think are the characteristics of materials with high affinity to carbon dioxide?
+
+---
