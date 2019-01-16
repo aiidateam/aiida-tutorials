@@ -44,6 +44,9 @@ However, using helium to compute the void fraction is not very physically meanin
 |:--:|
 | Explanation of the different kind of pore volumes. |
 
+* *number of channels*, the number of unconnected channels of the porous material
+where the probe can diffuse through
+
 It is very interesting to compare these metrics to the performance of your materials
 for a certain application,
 to be able to find any correlation that could help to discover the best framework
