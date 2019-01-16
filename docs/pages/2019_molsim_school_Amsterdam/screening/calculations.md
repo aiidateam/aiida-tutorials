@@ -166,6 +166,9 @@ export RASPA_DIR=/home/molsim20/raspa/
 # —————————————— 
 Code 'raspa' successfully stored in DB.
 ```
+> **Note**  
+> Rember to include the line `export RASPA_DIR=/home/molsim20/raspa/`
+> as `Text to prepend to each command execution`, otherwise RASPA won't run.
 
 The list of codes should now include your new code `raspa@bazis`
 
