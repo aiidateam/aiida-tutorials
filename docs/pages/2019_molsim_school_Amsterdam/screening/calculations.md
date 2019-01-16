@@ -14,6 +14,9 @@ Let's set up passwordless access using the secure shell (SSH) protocol.
 
 First, generate a new public/private SSH key pair.
 
+> **Note**  
+> When running this outside Quantum Mobile, be careful not to overwrite your
+> own key pair. In this case, just change the proposed file name.
 ```terminal
 $ ssh-keygen -t rsa
 Generating public/private rsa key pair. 
@@ -25,9 +28,6 @@ Your public key has been saved in /home/max/.ssh/id_rsa.pub.
 The key fingerprint is: ... 
 The key's randomart image is: ... 
 ```
-> **Note**  
-> Be careful not to overwrite your own key pairs when running this
-> outside Quantum Mobile.
 
 Then, copy the public key to the compute cluster:
 ```terminal
