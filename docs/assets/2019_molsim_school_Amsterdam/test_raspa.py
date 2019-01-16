@@ -50,6 +50,7 @@ options = {
     },
     "max_wallclock_seconds": 1 * 60 * 60,  # 1h walltime
     "max_memory_kb": 2000000,
+    "queue_name": "molsim",
     "withmpi": False,
 }
 
