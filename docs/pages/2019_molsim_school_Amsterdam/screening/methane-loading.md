@@ -80,6 +80,10 @@ run them in a terminal by means of the command**
 ```terminal
 $ verdi run <scriptname>
 ```
+> **Note**  
+> By default, the daemon polls for new calculations every 30 seconds,
+> i.e. you may need to wait up to 30 seconds before your calculation starts running.
+
 
 Every calculation sent to a cluster is linked to a code, which describes
 the executable file to be used. Therefore, first load the suitable code:

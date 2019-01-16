@@ -36,7 +36,8 @@ by clicking on the points in the scatter plot.
 
 
 That's it -- you've completed the AiiDA molsim tutorial, well done!
+Keep posted for news on the [AiiDA mailing list](http://groups.google.com/group/aiidausers/subscribe), in particular the upcoming AiiDA 1.0 release with many improvements and new features.
 
-If you're interested in continuing along these lines, you may want
+If you're interested in another exercise along these lines, you may want
 to have a look at the [extra challenge on CO2 capture](../theoretical/charged-adsorbates.md)
 (optional, and with less detailed instructions).

@@ -9,51 +9,9 @@ once how to connect to the remote computer and how to run the simulation codes.
 
 ## Computer setup and configuration
 
-For the tutorial, we have access to a compute cluster from the University of Amsterdam
+For the tutorial, we have access to a compute cluster from the University of Amsterdam.
 
-Please set up the computer as follows:
-
-```terminal
-$ verdi computer setup 
-At any prompt, type ? to get some help.
-————————————— 
-=> Computer name: bazis
-Creating new computer with name 'bazis'
-=> Fully-qualified hostname: bazis-h1.science.uva.nl
-=> Description: bazis computer for the molsim course
-=> Enabled: True 
-=> Transport type: ssh 
-=> Scheduler type: slurm
-=> shebang line at the beginning of the submission script: #!/bin/bash
-=> AiiDA work directory: /home/{username}/aiida_run/
-=> mpirun command: srun -n {tot_num_mpiprocs}
-=> Default number of CPUs per machine: 2 
-=> Text to prepend to each command execution: 
-# This is a multiline input, press CTRL+D on a 
-# empty line when you finish 
-# ——————————————
-# End of old input. You can keep adding 
-# lines, or press CTRL+D to store this value 
-# —————————————— 
-=> Text to append to each command execution: 
-# This is a multiline input, press CTRL+D on a 
-# empty line when you finish 
-# —————————————— 
-# End of old input. You can keep adding 
-# lines, or press CTRL+D to store this value 
-# ——————————————
-Computer 'bazis' successfully stored in DB.
-```
-
-At this point, the computer node has been created in the database, see
-
-```terminal
-$ verdi computer list -a
-```
-
-but it hasn't been configured yet.
-
-To proceed futher, however, we first need to make sure that AiiDA can access the computer without password. We do
+Let's set up passwordless access using the secure shell (SSH) protocol:
 
 ```terminal
 $ ssh-keygen -t rsa # Be careful to not overwrite your own key pairs
@@ -80,12 +38,51 @@ All actions are logged. If you don't like this policy, disconnect now.
 molsim<n>@bazis-h1.science.uva.nl's password:
 
 Number of key(s) added: 1
-
-Now try logging into the machine, with:   "ssh 'bazis-h1.science.uva.nl'"
-and check to make sure that only the key(s) you wanted were added.
 ```
 
-Once the password-free access is enabled we can move forward and configure the `bazis` computer:
+Now try logging in to the cluster with `ssh molsim<n>@bazis-h1.science.uva.nl`,
+which should work without password.
+Once it does, let's set up the `bazis` computer in AiiDA as follows:
+
+```terminal
+$ verdi computer setup 
+At any prompt, type ? to get some help.
+————————————— 
+=> Computer name: bazis
+Creating new computer with name 'bazis'
+=> Fully-qualified hostname: bazis-h1.science.uva.nl
+=> Description: bazis computer for the molsim course
+=> Enabled: True 
+=> Transport type: ssh 
+=> Scheduler type: slurm
+=> shebang line at the beginning of the submission script: #!/bin/bash
+=> AiiDA work directory: /home/{username}/aiida_run/
+=> mpirun command: srun -n {tot_num_mpiprocs}
+=> Default number of CPUs per machine: 1 
+=> Text to prepend to each command execution: 
+# This is a multiline input, press CTRL+D on a 
+# empty line when you finish 
+# ——————————————
+# End of old input. You can keep adding 
+# lines, or press CTRL+D to store this value 
+# —————————————— 
+=> Text to append to each command execution: 
+# This is a multiline input, press CTRL+D on a 
+# empty line when you finish 
+# —————————————— 
+# End of old input. You can keep adding 
+# lines, or press CTRL+D to store this value 
+# ——————————————
+Computer 'bazis' successfully stored in DB.
+```
+
+At this point, the computer node has been created in the database
+
+```terminal
+$ verdi computer list -a
+```
+
+but access hasn't been configured yet.
 
 ```terminal
 $ verdi computer configure bazis
@@ -111,19 +108,35 @@ Note: to leave a field unconfigured, leave it empty and press [Enter]
 Configuration stored for your user on computer 'bazis'.
 ```
 
-Finally, let aiida test the computer:
+Finally, let AiiDA test the computer setup we just created:
 
 ```terminal
 $ verdi computer test bazis
+Testing computer 'bazis' for user leopold.talirz@epfl.ch...
+> Testing connection...
+> Getting job list...
+  `-> OK, 1 jobs found in the queue.
+> Creating a temporary file in the work directory...
+  `-> Getting the remote user name...
+      [remote username: molsim20]
+      [Checking/creating work directory: /home/molsim20/aiida_run/]
+  `-> Creating the file tmpjzXXrC...
+  `-> Checking if the file has been created...
+      [OK]
+  `-> Retrieving the file and checking its content...
+      [Retrieved]
+      [Content OK]
+  `-> Removing the file...
+  [Deleted successfully]
+Test completed (all 3 tests succeeded)
 ```
 
 ## Code setup and configuration
 
-Next, we need to let AiiDA know about the computer codes available on
-our “supercomputer”.
+Next, we need to let AiiDA know about the computer codes available on `bazis`.
 
-Let's set up the [RASPA2](https://github.com/numat/RASPA2) code as follows:
-
+We've already installed [RASPA2](https://github.com/numat/RASPA2) there,
+so you can set up the code as follows:
 
 ```terminal
 $ verdi code setup
@@ -162,33 +175,30 @@ $ verdi code list
 
 ## The AiiDA daemon
 
-First of all check that the AiiDA daemon is actually running. The AiiDA
-daemon is a program running all the time in the background, checking if
-new calculations appear and need to be submitted to the scheduler. The
-daemon also takes care of all the necessary operations before the
-calculation submission, and after the calculation has completed on the
-cluster. Type in the terminal
+The AiiDA daemon is a program running all the time in the background, checking
+for new calculations that need to be submitted. The daemon also takes care of
+all the necessary operations before the calculation submission, and after the
+calculation has completed on the cluster. 
+
+Let's check whether the AiiDA daemon is already running. 
 
 ```terminal
 $ verdi daemon status
+# Most recent daemon timestamp:0h:00m:26s ago
+## Found 1 process running:
+   * aiida-daemon[aiida-daemon] RUNNING    pid 15044, uptime 3 days, 15:38:41
 ```
 
-If the daemon is running, the output should look like
-
-    # Most recent daemon timestamp:0h:00m:26s ago
-    ## Found 1 process running:
-       * aiida-daemon[aiida-daemon] RUNNING    pid 15044, uptime 3 days, 15:38:41
-
-If this is not the case, type in the terminal
+If the daemon is not running, please start it
 
 ```terminal
 $ verdi daemon start
 ```
 
-to start the daemon.
-
-> **Note**
-> In case the daemon did not start and error message was printed
+> **Note**  
+> AiiDA supports multiple profiles but for reasons of consistency
+> only one profile can communicate with the daemon at a time.
+> When starting the daemon, you may therefore see an error message like
 > ```terminal
 > You are not the daemon user! I will not start the daemon.
 > (The daemon user is 'aiida@localhost', you are 'some.body@xyz.com')
@@ -197,11 +207,11 @@ to start the daemon.
 > To change the current default user, use 'verdi install --only-config'
 > To change the daemon user, use 'verdi daemon configureuser'
 > ```
-> just follow the instructions and run
+> Just follow the instructions by running
 > ```terminal
 > $ verdi daemon configureuser
 > ```
-> And allow your user to run the daemon
+> and provide the email address of your profile in order to allow your user to run the daemon
 >
 > ```terminal
 > > Current default user: some.body@xyz.com
@@ -217,4 +227,5 @@ to start the daemon.
 > New daemon user: some.body@xyz.com
 > The new user that can run the daemon is now Some Body.
 > ```
+> Now start the daemon!
 

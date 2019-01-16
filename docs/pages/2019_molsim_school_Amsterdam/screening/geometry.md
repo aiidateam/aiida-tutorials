@@ -5,20 +5,6 @@ Use the [zeo++](http://www.zeoplusplus.org/) code to analyze the
 structure, such as the volume inside the MOF that is accessible to
 methane.
 
--   To make things simple, start with one MOF: `DSoLANSUKYIH.cif`
-
--   Set up the
-    [Deneb](https://scitas.epfl.ch/hardware/deneb-and-eltanin) computer
-    at EPFL
-
-    -   Import the `deneb-molsim` computer and its codes into AiiDA
-
-        ```terminal
-        $ verdi import {{ "/assets/2018_EPFL_molsim/deneb-molsim.aiida" | absolute_url }} 
-        $ verdi computer list -a  # should show 'deneb-molsim'
-        $ verdi code list -A   # should show 'zeopp@deneb-molsim', 'raspa@deneb-molsim'
-        ```
-
     -   Generate an SSH key pair for passwordless connection
 
         ```terminal
@@ -38,37 +24,6 @@ methane.
         $ ssh-copy-id <user>@deneb1.epfl.ch 
         $ ssh <user>@deneb1.epfl.ch  # should now work without password
         ```
-
-    -   configure your personal access to the `deneb-molsim` computer
-
-        ```terminal
-        $ verdi computer configure deneb-molsim
-
-        Configuring computer 'deneb-molsim' for the AiiDA user '<your-aiida-user>@epfl.ch' 
-        Computer deneb-molsim has transport of type ssh 
-        Note: to leave a field unconfigured, leave it empty and press [Enter] 
-        => username = <your-epfl-username> 
-        => port = 22 
-        => look_for_keys = 
-        => key_filename = 
-        => timeout = 60 
-        => allow_agent = 
-        => proxy_command = 
-        => compress = True 
-        => gss_auth = no 
-        => gss_kex = no  
-        => gss_deleg_creds = no 
-        => gss_host = deneb1.epfl.ch 
-        => load_system_host_keys = True 
-        => key_policy = AutoAddPolicy 
-        Configuration stored for your user on computer 'deneb-molsim'.
-        ```
-
-    -   Finally, test your new computer
-
-        ```terminal
-        $ verdi computer test deneb-molsim
-        ``` 
 
 -   Compute the density, accessible volume and [accessible surface
     area](https://en.wikipedia.org/wiki/Accessible_surface_area) using
