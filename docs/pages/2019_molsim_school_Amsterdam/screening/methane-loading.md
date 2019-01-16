@@ -25,7 +25,7 @@ parameters = ParameterData(dict={
          "NumberOfInitializationCycles"  : 1000,
          "PrintEvery"                    : 100,
 
-         "CutOff"                        : 12.0,
+         "CutOff"                        : <float (A)>,
 
          "Forcefield"                    : "UFF-TraPPE",
          "ChargeMethod"                  : "None",
@@ -37,7 +37,7 @@ parameters = ParameterData(dict={
     "Component": [{
          "MoleculeName"                  : "methane",
          "MoleculeDefinition"            : "TraPPE",
-         "MolFraction"                   : "TraPPE",
+         "MolFraction"                   : 1.0,
          "TranslationProbability"        : <float>, # between 0 and 1
          "RotationProbability"           : <float>, # between 0 and 1
          "ReinsertionProbability"        : <float>, # between 0 and 1
