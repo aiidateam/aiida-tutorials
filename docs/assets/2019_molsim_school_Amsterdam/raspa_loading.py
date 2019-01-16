@@ -45,18 +45,18 @@ parameters = ParameterData(dict={
 options = {
     "resources": {
         "num_machines": 1,                 # run on 1 node
-        "tot_num_mpiprocs": 1,             # use 1 MPI process
+        "tot_num_mpiprocs": 1,             # use 1 process
         "num_mpiprocs_per_machine": 1,
     },
     "max_wallclock_seconds": 1 * 60 * 60,  # 1h walltime
-    "max_memory_kb": 2000000,
+    "max_memory_kb": 2000000,              # 2GB memory
     "queue_name": "molsim",
     "withmpi": False,
 }
 
 submit(RaspaCalculation.process(), 
     code=test_and_get_code("raspa@bazis", expected_code_type='raspa'),
-    structure=load_node('31037e3c-6b15-4a5d-90e3-16c6e0951159'),  # HKUST1
+    structure=load_node("<uuid>"),
     parameters=parameters,
     _options=options
 )

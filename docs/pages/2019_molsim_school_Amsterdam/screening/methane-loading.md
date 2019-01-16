@@ -65,17 +65,70 @@ for which you'll need to figure out reasonable values.
 
 ---
 
+Another input to the calculation is the structure we want to use --
+you can start e.g. with `HKUST1`, which can be loaded using its uuid:
+
+```python
+# using uuid of HKUST1
+structure = load_node('31037e3c-6b15-4a5d-90e3-16c6e0951159')
+```
+
+## Creating the calculation
+
+Every calculation sent to a cluster is linked to a code, which describes
+the executable file to be used. We need to load the `raspa@bazis` code
+that we set up before:
+
+```python
+from aiida.common.example_helpers import test_and_get_code 
+raspa_code = test_and_get_code("raspa@bazis", expected_code_type='raspa')
+```
+
+Now we'll specify a few pieces of information to
+pass on to the [slurm](https://slurm.schedmd.com/) scheduler
+that manages calculations on the cluster,
+such as how many compute nodes to use
+or the maximum time allowed for the calculation
+
+```python
+options = {
+    "resources": {
+        "num_machines": 1,                 # run on 1 node
+        "tot_num_mpiprocs": 1,             # use 1 process
+        "num_mpiprocs_per_machine": 1,
+    },
+    "max_wallclock_seconds": 1 * 60 * 60,  # 1h walltime
+    "max_memory_kb": 2000000,              # 2GB memory
+    "queue_name": "molsim",
+    "withmpi": False,
+}
+```
+> **Note**  
+> AiiDA supports different types of schedulers via plugins,
+> including slurm, pbspro and sge.
+
+
 ## Submitting the calculation
 
-To start please [download the AiiDA submission script]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/test_raspa.py). To
-launch a calculation, you will need to interact with AiiDA mainly in the
-<span>`verdi shell`</span>. We strongly suggest you to first try the
-commands in the shell, and then copy them in a script “test\_pw.py”
-using a text editor. This will be very useful for later execution of a
-similar series of commands.
+In principle, you can now simply submit the calculation from the `verdi shell`
+using
 
-**The best way to run python scripts using AiiDA functionalities is to
-run them in a terminal by means of the command**
+```python
+RaspaCalculation = CalculationFactory('raspa')
+submit(RaspaCalculation.process(),
+    code=raspa_code,
+    structure=structure,
+    parameters=parameters,
+    _options=options,
+)
+```
+
+At this stage, however, we suggest you use a python script instead
+in order to make changes and debug more easily.
+
+We've provided a
+[submission script template]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/raspa_loading.py),
+where you just need to paste your parameters and the structure you selected.
 
 ```terminal
 $ verdi run <scriptname>
@@ -84,51 +137,4 @@ $ verdi run <scriptname>
 > By default, the daemon polls for new calculations every 30 seconds,
 > i.e. you may need to wait up to 30 seconds before your calculation starts running.
 
-
-Every calculation sent to a cluster is linked to a code, which describes
-the executable file to be used. Therefore, first load the suitable code:
-
-```python
-from aiida.common.example_helpers import test_and_get_code 
-code = test_and_get_code(codename, expected_code_type='raspa')
-```
-
-Here `test_and_get_code` is an AiiDA function handling all possible
-codes, and `code` is a class instance provided as `codename` (see the
-first part of the tutorial for listing all codes installed in your AiiDA
-machine). For this example use codename `raspa@bazis`.
-
-AiiDA calculations are instances of the class `Calculation`, more
-precisely of one of its subclasses, each corresponding to a code
-specific plugin (for example, the Raspa plugin). We create a new
-calculation using the `new_calc` method of the `code` object:
-
-```python
-calc = code.new_calc()
-```
-
-This creates and initializes an instance of the `RaspaCalculation`
-class, the subclass associated with the `raspa` plugin. Sometimes, you might find convenient to annotate
-information assigning a (short) label or a (long) description, like:
-
-```python
-calc.label='Raspa test'
-calc.description='My first AiiDA calc with Raspa'
-```
-
-This information will be saved in the database for later query or
-inspection.
-
-Now you have to specify the number of machines (a.k.a. cluster nodes)
-you are going to run on and the maximum time allowed for the calculation
-— this information is passed to the scheduler that handles the queue:
-
-```python
-calc.set_resources('num_machines': 1, 'num_mpiprocs_per_machine':1)
-calc.set_max_wallclock_seconds(30*60)
-```
-
-
-> **Note**  
-> Once running, the calculation should finish within 5 minutes.
-
+Once running, the calculation should finish within 5 minutes.
