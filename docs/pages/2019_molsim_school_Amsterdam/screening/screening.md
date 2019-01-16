@@ -1,9 +1,16 @@
 # Screening
 
-Here we will combine recently performed calculations into a workchain using the AiiDA `WorkChain`
-class. The workflow is already prepared for you and can be downloaded
-[from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py). Your task would be
-to go through the workflow, undestand every step and prepare a script that will run it.
+In order to compute the deliverable capacity of a material, you need to compute the
+methane loading both at the loading and at the discharge pressure,
+and then do some simple math - in other words, a simple *workflow*.
+
+AiiDA provides [WorkChains](https://aiida-core.readthedocs.io/en/stable/work/index.html#workchains)
+ to orchestrate the running of calculations.  
+We've prepared a WorkChain to compute the deliverable methane capacity, download it 
+[from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py). 
+
+In the following, we will go through each step of the WorkChain.
+Your task will be to write a script to run the WorkChain for each of your candidate structures.
 
 
 ## Step 0: define inputs, outputs and the steps
@@ -99,6 +106,15 @@ at different pressures. We also specify the code options that will be used by ev
 
 
 ## Step 2: Compute the geometric parameters of the MOFs.
+
+
+* `BlockPockets` and `BlockPocketsFileName` will be filled by AiiDA: if Zeo++ finds
+some non accessible pore volume, it can generate a .block file with the positions
+and the radii of blocking spheres. These spheres are inserted in the framework to prevent
+Raspa from inserting molecules in the non accessible pore.
+
+
+
 Here we will compute blocked pockets of a particular material employing the Zeo++ code.
 ```python
     def run_block_zeopp(self):
@@ -328,9 +344,9 @@ We pack our results into the `result` object of type `ParameterData` and set it 
                structure=cif,
                zeopp_parameters = zeopp_params,
                raspa_parameters = raspa_params,
-               atomic_radii = load_node('4890c050-8668-4bca-b172-e396f4d71140'), # already present in your database
-               zeopp_code=Code.get_from_string('zeopp@fidis'),
-               raspa_code=Code.get_from_string('raspa@fidis'),
+               atomic_radii = load_node('27d2af72-3af0-48a6-a563-24d1d6d6eb60'), # already present in your database
+               zeopp_code=Code.get_from_string('zeopp@bazis1'),
+               raspa_code=Code.get_from_string('raspa@bazis1'),
            )
        time.sleep(40)
    ```
