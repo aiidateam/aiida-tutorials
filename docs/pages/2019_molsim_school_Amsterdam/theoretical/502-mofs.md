@@ -1,7 +1,8 @@
 The structures of the 502 Metal Organic Frameworks (MOFs) you are asked to analyze
 come mainly from powder or single crystal X-Ray diffraction.
 
-These structures have been uploaded to the [Cambridge Structural Database (CSD)](https://www.ccdc.cam.ac.uk/),
+These structures have been uploaded to the
+[Cambridge Structural Database (CSD)](https://www.ccdc.cam.ac.uk/solutions/csd-system/components/csd/),
 and have been parsed to reject messy structures and remove the solvent molecules inside the pores.
 This database was named [Computational Ready Experimental (CoRE) MOF database](http://gregchung.github.io/CoRE-MOFs/).
 
@@ -17,7 +18,11 @@ This database was named [Computational Ready Experimental (CoRE) MOF database](h
 * 502 MOFs are the intersection of the two sets,
 having optimized geometry from CP2K and charges from Quantum Espresso
 
-In case you you wonder if there are duplicates in the 502, see [(Barthel2018)](https://pubs.acs.org/doi/abs/10.1021/acs.cgd.7b01663)
+Don't pay much attention of the names of these structures. They are just strings
+with random combinations of six letters.
+
+In case you you wonder if there are duplicates in the 502,
+see [(Barthel2018)](https://pubs.acs.org/doi/abs/10.1021/acs.cgd.7b01663)
 
 
 ---
