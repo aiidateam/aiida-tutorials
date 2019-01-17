@@ -158,8 +158,9 @@ Once the calculation shows up as `FINISHED`, have a look at the result.
 
 Raspa produces two types of output: Outputs related to the whole system (e.g. total energy, temperature) and outputs related to the component -- in our case, there is only one component: methane.
 
-Find the `component_0` output of the calculation and use `verdi data parameter
-show` to extract the average and standard deviation of the absolute methane
+Find the `component_0` output of the calculation using `verdi calculation show <PK>`
+and use the PK of `component_0` in  `verdi data parameter show <PK>` 
+to extract the average and standard deviation of the absolute methane
 loading.
 
 ---
