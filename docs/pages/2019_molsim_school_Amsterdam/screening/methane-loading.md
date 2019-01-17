@@ -9,8 +9,9 @@ framework at the given pressure.
 
 In principle, we could continue to use the `verdi shell` or `jupyter notebooks`
 but in order to speed things up, we've already prepared a template python script
-that you'll need to adapt to your needs.
+that you can [download here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/raspa_loading.py).
 
+In the following, you will adapt it to your needs.
 
 ## RASPA input parameters
 
@@ -133,15 +134,10 @@ submit(RaspaCalculation.process(),
 )
 ```
 
-At this stage, however, we suggest you use a python script instead
-in order to make changes and debug more easily.
-
-We've provided a
-[submission script template]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/raspa_loading.py),
-where you just need to paste your parameters and the structure you selected.
+When the submission script is ready, submit it to the AiiDA daemon:
 
 ```terminal
-$ verdi run <scriptname>
+$ verdi run raspa_loading.py
 ```
 > **Note**  
 > By default, the daemon polls for new calculations every 30 seconds,
