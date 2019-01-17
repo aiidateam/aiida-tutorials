@@ -81,6 +81,11 @@ Note that you can combine filters like so:
 
 For explanations on filters, see [the previous section](queries#filters).
 
+> **Note**  
+> The `label` can be used to give human-readable identifiers to any AiiDA node.
+> By default it is empty, but we have added labels for all `CifData` nodes
+> in the database.
+
 ---
 
 Finally, put the structures you've identified into a group `candidates` 
