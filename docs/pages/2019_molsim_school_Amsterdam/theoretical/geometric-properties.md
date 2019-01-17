@@ -50,4 +50,4 @@ where the probe can diffuse through
 It is very interesting to compare these metrics to the performance of your materials
 for a certain application,
 to be able to find any correlation that could help to discover the best framework
-for that application. See for example [Wilmer2012](http://xlink.rsc.).
+for that application. See for example [Wilmer2012](http://xlink.rsc.org/?DOI=c2ee23201d).
