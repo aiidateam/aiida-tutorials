@@ -5,6 +5,7 @@ from __future__ import absolute_import
 from aiida.common.example_helpers import test_and_get_code
 from aiida.orm import DataFactory, CalculationFactory
 from aiida.work.run import submit
+from aiida.orm import load_node
 
 # Data classes
 CifData = DataFactory('cif')
