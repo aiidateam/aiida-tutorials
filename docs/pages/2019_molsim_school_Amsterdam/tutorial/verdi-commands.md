@@ -124,10 +124,11 @@ We will make use of this functionality later.
 Famliarize yourself with the other options of the `calculation` and `data` subcommands, such as:
 
 ```terminal
-verdi calculation res <pk>   # for Calculation PKs
 verdi data parameter show <pk>   # for ParameterData PKs
 verdi data cif show --format jmol <pk>  # for CifData PKs
-verdi code show <label>      # for Code labels
+verdi calculation res <pk>   # for Calculation PKs
+verdi calculation show <pk>   # for Calculation PKs, shows code & computer labels
+verdi code show <label>      # for Code labels (see output of 
 verdi computer show <label>  # for Computer labels
 ```
 and use them to answer the questions below:
