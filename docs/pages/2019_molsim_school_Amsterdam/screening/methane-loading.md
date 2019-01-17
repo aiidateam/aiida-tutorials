@@ -141,7 +141,9 @@ $ verdi run raspa_loading.py
 ```
 > **Note**  
 > By default, the daemon polls for new calculations every 30 seconds,
-> i.e. you may need to wait up to 30 seconds before your calculation starts running.
+> i.e. you may need to wait up to 30 seconds before your calculation starts running.  
+> If your calculation is stuck in the `NEW` state, it may indicate
+> that your daemon is not running. Try `verdi daemon restart`.
 
 Use `verdi calculation list -a` to monitor the state of the calculation.
 Once running, the calculation should finish within 5 minutes.
