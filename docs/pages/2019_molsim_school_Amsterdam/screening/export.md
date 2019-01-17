@@ -43,6 +43,8 @@ Keep posted for AiiDA news on the [AiiDA mailing list](http://groups.google.com/
 If you're interested in continuing along these lines, you may want to (optional):
 
  * screen a few more materials to get a higher deliverable capacity
-   (don't pick more than 5 at a time in order not to block the queue for the other participants).
+   (**please do not run more than 5 at a time** in order not to block the queue for the other participants).
+ * learn about [how to change force fields in RASPA](../theoretical/settings-raspa)
+   and play with the parameters to see how they impact the deliverable capacity
  * have a look at the [extra challenge on CO2 capture](../theoretical/charged-adsorbates.md)
-(with less detailed instructions).
+(advanced, with less detailed instructions).
