@@ -143,7 +143,11 @@ $ verdi run raspa_loading.py
 > By default, the daemon polls for new calculations every 30 seconds,
 > i.e. you may need to wait up to 30 seconds before your calculation starts running.  
 > If your calculation is stuck in the `NEW` state, it may indicate
-> that your daemon is not running. Try `verdi daemon restart`.
+> that your daemon is not running or AiiDA is unable to find the calculation plugin. Try
+> ```
+> reentry scan  # make sure the raspa plugin is available to aiida
+> verdi daemon restart
+> ```
 
 Use `verdi calculation list -a` to monitor the state of the calculation.
 Once running, the calculation should finish within 5 minutes.
