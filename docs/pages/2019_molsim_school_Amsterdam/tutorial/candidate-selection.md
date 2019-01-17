@@ -37,11 +37,20 @@ qb.append(ParameterData, descendant_of='cif',
 )
 result = qb.all()
 ```
+
+In order to figure out which properties zeo++ computed, have a look at the attributes
+of one of the zeo++ output nodes, for example:
+```python
+pm=load_node('f1834bb1-3279-40ca-94dc-a02832143d0d')
+pm.get_attrs()
+```
+
 > **Note**  
 > We are using `Density` and `Number_of_channels` here but this combination
 > is just an example (and not an ideal choice).
 > If you are wondering how to set up `ParameterData` and `CifData`, see
 > [the previous section](queries#the-aiida-querybuilder).
+
 
 Plot the result using the plotting library of your choice.
 Using `matplotlib` you would do something like
