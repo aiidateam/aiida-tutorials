@@ -9,8 +9,7 @@ AiiDA provides [WorkChains](https://aiida-core.readthedocs.io/en/stable/work/ind
 We've prepared a WorkChain to compute the deliverable methane capacity.
 
 Download it [from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py)
-and place the file in some directory that you need to add to the `PYTHONPATH`,
-and then restart the daemon:
+and place the file in some directory, then add its path to `PYTHONPATH` and restart the daemon:
 ```terminal
 $ export PYTHONPATH=/path/to/your/directory/:$PYTHONPATH
 $ verdi daemon restart
