@@ -3,14 +3,20 @@
 In order to compute the deliverable capacity of a material, you need to compute the
 methane loading both at the loading and at the discharge pressure,
 and then do some simple math - in other words, a simple *workflow*.
-
 AiiDA provides [WorkChains](https://aiida-core.readthedocs.io/en/stable/work/index.html#workchains)
  to orchestrate the running of calculations.  
-We've prepared a WorkChain to compute the deliverable methane capacity,
 
-download it [from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py).
+We've prepared a WorkChain to compute the deliverable methane capacity.
 
-We analyze it step by step, and we will see later how to run it.
+Download it [from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py)
+and place the file in some directory that you need to add to the `PYTHONPATH`,
+and then restart the daemon:
+```terminal
+$ export PYTHONPATH=/path/to/your/directory/:$PYTHONPATH
+$ verdi daemon restart
+```
+
+Now, we analyze step by step the WorkChain, and we will see later how to run it.
 
 ## Step 0: define inputs, outputs and the steps
 First, when setting up the class one should define the list of input types using spec.input()
@@ -379,21 +385,3 @@ run it with `verdi run run_DcMethane.py`.
    > Consult the [Querying the AiiDA database]({{ site.baseurl}}/pages/2019_molsim_school_Amsterdam/tutorial/queries) part of the tutorial
    > in order to find out which filter you should put in `q.append(CifData, filters={})` to select the appropriate
    > structures.
-
-
-   DANIELE: this part should be avoided. Let's tell them where they have to put this DcMethane file. And let's do it before introducing run_DcMethane
-
-   > **Note**
-   > The file containing the `DcMethane` workchain should be accessible
-   > from the python shell. To achieve that just place the file into a folder
-   > listed in `PYTHONPATH` system variable and rename it to
-   > `deliverable_capacity.py`.
-   > In case you want to place the python file in your own directory, just add
-   > the path to it into `PYTHONPATH` variable running
-   > ```terminal
-   >    $ export PYTHONPATH=/path/to/your/directory/:$PYTHONPATH
-   > ```
-   > and do not forget to restart the AiiDA daemon **in the same shell**
-   > ```terminal
-   >    $ verdi daemon restart
-   > ```
