@@ -9,7 +9,7 @@ AiiDA provides [WorkChains](https://aiida-core.readthedocs.io/en/stable/work/ind
 We've prepared a WorkChain to compute the deliverable methane capacity.
 
 Download it [from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py)
-and place the file in some directory, then add its path to `PYTHONPATH` and restart the daemon:
+and place the file in some directory, then add the path to this directory to `PYTHONPATH` and restart the daemon:
 ```terminal
 $ export PYTHONPATH=/path/to/your/directory/:$PYTHONPATH
 $ verdi daemon restart
@@ -73,8 +73,6 @@ class DcMethane(WorkChain):
 Using the spec.outline() function we specify the steps of the workchain.
 All **7 steps** will be executed consequently.
 
-The outputs of the workchain are specified using `spec.dynamic_output()`.
-
 ## Step 1: Prepare input parameters and variables
 
    ```python
@@ -99,15 +97,13 @@ The outputs of the workchain are specified using `spec.dynamic_output()`.
 
    > **Note**    
    > The **context** (`self.ctx`) variable is a container that is accessible
-   > by every function in the `DcMethane` workchain.
-
-In this particular case we are
-creating two empty dictionaries to store the loading average and its deviation
-at different pressures. We also specify the code options that will be used by every calculation:
-
+   > by every function in the `DcMethane` workchain. In this particular case we
+   > are creating two empty dictionaries to store the loading average and its
+   > deviation at different pressures.
 
 ## Step 2: Compute the geometric parameters of the MOFs.
 
+As described in [Setting for Raspa]({{ site.baseurl}}/pages/2019_molsim_school_Amsterdam/theoretical/settings-raspa):
 
 * `BlockPockets` and `BlockPocketsFileName` will be filled by AiiDA: if Zeo++ finds
 some non accessible pore volume, it can generate a .block file with the positions
@@ -172,8 +168,7 @@ and finally execute the same `_run_loading_raspa` function.
         inputs = {
             'code': self.inputs.raspa_code,
             'structure': self.inputs.structure,
-            'parameters': update_raspa_parameters(self.inputs.raspa_parameters,
-                Float(self.ctx.current_pressure)),
+            'parameters': update_raspa_parameters(self.inputs.raspa_parameters, Float(self.ctx.current_pressure)),
             'block_component_0': self.ctx.zeopp['block'],
             '_options': self.ctx.options,
         }
@@ -181,8 +176,7 @@ and finally execute the same `_run_loading_raspa` function.
         # Create the calculation process and launch it
         process = RaspaCalculation.process()
         future = submit(process, **inputs)
-        self.report("pk: {} | Running raspa for the pressure {} [bar]".format(
-            future.pid, self.ctx.current_pressure / 1e5))
+        self.report("pk: {} | Running raspa for the pressure {} [bar]".format(future.pid, self.ctx.current_pressure / 1e5))
 
         return ToContext(raspa=Outputs(future))
 ```
@@ -200,14 +194,10 @@ Steps 4 and 6 extract pressure and methane loading (with deviation) and puts the
 
 ```python
         """Extract pressure and loading average of last completed raspa calculation."""
-        loading_average = self.ctx.raspa[
-            "component_0"].dict.loading_absolute_average
-        loading_dev = self.ctx.raspa[
-            "component_0"].dict.loading_absolute_dev
-        self.ctx.loading_average[self.ctx.
-                                 current_pressure_label] = loading_average
-        self.ctx.loading_dev[self.ctx.
-                                 current_pressure_label] = loading_dev
+        loading_average = self.ctx.raspa["component_0"].dict.loading_absolute_average
+        loading_dev = self.ctx.raspa["component_0"].dict.loading_absolute_dev
+        self.ctx.loading_average[self.ctx.current_pressure_label] = loading_average
+        self.ctx.loading_dev[self.ctx.current_pressure_label] = loading_dev
 ```
 
 
@@ -302,28 +292,23 @@ run it with `verdi run run_DcMethane.py`.
        from math import cos, sin, sqrt, pi
        import numpy as np
        deg2rad=pi/180.
-
        struct=cif.values.dictionary.itervalues().next()
-
        a = float(struct['_cell_length_a'])
        b = float(struct['_cell_length_b'])
        c = float(struct['_cell_length_c'])
-
        alpha = float(struct['_cell_angle_alpha'])*deg2rad
        beta  = float(struct['_cell_angle_beta'])*deg2rad
        gamma = float(struct['_cell_angle_gamma'])*deg2rad
-
        v = sqrt(1-cos(alpha)**2-cos(beta)**2-cos(gamma)**2+2*cos(alpha)*cos(beta)*cos(gamma))
        cell=np.zeros((3,3))
        cell[0,:] = [a, 0, 0]
        cell[1,:] = [b*cos(gamma), b*sin(gamma),0]
        cell[2,:] = [c*cos(beta), c*(cos(alpha)-cos(beta)*cos(gamma))/(sin(gamma)),c*v/sin(gamma)]
        cell=np.array(cell)
-
        diag = np.diag(cell)
        return tuple(int(i) for i in np.ceil(cutoff/diag*2.))
 
-   cutoff = 8.0         #to change
+   cutoff = 8.8         #TO EDIT
    probe_radius = 1.865 #Why this value?
 
    zeopp_params = NetworkParameters(dict={
@@ -331,40 +316,46 @@ run it with `verdi run run_DcMethane.py`.
        'block': [probe_radius, 100],
    })
 
-   raspa_params = ParameterData(dict={
-       "GeneralSettings":
-       {
-       "SimulationType"                   : "MonteCarlo",
-       "NumberOfCycles"                   : 100,  #to change
-       "NumberOfInitializationCycles"     : 100,  #to change
-       "PrintEvery"                       : 100,
-
-       "CutOff"                           : cutoff,
-
-       "Forcefield"                       : "UFF-TraPPE",
-       "ChargeMethod"                     : "None",
-       "UnitCells"                        : "<int> <int> <int>",
-       "ExternalTemperature"              : 298,
-
-       },
-       "Component":
-       [{
-       "MoleculeName"                     : "methane",
-       "MoleculeDefinition"               : "TraPPE",
-       "MolFraction"                      : 1.0,
-       "TranslationProbability"           : 1.0, #to change
-       "RotationProbability"              : 1.0, #to change
-       "ReinsertionProbability"           : 1.0, #to change
-       "SwapProbability"                  : 1.0, #to change
-       "CreateNumberOfMolecules"          : 0,
-       }],
-   })
-
+   # Search for the structures to evaluate and submit them
    q = QueryBuilder()
-   q.append(CifData, filters={}) # find a way to specify particular Structures
+   q.append(CifData, filters={}) #TO EDIT: use filters to select the structures you want to submit
+
    for item in q.all():
        cif = item[0]
        print (cif)
+       nx, ny, nz = multiply_unit_cell(cif, cutoff)
+       unitscells="{} {} {}".format(nx,ny,nz)
+
+       raspa_params = ParameterData(dict={
+           "GeneralSettings":
+           {
+           "SimulationType"                   : "MonteCarlo",
+           "NumberOfCycles"                   : 888,  #TO EDIT
+           "NumberOfInitializationCycles"     : 888,  #TO EDIT
+           "PrintEvery"                       : 100,
+
+           "CutOff"                           : cutoff,
+
+           "Forcefield"                       : "UFF-TraPPE",
+           "ChargeMethod"                     : "None",
+           "UnitCells"                        : "<int> <int> <int>",
+           "ExternalTemperature"              : 298,
+
+           },
+           "Component":
+           [{
+           "MoleculeName"                     : "methane",
+           "MoleculeDefinition"               : "TraPPE",
+           "MolFraction"                      : 1.0,
+           "TranslationProbability"           : 8.8, #TO EDIT
+           "RotationProbability"              : 8.8, #TO EDIT
+           "ReinsertionProbability"           : 8.8, #TO EDIT
+           "SwapProbability"                  : 8.8, #TO EDIT
+           "CreateNumberOfMolecules"          : 8, #TO EDIT
+           }],
+       })
+
+
        outputs = submit(
                DcMethane,
                structure=cif,
@@ -378,8 +369,8 @@ run it with `verdi run run_DcMethane.py`.
    ```
 
    > **Note**
-   > The function `multiply_unit_cell` is automatically computing the number of `UnitCells` needed.
-   > It contains the math to [deal also with non-orthogonal unit cells]({{site.baseurl}}/pages/2019_molsim_school_Amsterdam/theoretical/multiply-uc).
+   > The function `multiply_unit_cell` is automatically computing the number of `UnitCells` needed, `nx ny nz`.
+   > This function contains the math to [deal also with non-orthogonal unit cells]({{site.baseurl}}/pages/2019_molsim_school_Amsterdam/theoretical/multiply-uc).
    >
    > Consult the [Querying the AiiDA database]({{ site.baseurl}}/pages/2019_molsim_school_Amsterdam/tutorial/queries) part of the tutorial
    > in order to find out which filter you should put in `q.append(CifData, filters={})` to select the appropriate
