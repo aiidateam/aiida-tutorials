@@ -17,15 +17,10 @@ $ verdi daemon restart
 
 Now, we analyze step by step the WorkChain, and we will see later how to run it.
 
-## Step 0: define inputs, outputs and the steps
-First, when setting up the class one should define the list of input types using spec.input()
-function.
+## Step 0: Defining inputs, outputs and execution steps
 
-In our case the workflow takes as an input the following objects:
-1. CifData object (named `structure`)
-2. Zeo++ and Raspa parameters (`zeopp_parameters` and `raspa_parameters` of type `ParameterData`)
-3. A file with atomic radii (`atomic_radii` of type `SingleFile`)
-4. Zeo++ and Raspa codes (`zeopp_code` and `raspa_code` of type `Code`).
+AiiDA WorkChains are python *classes*.
+The `define` method specifies the inputs, the steps of execution and the outputs of the WorkChain:
 
 ```python
 class DcMethane(WorkChain):
@@ -69,9 +64,17 @@ class DcMethane(WorkChain):
         # to be returned
         spec.dynamic_output()
 ```
+The `DcMethane` uses `spec.input()` to specify the following inputs:
+ 1. The structure in `CifData` format
+ 1. Raspa parameters of type `ParameterData`
+ 1. Zeo++ parameters of type `NetworkParameters`
+ 1. A file containing specification of atomic radii (of type `SingleFile`)
+ 1. Zeo++ and Raspa codes (of type `Code`).
 
-Using the spec.outline() function we specify the steps of the workchain.
-All **7 steps** will be executed consequently.
+It then uses `spec.outline()` to specify the steps of the workchain 
+(using functions defined below).
+All **7 steps** will be executed in order.
+
 
 ## Step 1: Prepare input parameters and variables
 
