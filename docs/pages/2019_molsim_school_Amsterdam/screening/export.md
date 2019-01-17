@@ -14,7 +14,7 @@ cifs = qb.all()   # these are your candidate structures
 qb.append(Node, descendant_of='cifs') # get all children 
 children = qb.all()
 
-results = Group(name='results')
+results, created = Group.get_or_create(name='results')
 results.store() 
 results.add_nodes([ n[0] for n in cifs + children ])
 ```

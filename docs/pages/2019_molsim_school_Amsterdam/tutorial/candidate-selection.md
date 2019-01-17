@@ -84,7 +84,7 @@ candidate_labels = ['HKUST1']  # add your labels!
 qb=QueryBuilder()
 qb.append(CifData, filters={ 'label': {'in': candidate_labels}})
 cifs = qb.all()
-candidates = Group.get_or_create(name='candidates')  # create new group 
+candidates, created = Group.get_or_create(name='candidates')  # create & store new group 
 candidates.add_nodes([ cif[0] for cif in cifs])
 ```
 After this, your group should show up in `verdi group list` 

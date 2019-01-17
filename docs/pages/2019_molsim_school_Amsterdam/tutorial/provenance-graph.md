@@ -34,9 +34,11 @@ $ verdi restapi
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-Now [open the provenance browser](http://34.244.178.26:5001/explore/connect){:target="_blank"} 
-and connect your REST API to it by pasting the (local) URL
-`http://127.0.0.1:5000/api/v2` of our REST API.
+Now 
+
+ * Open a browser **inside** Quantum Mobile
+ * Inside this browser, open the [link to the provenance browser](http://34.244.178.26:5001/explore/connect){:target="_blank"} 
+ * In the form, paste the (local) URL `http://127.0.0.1:5000/api/v2` of our REST API and click "GO!"
 
 > **Note**  
 > The provenance browser is also [available on Materials Cloud](https://www.materialscloud.org/explore/connect) but we are using a more recent development version.
