@@ -187,8 +187,12 @@ export RASPA_DIR=/home/molsim20/raspa/
 Code 'raspa' successfully stored in DB.
 ```
 > **Note**  
-> Rember to include the line `export RASPA_DIR=/home/molsim20/raspa/`
-> as `Text to prepend to each command execution`, otherwise RASPA won't run.
+> Rember to include:
+>  * => Remote absolute path: /home/molsim20/raspa/bin/simulate
+>  * export RASPA_DIR=/home/molsim20/raspa/  
+>    as "Text to prepend to each command execution"
+>
+> otherwise RASPA won't run and you might get a parsing error.
 >
 > If you get an error about the input plugin not being found,
 > try running `reeentry scan` to refresh AiiDA's plugin entry point cache
