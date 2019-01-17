@@ -78,31 +78,31 @@ All **7 steps** will be executed in order.
 
 ## Step 1: Prepare input parameters and variables
 
-   ```python
-    def init(self):
-        """Initialize variables."""
+```python
+ def init(self):
+     """Initialize variables."""
 
-        self.ctx.loading_average = {}
-        self.ctx.loading_dev = {}
+     self.ctx.loading_average = {}
+     self.ctx.loading_dev = {}
 
-        self.ctx.options = {
-            "resources": {
-                "num_machines": 1,
-                "tot_num_mpiprocs": 1,
-                "num_mpiprocs_per_machine": 1,
-            },
-            "max_wallclock_seconds": 4 * 60 * 60,
-            "max_memory_kb": 2000000,
-			"queue_name": "molsim",
-            "withmpi": False,
-        }
-   ```
+     self.ctx.options = {
+         "resources": {
+             "num_machines": 1,
+             "tot_num_mpiprocs": 1,
+             "num_mpiprocs_per_machine": 1,
+         },
+         "max_wallclock_seconds": 4 * 60 * 60,
+         "max_memory_kb": 2000000,
+     		"queue_name": "molsim",
+         "withmpi": False,
+     }
+```
 
-   > **Note**    
-   > The **context** (`self.ctx`) variable is a container that is accessible
-   > by every function in the `DcMethane` workchain. In this particular case we
-   > are creating two empty dictionaries to store the loading average and its
-   > deviation at different pressures.
+> **Note**    
+> The **context** (`self.ctx`) variable is a container that is accessible
+> by every function in the `DcMethane` workchain. In this particular case we
+> are creating two empty dictionaries to store the loading average and its
+> deviation at different pressures.
 
 ## Step 2: Compute the geometric parameters of the MOFs.
 
@@ -140,8 +140,9 @@ parameters and atomic\_radii file that are all directly taken from the workflow 
 job submission happens in exactly the same way as it was for the [single raspa calculation]({{site.baseurl}}/pages/2019_molsim_school_Amsterdam/screening/methane-loading#submitting-the-calculation)
 that we tried previously.
 
-A new function that you may notice in this step is the `self.report()` that provides
-a report message, a convenient way to monitor the stage of the workflow.
+> **Note**  
+> The `self.report()` functions provides a convenient way to report the status of a workflow
+> that can be access from the verdi command line via `verdi work report <PK>`
 
 ## Step 3, 5: Compute the methane loading
 Steps 3 (`run_loading_raspa_low_p`) and 5 (`run_loading_raspa_high_p`) compute the
