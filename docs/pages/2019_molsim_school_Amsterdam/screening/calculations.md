@@ -91,6 +91,10 @@ Creating new computer with name 'bazis'
 # ——————————————
 Computer 'bazis' successfully stored in DB.
 ```
+> **Note**  
+> Please be careful to enter the data as shown, in particular:
+>  * AiiDA work directory: /**home**/{username}/aiida_run/
+>  *  mpirun command: **srun -n** {tot_num_mpiprocs}
 
 At this point, the computer node has been created in the database
 
