@@ -322,7 +322,7 @@ run it with `verdi run run_DcMethane.py`.
 
    # Search for the structures to evaluate and submit them
    q = QueryBuilder()
-   q.append(CifData, filters={}) #TO EDIT: use filters to select the structures you want to submit
+   q.append(CifData, filters={'label': { 'in': [ ...] }}) #TO EDIT: provide labels of the structures you want to submit
 
    for item in q.all():
        cif = item[0]
