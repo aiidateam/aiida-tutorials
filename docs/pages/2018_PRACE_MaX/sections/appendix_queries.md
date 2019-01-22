@@ -47,7 +47,7 @@ At this point you should be able to do queries with projections, joins and filte
 
 Imagine that you would like to get the smearing energy for all the calculations that have finished and have a \(\mathrm{Sn_{2}O_{3}}\) as input. Moreover, besides from the smearing energy, you would like to print the units of this energy and the formula of the structure that was given to the calculation. The graphical representation of this query can be seen in Figure [fig:qb2] and the actual query follows:
 
-![Complex graph query.](img/qb_example_2.png)
+![Complex graph query.]({{ site.baseurl}}/assets/2018_PRACE_MaX/qb_example_2.png)
 
 [fig:qb2]
 

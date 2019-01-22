@@ -12,7 +12,7 @@ and the multiplication coefficients.
 
 
 
-|![perp_width.png](../../../assets/2019_molsim_school_Amsterdam/perp_width.png){:width="98%"}|
+|![perp_width.png]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/perp_width.png){:width="98%"}|
 |:--:|
 | Perpendicular widths in orthogonal and tilted 2D cells. |
 

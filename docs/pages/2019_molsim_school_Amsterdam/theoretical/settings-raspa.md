@@ -84,7 +84,7 @@ the average number of particles for `NumberOfCycles` cycles. Therefore, the numb
 should be large enough to compute statistics correctly but not too large to waist computational
 times after your uncertainty is already low. Standard deviation is computed using Block Averages (see UMS pag. 529).
 
-|![gcmc.png](../../../assets/2019_molsim_school_Amsterdam/gcmc.png){:width="98%"}|
+|![gcmc.png]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/gcmc.png){:width="98%"}|
 |:--:|
 | Here an example of the value fluctuation and average, with the averaging starting after 10k cycles. |
 
