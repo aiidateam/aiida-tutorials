@@ -2,3 +2,6 @@
 .DS_Store
 *.swp
 .bundle
+_site
+Gemfile.lock
+vendor/

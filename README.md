@@ -5,18 +5,26 @@ various AiiDA tutorials.
 
 Visit http://aiidateam.github.io/aiida-tutorials
 
-## Building locally
+## Contributing
 
-Prerequisites:
+We welcome new contributions! If you notice a problem with a tutorial simply [open an issue](https://github.com/aiidateam/aiida-tutorials/issues/new).
+If you would like to contribute a fix or a link to a new tutorial resources, please:
+
+ * Fork this repository
+ * Make your changes
+ * Submit a [pull request](https://github.com/aiidateam/aiida-tutorials/pulls)
+
+
+## Running the web site locally
+
+### Install prerequisites
+
 - Follow the [jekyll installation instructions](https://jekyllrb.com/docs/installation/) for your operating system
-- `cd docs; sudo bundle install`  
+- `bundle install`  
 
-Note: If the installation of `nokogiri` is failing, try
-```
-bundle config build.nokogiri --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/libxml2  --use-system-libraries
-``` 
+Note: On MacOS install `ruby >= 2.6` in order to avoid issues with building `ffi` and `nokogiri`.
 
-Build website locally:
+### Running the web site
 - `bundle exec jekyll serve`
 - connect with your browser to `http://127.0.0.1:4000/aiida-tutorials/`
 
