@@ -5,7 +5,7 @@ was held from May 30th to June 1st, 2018 at the Cineca HPC facility in
 Bologna, Italy.
 
 The instructions of the tutorial are found below, converted 
-from the [original LaTeX source](https://github.com/aiidateam/aiida-tutorials/tree/master/latex) to MarkDown.
+from the [original LaTeX source](https://github.com/aiidateam/aiida-tutorials/tree/master/assets/2018_PRACE_MaX/latex) to MarkDown.
 
 ## Sections
 
