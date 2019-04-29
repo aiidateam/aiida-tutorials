@@ -8,7 +8,7 @@ codes and tools for computational materials science.
 Start the virtual machine, open a terminal window and
 type
 
-```terminal
+```console
 $ workon aiida
 ```
 
@@ -18,7 +18,7 @@ Since Quantum Mobile focuses on *ab initio* calculations, it is missing
 some aiida plugins we are going to need. Let’s install them (this can
 take 3 minutes):
 
-```terminal
+```console
 $ pip install aiidalab==19.01.2
 ```
 > **Note**  
@@ -27,20 +27,20 @@ $ pip install aiidalab==19.01.2
 
 > **Note**  
 > To make sure that AiiDA noticed all the plugin updates please run
-> ```terminal
+> ```console
 > $ reentry scan
 > ```
 
 Furthermore, you are currently using the `default` AiiDA profile.
 
-```terminal
+```console
 $ verdi profile list
 ```
 
 At the end of the tutorial, we'll ask you to submit the data you computed, 
 so let's create a new profile in order to associate this data with you:
 
-```terminal
+```console
 $ verdi quicksetup
 Profile name [quicksetup]: molsim2019
 Email Address (identifies your data when sharing): leopold.talirz@epfl.ch

@@ -2,9 +2,12 @@
 
 This folder contains the LaTeX source for the 2018 PRACE-MaX AiiDA tutorial.
 
-## Export to markdown
+**Note:** The LaTeX source is kept only for historical reasons
+and has been replaced by the markdown/rst based version.
 
-The LaTeX source can be converted to markdown as follows:
+## Export to markdown/rst
+
+The LaTeX source can be converted as follows:
 
 ### Prerequisites
 
@@ -14,7 +17,7 @@ The LaTeX source can be converted to markdown as follows:
 ### Conversion
 
 ```
-cd latex
 pip install -r requirements.txt
 make markdown
+make rst
 ```

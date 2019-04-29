@@ -5,7 +5,7 @@ The `verdi` command line utility is another common way of
 interacting with AiiDA, be it to investigate the provenance,
 to submit or monitor calculations.
 
-```terminal
+```console
 $ verdi
 Usage: verdi [--profile=PROFILENAME|-p PROFILENAME] COMMAND [<args>]
 
@@ -46,7 +46,7 @@ See 'verdi help' for more help.
 
 Let's try to get a list of calculations using `verdi`:
 
-```terminal
+```console
 $ verdi calculation list
 ```
 
@@ -64,7 +64,7 @@ How do you list all calculations that ran in the past week?
 Let's have a closer look at a zeo++ calculation node.
 Pick a primary key (PK) number and run:
 
-```terminal
+```console
 $ verdi calculation show <pk>
 -----------  ------------------------------------
 type         NetworkCalculation
@@ -100,7 +100,7 @@ Another way to produce a visual representation of the provenance is `verdi graph
 
 Pick a PK number from the list of calculations and generate a provenance graph for a `NetworkCalculation`:
 
-```terminal
+```console
 $ verdi graph generate <pk>
 $ dot -Tpdf -o <pk>.pdf <pk>.dot   # convert .dot to .pdf
 $ evince <pk>.pdf                  # open pdf
@@ -123,7 +123,7 @@ We will make use of this functionality later.
 
 Famliarize yourself with the other options of the `calculation` and `data` subcommands, such as:
 
-```terminal
+```console
 verdi data parameter show <pk>   # for ParameterData PKs
 verdi data cif show --format jmol <pk>  # for CifData PKs
 verdi calculation res <pk>   # for Calculation PKs

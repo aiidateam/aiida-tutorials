@@ -4,7 +4,7 @@ Browsing the provenance graph
 Before we start creating data ourselves, we are going to look at an
 AiiDA database already created by someone else. Let’s import one from the web:
 
-```terminal
+```console
 $ verdi import https://www.dropbox.com/s/xz7h6m7dd91v3da/mof_database.aiida?dl=1
 ```
 
@@ -20,11 +20,11 @@ The EXPLORE interface
 ---------------------
 
 The most intuitive way to browse AiiDA graphs is to use the interactive provenance
-explorer available on [Materials Cloud](www.materialscloud.org).
+explorer available on [Materials Cloud](https://www.materialscloud.org).
 
 For it to work, we first need to start the AiiDA REST API:
 
-```terminal
+```console
 $ verdi restapi
  * Serving Flask app "aiida.restapi.run_api" (lazy loading)
  * Environment: production
@@ -60,4 +60,3 @@ Use the graph explorer in order to figure out:
  * What inputs did the calculation take?
  * What other types of calculation was the `Cif` input structure used in?
 
----

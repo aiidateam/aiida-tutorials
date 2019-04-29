@@ -1,6 +1,2 @@
 *~
-_site
-Gemfile.lock
-user_guide.pdf
-user_guide.tex
-vendor/
+build/

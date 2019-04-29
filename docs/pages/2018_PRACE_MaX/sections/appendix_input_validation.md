@@ -1,3 +1,6 @@
+Calculation input validation
+============================
+
 This appendix shows additional ways to debug possible errors with QE, how to use a useful tool that we included in AiiDA to validate the input to Quantum ESPRESSO (and possibly suggest the correct name to mispelled keywords)
 
 There are various reasons why you might end up providing a wrong input to a Quantum ESPRESSO calculation. Let’s check for example this input dictionary, where we inserted two mistakes:

@@ -10,7 +10,7 @@ We've prepared a WorkChain to compute the deliverable methane capacity.
 
 Download it [from here]({{ site.baseurl}}/assets/2019_molsim_school_Amsterdam/deliverable_capacity.py)
 and place the file in some directory, then add the path to this directory to `PYTHONPATH` and restart the daemon:
-```terminal
+```console
 $ export PYTHONPATH=/path/to/your/directory/:$PYTHONPATH
 $ verdi daemon restart
 ```
@@ -247,7 +247,7 @@ the standard deviation of the difference.
 
 1. Before you actually start doing the calculations please setup the zeo++ code as shown here:
 
-   ```terminal
+   ```console
     * PK:             60109
     * UUID:           8a37224a-1247-4484-b3c8-ce3e8f37cee7
     * Label:          zeopp

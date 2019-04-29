@@ -7,7 +7,7 @@ and visualizing the structures. Use at your convenience.
 ### Installation
 To get the app please download it using the following link:
 
-```terminal
+```console
 $ wget {{ "/assets/2018_EPFL_molsim/ranking.tar.gz" | absolute_url }}
 $ tar -xf ranking.tar.gz
 ```
@@ -18,7 +18,7 @@ folder inside `/project/apps` and it should already work.
 In case you have configured AiiDA on your own computer please install
 additional packages:
 
-```terminal
+```console
 $ pip install jupyter matplotlib bokeh plotly ase appmode
 $ jupyter nbextension     enable --py --sys-prefix appmode
 $ jupyter serverextension enable --py --sys-prefix appmode

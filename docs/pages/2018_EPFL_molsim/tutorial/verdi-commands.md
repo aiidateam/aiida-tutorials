@@ -21,7 +21,7 @@ The list of calculations
 
 Let us try our first <span>`verdi`</span> commands. Type in the terminal
 
-```bash
+```console
 verdi calculation list
 ```
 
@@ -31,7 +31,7 @@ machine. Following calls will be faster). This will print the list of
 ongoing calculations, which should be empty. The first output line
 should look like
 
-```bash
+```console
 # Last daemon state_updater check: 0h:00m:18s ago (at 17:17:26 on 2016-05-31)
 ```
 
@@ -39,7 +39,7 @@ In order to print a list with all calculations that finished correctly
 in the AiiDA database, you can use the <span>`-a/--all-states`</span>
 and <span>`-A/--all-users`</span> flag as follows:
 
-```bash
+```console
 verdi calculation list –all-states –all-users
 ```
 
@@ -52,7 +52,7 @@ Each row of the output identifies a calculation and shows several
 information about it. For a more detailed list of properties, choose one
 row by noting down its pk number and type in the terminal
 
-```bash
+```console
 verdi calculation show <pk>
 ```
 
@@ -102,14 +102,14 @@ you obtained information (in text form) for `pk=3006`. To visualize
 similar information in graph(ical) form, run (replacing
 <span>`<pk>`</span> with your number):
 
-```bash
+```console
 verdi graph  <pk>
 ```
 
 This command creates the file <pk>.dot that can be rendered by means
 of the utility <span>`dot`</span>. Convert it to PDF and have a look:
 
-```bash
+```console
 dot -Tpdf -o <pk>.pdf <pk>.dot 
 evince <pk>.pdf
 ```
@@ -128,7 +128,7 @@ Now, let us have a closer look to the some of the nodes appearing in the
 graph. Choose the node of the type `ParameterData` with input link name
 `parameters` (ex. pk=2757) and type in the terminal:
 
-```bash
+```console
 verdi data parameter show <pk>
 ```
 
@@ -140,7 +140,7 @@ file for the calculation. You can compare the dictionary with the
 content of the raw input file to Raspa (that was d by AiiDA) via
 the command
 
-```bash
+```console
 verdi calculation inputcat <pk>
 ```
 
@@ -154,7 +154,7 @@ The previous command just printed the content of the “default” input
 file `simulation.input`. To see a list of all the files used to run a
 calculation (input file, submission script, etc.) type instead
 
-```bash
+```console
 verdi calculation inputls <pk>
 ```
 
@@ -165,7 +165,7 @@ Once you know the name of the file you want to visualize, you can call
 the <span>`verdi calculation inputcat`</span> command specifying the
 path. For instance, to see the submission script, you can do:
 
-```bash
+```console
 verdi calculation inputcat <pk> -p ~a~iidasubmit.sh
 ```
 
@@ -175,7 +175,7 @@ Now let us focus on CifData objects, such as node pk=2886 of the graph.
 A CifData object contains a crystal structure and can be inspected
 interactively using viewers like `jmol` or `vesta`. Type in the terminal
 
-```bash
+```console
 verdi data cif show –format jmol 2886
 ```
 
@@ -187,7 +187,7 @@ Let us focus now on the nodes of type `code`. A code represents (in the
 database) the actual executable used to run the calculation. Find the pk
 of such a node in the graph and type
 
-```bash
+```console
 verdi code show <pk>
 ```
 
@@ -195,7 +195,7 @@ The command prints information on the plugin used to interface the code
 to AiiDA, the remote machine on which the code is executed, the path of
 its executable, etc. To have a list of all available codes type
 
-```bash
+```console
 verdi code list -a -A
 ```
 
@@ -205,7 +205,7 @@ shown.
 Similarly, the list of computers on which AiiDA can submit calculations
 is accessible by means of the command
 
-```bash
+```console
 verdi computer list -a
 ```
 
@@ -213,7 +213,7 @@ verdi computer list -a
 database but that you did not configure, i.e., to which you don’t have
 access). Details about each computer can be obtained by the command
 
-```bash
+```console
 verdi computer show <COMPUTERNAME>
 ```
 
@@ -227,7 +227,7 @@ of the graph have run?
 The results of a calculation can be accessed directly from the
 calculation node. Type in the terminal
 
-```bash
+```console
 verdi calculation res <pk>
 ```
 
@@ -235,7 +235,7 @@ which will print the output dictionary of the “scalar” results parsed by
 AiiDA at the end of the calculation. Note that this is actually a
 shortcut for
 
-```bash
+```console
 verdi data parameter show <pk2>
 ```
 
@@ -248,20 +248,20 @@ energy of the calculation having pk=3006?
 One can access the component-specific output parameters in the same way
 (using pk = 1130 that corresponds to the component 0, methane)
 
-```bash
+```console
 verdi data parameter show <pk2>
 ```
 
 Similarly to what you did for the calculation inputs, you can access the
 output files via the commands
 
-```bash
+```console
 verdi calculation outputls <pk>
 ```
 
 and
 
-```bash
+```console
 verdi calculation outputcat -p <filename> <pk>
 ```
 

@@ -1,3 +1,5 @@
+# Geometric properties
+
 There are several metrics we want you to use to pre-evaluate the performance
 of a material for methane storage.
 
