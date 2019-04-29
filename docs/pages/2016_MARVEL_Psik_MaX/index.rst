@@ -19,3 +19,6 @@ MARVEL/Psi-k/MaX tutorial on high-throughput computations
 =========================================================
 
 Please download the `tutorial instructions <https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/old_tutorials/AiiDA_tutorial_2016_07_tutorial.pdf>`_ (pdf format).
+
+See also the recorded `video lectures <https://www.youtube.com/watch?v=qUNYEWClS2U&list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR&index=4>`_.
+
