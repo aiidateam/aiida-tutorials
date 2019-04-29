@@ -8,4 +8,4 @@ install:
   - pip install --upgrade pip
   - pip install -r docs/requirements.txt
 
-script: cd docs; SPHINXOPTS="-nW" make -C docs
+script: cd docs; SPHINXOPTS="-nW" make -C
