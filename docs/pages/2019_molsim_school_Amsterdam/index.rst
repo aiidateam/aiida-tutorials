@@ -1,3 +1,24 @@
++-----------------+-------------------------------------------+
+| Prerequisite    | Version                                   |
++=================+===========================================+
+| Virtual Machine | `Quantum Mobile 18.10.0RC1`_              |
++-----------------+-------------------------------------------+
+| python packages | `aiida-core 0.12.2`_, `aiidalab 19.01.2`_ |
++-----------------+-------------------------------------------+
+| codes           | `zeo++ 0.3`_, `raspa 2.0.36`_             |
++-----------------+-------------------------------------------+
+
+.. _Quantum Mobile 18.10.0RC1: https://github.com/marvel-nccr/quantum-mobile/releases/tag/18.10.0RC1
+.. _aiida-core 0.12.2: https://pypi.org/project/aiida-core/0.12.2
+.. _aiidalab 19.01.2: https://pypi.org/project/aiidalab/19.1.2
+.. _zeo++ 0.3: http://www.zeoplusplus.org/download.html
+.. _raspa 2.0.36: https://github.com/iRASPA/RASPA2/releases/tag/v2.0.36
+
+This tutorial is part of the `Understanding molecular
+simulation <http://www.acmm.nl/molsim/molsim2019/>`__ school held at the
+University of Amsterdam from January 7-18 2019.
+
+
 Metal-organic frameworks for methane storage applications
 =========================================================
 
@@ -56,7 +77,3 @@ Theoretical background
    Multiply the unit cell <./theoretical/multiply-uc>
    Settings for Raspa <./theoretical/settings-raspa>
    Extra challenge: MOFs for CO2 capture <./theoretical/charged-adsorbates>
-
-This tutorial is part of the `Understanding molecular
-simulation <http://www.acmm.nl/molsim/molsim2019/>`__ school held at the
-University of Amsterdam from January 7-18 2019.

@@ -1,20 +1,39 @@
++-----------------+------------------------------------------------------------------+
+| Prerequisite    | Version                                                          |
++=================+==================================================================+
+| Virtual Machine | `Quantum Mobile 18.04.0`_                                        |
++-----------------+------------------------------------------------------------------+
+| python packages | `aiida-core 0.11.4`_, `aiida-zeopp 0.1.0`_, `aiida-raspa 0.2.1`_ |
++-----------------+------------------------------------------------------------------+
+| codes           | `zeo++ 0.3`_, `raspa 2.0.30`_                                    |
++-----------------+------------------------------------------------------------------+
+
+.. _Quantum Mobile 18.04.0: https://github.com/marvel-nccr/quantum-mobile/releases/tag/18.04.0
+.. _aiida-core 0.11.4: https://pypi.org/project/aiida-core/0.11.4/
+.. _aiida-zeopp 0.1.0: https://pypi.org/project/aiida-zeopp/0.1.0/
+.. _aiida-raspa 0.2.1: https://pypi.org/project/aiida-raspa/0.2.1/
+.. _zeo++ 0.3: http://www.zeoplusplus.org/download.html
+.. _raspa 2.0.30: https://github.com/iRASPA/RASPA2/releases/tag/v2.0.30
+
+The following tutorial is part of the course `Understanding advanced molecular
+simulation <http://edu.epfl.ch/coursebook/en/understanding-advanced-molecular-simulation-CH-420>`__
+held at EPF Lausanne during the spring semester 2018.
+
+
 Understanding advanced molecular simulation
 ===========================================
 
-The following tutorial are part of the course `Understanding advanced molecular
-simulation <http://edu.epfl.ch/coursebook/en/understanding-advanced-molecular-simulation-CH-420>`__
-held at EPF Lausanne during the spring semester 2018.
+This tutorial makes use of the AiiDA plugins for the `zeo++
+<http://www.zeoplusplus.org/>`__ and `RASPA2
+<https://github.com/numat/RASPA2>`__ codes.
+It is meant to be run inside the `Quantum
+Mobile <https://www.materialscloud.org/work/quantum-mobile>`__ virtual
+machine.
+
 
 AiiDA tutorial
 --------------
 
-This is a brief AiiDA tutorial, making use of the AiiDA plugins for the
-`zeo++ <http://www.zeoplusplus.org/>`__ and
-`RASPA2 <https://github.com/numat/RASPA2>`__ codes.
-
-The tutorial is meant to be run inside the `Quantum
-Mobile <https://www.materialscloud.org/work/quantum-mobile>`__ virtual
-machine.
 
 .. toctree::
    :maxdepth: 1
