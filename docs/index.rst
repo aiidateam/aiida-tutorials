@@ -22,3 +22,11 @@ A collection of AiiDA tutorials, exercises and demos.
    :caption: 2017
 
    MARVEL-Psik-MaX tutorial (EPFL)<./pages/2017_MARVEL_Psik_MaX/index>
+   AiiDA hands-on tutorial (ICTP Trieste)<./pages/2017_ICTP/index>
+
+.. toctree::
+   :maxdepth: 1
+   :caption: 2016
+
+   MARVEL-Psik-MaX tutorial (EPFL)<./pages/2016_MARVEL_Psik_MaX/index>
+
