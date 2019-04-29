@@ -1,3 +1,5 @@
+[![Documentation Status](https://readthedocs.org/projects/aiida-tutorials/badge/?version=latest)](https://aiida-tutorials.readthedocs.io/en/latest/?badge=latest)
+
 # AiiDA tutorials
 
 This repository contains a collection of texts used for
@@ -7,18 +9,12 @@ Visit http://aiidateam.github.io/aiida-tutorials
 
 ## Building locally
 
-Prerequisites:
-- Follow the [jekyll installation instructions](https://jekyllrb.com/docs/installation/) for your operating system
-- `cd docs; sudo bundle install`  
-
-Note: If the installation of `nokogiri` is failing, try
 ```
-bundle config build.nokogiri --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/libxml2  --use-system-libraries
-``` 
-
-Build website locally:
-- `bundle exec jekyll serve`
-- connect with your browser to `http://127.0.0.1:4000/aiida-tutorials/`
+cd docs
+pip install -r requirements.txt
+make
+# open build/html/index.html
+```
 
 ## Acknowledgements
 
