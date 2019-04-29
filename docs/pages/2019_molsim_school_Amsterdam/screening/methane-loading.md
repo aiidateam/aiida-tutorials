@@ -136,7 +136,7 @@ submit(RaspaCalculation.process(),
 
 When the submission script is ready, submit it to the AiiDA daemon:
 
-```terminal
+```console
 $ verdi run raspa_loading.py
 ```
 > **Note**  
@@ -172,4 +172,3 @@ How could you decrease it?
 Re-run the calculation with adapted settings in order to decrease the
 relative standard deviation below 5%
 
----

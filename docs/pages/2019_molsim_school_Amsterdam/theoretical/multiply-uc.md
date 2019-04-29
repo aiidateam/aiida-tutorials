@@ -1,3 +1,5 @@
+# Multiplying the unit cell 
+
 You learned that the lengths of your simulation box should bigger than twice the cutoff value.\\
 Therefore, for an orthogonal cell you should multiply you cell until its length
 meets this criterion in every direction.
@@ -23,7 +25,7 @@ to compute the Raspa input "UnitCells".
 Note that if you do not multiply correctly the unit cell,
 Raspa will complain in the output:
 
-```terminal
+```console
 WARNING: INAPPROPRIATE NUMBER OF UNIT CELLS USED
 ```
 

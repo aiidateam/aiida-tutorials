@@ -1,3 +1,5 @@
+# Settings for RASPA
+
 The RASPA package can perform MC and MD calculations, for a variety of systems.
 
 * [paper](https://www.tandfonline.com/doi/full/10.1080/08927022.2015.1010082)

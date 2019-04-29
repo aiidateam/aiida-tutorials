@@ -21,7 +21,7 @@ We will get back to option 1 (python scripts) towards the end of the tutorial.
 The `verdi shell` is a customized ipython shell, where all the AiiDA classes,
 methods and functions are already accessible. Type in the terminal
 
-```terminal
+```console
 $ verdi shell
 ```
 
@@ -38,7 +38,7 @@ You would typically use two terminals, one for the
 
 Start a jupyter notebook server:
 
-```terminal
+```console
 $ jupyter notebook
 ```
 

@@ -1,3 +1,6 @@
+AiiDA Workflows
+===============
+
 The aim of the last part of this tutorial is to introduce the concept of workflows in AiiDA.
 
 In this section, we will ask you to:
@@ -302,7 +305,7 @@ if __name__ == '__main__':
 
 Run the workflow by running the following command from the `tutorial_scripts` directory:
 
-``` terminal
+``` bash
 verdi run simple_sync_workflow.py
 ```
 
@@ -378,7 +381,7 @@ The basic rules that allow you to convert your workfunction-based script to a wo
 <span>|c|c|</span> & <span>Workchains</span>
  &
 
-``` terminal
+``` bash
 from aiida.work.workchain import WorkChain, ToContext
 # ...
 

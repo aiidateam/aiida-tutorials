@@ -17,7 +17,7 @@ First, generate a new public/private SSH key pair.
 > **Note**  
 > When running this outside Quantum Mobile, be careful not to overwrite your
 > own key pair. In this case, just change the proposed file name.
-```terminal
+```console
 $ ssh-keygen -t rsa
 Generating public/private rsa key pair. 
 Enter file in which to save the key (/home/max/.ssh/id_rsa): <Enter> 
@@ -30,7 +30,7 @@ The key's randomart image is: ...
 ```
 
 Then, copy the public key to the compute cluster:
-```terminal
+```console
 $ ssh-copy-id molsim<n>@bazis-h1.science.uva.nl
 
 /usr/bin/ssh-copy-id: INFO: attempting to log in with the new key(s), to filter out any that are already installed
@@ -60,7 +60,7 @@ Now try logging in to the cluster with `ssh molsim<n>@bazis-h1.science.uva.nl`,
 which should work without password.
 Once it does, let's set up the `bazis` computer in AiiDA as follows:
 
-```terminal
+```console
 $ verdi computer setup 
 At any prompt, type ? to get some help.
 ————————————— 
@@ -98,13 +98,13 @@ Computer 'bazis' successfully stored in DB.
 
 At this point, the computer node has been created in the database
 
-```terminal
+```console
 $ verdi computer list -a
 ```
 
 but access hasn't been configured yet.
 
-```terminal
+```console
 $ verdi computer configure bazis
 Configuring computer 'bazis' for the AiiDA user 'aiida@localhost'
 Computer bazis has transport of type ssh
@@ -130,7 +130,7 @@ Configuration stored for your user on computer 'bazis'.
 
 Finally, let AiiDA test the computer setup we just created:
 
-```terminal
+```console
 $ verdi computer test bazis
 Testing computer 'bazis' for user leopold.talirz@epfl.ch...
 > Testing connection...
@@ -158,7 +158,7 @@ Next, we need to let AiiDA know about the computer codes available on `bazis`.
 We've already installed [RASPA2](https://github.com/numat/RASPA2) there,
 so you can set up the code as follows:
 
-```terminal
+```console
 $ verdi code setup
 At any prompt, type ? to get some help.
 —————————————
@@ -200,7 +200,7 @@ Code 'raspa' successfully stored in DB.
 
 The list of codes should now include your new code `raspa@bazis`
 
-```terminal
+```console
 $ verdi code list
 ```
 
@@ -213,7 +213,7 @@ calculation has completed on the cluster.
 
 Let's check whether the AiiDA daemon is already running. 
 
-```terminal
+```console
 $ verdi daemon status
 # Most recent daemon timestamp:0h:00m:26s ago
 ## Found 1 process running:
@@ -222,7 +222,7 @@ $ verdi daemon status
 
 If the daemon is not running, please start it
 
-```terminal
+```console
 $ verdi daemon start
 ```
 
@@ -230,7 +230,7 @@ $ verdi daemon start
 > AiiDA supports multiple profiles but for reasons of consistency
 > only one profile can communicate with the daemon at a time.
 > When starting the daemon, you may therefore see an error message like
-> ```terminal
+> ```console
 > You are not the daemon user! I will not start the daemon.
 > (The daemon user is 'aiida@localhost', you are 'some.body@xyz.com')
 >
@@ -239,12 +239,12 @@ $ verdi daemon start
 > To change the daemon user, use 'verdi daemon configureuser'
 > ```
 > Just follow the instructions by running
-> ```terminal
+> ```console
 > $ verdi daemon configureuser
 > ```
 > and provide the email address of your profile in order to allow your user to run the daemon
 >
-> ```terminal
+> ```console
 > > Current default user: some.body@xyz.com
 > > Currently configured user who can run the daemon: aiida@localhost
 >   (therefore, you cannot run the daemon, at the moment)

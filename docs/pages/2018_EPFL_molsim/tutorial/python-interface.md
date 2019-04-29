@@ -7,7 +7,7 @@ the basic AiiDA classes already loaded. There are two variants of this:
 The first is a customized ipython shell where all the AiiDA classes,
 methods and functions are accessible. Type in the terminal
 
-```bash
+```console
 verdi shell
 ```
 
@@ -42,14 +42,14 @@ differentiate these from the commands to be typed in the
 by a vertical line on the left, like:
 
 ```python
-some verdi shell command
+# some verdi shell command
 ```
 
 while command-line instructions in <span>`bash`</span> to be typed on a
 terminal will be encapsulated between horizontal lines:
 
-```bash
-some bash command
+```console
+# some bash command
 ```
 
 Alternatively, to avoid changing terminal, you can execute

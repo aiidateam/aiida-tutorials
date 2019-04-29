@@ -1,0 +1,6 @@
+# Configuration for readthedocs
+# See https://docs.readthedocs.io/en/latest/yaml-config.html
+
+# Disabling all unneeded formats (note that HTML and JSON are always built)
+# See https://docs.readthedocs.io/en/latest/yaml-config.html#formats 
+formats: []

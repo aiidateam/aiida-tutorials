@@ -1,12 +1,15 @@
+Queries in AiiDA: The Querybuilder
+==================================
+
 This part of the tutorial is provided only in interactive mode through a Jupyter notebook, which you will be able to run in your browser. To accomplish this we first need to start the Jupyter server, if you didn’t do it already at the very beginning of the tutorial. First make sure you are connected to the virtual machine with local forwarding enabled, as described in section [sec:sshintro]. Then, on the virtual machine, first make sure your are in the `aiida` virtual environment:
 
-``` terminal
+``` bash
 workon aiida
 ```
 
 If the virtual environment is successfully loaded, your prompt should be prefixed with `(aiida)`. To finally launch the Jupyter server, execute the following commands:
 
-``` terminal
+``` bash
 cd ~/examples/aiida-demos/tutorial/
 jupyter notebook --no-browser
 ```

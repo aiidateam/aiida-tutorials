@@ -17,6 +17,10 @@ markdown: $(deps)
 	./de-macro.py AiiDA_tutorial.tex
 	pandoc -s --filter pandocfilter.py AiiDA_tutorial-clean.tex -t markdown_github-fenced_code_attributes -o AiiDA_tutorial-clean.md
 
+rst: $(deps)
+	./de-macro.py AiiDA_tutorial.tex
+	pandoc -s --filter pandocfilter.py AiiDA_tutorial-clean.tex -t rst -o AiiDA_tutorial-clean.rst
+
 
 distclean: clean
 	rm -f AiiDA_tutorial.pdf AiiDA_tutorial_online.pdf 

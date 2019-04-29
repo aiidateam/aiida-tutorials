@@ -3,7 +3,7 @@
 Once your calculations are finished, it's time to export and upload
 them to the tutorial server.
 
-```terminal
+```console
 $ verdi group list -t autogroup.run # note the PK of the latest group
 $ verdi export create -G <PK> database.aiida
 ```

@@ -21,8 +21,10 @@ def caps(key, value, format, meta):
             # set 'python' class
             properties[1] = ['python']
         else:
-            # set 'terminal' class
-            properties[1] = ['terminal']
+            # set class
+            #  - for markdown: use 'terminal'
+            #  - for rst: use 'console'
+            properties[1] = ['console']
 
         # unset attrs
         properties[2] = []

@@ -1,3 +1,5 @@
+# Origin of the MOF database
+
 The structures of the 502 Metal Organic Frameworks (MOFs) you are asked to analyze
 come mainly from powder or single crystal X-Ray diffraction.
 
@@ -33,4 +35,3 @@ The 502 structures are provided with atomic partial charges.
 Do you need them to evaluate the methane deliverable capacity?  
 How are the interactions between molecule and framework described?
 
----
