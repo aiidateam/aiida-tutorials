@@ -305,7 +305,7 @@ if __name__ == '__main__':
 
 Run the workflow by running the following command from the `tutorial_scripts` directory:
 
-``` bash
+```console
 verdi run simple_sync_workflow.py
 ```
 
@@ -381,7 +381,7 @@ The basic rules that allow you to convert your workfunction-based script to a wo
 <span>|c|c|</span> & <span>Workchains</span>
  &
 
-``` bash
+```console
 from aiida.work.workchain import WorkChain, ToContext
 # ...
 
