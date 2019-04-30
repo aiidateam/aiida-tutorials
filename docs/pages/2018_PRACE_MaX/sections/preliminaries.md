@@ -1,3 +1,6 @@
+Preliminaries
+=============
+
 Instructions to SSH to the Amazon EC2 instance
 ----------------------------------------------
 
