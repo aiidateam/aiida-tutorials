@@ -24,6 +24,13 @@ If you have a question, feel free to just [open an issue](https://github.com/aii
 
 ## Building the web site locally
 
+### Prerequisites
+
+ * python 2.7 or greater
+ * [pandoc](https://pandoc.org/)
+
+### Build instructions
+
 ```
 git clone https://github.com/aiidateam/aiida-tutorials.git
 cd aiida-tutorials/docs
