@@ -23,10 +23,9 @@ Bologna, Italy.
 PRACE-MaX tutorial on high-throughput computations
 ==================================================
 
-The instructions of the tutorial were are found below, converted from the
-`original LaTeX
-source <https://github.com/aiidateam/aiida-tutorials/tree/master/latex>`__
-to MarkDown.
+The instructions below have been converted from the `original LaTeX source
+<https://github.com/aiidateam/aiida-tutorials-latex>`__.
+See also the `original PDF <https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/aiida_tutorial_2018_05_text.pdf>`_.
 
 Sections
 --------

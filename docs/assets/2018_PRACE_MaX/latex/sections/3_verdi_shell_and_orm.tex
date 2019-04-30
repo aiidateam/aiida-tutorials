@@ -215,7 +215,7 @@ Alternatively, AiiDA structures can also be
 converted directly from ASE~\cite{ref:ASE} structures using\footnote{We purposefully do not provide advanced commands
 for crystal structure manipulation in AiiDA, because python packages that accomplish such tasks
 already exist (such as ASE or pymatgen).}
-\begin{pythoncommand}	
+\begin{pythoncommand}
  from ase.lattice.spacegroup import crystal
  ase_structure = crystal('Si', [(0,0,0)], spacegroup=227,
                  cellpar=[alat, alat, alat, 90, 90, 90],primitive_cell=True)
