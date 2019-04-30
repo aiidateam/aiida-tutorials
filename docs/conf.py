@@ -23,7 +23,7 @@ needs_sphinx = '1.6.0'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo', 'sphinx.ext.imgmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'IPython.sphinxext.ipython_console_highlighting', 'IPython.sphinxext.ipython_directive', 'sphinxcontrib.contentui', 'recommonmark']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo', 'sphinx.ext.imgmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'IPython.sphinxext.ipython_console_highlighting', 'IPython.sphinxext.ipython_directive', 'recommonmark']
 ipython_mplbackend = ""
 
 todo_include_todos = True
@@ -130,8 +130,7 @@ numfig = True
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-# TEMPORARILY DISABLED
-#html_static_path = ['_static']
+html_static_path = ['_static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
@@ -311,3 +310,7 @@ nitpick_ignore = [('py:class','Warning'), ('py:class', 'exceptions.Warning')]
 #    nitpick_ignore.append((dtype, target))
 
 suppress_warnings = [ 'misc.highlighting_failure' ]
+
+
+def setup(app):
+    app.add_stylesheet('css/custom.css')

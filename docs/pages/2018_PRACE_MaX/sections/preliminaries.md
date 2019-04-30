@@ -1,3 +1,6 @@
+Preliminaries
+=============
+
 Instructions to SSH to the Amazon EC2 instance
 ----------------------------------------------
 
@@ -30,7 +33,7 @@ You should have received an IP address from the instructors, and two files with 
 
 -   You can then `ssh` to the Amazon EC2 instance from the terminal, using simply
 
-    ``` bash
+    ```console
       ssh -X -C aiidatutorial
      
     ```
@@ -66,13 +69,13 @@ Before starting
 
 Once connected to your machine, type in the remote terminal
 
-``` bash
+```console
  workon aiida
 ```
 
 This will enable the virtual environment in which AiiDA is installed, allowing you to use AiiDA. Now type in the same bash
 
-``` bash
+```console
  jupyter notebook --no-browser
 ```
 
