@@ -23,7 +23,7 @@ needs_sphinx = '1.6.0'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo', 'sphinx.ext.imgmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'IPython.sphinxext.ipython_console_highlighting', 'IPython.sphinxext.ipython_directive', 'recommonmark']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo', 'sphinx.ext.imgmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'IPython.sphinxext.ipython_console_highlighting', 'IPython.sphinxext.ipython_directive', 'recommonmark', 'nbsphinx']
 ipython_mplbackend = ""
 
 todo_include_todos = True
@@ -314,3 +314,7 @@ suppress_warnings = [ 'misc.highlighting_failure' ]
 
 def setup(app):
     app.add_stylesheet('css/custom.css')
+
+# We are not installing a full aiida environment
+nbsphinx_execute = 'never'
+#nbsphinx_allow_errors = True

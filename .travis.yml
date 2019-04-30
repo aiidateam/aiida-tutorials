@@ -4,6 +4,9 @@ python:
  - "3.6"
 sudo: required
 
+before_install:
+  - sudo apt-get install pandoc
+
 install:
   - pip install --upgrade pip
   - pip install -r docs/requirements.txt

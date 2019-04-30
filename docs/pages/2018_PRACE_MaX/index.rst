@@ -34,7 +34,6 @@ Sections
    :maxdepth: 1
    :numbered:
 
-
    Preliminaries <./sections/preliminaries>
    ./sections/verdi_cmdline
    ./sections/verdi_shell
