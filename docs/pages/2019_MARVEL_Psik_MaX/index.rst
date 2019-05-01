@@ -28,8 +28,7 @@ Sections
    :maxdepth: 1
    :numbered:
 
-
-   Preliminaries <./sections/preliminaries>
+   ./sections/setup
    ./sections/verdi_cmdline
    ./sections/verdi_shell
    ./sections/calculations
