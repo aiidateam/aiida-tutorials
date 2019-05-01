@@ -10,8 +10,7 @@ to orchestrate the running of calculations.
 
 We've prepared a WorkChain to compute the deliverable methane capacity.
 
-Download it `from
-here <./assets/2019_molsim_school_Amsterdam/deliverable_capacity.py>`__
+Download it :download:`from here <../assets/deliverable_capacity.py>`
 and place the file in some directory, then add the path to this
 directory to ``PYTHONPATH`` and restart the daemon:
 
@@ -272,112 +271,139 @@ Exercises
 ---------
 
 1. Before you actually start doing the calculations please setup the
-   zeo++ code as shown here:
+   zeo++ code as shown here::
 
-``console     * PK:             60109     * UUID:           8a37224a-1247-4484-b3c8-ce3e8f37cee7     * Label:          zeopp     * Description:    zeo++ code for the molsim course     * Default plugin: zeopp.network     * Used by:        1 calculations     * Type:           remote     * Remote machine: bazis     * Remote absolute path:       /home/molsim20/network     * prepend text:       # No prepend text.     * append text:       # No append text.``
-Should you have any doubts, just consult the `Computer setup and
-configuration <calculations#computer-setup-and-configuration>`__
-part of our tutorial.
+    * PK:             60109
+    * UUID:           8a37224a-1247-4484-b3c8-ce3e8f37cee7
+    * Label:          zeopp
+    * Description:    zeo++ code for the molsim course
+    * Default plugin: zeopp.network
+    * Used by:        1 calculations
+    * Type:           remote
+    * Remote machine: bazis
+    * Remote absolute path:
+      /home/molsim20/network
+    * prepend text:
+      # No prepend text.
+    * append text:
+      # No append text.
+
+   Should you have any doubts, just consult the `Computer setup and configuration <calculations#computer-setup-and-configuration>`__ part of our tutorial.
 
 2. The following script is necessary to run the ``DcMethane`` workchain.
    You need to save it as ``run_DcMethane.py``, edit it with your
    settings and run it with ``verdi run run_DcMethane.py``.
 
-\`\`\`python from aiida.backends.utils import load\_dbenv,
-is\_dbenv\_loaded if not is\_dbenv\_loaded(): load\_dbenv()
+   .. code:: python
 
-import os import sys import time from deliverable\_capacity import
-DcMethane
+      from aiida.backends.utils import load_dbenv, is_dbenv_loaded
+      if not is_dbenv_loaded():
+              load_dbenv()
 
-from aiida.orm import DataFactory from aiida.orm.data.cif import CifData
-from aiida.orm.data.base import Float from aiida.work.run import run,
-submit
+      import os
+      import sys
+      import time
+      from deliverable_capacity import DcMethane
 
-NetworkParameters = DataFactory('zeopp.parameters') ParameterData =
-DataFactory('parameter')
+      from aiida.orm import DataFactory
+      from aiida.orm.data.cif import CifData
+      from aiida.orm.data.base import Float
+      from aiida.work.run import run, submit
 
-def multiply\_unit\_cell(cif, cutoff): """Returns the multiplication
-factors (tuple of 3 int) for the cell vectors that are needed to
-respect: min(perpendicular\_width) > threshold """ from math import cos,
-sin, sqrt, pi import numpy as np deg2rad=pi/180.
-struct=cif.values.dictionary.itervalues().next() a =
-float(struct['\ *cell*\ length\_a']) b =
-float(struct['\ *cell*\ length\_b']) c =
-float(struct['\ *cell*\ length\_c']) alpha =
-float(struct['\ *cell*\ angle\_alpha'])\ *deg2rad beta =
-float(struct['\ *cell*\ angle\_beta'])*\ deg2rad gamma =
-float(struct['\ *cell*\ angle\_gamma'])\*deg2rad v =
-sqrt(1-cos(alpha)\ **2-cos(beta)**\ 2-cos(gamma)\*\*2+2\ *cos(alpha)*\ cos(beta)\ *cos(gamma))
-cell=np.zeros((3,3)) cell[0,:] = [a, 0, 0] cell[1,:] = [b*cos(gamma),
-b*\ sin(gamma),0] cell[2,:] = [c*cos(beta),
-c*\ (cos(alpha)-cos(beta)*cos(gamma))/(sin(gamma)),c*\ v/sin(gamma)]
-cell=np.array(cell) diag = np.diag(cell) return tuple(int(i) for i in
-np.ceil(cutoff/diag*\ 2.))
+      NetworkParameters = DataFactory('zeopp.parameters')
+      ParameterData = DataFactory('parameter')
 
-cutoff = 8.8 #TO EDIT probe\_radius = 1.865 #Why this value?
+      def multiply_unit_cell(cif, cutoff):
+          """Returns the multiplication factors (tuple of 3 int) for the cell vectors
+          that are needed to respect: min(perpendicular_width) > threshold
+          """
+          from math import cos, sin, sqrt, pi
+          import numpy as np
+          deg2rad=pi/180.
+          struct=cif.values.dictionary.itervalues().next()
+          a = float(struct['_cell_length_a'])
+          b = float(struct['_cell_length_b'])
+          c = float(struct['_cell_length_c'])
+          alpha = float(struct['_cell_angle_alpha'])*deg2rad
+          beta  = float(struct['_cell_angle_beta'])*deg2rad
+          gamma = float(struct['_cell_angle_gamma'])*deg2rad
+          v = sqrt(1-cos(alpha)**2-cos(beta)**2-cos(gamma)**2+2*cos(alpha)*cos(beta)*cos(gamma))
+          cell=np.zeros((3,3))
+          cell[0,:] = [a, 0, 0]
+          cell[1,:] = [b*cos(gamma), b*sin(gamma),0]
+          cell[2,:] = [c*cos(beta), c*(cos(alpha)-cos(beta)*cos(gamma))/(sin(gamma)),c*v/sin(gamma)]
+          cell=np.array(cell)
+          diag = np.diag(cell)
+          return tuple(int(i) for i in np.ceil(cutoff/diag*2.))
 
-zeopp\_params = NetworkParameters(dict={ 'ha': True, 'block':
-[probe\_radius, 100], })
+      cutoff = 8.8         #TO EDIT
+      probe_radius = 1.865 #Why this value?
 
-# Search for the structures to evaluate and submit them q =
-QueryBuilder() q.append(CifData, filters={'label': { 'in': [ ...] }})
-#TO EDIT: provide labels of the structures you want to submit
+      zeopp_params = NetworkParameters(dict={
+          'ha': True,
+          'block': [probe_radius, 100],
+      })
 
-for item in q.all(): cif = item[0] print (cif) nx, ny, nz =
-multiply\_unit\_cell(cif, cutoff) unitscells="{} {} {}".format(nx,ny,nz)
+      # Search for the structures to evaluate and submit them
+      q = QueryBuilder()
+      q.append(CifData, filters={'label': { 'in': [ ...] }}) #TO EDIT: provide labels of the structures you want to submit
 
-::
+      for item in q.all():
+          cif = item[0]
+          print (cif)
+          nx, ny, nz = multiply_unit_cell(cif, cutoff)
+          unitscells="{} {} {}".format(nx,ny,nz)
 
-       raspa_params = ParameterData(dict={
-           "GeneralSettings":
-           {
-           "SimulationType"                   : "MonteCarlo",
-           "NumberOfCycles"                   : 888,  #TO EDIT
-           "NumberOfInitializationCycles"     : 888,  #TO EDIT
-           "PrintEvery"                       : 100,
+          raspa_params = ParameterData(dict={
+              "GeneralSettings":
+              {
+              "SimulationType"                   : "MonteCarlo",
+              "NumberOfCycles"                   : 888,  #TO EDIT
+              "NumberOfInitializationCycles"     : 888,  #TO EDIT
+              "PrintEvery"                       : 100,
 
-           "CutOff"                           : cutoff,
+              "CutOff"                           : cutoff,
 
-           "Forcefield"                       : "UFF-TraPPE",
-           "ChargeMethod"                     : "None",
-           "UnitCells"                        : "<int> <int> <int>",
-           "ExternalTemperature"              : 298,
+              "Forcefield"                       : "UFF-TraPPE",
+              "ChargeMethod"                     : "None",
+              "UnitCells"                        : "<int> <int> <int>",
+              "ExternalTemperature"              : 298,
 
-           },
-           "Component":
-           [{
-           "MoleculeName"                     : "methane",
-           "MoleculeDefinition"               : "TraPPE",
-           "MolFraction"                      : 1.0,
-           "TranslationProbability"           : 8.8, #TO EDIT
-           "RotationProbability"              : 8.8, #TO EDIT
-           "ReinsertionProbability"           : 8.8, #TO EDIT
-           "SwapProbability"                  : 8.8, #TO EDIT
-           "CreateNumberOfMolecules"          : 8, #TO EDIT
-           }],
-       })
+              },
+              "Component":
+              [{
+              "MoleculeName"                     : "methane",
+              "MoleculeDefinition"               : "TraPPE",
+              "MolFraction"                      : 1.0,
+              "TranslationProbability"           : 8.8, #TO EDIT
+              "RotationProbability"              : 8.8, #TO EDIT
+              "ReinsertionProbability"           : 8.8, #TO EDIT
+              "SwapProbability"                  : 8.8, #TO EDIT
+              "CreateNumberOfMolecules"          : 8, #TO EDIT
+              }],
+          })
 
 
-       outputs = submit(
-               DcMethane,
-               structure=cif,
-               zeopp_parameters = zeopp_params,
-               raspa_parameters = raspa_params,
-               atomic_radii = load_node('27d2af72-3af0-48a6-a563-24d1d6d6eb60'),
-               zeopp_code=Code.get_from_string('zeopp@bazis1'),
-               raspa_code=Code.get_from_string('raspa@bazis1'),
-           )
-       time.sleep(40)
+          outputs = submit(
+                  DcMethane,
+                  structure=cif,
+                  zeopp_parameters = zeopp_params,
+                  raspa_parameters = raspa_params,
+                  atomic_radii = load_node('27d2af72-3af0-48a6-a563-24d1d6d6eb60'),
+                  zeopp_code=Code.get_from_string('zeopp@bazis1'),
+                  raspa_code=Code.get_from_string('raspa@bazis1'),
+              )
+          time.sleep(40)
 
-\`\`\`
 
-    **Note** The function ``multiply_unit_cell`` is automatically
+.. note:: 
+
+    The function ``multiply_unit_cell`` is automatically
     computing the number of ``UnitCells`` needed, ``nx ny nz``. This
     function contains the math to `deal also with non-orthogonal unit
     cells <../theoretical/multiply-uc>`__.
 
-    Consult the `Querying the AiiDA
-    database <../tutorial/queries>`__
+    Consult the `Querying the AiiDA database <../tutorial/queries>`__
     part of the tutorial in order to find out which filter you should
     put in ``q.append(CifData, filters={})`` to select the appropriate
     structures.
