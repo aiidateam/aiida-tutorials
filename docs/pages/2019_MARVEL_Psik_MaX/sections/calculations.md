@@ -98,7 +98,7 @@ Quantum ESPRESSO requires an input file containing Fortran namelists and variabl
 
 We leave the parameters as the last thing to setup and start with structure, k-points, and pseudopotentials.
 
-Use what you learned in the previous section and define these two kinds of objects in this script. Define in particular a silicon structure and a 2\(\times\)2\(\times\)2 mesh of k-points. Notice that if you just copy and paste the code that you executed previously, you will create duplicated information in the database (i.e. every time you will execute the script, you will create another StructureData, another KpointsData, …). In fact, you already have the opportunity to re-use an already existing structure.[7] Use therefore a combination of the bash command `verdi data structure list` and of the shell command `load_node()` to get an object representing the structure created earlier.
+Use what you learned in the previous section and define these two kinds of objects in this script. Define in particular a silicon structure and a `2x2x2` mesh of k-points. Notice that if you just copy and paste the code that you executed previously, you will create duplicated information in the database (i.e. every time you will execute the script, you will create another StructureData, another KpointsData, …). In fact, you already have the opportunity to re-use an already existing structure.[7] Use therefore a combination of the bash command `verdi data structure list` and of the shell command `load_node()` to get an object representing the structure created earlier.
 
 ### Attaching the input information to the calculation
 
@@ -245,7 +245,18 @@ verdi calcjob inputcat <pk_number> | less
 Troubleshooting
 ---------------
 
-After all this work the calculation should end up in a FAILED Job state (last column of `verdi process list -a -p1`), and correspondingly the error code near the "Finished" status of the State should be non-zero (400 for FAILED calculations). This was expected, since we used an invalid key in the input parameters. Situations like this happen (probably often...) in real life, so we built in AiiDA the tools to traceback the problem source and correct it.
+After all this work the calculation should end up in a FAILED Job state (last column of `verdi process list -a -p1`), and correspondingly the error code near the "Finished" status of the State should be non-zero,
+
+```console
+$ verdi process list -a -p1
+  PK  Created    State             Process label    Process status
+----  ---------  ----------------  ---------------  ----------------
+  98  16h ago    ⏹ Finished [115]  PwCalculation
+...
+$ # Anything but [0] after the Finished state signals a failure
+```
+
+This was expected, since we used an invalid key in the input parameters. Situations like this happen (probably often...) in real life, so we built in AiiDA the tools to traceback the problem source and correct it.
 
 A first way to proceed is the manual inspection of the output file of PWscf. You can visualize it with:
 
@@ -253,21 +264,49 @@ A first way to proceed is the manual inspection of the output file of PWscf. You
 verdi calcjob outputcat <pk_number> | less
 ```
 
-This can be a good primer for problem inspection. For something more compact, you can also try to inspect the calculation log (from AiiDA):
+This might be enough to understand the reason why the calculation failed.
+
+However, AiiDA provides some extra tools for troubleshooting in a more compact way, for starters, even if the calculation failed you can read a summary of it by running `verdi process show <pk>`:
 
 ```console
-verdi cacljob logshow <pk_number>
+$ verdi process show <pk_number>
+Property       Value
+-------------  ---------------------------------------------------
+type           CalcJobNode
+pk             98
+uuid           4c444afd-f6e2-4896-b9ae-8cb8a5ec75c5
+label          PW test
+description    My first AiiDA calc with Quantum ESPRESSO on Si
+ctime          2019-05-01 15:59:39.180018+00:00
+mtime          2019-05-01 16:01:44.870902+00:00
+process state  Finished
+exit status    115
+computer       [1] localhost
+
+Inputs      PK    Type
+----------  ----  -------------
+pseudos
+    Si      50    UpfData
+code        2     Code
+kpoints     10    KpointsData
+parameters  96    Dict
+settings    97    Dict
+structure   9     StructureData
+
+Outputs          PK  Type
+-------------  ----  ----------
+remote_folder    99  RemoteData
+retrieved       100  FolderData
+
+Log messages
+---------------------------------------------
+There are 2 log messages for this calculation
+Run 'verdi process report 98' to see them
 ```
 
-If the calculation has encountered a mistake, this log shows a handful of warnings coming from various processes, such as the daemon, the parser of the output or the scheduler on the cluster. In production runs, errors will mostly come from an unexpected termination of the PWscf calculation. The most programmatic way to handle these errors is to inspect the warnings key by loading the calculation object, say `calc`, and the using the following method:
+In the last part of the output of this command you can read that there are some log messages waiging for you, if you run `verdi process report <pk>`.
 
-``` python
-calculation.res.warnings
-```
-
-This will print a list of strings reporting errors experienced during the execution, that can be easily read in python (and thus addressed programmatically), but are also reported in the calculation log. With any of these three methods you can understand that the problem is something like an ‘invalid input key’, which is exactly what we did.
-
-Let’s use a parameters dictionary that actually works. Modify the script `test_pw.py` script modifying the parameter dictionary as
+Finally, after figuring out the invalid parameter from the calculation output, we can clear it out from the parameters dict and see if our calculation succeeds,
 
 ```python
 parameters_dict = {
@@ -280,22 +319,34 @@ parameters_dict = {
     },
     "ELECTRONS": {
         "conv_thr": 1.e-6,
-       
     }
 }
 builder.parameters = Dict(dict=parameters_dict)
 calculation = submit(builder)
 ```
 
-If you launch the modified script by typing
+If you have been using the separate script approach, then you can modify the script to remove the faulty input and run the script again with:
 
 ```console
 verdi run test_pw.py
 ```
 
-you should now be able to see a calculation reaching successfully the FINISHED state. Now you can access the results as you have seen earlier. For example, note down the pk of the calculation so that you can load it in the `verdi shell` and check the total energy with the commands:
+Sure enough the calculation will reach the finished status, with zero exit code now, you can verify that by running `verdi process list -a -p1` again.
+
+Using the calculation results
+-----------------------------
+
+Now you can access the results as you have seen earlier. For example, note down the pk of the calculation so that you can load it in the `verdi shell` and check the total energy with the commands:
 
 ```python
 calculation = load_node(<pk>)
 calculation.res.energy
 ```
+
+Notice that, in general, an AiiDA plugin won't limit itself to write some input files, running the software for you, storing the output files, and connecting it all toghether in your provenance graph. AiiDA will also try to interpret your program's output, and make the output values of interest available through an output dict node (as depicted in the graph above). In the case of the aiida quantum espresso plugin this output node is available at `calculation.outputs.output_parameters` and you can access all the available attributes (not only the energy used above) using:
+
+```python
+calculation.outputs.output_parameters.attributes
+```
+
+Since the name of this output dictionary node is an implementation detail of each plugin, AiiDA provides the shortcut `calculation.res` where the developers can indicate what they think is the result of the calculation.
