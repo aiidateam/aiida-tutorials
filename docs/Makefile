@@ -1,5 +1,6 @@
 # Makefile for Sphinx documentation
-#
+
+SPHINXOPTS#
 
 # You can set these variables from the command line.
 #SPHINXOPTS    =
@@ -16,14 +17,11 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext all default
 
+# -W: exit on warning
 default:
 	$(SPHINXBUILD) -b html -nW $(ALLSPHINXOPTS) $(BUILDDIR)/html
 
-# Same as 'default' but does not exit at the first warning
-debug:
-	$(SPHINXBUILD) -b html -n $(ALLSPHINXOPTS) $(BUILDDIR)/html
-
-all: html
+all: html latexpdf
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"

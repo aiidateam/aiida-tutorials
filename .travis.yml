@@ -1,7 +1,4 @@
 language: python
-python:
- - "2.7"
- - "3.6"
 sudo: required
 
 addons:
@@ -14,21 +11,24 @@ addons:
       - texlive-generic-recommended
       - texlive-fonts-recommended
       - texlive-latex-base
-      - latexmk
       - texlive-latex-recommended
       - texlive-latex-extra
+      - latexmk
       - latex-xcolor
-      #- dvipng
-      #- dvidvi
-      #- graphviz
+
+env:
+  matrix:
+    - TARGET: html
+      SPHINXOPTS: -W
+      python: 2.7
+    - TARGET: html
+      SPHINXOPTS: -W
+      python: 3.6
+    - TARGET: latexpdf
+      python: 3.6
 
 install:
   - pip install --upgrade pip
   - pip install -r docs/requirements.txt
 
-script:
-  - cd docs
-  # this exits on warnings
-  - make
-  # this currently does not exit on warnings
-  - make latexpdf
+script: cd docs; make $TARGET
