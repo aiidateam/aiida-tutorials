@@ -7,7 +7,7 @@ addons:
   apt:
     packages:
       - pandoc
-      - texlive
+      - texlive-full
 
 install:
   - pip install --upgrade pip
