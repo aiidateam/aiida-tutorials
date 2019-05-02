@@ -16,10 +16,10 @@ addons:
       - texlive-latex-base
       - latexmk
       - texlive-latex-recommended
-        #  - texlive-latex-extra
-        #- dvipng
-        #- dvidvi
-        #- graphviz
+      - texlive-latex-extra
+      #- dvipng
+      #- dvidvi
+      #- graphviz
 
 install:
   - pip install --upgrade pip
@@ -27,5 +27,7 @@ install:
 
 script:
   - cd docs
+  # this exits on warnings
   - make
+  # this currently does not exit on warnings
   - make latexpdf
