@@ -2,12 +2,10 @@ language: python
 python:
  - "2.7"
  - "3.6"
+sudo: required
 
-addons:
-  apt:
-    packages:
-      - pandoc
-      - texlive
+before_install:
+  - sudo apt-get install pandoc
 
 install:
   - pip install --upgrade pip
