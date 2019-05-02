@@ -251,7 +251,7 @@ After all this work the calculation should end up in a FAILED Job state (last co
 $ verdi process list -a -p1
   PK  Created    State             Process label    Process status
 ----  ---------  ----------------  ---------------  ----------------
-  98  16h ago    ⏹ Finished [115]  PwCalculation
+  98  16h ago    Finished [115]    PwCalculation
 ...
 $ # Anything but [0] after the Finished state signals a failure
 ```
