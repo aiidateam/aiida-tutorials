@@ -23,8 +23,6 @@ env:
   matrix:
     - TARGET: html
       SPHINXOPTS: -W
-    - TARGET: html
-      SPHINXOPTS: -W
     - TARGET: latexpdf
 
 install:
