@@ -39,6 +39,10 @@ make
 # open build/html/index.html
 ```
 
+Note that `make` will run with the nitpick option, treating warnings as errors.
+If you are updating the documentation and warnings are expected, run `make html` instead.
+This does not use the nitpick exception and will ensure that the documentation compiles despite the warnings.
+
 ## Acknowledgements
 
 This work is supported by the [MARVEL National Centre for Competency in Research](<http://nccr-marvel.ch>)
