@@ -4,8 +4,21 @@ python:
  - "3.6"
 sudo: required
 
-before_install:
-  - sudo apt-get install pandoc
+addons:
+  apt:
+    packages:
+      # for jupyter notebook rendering
+      - pandoc
+      # for building latex/pdf
+      - texlive-base
+      - texlive-generic-recommended
+      - texlive-fonts-recommended
+      - texlive-latex-base
+      - texlive-latex-recommended
+      - texlive-latex-extra
+        #- dvipng
+        #- dvidvi
+        #- graphviz
 
 install:
   - pip install --upgrade pip
