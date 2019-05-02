@@ -14,32 +14,42 @@ calculation steps, are performed automatically by the WorkChain.
 
 The demonstration of the workchain will be performed in a Jupyter
 notebook. To run it, follow the instructions that were given for the
-querybuilder notebook in section :ref:`querybuilder`. The only difference
+querybuilder notebook in section **MISSINGQUERYBUILDERREF**. The only difference
 is that instead of selecting the notebook in the ``querybuilder``
 directory, go to ``pw/bandstructure`` instead and choose the
 ``bandstructure.ipynb`` notebook. There you will find some example
 structures that are loaded from COD, through the importer integrated
 within AiiDA. Note that the required time to calculate the bandstructure
-for these example structures ranges from 6 minutes to almost half an
+for these example structures ranges from 6 minutes to almost more than an
 hour, given that the virtual machine is running on a single core with
 minimal computational power. It is not necessary to run these examples
-as it may take too long to complete. For reference, the expected output
-band structures are plotted below:
+as they may take too long to complete. For reference, the expected output
+band structures are plotted in :numref:`fig_calc_bands_1` to :numref:`fig_calc_bands_4`.
 
-.. image:: /assets/2018_PRACE_MaX/bandstructures/Al_bands.png
+.. _fig_calc_bands_1:
+.. figure:: include/images/Al_bands.png
    :scale: 48 %
 
-.. image:: /assets/2018_PRACE_MaX/bandstructures/GaAs_bands.png
+   Electronic band structures of Al computed with AiiDA’s PwBandsWorkChain
+
+.. _fig_calc_bands_2:
+.. figure:: include/images/GaAs_bands.png
    :scale: 48 %
 
-.. image:: /assets/2018_PRACE_MaX/bandstructures/CaF2_bands.png
+   Electronic band structures of GaAs computed with AiiDA’s PwBandsWorkChain
+
+.. _fig_calc_bands_3:
+.. figure:: include/images/CaF2_bands.png
    :scale: 48 %
 
-.. image:: /assets/2018_PRACE_MaX/bandstructures/hBN_bands.png
-   :scale: 48 %
+   Electronic band structures of CaF_2 computed with AiiDA’s PwBandsWorkChain
 
-Electronic band structures of four different crystal structures computed
-with AiiDA’s PwBandsWorkChain
+
+.. _fig_calc_bands_4:
+.. figure:: include/images/hBN_bands.png
+   :scale: 48 %
+   
+   Electronic band structures of BN  computed with AiiDA’s PwBandsWorkChain
 
 *The following appendices consist of optional exercises, and are
 mentioned in earlier parts of the tutorial. Go through them only if you
