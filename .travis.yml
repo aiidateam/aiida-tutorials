@@ -1,5 +1,8 @@
 language: python
 sudo: required
+python:
+  - "2.7"
+  - "3.6"
 
 addons:
   apt:
@@ -20,12 +23,9 @@ env:
   matrix:
     - TARGET: html
       SPHINXOPTS: -W
-      python: 2.7
     - TARGET: html
       SPHINXOPTS: -W
-      python: 3.6
     - TARGET: latexpdf
-      python: 3.6
 
 install:
   - pip install --upgrade pip
