@@ -49,7 +49,7 @@ Every calculation sent to a cluster is linked to a code, which describes the exe
 code = load_code("<codename>")
 ```
 
-Here `load_code` (imported for you by `verdi shell` or the `verdi run` command) returns a `Code` which is the general AiiDA class handling all possible codes, and `code` is an instance labbeled as `<codename>` (see the first part of the tutorial for listing all codes installed in your AiiDA machine). You might also want to list only the codes that define a default calculation plugin for the pw.x code of Quantum ESPRESSO. You can do this with the following command: 
+Here `load_code` (imported for you by `verdi shell` or the `verdi run` command) returns a `Code` which is the general AiiDA class handling all possible codes, and `code` is an instance labeled as `<codename>` (see the first part of the tutorial for listing all codes installed in your AiiDA machine). You might also want to list only the codes that define a default calculation plugin for the pw.x code of Quantum ESPRESSO. You can do this with the following command:
 
 ```console
 verdi code list -P quantumespresso.pw
@@ -98,7 +98,7 @@ Quantum ESPRESSO requires an input file containing Fortran namelists and variabl
 
 We leave the parameters as the last thing to setup and start with structure, k-points, and pseudopotentials.
 
-Use what you learned in the previous section and define these two kinds of objects in this script. Define in particular a silicon structure and a `2x2x2` mesh of k-points. Notice that if you just copy and paste the code that you executed previously, you will create duplicated information in the database (i.e. every time you will execute the script, you will create another StructureData, another KpointsData, …). In fact, you already have the opportunity to re-use an already existing structure.[7] Use therefore a combination of the bash command `verdi data structure list` and of the shell command `load_node()` to get an object representing the structure created earlier.
+Use what you learned in the previous section and define these two kinds of objects in this script. Define in particular a silicon structure and a `2x2x2` mesh of k-points. Notice that if you just copy and paste the code that you executed previously, you will create duplicated information in the database (i.e. every time you will execute the script, you will create another StructureData, another KpointsData, ...). In fact, you already have the opportunity to re-use an already existing structure.[7] Use therefore a combination of the bash command `verdi data structure list` and of the shell command `load_node()` to get an object representing the structure created earlier.
 
 ### Attaching the input information to the calculation
 
@@ -178,18 +178,18 @@ from aiida.engine import run
 run(builder)
 ```
 
-This creates a folder of the form `submit_test/[date]-0000[x]` in the current directory. Check (in your second terminal) the input file `aiida.in` within this folder, comparing it with the content of the input data nodes you created earlier, and that the ‘pseudo’ folder contains the needed pseudopotentials. You can also check the submission script `_aiidasubmit.sh` (the scheduler that is installed on the machine is Torque, so AiiDA creates the files with the proper format for this scheduler). Note: you cannot correct the input file from the “submit_test” folder: you have to correct the script and re-execute it; the files created by `submit_test()` are only for final inspection.
+This creates a folder of the form `submit_test/[date]-0000[x]` in the current directory. Check (in your second terminal) the input file `aiida.in` within this folder, comparing it with the content of the input data nodes you created earlier, and that the ‘pseudo’ folder contains the needed pseudopotentials. You can also check the submission script `_aiidasubmit.sh` (the scheduler that is installed on the machine is Torque, so AiiDA creates the files with the proper format for this scheduler). Note: you cannot correct the input file from the `submit_test` folder: you have to correct the script and re-execute it; the files created by `submit_test()` are only for final inspection.
 
 ### Storing and submitting the calculation
 
-Up to now our calculation has been kept in memory and not in the database. Now tht we have inspected the input files and are sure that Quantum ESPRESSO will have all the information it needs to perform the calculation, we will submit the calculation for a full run, doing so will store the inputs that are living in memory, run and store the calculation and link the outputs to it, to achieve this, we first need to declare our intent in the builder metadata,
+Up to now our calculation has been kept in memory and not in the database. Now that we have inspected the input files and are sure that Quantum ESPRESSO will have all the information it needs to perform the calculation, we will submit the calculation for a full run, doing so will store the inputs that are living in memory, run and store the calculation and link the outputs to it, to achieve this, we first need to declare our intent in the builder metadata,
 
 ```python
 builder.metadata.dry_run = False
 builder.metadata.store_provenance = True
 ```
 
-And then rely on the submit machinary of AiiDA,
+And then rely on the submit machinery of AiiDA,
 
 ```python
 from aiida.engine import submit
@@ -206,7 +206,7 @@ calculation.set_extra("element", "Si")
 
 You will see later the advantage of doing so for querying.
 
-In the meantine, as soon as you submitted your calculation, the daemon picked it up and started to perform all the operations to do the actual submission, going through input file generation, submission to the queue, waiting for it to run and finish, retrieving the output files, parsing them, storing them in the database and setting the state of the calculation to `Finished`.
+In the mean time, as soon as you submitted your calculation, the daemon picked it up and started to perform all the operations to do the actual submission, going through input file generation, submission to the queue, waiting for it to run and finish, retrieving the output files, parsing them, storing them in the database and setting the state of the calculation to `Finished`.
 
 **Note** If the daemon is not running the calculation will remain in the `NEW` state until when you start it.
 
@@ -215,7 +215,7 @@ In the meantine, as soon as you submitted your calculation, the daemon picked it
 You can check the calculation status from the command line:
 
 ```console
-verdi process list                                   
+verdi process list
 ```
 
 Note that `verdi` commands can be slow in this tutorial when the calculation is running (because you just have one CPU which is also used by the PWscf calculation).
@@ -225,7 +225,7 @@ By now, it is possible that the calculation you submitted has already finished, 
 To see also (your) calculations that have finished (and limit those only to the one created in the past day), use instead
 
 ```console
-verdi process list -a -p1                                  
+verdi process list -a -p1
 ```
 
 as explained in the first section.
@@ -304,7 +304,7 @@ There are 2 log messages for this calculation
 Run 'verdi process report 98' to see them
 ```
 
-In the last part of the output of this command you can read that there are some log messages waiging for you, if you run `verdi process report <pk>`.
+In the last part of the output of this command you can read that there are some log messages waiting for you, if you run `verdi process report <pk>`.
 
 Finally, after figuring out the invalid parameter from the calculation output, we can clear it out from the parameters dict and see if our calculation succeeds,
 
@@ -343,7 +343,7 @@ calculation = load_node(<pk>)
 calculation.res.energy
 ```
 
-Notice that, in general, an AiiDA plugin won't limit itself to write some input files, running the software for you, storing the output files, and connecting it all toghether in your provenance graph. AiiDA will also try to interpret your program's output, and make the output values of interest available through an output dict node (as depicted in the graph above). In the case of the aiida quantum espresso plugin this output node is available at `calculation.outputs.output_parameters` and you can access all the available attributes (not only the energy used above) using:
+Notice that, in general, an AiiDA plugin won't limit itself to write some input files, running the software for you, storing the output files, and connecting it all together in your provenance graph. AiiDA will also try to interpret your program's output, and make the output values of interest available through an output dict node (as depicted in the graph above). In the case of the AiiDA quantum espresso plugin this output node is available at `calculation.outputs.output_parameters` and you can access all the available attributes (not only the energy used above) using:
 
 ```python
 calculation.outputs.output_parameters.attributes
