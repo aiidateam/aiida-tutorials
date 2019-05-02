@@ -1,14 +1,32 @@
 language: python
-python:
- - "2.7"
- - "3.6"
 sudo: required
+python:
+  - "2.7"
+  - "3.6"
 
-before_install:
-  - sudo apt-get install pandoc
+addons:
+  apt:
+    packages:
+      # for jupyter notebook rendering
+      - pandoc
+      # for building latex/pdf
+      - texlive-base
+      - texlive-generic-recommended
+      - texlive-fonts-recommended
+      - texlive-latex-base
+      - texlive-latex-recommended
+      - texlive-latex-extra
+      - latexmk
+      - latex-xcolor
+
+env:
+  matrix:
+    - TARGET: html
+      SPHINXOPTS: -W
+    - TARGET: latexpdf
 
 install:
   - pip install --upgrade pip
   - pip install -r docs/requirements.txt
 
-script: cd docs; make
+script: cd docs; make $TARGET

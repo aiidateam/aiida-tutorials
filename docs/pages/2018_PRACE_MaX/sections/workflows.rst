@@ -75,6 +75,7 @@ example on a convergence loop to find iteratively the minimum of an EOS.
 ------------------------------------------------------------------------
 
 .. figure:: /assets/2018_PRACE_MaX/workfunctions.png
+   :width: 100%
 
    Typical graphs created by using a workfunction. (a) The workfunction
    ``create_structure`` takes a ``Str`` object as input and returns a single

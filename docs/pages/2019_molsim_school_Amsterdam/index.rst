@@ -35,9 +35,11 @@ machine, using a compute resource with
 `zeo++ <http://www.zeoplusplus.org/>`__ and
 `RASPA2 <https://github.com/numat/RASPA2>`__ installed.
 
-**Note:** This tutorial requires a basic knowledge of
-`python <https://docs.python.org/2.7/tutorial/index.html>`__. If you are
-not familiar with python, we suggest you partner with someone who is.
+.. note:: 
+
+   This tutorial requires a basic knowledge of
+   `python <https://docs.python.org/2.7/tutorial/index.html>`__. If you are
+   not familiar with python, we suggest you partner with someone who is.
 
 Analyzing the database
 ----------------------
