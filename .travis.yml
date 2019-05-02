@@ -11,11 +11,11 @@ addons:
       - pandoc
       # for building latex/pdf
       - texlive-base
-        #  - texlive-generic-recommended
-        # - texlive-fonts-recommended
+      - texlive-generic-recommended
+      - texlive-fonts-recommended
       - texlive-latex-base
       - latexmk
-        #  - texlive-latex-recommended
+      - texlive-latex-recommended
         #  - texlive-latex-extra
         #- dvipng
         #- dvidvi
