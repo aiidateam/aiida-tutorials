@@ -2,7 +2,7 @@ A real-world WorkChain: computing a band structure
 ==================================================
 
 **Note**: *If you still have enough time, you might want to check first
-Appendix [sec:convpressure] before continuing with this section.*
+Appendix :ref:`sec:convpressure` before continuing with this section.*
 
 As a final demonstration of the power of WorkChains in AiiDA, we want to
 give a demonstration of a WorkChain that we have written that will take
@@ -14,17 +14,17 @@ calculation steps, are performed automatically by the WorkChain.
 
 The demonstration of the workchain will be performed in a Jupyter
 notebook. To run it, follow the instructions that were given for the
-querybuilder notebook in section [sec:querybuilder]. The only difference
+querybuilder notebook in section :ref:`querybuilder`. The only difference
 is that instead of selecting the notebook in the ``querybuilder``
 directory, go to ``pw/bandstructure`` instead and choose the
 ``bandstructure.ipynb`` notebook. There you will find some example
 structures that are loaded from COD, through the importer integrated
 within AiiDA. Note that the required time to calculate the bandstructure
-for these example structures ranges from 3 minutes to almost half an
+for these example structures ranges from 6 minutes to almost half an
 hour, given that the virtual machine is running on a single core with
 minimal computational power. It is not necessary to run these examples
 as it may take too long to complete. For reference, the expected output
-band structures are plotted in Fig.[fig:workchainbandstructures].
+band structures are plotted below:
 
 .. image:: /assets/2018_PRACE_MaX/bandstructures/Al_bands.png
    :scale: 48 %
