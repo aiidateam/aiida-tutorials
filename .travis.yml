@@ -1,5 +1,4 @@
 language: python
-sudo: required
 python:
   - "2.7"
   - "3.6"
@@ -18,6 +17,8 @@ addons:
       - texlive-latex-extra
       - latexmk
       - latex-xcolor
+      - dvipng
+      - dvidvi
 
 env:
   matrix:
