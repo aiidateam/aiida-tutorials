@@ -17,6 +17,7 @@ addons:
       - latexmk
       - texlive-latex-recommended
       - texlive-latex-extra
+      - latex-xcolor
       #- dvipng
       #- dvidvi
       #- graphviz
