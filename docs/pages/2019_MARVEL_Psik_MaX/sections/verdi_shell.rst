@@ -61,8 +61,8 @@ Alternatively, to avoid changing terminal, you can execute ``bash`` commands wit
 
      !some bash command
 
-Loading a node[:code:`load_node`]
-------------------------
+Loading a node
+--------------
 
 Most AiiDA objects are represented by nodes, identified in the database by its ``PK`` number
 (an integer). You can access a node using the following command in the shell:
@@ -231,7 +231,7 @@ by typing
 
 Let’s try now to define a new structure to study, specifically a silicon
 crystal. In the ``verdi shell``, define a cubic unit cell as a
-(3:raw-latex:`\times`3) matrix, with lattice parameter (a\_{lat}=5.4) Å:
+`$(3\times 3)$` matrix, with lattice parameter `$(a_{lat}=5.4)\,\AA$`:
 
 .. code:: python
 
