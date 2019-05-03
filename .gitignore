@@ -2,3 +2,7 @@
 .DS_Store
 *.swp
 *.pyc
+
+.vscode
+docs/build
+docs/_build
