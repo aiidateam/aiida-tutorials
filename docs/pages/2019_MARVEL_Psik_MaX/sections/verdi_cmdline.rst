@@ -10,62 +10,52 @@ data structures, access the input and the output of a calculation, etc.
 Similar to the ``bash`` shell, verdi command support Tab completion. Try
 right now to type ``verdi``, followed by a space, in a terminal and tap
 Tab twice to have a list of subcommands. Whenever you need the
-explanation of a command type ``verdi help`` or add ``-h`` flag if you
-are using any of the ``verdi`` subcommands. Finally, fields enclosed in
-angular brackets, such as ``<pk>``, are placeholders to be replaced by
-the actual value of that field (an integer, a string, etc...).
+explanation of any command add ``--help/-h`` flag in front it. Finally,
+fields enclosed in angular brackets, such as ``<pk>``, are placeholders
+to be replaced by the actual value of that field (an integer, a string
+etc...).
 
-The list of calculations
-------------------------
+The list of processes
+---------------------
 
 Let us try our first ``verdi`` commands. Type in the terminal
 
 .. code:: console
 
-    verdi calculation list
+    verdi process list
 
 (Note: the first time you run this command, it might take a few seconds
 as it is the first time you are accessing the database in the virtual
 machine. Subsequent calls will be faster). This will print the list of
-ongoing calculations, which should be empty. The first output line
-should look like
+ongoing processes (calculations or workchains), which should be empty.
+The first output line should look like
 
 .. code:: console
-
-    PK    Creation    State    Type    Computer    Job state
-    ----  ----------  -------  ------  ----------  -----------
-
+    PK    Created    State    Process label    Process status
+    ----  ---------  -------  ---------------  ----------------
+    
     Total results: 0
-
+    
     Info: last time an entry changed state: never
 
-In order to print a list with all calculations that finished correctly
-in the AiiDA database, you can use the ``-s/--states`` flag as follows:
+In order to print a list with all processes that finished correctly
+in the AiiDA database, you can use the ``-S/--process-state`` flag as follows:
 
 .. code:: console
 
-    verdi calculation list --states FINISHED
+    verdi process list --process-state finished
 
-Another very typical option combination allows to get calculations in
-*any* state (flag ``-a``) generated in the past ``NUM`` days
-(``-p <NUM>``): e.g., for calculation in the past 1 day:
-``verdi calculation list -p1 -a``. Since you have not yet run any
-calculations at the virtual machine that you currently use and all the
-existing calculations were imported and belong to a different user, you
-can type (flag ``-A`` shows the calculations of all the users):
-
-.. code:: console
-
-    verdi calculation list -A --states IMPORTED
-
-Each row of the output identifies a calculation and shows some
+Another very typical option combination allows to get processes in
+*any* state (flag ``-a/--all``) generated in the past ``NUM`` days
+(``-p/--past-days <NUM>``): e.g., for process in the past 1 day:
+``verdi process list -p1 -a``. Each row of the output identifies a process and shows some
 information about it. For a more detailed list of properties, choose one
 row by noting down its PK (primary key) number (first column of the
 output) and type in the terminal
 
 .. code:: console
 
-    verdi calculation show <pk>
+    verdi process show <pk>
 
 The output depends on the specific pk chosen and should inform you about
 the input nodes (e.g. pseudopotentials, kpoints, initial structure,
@@ -76,56 +66,61 @@ etc.).
 reference a calculation or data node in your database, every node has a
 UUID (Universally Unique ID) to identify it, that is preserved even when
 you share some nodes with coworkers—while the PK will most likely
-change. You can see the UUID in the output of ``verdi calculation show``
+change. You can see the UUID in the output of ``verdi process show``
 or ``verdi node show``. Moreover, if you have already a UUID and you
 want to get the corresponding PK in your database, you can use
-``verdi node show -u <UUID>``, as we are going to do now.
+``verdi node show <UUID>``, as we are going to do now.
 
 Let us now consider the node with
 ``UUID = ce81c420-7751-48f6-af8e-eb7c6a30cec3``, which identifies a
-relaxation of a BaTiO(\_3) unit cell run with Quantum Espresso ``pw.x``.
+relaxation of a BaTiO\ :sub:`3` unit cell run with Quantum Espresso ``pw.x``.
 You can check the information on this node and get the PK with:
 
 .. code:: console
 
-    $ verdi node show -u ce81c420-7751-48f6-af8e-eb7c6a30cec3
     Property       Value
     -------------  ------------------------------------
-    type           PwCalculation
-    pk             4235
+    type           CalcJobNode
+    pk             17
     uuid           ce81c420-7751-48f6-af8e-eb7c6a30cec3
     label
     description
-    ctime          2014-10-27 17:51:21.781045+00:00
-    mtime          2018-05-16 11:19:39.848446+00:00
-    process state
-    finish status
-    computer       [2] daint
-    code           pw-SVN-piz-daint
-
-    Inputs        PK  Type
-    ----------  ----  -------------
-    parameters  4236  ParameterData
-    kpoints     4526  KpointsData
-    pseudo_Ba    966  UpfData
-    pseudo_Ti   4315  UpfData
-    settings    4529  ParameterData
-    pseudo_O    4342  UpfData
-    structure    436  StructureData
-
-    Outputs                    PK  Type
-    -----------------------  ----  -------------
-    output_kpoints           3665  KpointsData
-    output_parameters        3670  ParameterData
-    output_structure         3666  StructureData
-    retrieved                3668  FolderData
-    output_trajectory_array   265  ArrayData
-    remote_folder            1977  RemoteData
+    ctime          2019-04-18 10:51:16.710803+00:00
+    mtime          2019-04-18 10:51:51.012617+00:00
+    process state  Finished
+    exit status    0
+    computer       [1] localhost-direct
+    
+    Called by      PK  Type
+    -----------  ----  -------------
+    CALL_CALC       4  WorkChainNode
+    
+    Inputs         PK    Type
+    -------------  ----  -------------
+    pseudos
+        Ba         26    UpfData
+        O          27    UpfData
+        Ti         1     UpfData
+    code           10    Code
+    kpoints        16    KpointsData
+    parameters     15    Dict
+    parent_folder  9     RemoteData
+    settings       14    Dict
+    structure      3     StructureData
+    
+    Outputs              PK  Type
+    -----------------  ----  --------------
+    output_band          23  BandsData
+    output_parameters    22  Dict
+    output_structure     20  StructureData
+    output_trajectory    21  TrajectoryData
+    remote_folder        18  RemoteData
+    retrieved            19  FolderData
 
 *Keep in mind that you can also use just a part (beginning) of the UUID,
 as long as it is unique, to show the node information information.* For
 example, to display the above information, you could also type
-``verdi node show -u ce81c420``. In what follows, we are going to
+``verdi node show ce81c420``. In what follows, we are going to
 mention only the prefixes of the UUIDs since they are sufficient to
 identify the correct node.
 
@@ -134,15 +129,16 @@ A typical AiiDA graph
 
 AiiDA stores inputs required by a calculation as well as the its outputs
 in the database. These objects are connected in a graph that looks like
-Fig. [fig:graph]. We suggest that you have a look to the figure before
+:numref:`fig_graph_input_only`. We suggest that you have a look to the figure before
 going ahead.
 
+.. _fig_graph_input_only:
 .. figure:: include/images/verdi_graph/batio3/graph-inputonly.png 
    :width: 100%
 
    Graph with all inputs (data, circles; and code, diamond) to
    the Quantum Espresso calculation (square) that you will create in
-   Sec. [sec:qe] of this tutorial. 
+   :ref:`calculations` section of this tutorial. 
    
 .. figure:: include/images/verdi_graph/batio3/graph-full.png 
    :width: 100%
@@ -159,14 +155,14 @@ going ahead.
    relaxation calculation, a TrajectoryData for molecular dynamics, …).
 
 You can create a similar graph for any calculation node by using the
-utility ``verdi graph generate <pk>``. For example, before you obtained
+utility ``verdi graph generate <pk>/<uuid>``. For example, before you obtained
 information (in text form) for ``UUID = ce81c420``. To visualize similar
-information in graph(ical) form, run (replacing ``<pk>`` with the PK of
-the node):
+information in graph(ical) form, run (replacing ``<pk>`` or ``<uuid>`` with the PK or UUID
+of the node respectively):
 
 .. code:: console
 
-    verdi graph generate <pk>
+    verdi graph generate <pk>/<uuid>
 
 This command will create the file ``<pk>.dot`` that can be rendered by
 means of the utility ``dot``. If you now type
@@ -200,19 +196,19 @@ We will now inspect the different elements of this graph.
 Inspecting the nodes of a graph
 -------------------------------
 
-ParameterData and Calculations
+Dict and CalcJobNode
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Now, let us have a closer look at the some of the nodes appearing in the
-graph. Choose the node of the type ``ParameterData`` with input link
+graph. Choose the node of the type ``Dict`` with input link
 name ``parameters`` (to double check, it should have UUID ``d1bbe1ea``)
 and type in the terminal:
 
 .. code:: console
 
-    verdi data parameter show <pk>
+    verdi data dict show <pk>
 
-A ``ParameterData`` contains a dictionary (i.e., key–value pairs),
+A ``Dict`` contains a dictionary (i.e., key–value pairs),
 stored in the database in a format ready to be queried (we will learn
 how to run queries later on in this tutorial). The command above will
 print the content dictionary, containing the parameters used to define
@@ -222,11 +218,11 @@ generated by AiiDA) via the command
 
 .. code:: console
 
-    verdi calculation inputcat <pk>
+    verdi calcjob inputcat <pk>
 
 where you substitute the pk of the calculation node. Check the
 consistency of the parameters written in the input file and those stored
-in the ParameterData node. Even if you don’t know the meaning of the
+in the ``Dict`` node. Even if you don’t know the meaning of the
 input flags of a Quantum ESPRESSO calculation, you should be able to see
 how the input dictionary has been converted to Fortran namelists.
 
@@ -236,18 +232,18 @@ calculation (input file, submission script, etc.) instead type
 
 .. code:: console
 
-    verdi calculation inputls <pk>
+    verdi calcjob inputls <pk>
 
 (Adding a ``--color`` flag allows you to easily distinguish files from
 folders by a different coloring).
 
 Once you know the name of the file you want to visualize, you can call
-the ``verdi calculation inputcat`` command specifying the path. For
+the ``verdi calcjob inputcat [PATH]`` command specifying the path. For
 instance, to see the submission script, you can do:
 
 .. code:: console
 
-    verdi calculation inputcat <pk> -p _aiidasubmit.sh
+    verdi calcjob inputcat <pk> _aiidasubmit.sh
 
 StructureData
 ~~~~~~~~~~~~~
@@ -290,7 +286,7 @@ you have it installed):
 Codes and computers
 ~~~~~~~~~~~~~~~~~~~
 
-Let us focus now on the nodes of type ``code``. A code represents (in
+Let us focus now on the nodes of type ``Code``. A code represents (in
 the database) the actual executable used to run the calculation. Find
 the pk of such a node in the graph and type
 
@@ -338,7 +334,7 @@ calculation node. Type in the terminal
 
 .. code:: console
 
-    verdi calculation res <pk>
+    verdi calcjob res <pk>
 
 which will print the output dictionary of the “scalar” results parsed by
 AiiDA at the end of the calculation. Note that this is actually a
@@ -346,9 +342,9 @@ shortcut for
 
 .. code:: console
 
-    verdi data parameter show <pk2>
+    verdi data dict show <pk2>
 
-where ``pk2`` refers to the ParameterData node attached as an output of
+where ``pk2`` refers to the Dict node attached as an output of
 the calculation node, with link name ``output_parameters``.
 
 By looking at the output of the command, what is the Fermi energy of the
@@ -359,20 +355,20 @@ output files via the commands
 
 .. code:: console
 
-    verdi calculation outputls <pk>
+    verdi calcjob outputls <pk>
 
 and
 
 .. code:: console
 
-    verdi calculation outputcat <pk>
+    verdi calcjob outputcat <pk>
 
 Use the latter to verify that the Fermi energy that you have found in
 the last step has been extracted correctly from the output file (Hint:
 filter the lines containing the string “Fermi”, e.g. using ``grep``, to
 isolate the relevant lines).
 
-The results of calculations are stored in two ways: ``ParameterData``
+The results of calculations are stored in two ways: ``Dict``
 objects are stored in the database, which makes querying them very
 convenient, whereas ``ArrayData`` objects are stored on the disk. Once
 more, use the command ``verdi data array show <pk>`` to know the Fermi
@@ -381,21 +377,21 @@ to use, this time, the PK of the output ArrayData of the calculation,
 with link name ``output_trajectory_array``). As you might have realized
 the difference now is that the whole series of values of the Fermi
 energy calculated after each relax/vc-relax step are stored. (The choice
-of what to store in ``ParameterData`` and ``ArrayData`` nodes is made by
+of what to store in ``Dict`` and ``ArrayData`` nodes is made by
 the parser of ``pw.x`` implemented in the ``aiida-quantumespresso``
 plugin.)
 
 (Optional section) Comments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-AiiDA offers the possibility to attach comments to a calculation node,
+AiiDA offers the possibility to attach comments to a any node,
 in order to be able to remember more easily its details. Node with UUID
 prefix ce81c420 has no comment already defined, but you can add a very
 instructive one by typing in the terminal
 
 .. code:: console
 
-    verdi comment add -c "vc-relax of a BaTiO3 done with QE pw.x" <pk>
+    verdi comment add "vc-relax of a BaTiO3 done with QE pw.x" -N <pk>
 
 Now, if you ask for a list of all comments associated to that
 calculation by typing
@@ -441,4 +437,4 @@ belomngs, you can run
 
 .. code:: console
 
-    verdi group list --node <pk>
+    verdi group list -N/--node <pk>
