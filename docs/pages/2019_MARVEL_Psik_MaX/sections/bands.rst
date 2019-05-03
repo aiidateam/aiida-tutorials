@@ -26,16 +26,16 @@ minimal computational power. It is not necessary to run these examples
 as it may take too long to complete. For reference, the expected output
 band structures are plotted in Fig.[fig:workchainbandstructures].
 
-.. image:: /assets/2018_PRACE_MaX/bandstructures/Al_bands.png
+.. image:: include/images/bandstructures/Al_bands.png
    :scale: 48 %
 
-.. image:: /assets/2018_PRACE_MaX/bandstructures/GaAs_bands.png
+.. image:: include/images/bandstructures/GaAs_bands.png
    :scale: 48 %
 
-.. image:: /assets/2018_PRACE_MaX/bandstructures/CaF2_bands.png
+.. image:: include/images/bandstructures/CaF2_bands.png
    :scale: 48 %
 
-.. image:: /assets/2018_PRACE_MaX/bandstructures/hBN_bands.png
+.. image:: include/images/bandstructures/hBN_bands.png
    :scale: 48 %
 
 Electronic band structures of four different crystal structures computed

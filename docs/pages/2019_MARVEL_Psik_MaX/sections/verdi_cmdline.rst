@@ -137,14 +137,14 @@ in the database. These objects are connected in a graph that looks like
 Fig. [fig:graph]. We suggest that you have a look to the figure before
 going ahead.
 
-.. figure:: /assets/2018_PRACE_MaX/graph/graph-inputonly.png 
+.. figure:: include/images/verdi_graph/batio3/graph-inputonly.png 
    :width: 100%
 
    Graph with all inputs (data, circles; and code, diamond) to
    the Quantum Espresso calculation (square) that you will create in
    Sec. [sec:qe] of this tutorial. 
    
-.. figure:: /assets/2018_PRACE_MaX/graph/graph-full.png 
+.. figure:: include/images/verdi_graph/batio3/graph-full.png 
    :width: 100%
 
    Same as above, but also with the outputs that the daemon will create and
