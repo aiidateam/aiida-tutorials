@@ -162,7 +162,7 @@ builder.parameters = Dict(dict=parameters_dict)
 
 At this stage, you have recreated in memory (it’s not yet stored in the database) the input of the graph shown bellow, whereas the outputs will be created later by the daemon.
 
-![](../assets/section-calculations/graph-full.png)
+![](include/images/verdi_graph/si/graph-full.png)
 
 In order to check how AiiDA creates the actual input files for the calculation, we can perform a _dry run_ of the submission process, to achieve that, we should modify the metadata of our builder, first specifying that we want a dry run, and then telling it that we don't want to store the provenance of this calculation (yet):
 
