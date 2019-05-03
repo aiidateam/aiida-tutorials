@@ -31,6 +31,7 @@ ongoing processes (calculations or workchains), which should be empty.
 The first output line should look like
 
 .. code:: console
+
     PK    Created    State    Process label    Process status
     ----  ---------  -------  ---------------  ----------------
     
