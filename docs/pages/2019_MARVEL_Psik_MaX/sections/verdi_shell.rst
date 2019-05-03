@@ -19,7 +19,7 @@ one for the ``verdi shell`` and one to execute bash commands.
 
 The second option is based on Jupyter notebooks and is probably most suitable to the purposes of
 our tutorial. Go to the browser where you have opened ``jupyter`` and click ``New``
-(:raw-latex:`\to`) ``Python 2`` (top right corner). This will open an IPython-based Jupyter notebook
+→ ``Python 2`` (top right corner). This will open an IPython-based Jupyter notebook
 based on cells where you can type portions of python code. The code will not be executed until you
 press ``Shift+Enter`` from within a cell. Type in the first cell
 
@@ -29,7 +29,7 @@ press ``Shift+Enter`` from within a cell. Type in the first cell
 
 and execute it. This will set exactly the same environment as the ``verdi shell``. The notebook will
 be automatically saved upon any modification and when you think you are done, you can export your
-notebook in many formats by going to ``File`` (:raw-latex:`\to`) ``Download as``. We suggest you to
+notebook in many formats by going to ``File`` → ``Download as``. We suggest you to
 have a look to the drop-down menus ``Insert`` and ``Cell`` where you will find the main commands to
 manage the cells of your notebook.
 
@@ -143,7 +143,7 @@ If you prefer Cartesian (rather than crystal) coordinates, type
 
 For later use in this tutorial, let us try now to create a kpoints
 instance, to describe a regular
-(2:raw-latex:`\times`2:raw-latex:`\times`2) mesh of k-points, centered
+(:raw-latex:`$2\times 2 \times 2$`) mesh of k-points, centered
 at the Gamma point (i.e. without offset). This can be done with the
 following commands:
 
@@ -270,7 +270,7 @@ using commands like
      structure.append_atom(position=(alat/4.,alat/4.,alat/4.),symbols="Si")
 
 for the first ‘Si’ atom. Repeat it for the other atomic site
-(:raw-latex:`\left`(0,0,0:raw-latex:`\right`)). You can access and
+(0,0,0). You can access and
 inspect[2] the structure sites with the command
 
 .. code:: python
