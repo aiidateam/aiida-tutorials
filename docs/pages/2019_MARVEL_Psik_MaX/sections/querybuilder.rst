@@ -40,4 +40,8 @@ See below for a rendered version of the notebook.
 
 .. toctree:: 
 
-   QueryBuilder Notebook <../notebooks/querybuilder.ipynb>
+   QueryBuilder Notebook <../notebooks/querybuilder-tutorial.ipynb>
+
+The solutions can also be downloaded from 
+:download:`here <../notebooks/querybuilder-tutorial.ipynb>`: but again, 
+try not to use them at first!
