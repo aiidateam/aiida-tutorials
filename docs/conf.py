@@ -71,7 +71,10 @@ author = "The AiiDA team."
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['assets/*']
+exclude_patterns = [
+  'assets/*', 
+  'pages/*/notebooks/*-solutions.ipynb', 
+  'pages/*/notebooks/*-template.ipynb']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None

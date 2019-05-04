@@ -6,3 +6,5 @@
 .vscode
 docs/build
 docs/_build
+
+.ipynb_checkpoints

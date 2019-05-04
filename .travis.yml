@@ -30,4 +30,6 @@ install:
   - pip install --upgrade pip
   - pip install -r docs/requirements.txt
 
-script: cd docs; make $TARGET
+script: 
+  - make -C docs pre-docs
+  - make -C docs $TARGET
