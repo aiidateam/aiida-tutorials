@@ -73,6 +73,7 @@ author = "The AiiDA team."
 # directories to ignore when looking for source files.
 exclude_patterns = [
   'assets/*', 
+  'pages/*/notebooks/.ipynb_checkpoints/*',
   'pages/*/notebooks/*-solutions.ipynb', 
   'pages/*/notebooks/*-template.ipynb']
 
