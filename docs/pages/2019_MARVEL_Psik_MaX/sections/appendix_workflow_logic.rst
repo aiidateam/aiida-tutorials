@@ -128,36 +128,3 @@ A possible way to visualize it is presented in :numref:`fig_convpressure` obtain
    The bottom plot is a zoom near the minimum.
    The dots represent the (volume,energy) points obtained from Quantum ESPRESSO, and the numbers indicate at which iteration they were obtained.
    The parabolas represent the parabolic fits used in the algorithm; the minimum of the parabola is represented with a small cross, in correspondence of the vertical lines, used as the volume for the following step.
-
-
-[1] The string provided to the ``DataFactory`` encodes both the location
-and the name of the required class according to some specific rules.
-
-[2] if you set the structure incorrectly, for example with overlapping
-atoms, it is very likely that any DFT code will fail!
-
-[3] We purposefully do not provide advanced commands for crystal
-structure manipulation in AiiDA, because python packages that accomplish
-such tasks already exist (such as ASE or pymatgen).
-
-[4] https://aiidateam.github.io/aiida-registry/
-
-[5] http://www.quantum-espresso.org/wp-content/uploads/Doc/INPUT_PW.html
-
-[6]
-http://aiida-core.readthedocs.io/en/latest/plugins/quantumespresso/pw.html
-
-[7] However, to avoid duplication of KpointsData, you should first learn
-how to query the database, therefore we will ignore this duplication
-issue for now.
-
-[8] For JobCalculations (i.e., calculations that are submitted to a
-remote computer through a scheduler) there is an additional 'Job state'
-(last column of the output of ``verdi calculation list``) that can
-either be FINISHED if all went well, or one of the possible failure
-states (FAILED, PARSINGFAILED, SUBMISSIONFAILED, RETRIEVALFAILED). These
-states are represented as a Finished state (third column of
-``verdi calculation list``, with a zero/non-zero error code depending if
-they finished/did not finish correctly). This latter state is more
-general than just JobCalculations and also applies to workflows, as we
-will see later in the tutorial.

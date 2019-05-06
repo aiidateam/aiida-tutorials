@@ -13,9 +13,8 @@ automate this procedure considerably. For computing the DFT energy of
 the silicon crystal (with a PBE functional) we will use Quantum
 ESPRESSO , in particular the PWscf code (``pw.x``). Besides the
 AiiDA-core package, a number of plugins exist for many different codes.
-These are listed in the `AiiDA plugin
-registry <https://aiidateam.github.io/aiida-registry/>`__\ [4]. In
-particular, the “aiida-quantumespresso” plugin (already installed in
+These are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
+In particular, the ``aiida-quantumespresso`` plugin (already installed in
 your machine) provides a very extensive set of plugins, covering most
 (if not all) the functionalities of the underlying codes.
 
@@ -145,10 +144,10 @@ Preparation of inputs
 
 Quantum ESPRESSO requires an input file containing Fortran namelists and
 variables, plus some cards sections (the documentation is available
-`online <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`__\ [5]).
+`here <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_).
 The Quantum ESPRESSO plugin of AiiDA requires quite a few nodes in
 input, which are also documented
-`online <https://aiida-quantumespresso.readthedocs.io/en/stable/user_guide/calculation_plugins/pw.html>`__\ [6].
+`online <https://aiida-quantumespresso.readthedocs.io/en/stable/user_guide/calculation_plugins/pw.html>`_.
 Here we will instruct our calculation with a minimal configuration for
 computing the energy of silicon. We need:
 
@@ -167,7 +166,7 @@ code that you executed previously, you will create duplicated
 information in the database (i.e. every time you will execute the
 script, you will create another StructureData, another KpointsData,
 ...). In fact, you already have the opportunity to re-use an already
-existing structure.[7] Use therefore a combination of the bash command
+existing structure [#f1]_. Use therefore a combination of the bash command
 ``verdi data structure list`` and of the shell command ``load_node()``
 to get an object representing the structure created earlier.
 
@@ -269,7 +268,7 @@ database) the input of the graph shown bellow, whereas the outputs will
 be created later by the daemon.
 
 .. figure:: include/images/verdi_graph/si/graph-full.png
-   :alt: 
+   :alt:
 
 In order to check how AiiDA creates the actual input files for the
 calculation, we can perform a *dry run* of the submission process, to
@@ -370,9 +369,7 @@ by the PWscf calculation).
 
 By now, it is possible that the calculation you submitted has already
 finished, and therefore that you don’t see any calculation in the
-output. In fact, by default, the command only prints calculations that
-are still being handled by the daemon, i.e. those with a state that is
-not ``FINISHED`` yet[8].
+output. In fact, by default, the command only prints calculations that are still active [#f2]_.
 
 To see also (your) calculations that have finished (and limit those only
 to the one created in the past day), use instead
@@ -534,3 +531,9 @@ Since the name of this output dictionary node is an implementation
 detail of each plugin, AiiDA provides the shortcut ``calculation.res``
 where the developers can indicate what they think is the result of the
 calculation.
+
+
+.. rubric:: Footnotes
+
+.. [#f1] However, to avoid duplication of KpointsData, you should first learn how to query the database, therefore we will ignore this duplication issue for now.
+.. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminatd, it will have a state ``Finished``, ``Killed`` or ``Excepted``.

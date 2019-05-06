@@ -270,7 +270,7 @@ If you make a mistake, start over from
 ``structure = StructureData(cell=the_cell)``, or equivalently use
 ``structure.clear_kinds()`` to remove all kinds (atomic species) and sites.
 Alternatively, AiiDA structures can also be converted directly from ASE
-structures using
+structures [#f1]_ using
 
 .. code:: python
 
@@ -414,3 +414,8 @@ the database with
 .. code:: console
 
     verdi data upf listfamilies
+
+
+.. rubric:: Footnotes
+
+.. [#f1] We purposefully do not provide advanced commands for crystal structure manipulation in AiiDA, because python packages that accomplish such tasks already exist (such as ASE or pymatgen).
