@@ -64,16 +64,15 @@ Alternatively, to avoid changing terminal, you can execute ``bash`` commands wit
 Loading a node
 --------------
 
-Most AiiDA objects are represented by nodes, identified in the database by its ``PK`` number
-(an integer). You can access a node using the following command in the shell:
+Most AiiDA objects are represented by nodes, identified in the database by its ``PK`` number (an
+integer). You can access a node using the following command in the shell:
 
 .. code:: python
 
      node = load_node(PK)
 
-Load a node using one of the calculation ``PK`` s visible in the graph you
-displayed in the previous section of the tutorial. Then get the energy
-of the calculation with the command
+Load a node using one of the calculation ``PK`` s visible in the graph you displayed in the previous
+section of the tutorial. Then get the energy of the calculation with the command
 
 .. code:: python
 
@@ -85,8 +84,7 @@ You can also type
 
      node.res.
 
-and then press ``TAB`` to see all the possible output results of the
-calculation.
+and then press ``TAB`` to see all the possible output results of the calculation.
 
 Loading different kinds of nodes
 --------------------------------
@@ -94,42 +92,35 @@ Loading different kinds of nodes
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
-From the graph displayed in Section [sec:aiidagraph], find the pk of the
-barium pseudopotential file (LDA). Load it and verify that it describes
-barium. Type
+From the graph displayed in Section [sec:aiidagraph], find the ``PK`` of the barium pseudopotential
+file (LDA). Load it and verify that it describes barium. Type
 
 .. code:: python
 
      upf = load_node(PK)
      upf.element
 
-All methods of ``UpfData`` are accessible by typing ``upf.`` and then
-pressing ``TAB``.
+All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing ``TAB``.
 
 k-points
 ~~~~~~~~
 
-A set of k-points in the Brillouin zone is represented by an instance of
-the ``KpointsData`` class. Choose one from the graph of
-Section [sec:aiidagraph], load it as ``kpoints`` and inspect its
-content:
+A set of k-points in the Brillouin zone is represented by an instance of the ``KpointsData`` class.
+Choose one from the graph of Section [sec:aiidagraph], load it as ``kpoints`` and inspect its content:
 
 .. code:: python
 
      kpoints.get_kpoints_mesh()
 
-Then get the full (explicit) list of k-points belonging to this mesh
-using
+Then get the full (explicit) list of k-points belonging to this mesh using
 
 .. code:: python
 
      kpoints.get_kpoints_mesh(print_list=True)
 
-If you incurred in a ``AttributeError``, it means that the kpoints
-instance does not represent a regular mesh but rather a list of k-points
-defined by their crystal coordinates (typically used when plotting a
-band structure). In this case, get the list of k-points coordinates
-using
+If you incurred in a ``AttributeError``, it means that the kpoints instance does not represent a
+regular mesh but rather a list of k-points defined by their crystal coordinates (typically used
+when plotting a band structure). In this case, get the list of k-points coordinates using
 
 .. code:: python
 
@@ -141,69 +132,55 @@ If you prefer Cartesian (rather than crystal) coordinates, type
 
      kpoints.get_kpoints(cartesian=True)
 
-For later use in this tutorial, let us try now to create a kpoints
-instance, to describe a regular
-(:raw-latex:`$2\times 2 \times 2$`) mesh of k-points, centered
-at the Gamma point (i.e. without offset). This can be done with the
-following commands:
-
-.. code:: python
-
-     from aiida.orm.data.array.kpoints import KpointsData
-     kpoints = KpointsData()
-     kpoints_mesh = 2
-     kpoints.set_kpoints_mesh([kpoints_mesh,kpoints_mesh,kpoints_mesh])
-     kpoints.store()
-
-The import performed in the first line is however unpractical as it
-requires to remember the exact location of the module containing the
-KpointsData class. Instead, it is easier to use the ``DataFactory``
-function instead of an explicit import.
+For later use in this tutorial, let us try now to create a kpoints instance, to describe a regular
+(2 x 2 x 2) mesh of k-points, centered at the Gamma point (i.e. without offset). This can be done
+with the following commands:
 
 .. code:: python
 
      KpointsData = DataFactory("array.kpoints")
+     kpoints = KpointsData()
+     kpoints_mesh = 2
+     kpoints.set_kpoints_mesh([kpoints_mesh] * 3)
+     kpoints.store()
 
-This function loads the appropriate class defined in a string (here
-``array.kpoints``).[1] Therefore, ``KpointsData`` is not a class
-instance, but the kpoints class itself!
+While it is possible to import KpointsData directly, it is recommended (and easier) to use the
+``DataFactory`` function instead of an explicit import.
+
+This function loads the appropriate class defined in a string (here ``array.kpoints``).
+Therefore, ``KpointsData`` is not a class instance, but the kpoints class itself!
 
 Parameters
 ~~~~~~~~~~
 
-Nested dictionaries with individual parameters, as well as lists and
-arrays, are represented in AiiDA with ``ParameterData`` objects. Get the
-PK and load the input parameters of a calculation in the graph of
-Section [sec:aiidagraph]. Then display its content by typing
+Nested dictionaries with individual parameters, as well as lists and arrays, are represented in AiiDA
+with ``Dict`` objects. Get the PK and load the input parameters of a calculation in the graph
+of Section [sec:aiidagraph]. Then display its content by typing
 
 .. code:: python
 
      params.get_dict()
 
-where ``params`` is the ``ParameterData`` node you loaded. Modify the
-dictionary content so that the wave-function cutoff is now set to 20 Ry.
-Note that you cannot modify an object already stored in the database. To
-save the modification, you must create a new ParameterData object.
-Similarly to what discussed before, first load the ``ParameterData``
-class by typing
+where ``params`` is the ``Dict`` node you loaded. Modify the dictionary content so that the
+wave-function cutoff is now set to 20 Ry. Note that you cannot modify an object already stored in the
+database. To save the modification, you must create a new ``Dict`` object. Similarly to what
+discussed before, first load the ``Dict`` class by typing
 
 .. code:: python
 
-     ParameterData = DataFactory('parameter')
+     Dict = DataFactory("dict")
 
-Then an instance of the class (i.e. the parameter object that we want to
-create) is created and initialized by the command
+Then an instance of the class (i.e. the dict object that we want to create) is created and
+initialized by the command
 
 .. code:: python
 
-     new_params = ParameterData(dict=YOUR_DICT)
+     new_params = Dict(dict=YOUR_DICT)
 
-where ``YOUR_DICT`` is the modified dictionary. Note that the parameter
-object is not yet stored in the database. In fact, if you simply type
-``new_params`` in the verdi shell, you will be prompted with a string
-notifying you the “unstored” status. To save an entry in the database
-corresponding to the ``new_params`` object, you need to type a last
-command in the verdi shell:
+where ``YOUR_DICT`` is the modified dictionary. Note that the dict object is not yet stored in the
+database. In fact, if you simply type ``new_params`` in the verdi shell, you will be prompted with
+a string notifying you the “unstored” status. To save an entry in the database corresponding to the
+``new_params`` object, you need to type a last command in the verdi shell:
 
 .. code:: python
 
