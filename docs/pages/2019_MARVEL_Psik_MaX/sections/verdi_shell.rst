@@ -69,7 +69,7 @@ Loading a node
 --------------
 
 Most AiiDA objects are represented by nodes, identified in the database by its
-``PK`` number (an integer). You can access a node using the following command
+``PK`` (an integer). You can access a node using the following command
 in the shell:
 
 .. code:: python
@@ -100,16 +100,14 @@ Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
 From the graph displayed in Section :ref:`aiidagraph`, find the ``PK`` of the
-barium pseudopotential file (LDA). Load it and verify that it describes
-barium. Type
+pseudopotential file (LDA). Load it and show what elements it corresponds to by typing:
 
 .. code:: python
 
      upf = load_node(PK)
      upf.element
 
-All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing
-``TAB``.
+All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing ``TAB``.
 
 k-points
 ~~~~~~~~
@@ -149,7 +147,7 @@ point (i.e. without offset). This can be done with the following commands:
 
 .. code:: python
 
-     KpointsData = DataFactory("array.kpoints")
+     KpointsData = DataFactory('array.kpoints')
      kpoints = KpointsData()
      kpoints_mesh = 2
      kpoints.set_kpoints_mesh([kpoints_mesh] * 3)
@@ -165,10 +163,9 @@ the kpoints class itself!
 Parameters
 ~~~~~~~~~~
 
-Nested dictionaries with individual parameters, as well as lists and arrays,
-are represented in AiiDA with ``Dict`` objects. Get the PK and load the input
-parameters of a calculation in the graph of Section :ref:`aiidagraph`. Then
-display its content by typing
+Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
+Get the PK and load the input parameters of a calculation in the graph of Section :ref:`aiidagraph`.
+Then display its content by typing
 
 .. code:: python
 
@@ -182,7 +179,7 @@ discussed before, first load the ``Dict`` class by typing
 
 .. code:: python
 
-     Dict = DataFactory("dict")
+     Dict = DataFactory('dict')
 
 Then an instance of the class (i.e. the dict object that we want to create) is
 created and initialized by the command
@@ -194,7 +191,7 @@ created and initialized by the command
 where ``YOUR_DICT`` is the modified dictionary. Note that the dict object is
 not yet stored in the database. In fact, if you simply type ``new_params`` in
 the verdi shell, you will be prompted with a string notifying you the
-“unstored” status. To save an entry in the database corresponding to the
+'unstored' status. To save an entry in the database corresponding to the
 ``new_params`` object, you need to type a last command in the verdi shell:
 
 .. code:: python
@@ -239,7 +236,7 @@ verdi shell
 
 .. code:: python
 
-     StructureData = DataFactory("structure")
+     StructureData = DataFactory('structure')
 
 Now, initialize the class instance (i.e. is the structure we want to study) by
 the command
@@ -309,13 +306,13 @@ Load again the calculation node used in Section :ref:`loadnode`:
 
 .. code:: python
 
-     calc = load_node(PK)
+    calc = load_node(PK)
 
 Then type
 
 .. code:: python
 
-     calc.inputs.
+    calc.inputs.
 
 and press ``TAB``: you will see all the link names between the calculation and
 its input nodes. You can use a specific linkname to access the corresponding
@@ -323,24 +320,13 @@ input node, e.g.:
 
 .. code:: python
 
-     calc.inputs.structure
-
-You can use the ``inputs`` method multiple times in order to browse the graph.
-For instance, if the input structure node that you just accessed is the output
-of another calculation, you can access the latter by typing
-
-.. code:: python
-
-     calc2 = calc.inputs.structure.inputs.output_structure
-
-Here ``calc2`` is the ``PwCalculation`` that produced the structure used as an
-input for ``calc``.
+    calc.inputs.structure
 
 Similarly, if you type:
 
 .. code:: python
 
-     calc2.outputs.
+    calc2.outputs.
 
 and then ``TAB``, you will list all output link names of the calculation. One
 of them leads to the structure that was the input of ``calc`` we loaded
@@ -348,34 +334,70 @@ previously:
 
 .. code:: python
 
-     calc2.outputs.output_structure
+    calc2.outputs.output_structure
 
 Note that links have a single name, that was assigned by the calculation that
 used the corresponding input or produced the corresponding output, as
 illustrated in :numref:`fig_graph`.
 
-For a more programmatic approach, you can get a list of the inputs and outputs
-of a node, say ``calc``, by loading the respective ``LinkManager``
+For a more programmatic approach, you can get a represenation of the inputs and outputs of a node, say ``calc``, through the following methods:
 
 .. code:: python
 
-     calc_incoming = calc.get_incoming()
-     calc_outgoing = calc.get_outgoing()
+    calc_incoming = calc.get_incoming()
+    calc_outgoing = calc.get_outgoing()
 
-And then call the method ``.all()`` on the respective ``LinkManager``.
+These methods will return an instance of the ``LinkManager`` class.
+You can iterate over the neighboring nodes by calling the ``.all()`` method:
+
+.. code:: python
+
+    for entry in calc.get_outgoing():
+        print(entry.link_label, entry.link_type, entry.node)
+
+each entry returned by ``.all()`` is a ``LinkTriple``, a named tuple, from which you can get the link label and type and the neighboring node itself.
+If you print one, you will see something like:
+
+.. code:: python
+
+    LinkTriple(node=<Dict: uuid: fac99f59-c69e-4ccd-9655-c7da1d469145 (pk: 1050)>, link_type=<LinkType.CREATE: 'create'>, link_label=u'output_parameters')
+
+There are many other convenience methods on the ``LinkManager``.
+For example if you are only interested in the link labels you can use:
+
+
+.. code:: python
+
+    calc.get_outgoing().all_link_labels()
+
+which will return a list of all the labels of the outgoing links.
+Likewise, ``.all_nodes()`` will give you a list of all the nodes to which links are going out from the ``calc`` node.
+If you are looking for the node with a specific label, you can use:
+
+.. code:: python
+
+    calc.get_outgoing().get_node_by_label('output_parameters')
+
+The ``get_outgoing`` and ``get_incoming`` methods also support filtering on various properties, such as the link label.
+For example, if you only want to get the outgoing links whose label starts with ``output``, you can do the following:
+
+.. code:: python
+
+    calc.get_outgoing(link_label_filter='output%').all_nodes()
+
 
 Pseudopotential families
 ------------------------
 
-Pseudopotentials in AiiDA are grouped in “families” that contain one single
+Pseudopotentials in AiiDA are grouped in 'families' that contain one single
 pseudo per element. We will see how to work with UPF pseudopotentials (the
 format used by Quantum ESPRESSO and some other codes). Download and untar the
 SSSP pseudopotentials via the commands:
 
 .. code:: console
 
-     wget https://archive.materialscloud.org/file/2018.0001/v1/SSSP_efficiency_pseudos.tar.gz
-     tar -zxvf SSSP_efficiency_pseudos.tar.gz
+    wget https://archive.materialscloud.org/file/2018.0001/v1/SSSP_efficiency_pseudos.tar.gz
+    tar -zxvf SSSP_efficiency_pseudos.tar.gz
 
 Then you can upload the whole set of pseudopotentials to AiiDA by using the
 following ``verdi`` command:
@@ -391,4 +413,4 @@ the database with
 
 .. code:: console
 
-     verdi data upf listfamilies
+    verdi data upf listfamilies
