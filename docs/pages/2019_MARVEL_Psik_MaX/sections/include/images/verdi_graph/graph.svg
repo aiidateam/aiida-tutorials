@@ -286,9 +286,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.5"
-     inkscape:cx="855.89457"
-     inkscape:cy="2361.8149"
+     inkscape:zoom="0.70710678"
+     inkscape:cx="728.63833"
+     inkscape:cy="575.62751"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -393,7 +393,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1454,7 +1454,10 @@
     </g>
     <g
        id="g3186"
-       transform="translate(-20.753599,163.13221)">
+       transform="translate(-20.753599,163.13221)"
+       inkscape:export-filename="/home/arbelaez/Code/aiida-tutorials/docs/pages/2019_MARVEL_Psik_MaX/sections/include/images/verdi_graph/batio3/graph-full.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200">
       <rect
          style="opacity:1;vector-effect:none;fill:#ff5555;fill-opacity:1;stroke:none;stroke-width:0.58110362;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="rect1042"
@@ -2172,6 +2175,11 @@
            x="-337.56271"
            id="tspan1501"
            sodipodi:role="line">pseudos_Ba</tspan></text>
+      <path
+         inkscape:connector-curvature="0"
+         id="path2559"
+         d="M 275.62802,312.91513 V 376.8879 H 165.99807"
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.6263755;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker2589)" />
       <rect
          style="opacity:1;vector-effect:none;fill:#1a1a1a;fill-opacity:1;stroke:none;stroke-width:0.37157649;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
          id="rect1505"
@@ -2197,15 +2205,13 @@
            x="-344.8952"
            y="276.80408"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.16918755px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#f9f9f9;stroke-width:0.06263755">pseudos_O</tspan></text>
-      <path
-         inkscape:connector-curvature="0"
-         id="path2559"
-         d="M 275.62802,312.91513 V 376.8879 H 165.99807"
-         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.6263755;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker2589)" />
     </g>
     <g
        id="g3072"
-       transform="translate(-20.753599,-273.86245)">
+       transform="translate(-20.753599,-273.86245)"
+       inkscape:export-filename="/home/arbelaez/Code/aiida-tutorials/docs/pages/2019_MARVEL_Psik_MaX/sections/include/images/verdi_graph/batio3/graph-input.png"
+       inkscape:export-xdpi="200"
+       inkscape:export-ydpi="200">
       <rect
          inkscape:export-ydpi="200"
          inkscape:export-xdpi="200"
@@ -2637,6 +2643,11 @@
            x="-605.31763"
            y="254.89871"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.16918755px;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:center;writing-mode:lr-tb;text-anchor:middle;fill:#f9f9f9;stroke-width:0.06263755">pseudos_Ba</tspan></text>
+      <path
+         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.6263755;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker2879)"
+         d="m 275.62802,580.67009 v 63.97277 H 165.99807"
+         id="path2875"
+         inkscape:connector-curvature="0" />
       <rect
          inkscape:export-ydpi="200"
          inkscape:export-xdpi="200"
@@ -2662,11 +2673,6 @@
            x="-612.65015"
            id="tspan2871"
            sodipodi:role="line">pseudos_O</tspan></text>
-      <path
-         style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.6263755;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker2879)"
-         d="m 275.62802,580.67009 v 63.97277 H 165.99807"
-         id="path2875"
-         inkscape:connector-curvature="0" />
     </g>
   </g>
 </svg>
