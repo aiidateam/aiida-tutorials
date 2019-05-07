@@ -136,7 +136,7 @@ in the database. These objects are connected in a graph that looks like
 before going ahead.
 
 .. _fig_graph_input_only:
-.. figure:: include/images/verdi_graph/si/graph-input.png
+.. figure:: include/images/verdi_graph/batio3/graph-input.png
    :width: 100%
 
    Graph with all inputs (data, circles; and code, diamond) to
@@ -144,7 +144,7 @@ before going ahead.
    :ref:`calculations` section of this tutorial.
 
 .. _fig_graph:
-.. figure:: include/images/verdi_graph/si/graph-full.png
+.. figure:: include/images/verdi_graph/batio3/graph-full.png
    :width: 100%
 
    Same as above, but also with the outputs that the daemon will create and
