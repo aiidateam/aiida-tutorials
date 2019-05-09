@@ -153,12 +153,14 @@ point (i.e. without offset). This can be done with the following commands:
      kpoints.set_kpoints_mesh([kpoints_mesh] * 3)
      kpoints.store()
 
-While it is possible to import KpointsData directly, it is recommended
-(and easier) to use the ``DataFactory`` function instead of an explicit import.
-
 This function loads the appropriate class defined in a string (here
 ``array.kpoints``). Therefore, ``KpointsData`` is not a class instance, but
 the kpoints class itself!
+
+While it is also possible to import ``KpointsData`` directly, it is recommended
+to use the ``DataFactory`` function instead, as this is more future-proof:
+even if the import path of the class changes in the future, its entry point
+string (``array.kpoints``) will remain stable.
 
 Parameters
 ~~~~~~~~~~
