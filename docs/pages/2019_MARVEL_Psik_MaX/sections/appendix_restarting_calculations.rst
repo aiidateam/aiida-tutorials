@@ -31,8 +31,8 @@ As an example, let us first submit a total energy calculation using a parameters
         },
     }
 
-In this case, we set a very low number of self consistent iterations ``3``, which is too small to be able to reach the desired accuracy of ``10^-14``.
-This means the calculation will not converge and will not be successful, despite there not being an actual mistake in the parameter dictionary.
+In this case, we set a very low number of self consistent iterations (3), which is too small to be able to reach the desired accuracy of 10\ :sup:`-14`.
+This means the calculation will not converge and will not be successful, despite there not being any actual mistake in the parameters dictionary.
 
 To easily restart from the previous calculation, instead of retyping all the inputs, you can simply use the ``get_builder_restart`` method of the ``CalcJobNode``.
 Just like the ``get_builder`` method of the ``Process`` class, this will create an instance of the ``ProcessBuilder``, except this one will have all the inputs pre-populated based on the node.
@@ -84,4 +84,5 @@ Finally, to submit the restart, since it is a process builder, it works exactly 
 
 You can now inspect the restarted calculation to verify that this time it actually completed successfully.
 Using the restart builder, the required code to setup a calculation is much shorter than the one needed to launch a new one from scratch.
-There is no need to load and or create many of the inputs such as the pseudopotentials, structures and k-points, which were reused from the first calculation
+There is no need to load or create many of the inputs such as the pseudopotentials, structures and k-points,
+because they were reused from the first calculation.
