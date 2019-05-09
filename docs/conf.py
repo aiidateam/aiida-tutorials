@@ -187,7 +187,7 @@ html_static_path = ['_static']
 
 # -- Options for LaTeX output --------------------------------------------------
 
-latex_engine = 'xelatex'
+#latex_engine = 'xelatex'
 
 latex_elements = {
 # The paper size ('letterpaper' or 'a4paper').
@@ -197,7 +197,10 @@ latex_elements = {
 #'pointsize': '10pt',
 
 # Additional stuff for the LaTeX preamble.
-#'preamble': '',
+'preamble': u'''
+\\usepackage{newunicodechar} 
+\\newunicodechar{⏹}{\ensuremath{\square}}
+''',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
