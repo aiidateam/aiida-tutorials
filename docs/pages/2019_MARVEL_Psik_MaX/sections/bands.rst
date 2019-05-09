@@ -22,9 +22,9 @@ directory, go to ``pw/bandstructure`` instead and choose the
 ``bandstructure.ipynb`` notebook. There you will find some example
 structures that are loaded from COD, through the importer integrated
 within AiiDA. Note that the required time to calculate the bandstructure
-for these example structures ranges from ~5 minutes to almost more than an
+for these example structures ranges from ~5 minutes to more than an
 hour, given that the virtual machine is running on two cores with
-minimal computational power. It is not necessary to run all these examples
+CPU throttling. It is not necessary to run all these examples
 as they may take too long to complete. For reference, the expected output
 band structures are plotted in :numref:`fig_calc_bands_1` to :numref:`fig_calc_bands_4`.
 
@@ -51,4 +51,3 @@ band structures are plotted in :numref:`fig_calc_bands_1` to :numref:`fig_calc_b
    :scale: 48 %
    
    Electronic band structures of BN computed with AiiDA’s PwBandsWorkChain
-
