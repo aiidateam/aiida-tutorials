@@ -161,7 +161,7 @@ Getting help
 There are a number of helpful resources available to you for getting more information about AiiDA.
 Please consider:
 
- * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/v1.0.0b1/>`_
+ * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
  * asking in the `Slack channel of the tutorial <https://aiidaworkflows2019.slack.com>`_
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
  * asking your neighbor
