@@ -25,6 +25,7 @@ needs_sphinx = '1.6.0'
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo', 'sphinx.ext.imgmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'IPython.sphinxext.ipython_console_highlighting', 'IPython.sphinxext.ipython_directive', 'recommonmark', 'nbsphinx']
 ipython_mplbackend = ""
+imgmath_image_format = 'svg'
 
 todo_include_todos = True
 
@@ -70,7 +71,11 @@ author = "The AiiDA team."
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['assets/*']
+exclude_patterns = [
+  'assets/*', 
+  'pages/*/notebooks/.ipynb_checkpoints/*',
+  'pages/*/notebooks/*-solutions.ipynb', 
+  'pages/*/notebooks/*-template.ipynb']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None

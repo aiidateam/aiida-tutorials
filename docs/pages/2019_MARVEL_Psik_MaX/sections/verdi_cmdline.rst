@@ -34,9 +34,9 @@ The first output line should look like
 
     PK    Created    State    Process label    Process status
     ----  ---------  -------  ---------------  ----------------
-    
+
     Total results: 0
-    
+
     Info: last time an entry changed state: never
 
 In order to print a list with all processes that finished correctly
@@ -49,10 +49,10 @@ in the AiiDA database, you can use the ``-S/--process-state`` flag as follows:
 Another very typical option combination allows to get processes in
 *any* state (flag ``-a/--all``) generated in the past ``NUM`` days
 (``-p/--past-days <NUM>``): e.g., for process in the past 1 day:
-``verdi process list -p1 -a``. Each row of the output identifies a process and shows some
-information about it. For a more detailed list of properties, choose one
-row by noting down its PK (primary key) number (first column of the
-output) and type in the terminal
+``verdi process list -p1 -a``. Each row of the output identifies a process and
+shows some information about it. For a more detailed list of properties, choose
+one row by noting down its PK (primary key) number (first column of the output)
+and type in the terminal
 
 .. code:: console
 
@@ -91,11 +91,11 @@ You can check the information on this node and get the PK with:
     process state  Finished
     exit status    0
     computer       [1] localhost-direct
-    
+
     Called by      PK  Type
     -----------  ----  -------------
     CALL_CALC       4  WorkChainNode
-    
+
     Inputs         PK    Type
     -------------  ----  -------------
     pseudos
@@ -108,7 +108,7 @@ You can check the information on this node and get the PK with:
     parent_folder  9     RemoteData
     settings       14    Dict
     structure      3     StructureData
-    
+
     Outputs              PK  Type
     -----------------  ----  --------------
     output_band          23  BandsData
@@ -125,23 +125,26 @@ example, to display the above information, you could also type
 mention only the prefixes of the UUIDs since they are sufficient to
 identify the correct node.
 
+.. _aiidagraph:
+
 A typical AiiDA graph
 ---------------------
 
 AiiDA stores inputs required by a calculation as well as the its outputs
 in the database. These objects are connected in a graph that looks like
-:numref:`fig_graph_input_only`. We suggest that you have a look to the figure before
-going ahead.
+:numref:`fig_graph_input_only`. We suggest that you have a look to the figure
+before going ahead.
 
 .. _fig_graph_input_only:
-.. figure:: include/images/verdi_graph/batio3/graph-inputonly.png 
+.. figure:: include/images/verdi_graph/batio3/graph-input.png
    :width: 100%
 
    Graph with all inputs (data, circles; and code, diamond) to
    the Quantum Espresso calculation (square) that you will create in
-   :ref:`calculations` section of this tutorial. 
-   
-.. figure:: include/images/verdi_graph/batio3/graph-full.png 
+   :ref:`calculations` section of this tutorial.
+
+.. _fig_graph:
+.. figure:: include/images/verdi_graph/batio3/graph-full.png
    :width: 100%
 
    Same as above, but also with the outputs that the daemon will create and
@@ -158,8 +161,8 @@ going ahead.
 You can create a similar graph for any calculation node by using the
 utility ``verdi graph generate <pk>/<uuid>``. For example, before you obtained
 information (in text form) for ``UUID = ce81c420``. To visualize similar
-information in graph(ical) form, run (replacing ``<pk>`` or ``<uuid>`` with the PK or UUID
-of the node respectively):
+information in graph(ical) form, run (replacing ``<pk>`` or ``<uuid>`` with the
+PK or UUID of the node respectively):
 
 .. code:: console
 
