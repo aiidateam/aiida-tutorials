@@ -2,6 +2,10 @@
    :format: html latex
 ..
 
+*These appendices consist of optional exercises, and are mentioned
+in earlier parts of the tutorial. Go through them only if you
+have time.*
+
 Queries in AiiDA - Examples and Exercises
 =========================================
 
@@ -80,7 +84,7 @@ the units of this energy and the formula of the structure that was given
 to the calculation. The graphical representation of this query can be
 seen in Figure [fig:qb2] and the actual query follows:
 
-.. figure:: /assets/2018_PRACE_MaX/qb_example_2.png
+.. figure:: include/images/qb_example_2.png
    :width: 100%
 
    Complex graph query.

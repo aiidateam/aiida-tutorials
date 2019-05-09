@@ -1,3 +1,5 @@
+.. _querybuilder:
+
 Queries in AiiDA: The Querybuilder
 ==================================
 
