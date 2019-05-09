@@ -90,16 +90,16 @@ The first three states are 'active' states, meaning the process is not done yet,
 Once a process is in a terminal state, it will never become active again.
 The `official documentation <https://aiida-core.readthedocs.io/en/latest/concepts/processes.html#process-state>`_ contains more details on process states.
 
-If, instead of any one particular process state, you want to list processes in *any* state, you can use the ``-a/--all`` flag instead:
+In order to list processes of *all* states, use the ``-a/--all`` flag:
 
 .. code:: console
 
     verdi process list -a
 
 This command will list all the processes that have *ever* been launched.
-As your database will grow, the output will become so large that it becomes unusable.
+As your database will grow, so will the output of this command.
 To limit the number of results, you can use the ``-p/--past-days <NUM>`` option, that will only show processes that were created ``NUM`` days ago.
-For example, if you want to list all the process launched since the last day, you can execute:
+For example, this lists all processes launched since yesterday:
 
 .. code:: console
 
@@ -109,20 +109,21 @@ Each row of the output identifies a process with some basic information about it
 For a more detailed list of properties, you can use ``verdi process show``, but to address any specific process, you need an identifier for it.
 An identifier for any entity in AiiDA comes in three different forms:
 
- * PK
- * UUID
- * LABEL
+ * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
+ * `Universally Unique Identifier <https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)>`_ (UUID): A string, e.g. ``ce81c420-7751-48f6-af8e-eb7c6a30cec3`` that identifies your entity globally (automatically assigned)
+ * Label: A string, e.g. ``test_process`` that allows you to assign a human readable label
 
-The first one, the PK or primary key, you have already seen.
-These are the integers in the first column of the output printed by ``verdi process list``.
-The PK is a unique identifier for any entity, but only for that *entity type* and *within your database*.
+The first one, the PK or primary key, you have already seen in the first column of the output printed by ``verdi process list``.
 That is why, in addition to their PK, all AiiDA entities also have a UUID (Universal Unique Identifier), which as the name suggests, should be unique, `even across databases`, and will never change.
-That is to say, if you share some of your data with somebody else, the UUIDs will remain identical, unlike the PKs which will most likely change.
+That is to say, if you share some of your data with somebody else, the UUIDs will remain identical, unlike the PKs, which will most likely change.
 
 .. note::
 
     Any ``verdi`` parameter that expects an identifier will accept either a PK, a UUID or a label, although, not all entities will have a label, as it is an optional field.
     For a UUID you can even specify only a part of it, as long as it starts at the beginning and the partial can be uniquely resolved.
+    You may be wondering why AiiDA doesn't rely just on UUIDs.
+    Besides the historical fact that PKs came first, UUIDs need to encode more information in order to be universally unique.
+    While we recommend using UUIDs wherever they feel comfortable, PKs are shorter and can be easier to work with.
     For more information on identifiers in ``verdi`` and AiiDA in general, refer to the `documentation online <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html#cli-identifiers>`_.
 
 Let's now consider the process with the UUID ``ce81c420-7751-48f6-af8e-eb7c6a30cec3``.
@@ -136,7 +137,7 @@ Use this identifier to get more information about it:
 
     For the remainder of this section, when commands are displayed, any fields enclosed in angular brackets, such as ``<IDENTIFIER>``, are placeholders to be replaced by the actual value of that field.
 
-Again, since the UUID is unchanging we know what it represents: a Quantum Espresso ``pw.x`` relaxation of a BaTiO\ :sub:`3` unit cell.
+Again, since the UUID is universally unique, we know what it represents, even in your database: a Quantum Espresso ``pw.x`` relaxation of a BaTiO\ :sub:`3` unit cell.
 
 .. code:: console
 
@@ -175,12 +176,12 @@ Again, since the UUID is unchanging we know what it represents: a Quantum Espres
     retrieved                  60  FolderData
 
 The output should show a overview with some general information about the process.
-Additionally, it will show what its inputs and outputs were and if it was called by another process, or it itself called other processes.
+Additionally, it will show what its inputs and outputs were and if it was called by another process, or if it called other processes itself.
 You can use the PKs shown for the inputs and outputs to get more information about those nodes.
 
 .. warning::
 
-    In this case, since the inputs and outputs are not process nodes but data nodes, you should use the command ``verdi node show`` instead.
+    Since the inputs and outputs are ``Data`` nodes, not ``Process`` nodes, use ``verdi node show`` instead.
 
 
 .. _aiidagraph:
@@ -206,7 +207,7 @@ We suggest that you have a look to the figure before going ahead.
    The ``RemoteData`` node is created during submission and can be thought as a symbolic link to the remote folder in which the calculation runs on the cluster.
    The other nodes are created when the calculation has finished, after retrieval and parsing.
    The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
-   Additional nodes (symbolized in gray) can be added by the parser (e.g., an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
+   Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
 
 You can create a similar graph for any calculation node by using the utility ``verdi graph generate <IDENTIFIER>``.
 For example, before you obtained information (in text form) for UUID ``ce81c420`` using the command ``verdi process show``.
@@ -249,7 +250,7 @@ Choose the node of the type ``Dict`` with input link name ``parameters`` and typ
 
     verdi data dict show <IDENTIFIER>
 
-A ``Dict`` contains a dictionary (i.e., key–value pairs), stored in the database in a format ready to be queried.
+A ``Dict`` contains a dictionary (i.e. key–value pairs), stored in the database in a format ready to be queried.
 We will learn how to run queries later on in this tutorial.
 The command above will print the content dictionary, containing the parameters used to define the input file for the calculation.
 You can compare the dictionary with the content of the raw input file to Quantum ESPRESSO (that was generated by AiiDA) via the command:
@@ -338,7 +339,7 @@ Similarly, the list of computers on which AiiDA can submit calculations is acces
 
     verdi computer list -a
 
-The ``-a`` flag shows all computers, also the one imported in your database but that you did not configure, i.e., to which you don't have access.
+The ``-a`` flag shows all computers, also the one imported in your database but that you did not configure, i.e. to which you don't have access.
 Details about each computer can be obtained by the command:
 
 .. code:: console
@@ -389,7 +390,7 @@ The results of calculations are stored in two ways: ``Dict`` objects are stored 
 Once more, use the command ``verdi data array show <IDENTIFIER>`` to determine the Fermi energy obtained from calculation with the UUID ``ce81c420``.
 This time you will need to use the identifier of the output ``ArrayData`` of the calculation, with link name ``output_trajectory_array``.
 As you might have realized the difference now is that the whole series of values of the Fermi energy calculated after each relax/vc-relax step are stored.
-The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the parser of ``pw.x`` implemented in the ``aiida-quantumespresso``plugin.
+The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the parser of ``pw.x`` implemented in the ``aiida-quantumespresso`` plugin.
 
 (Optional section) Comments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
