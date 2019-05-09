@@ -16,7 +16,7 @@ In this section, we will ask you to:
    remote calculation submission)
 
 4. Learn how to write a workflow with checkpoints: this means that, even
-   if your workflows requires external calculations to start, them and
+   if your workflow requires external calculations to start, they and
    their dependencies are managed through the daemon. While you are
    waiting for the calculations to complete, you can stop and even
    shutdown the computer in which AiiDA is running. When you restart,
@@ -56,7 +56,7 @@ connected between them in the database, in order to ensure that their
 provenance is recorded. In other words, we want to be sure that in the
 future we will know that if we find a bunch of rescaled structures in
 the database, they all descend from the same one. How to link two nodes
-in the database in a easy way is the subject of :ref:`provenancewf`.
+in the database in an easy way is the subject of :ref:`provenancewf`.
 
 In the following sections, the newly created structures will then serve
 as an input for total energy calculations performed, in this tutorial,
@@ -76,7 +76,7 @@ Process functions: a way to generalize provenance in AiiDA
 ----------------------------------------------------------
 
 Imagine having a function that takes as input a string of the name of a chemical element and generates the corresponding bulk structure as a ``StructureData`` object.
-The function might look like something like the following snippet:
+The function might look like the following snippet:
 
 .. include:: include/snippets/workflows_create_diamond_fcc.py
     :code: python
@@ -254,7 +254,7 @@ Besides some AiiDA classes and functions:
     from aiida.plugins import CalculationFactory, DataFactory
 
 you need to import functions developed in the previous sections.
-If you haven't done so already but them in the same folder where you store all your modules and then add the following imports:
+If you haven't done so already put them in the same folder where you store all your modules and then add the following imports:
 
 .. code:: python
 
@@ -377,7 +377,7 @@ For simplicity, we have included few lines at the end of the script that invoke 
         run_eos()
 
 To get a reference to the node that represents the function execution, we can ask the ``run`` function to, in addition to the results, also return the node.
-To do so, instead of simply calling the work function to run it, instead use the attribute ``get_node``, like so:
+To do so, instead of simply calling the work function to run it, use the attribute ``get_node``, like so:
 
 .. code:: python
 
@@ -482,7 +482,7 @@ execution, namely the time in which the calculations are submitted, and
 the actual time needed by Quantum ESPRESSO to perform the calculation
 and the time taken to retrieve the results. If you had killed the main
 python process during this time, the workflow would not have terminated
-correctly. Perhaps you have kill the calculation and you experienced the
+correctly. Perhaps you killed the calculation and you experienced the
 unpleasant consequences: intermediate calculation results are
 potentially lost and it is extremely difficult to restart a workflow
 from the exact place where it stopped.
@@ -495,12 +495,9 @@ you will see, they basically amount to splitting a work function in a
 chain of steps. Each step is then ran by the daemon, in a way similar to
 the remote calculations.
 
-The basic rules that allow you to convert your workfunction-based script
-to a workchain-based one are listed in Table [Tab:wf2frag], which focus
-on the code used to perform the calculation of an equation of state. The
-modifications needed are put side-to-side to allow for a direct
-comparison. In the following, when referencing a specific part of the
-code we will refer to the line number appearing in Table [Tab:wf2frag].
+Here below you can find the basic rules that allow you to convert your
+workfunction-based script to a workchain-based one and a snippet example
+focusing on the code used to perform the calculation of an equation of state.
 
 .. code:: console
 
@@ -554,21 +551,21 @@ code we will refer to the line number appearing in Table [Tab:wf2frag].
 
 -  Instead of using decorated functions you need to define a class,
    inheriting from a prototype class called ``WorkChain`` that is
-   provided by AiiDA (line 4)
+   provided by AiiDA
 
 -  Within your class you need to implement a ``define`` classmethod that
-   always takes ``cls`` and ``spec`` as inputs. (lines 6–7). Here you
+   always takes ``cls`` and ``spec`` as inputs. Here you
    specify the main information on the workchain, in particular:
 
    -  the *inputs* that the workchain expects. This is obtained by means
-      of the method, which provides as the key feature the automatic
-      validation of the input types via the ``valid_type`` argument
-      (lines 8–10). The same holds true for outputs, as you can use the
+      of the ``spec.input()`` method, which provides as the key feature the automatic
+      validation of the input types via the ``valid_type`` argument.
+      The same holds true for outputs, as you can use the
       ``spec.output()`` method to state what output types are expected
       to be returned by the workchain.
 
    -  the ``outline`` consisting in a list of 'steps' that you want to
-      run, put in the right sequence (lines 11–14). This is obtained by
+      run, put in the right sequence. This is obtained by
       means of the method ``spec.outline()`` which takes as input the
       steps. *Note*: in this example we just split the main execution in
       two sequential steps, that is, first ``run_pw`` then
@@ -577,7 +574,7 @@ code we will refer to the line number appearing in Table [Tab:wf2frag].
 
 -  You need to split your main code into methods, with the names you
    specified before into the outline (``run_pw`` and ``return_results``
-   in this example, lines 17 and 35). Where exactly should you split the
+   in this example). Where exactly should you split the
    code? Well, the splitting points should be put where you would
    normally block the execution of the script for collecting results in
    a standard work function, namely whenever you call the method
@@ -598,14 +595,13 @@ code we will refer to the line number appearing in Table [Tab:wf2frag].
    the context somewhere between workflow steps (on disk, in the
    database, depending on how AiiDA was configured). For your
    convenience, you can also access the value of a context variable as
-   ``self.ctx.varname`` instead of ``self.ctx['varname']`` (see e.g.
-   lines 19, 24, 38, 43).
+   ``self.ctx.varname`` instead of ``self.ctx['varname']``.
 
 -  Any submission within the workflow should not call the normal ``run``
    or ``submit`` functions, but ``self.submit`` to which you have to
-   pass the process class, and a dictionary of inputs (line 28).
+   pass the process class, and a dictionary of inputs.
 
--  The submission in line 28, returns a future and not the actual
+-  The submission in ``run_pw`` returns a future and not the actual
    calculation, because at that point in time we have only just launched
    the calculation to the daemon and it is not yet completed. Therefore
    it literally is a 'future' result. Yet we still need to add these
@@ -614,8 +610,8 @@ code we will refer to the line number appearing in Table [Tab:wf2frag].
    continue the work. To do this, we can use the ``ToContext`` class.
    This class takes a dictionary, where the values are the futures and
    the keys will be the names under which the corresponding calculations
-   will be made available in the context when they are done. See line 33
-   how the ``ToContext`` object is created and returned from the step.
+   will be made available in the context when they are done. See how the
+   ``ToContext`` object is created and returned in ``run_pw``.
    By doing this, the workchain will implicitly wait for the results of
    all the futures you have specified, and then call the next step *only
    when all futures have completed*.
@@ -623,8 +619,8 @@ code we will refer to the line number appearing in Table [Tab:wf2frag].
 -  *Return values*: While in a normal work function you attach output
    nodes to the ``WorkFunctionNode`` by invoking the *return*
    statement, in a workchain you need to call
-   ``self.out(link_name, node)`` for each node you want to return (line
-   46-47). Of course, if you have already prepared a dictionary of
+   ``self.out(link_name, node)`` for each node you want to return.
+   Of course, if you have already prepared a dictionary of
    outputs, you can just use the following syntax:
 
    .. code:: python
@@ -638,9 +634,6 @@ code we will refer to the line number appearing in Table [Tab:wf2frag].
    Also, note that once you have called ``self.out(link_name, node)`` on
    a given ``link_name``, you can no longer call ``self.out()`` on the
    same ``link_name``: this will raise an exception.
-
-Inspect the example in the table that compares the two versions of
-work functions to understand in detail the different syntaxes.
 
 Finally, the workflow has to be run. For this you have to use the
 function ``run`` passing as arguments the ``EquationOfStates`` class and
@@ -660,10 +653,10 @@ to the scheduler and can potentially run at the same time.
 ``Exception trying to save checkpoint, this means you will not be able to restart in case of a crash until the next successful checkpoint``,
 these are generated by the ``PwCalculation`` which is unable to save a
 checkpoint because it is not in a so called 'importable path'. Simply
-put this means that if AiiDA were to try and reload the class it
+put, this means that if AiiDA were to try and reload the class it
 wouldn't know which file to find it in. To get around this you could
 simply put the workchain in a different file that is in the 'PYTHONPATH'
-and then launch it by importing it in your launch file, this way AiiDA
+and then launch it by importing it in your launch file. In this way AiiDA
 knows where to find it next time it loads the checkpoint.
 
 As an additional exercise (optional), instead of running the main
@@ -678,8 +671,8 @@ possible in term of execution time. The reason is that the daemon can be
 stopped and restarted only between execution steps and not if a step is
 in the middle of a long execution.
 
-Finally, as an optional exercise if you have time, you can jump to the
-In :ref:`this appendix<convpressure>`, which shows how to introduce more complex
+Finally, as an optional exercise if you have time, you can jump to
+:ref:`this appendix<convpressure>`, which shows how to introduce more complex
 logic into your work chains (if conditionals, while loops etc.). The
 exercise will show how to realize a convergence loop to obtain the
 minimum-volume structure in a EOS using the Newton's algorithm.
