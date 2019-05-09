@@ -165,8 +165,7 @@ string (``array.kpoints``) will remain stable.
 Parameters
 ~~~~~~~~~~
 
-Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes
-(formerly called ``ParameterData`` in previous versions of AiiDA).
+Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
 Get the PK and load the input parameters of a calculation in the graph of :numref:`fig_graph`.
 Then display its content by typing
 
