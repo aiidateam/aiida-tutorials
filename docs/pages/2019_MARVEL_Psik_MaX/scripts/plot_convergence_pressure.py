@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from aiida.orm import load_node
 
 
@@ -6,7 +7,7 @@ def parabola(x, a, b, c):
 
 
 def show_parabola_results(pk):
-    out_p = load_node(pk).out.steps.get_dict()
+    out_p = load_node(pk).outputs.steps.get_dict()
 
     step0 = out_p['step0']
     steps = out_p['steps']

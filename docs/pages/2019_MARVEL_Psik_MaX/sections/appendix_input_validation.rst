@@ -3,7 +3,7 @@
 Calculation input validation
 ============================
 
-This appendix shows additional ways to debug errors with Quantum ESPRESSO, namely 
+This appendix shows additional ways to debug errors with Quantum ESPRESSO, namely
 how to take advantage of a powerful tool to validate the input to Quantum ESPRESSO
 and possibly suggest the correct name to misspelled keywords.
 
@@ -30,30 +30,30 @@ Let's check for example this input dictionary, where we inserted two mistakes:
 The two mistakes in the dictionary are the following:
 
 -  We wrote a wrong namelist name (``CTRL`` instead of ``CONTROL``).
--  We inserted the number of atoms explicitly: while that is indeed how the 
-   number of atoms is specified in Quantum ESPRESSO, in AiiDA this key is reserved by the system, 
+-  We inserted the number of atoms explicitly: while that is indeed how the
+   number of atoms is specified in Quantum ESPRESSO, in AiiDA this key is reserved by the system,
    since this information is already contained within the StructureData.
 
-After we correct the dictionary ``parameters_dict``, we could run the calculation directly. 
-Alternatively, we can use a tool of the the `aiida-quantumespresso` plugin, 
+After we correct the dictionary ``parameters_dict``, we could run the calculation directly.
+Alternatively, we can use a tool of the the `aiida-quantumespresso` plugin,
 the 'input helper', which checks the inputs before submitting the calculation.
 
-In your script, after you define ``parameters_dict``, 
-you can validate it with the following command (note that you need to pass also an input crystal structure, 
+In your script, after you define ``parameters_dict``,
+you can validate it with the following command (note that you need to pass also an input crystal structure,
 ``structure``, to allow the validator to perform all the needed checks):
 
 .. code:: python
 
     PwCalculation = CalculationFactory('quantumespresso.pw')
     validated_dict = PwCalculation.input_helper(parameters_dict, structure=structure)
-    parameters = ParameterData(dict=validated_dict)
+    parameters = Dict(dict=validated_dict)
 
 
 The ``input_helper``  method will check for the correctness of the input parameters.
-If misspelling or incorrect keys are detected, the method raises an exception, 
+If misspelling or incorrect keys are detected, the method raises an exception,
 which stops the script before submitting the calculation and thus allows for a more effective debugging.
 
-With this utility, you can also provide a list of keys, 
+With this utility, you can also provide a list of keys,
 without providing the namelists (useful if you don't remember where to put some variables in the input file).
 Hence, you can provide to ``input_helper`` a dictionary like this one:
 
@@ -69,8 +69,8 @@ Hence, you can provide to ``input_helper`` a dictionary like this one:
     }
 
     validated_dict = PwCalculation.input_helper(
-        parameters_dict, 
-        structure=structure, 
+        parameters_dict,
+        structure=structure,
         flat_mode=True
     )
 

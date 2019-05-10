@@ -5,70 +5,43 @@ The aim of the last part of this tutorial is to introduce the concept of workflo
 
 In this section, we will ask you to:
 
-1. Understand how to keep the provenance when running small python
-   scripts to convert one data object into another (postprocessing,
-   preparation of inputs, etc.)
+1. Understand how to keep the provenance when running small python scripts to convert one data object into another (postprocessing, preparation of inputs, etc.)
+2. Understand how to represent simple python functions in the AiiDA database
+3. Learn how to write a simple workflow in AiiDA (without and with remote calculation submission)
+4. Learn how to write a workflow with checkpoints: this means that, even if your workflow requires external calculations to start, they and their dependencies are managed through the daemon.
+   While you are waiting for the calculations to complete, you can stop and even shutdown the computer in which AiiDA is running.
+   When you restart, the workflow will continue from where it was.
+5. (optional) Go a bit deeper in the syntax of workflows with checkpoints (``WorkChain``), e.g. implementing a convergence workflow using ``while`` loops.
 
-2. Understand how to represent simple python functions in the AiiDA
-   database
+.. note::
 
-3. Learn how to write a simple workflow in AiiDA (without and with
-   remote calculation submission)
-
-4. Learn how to write a workflow with checkpoints: this means that, even
-   if your workflow requires external calculations to start, they and
-   their dependencies are managed through the daemon. While you are
-   waiting for the calculations to complete, you can stop and even
-   shutdown the computer in which AiiDA is running. When you restart,
-   the workflow will continue from where it was.
-
-5. (optional) Go a bit deeper in the syntax of workflows with
-   checkpoints (``WorkChain``), e.g. implementing a convergence workflow
-   using ``while`` loops.
-
-A note: this is probably the most 'complex' part of the tutorial. We
-suggest that you try to understand the underlying logic behind the
-scripts, without focusing too much on the details of the workflows
-implementation or the syntax. If you want, you can then focus more on
-the technicalities in a second reading.
+    This is probably the most 'complex' part of the tutorial.
+    We suggest that you try to understand the underlying logic behind the scripts, without focusing too much on the details of the workflows implementation or the syntax.
+    If you want, you can then focus more on the technicalities in a second reading.
 
 Introduction
 ------------
 
-The ultimate aim of this section is to create a workflow to calculate
-the equation of state of silicon. This is a very common task for an *ab
-initio* researcher. An equation of state consists in calculating the
-total energy (E) as a function of the unit cell volume (V). The minimal
-energy is reached at the equilibrium volume. Equivalently, the
-equilibrium is defined by a vanishing pressure (p=-dE/dV). In the
-vicinity of the minimum, the functional form of the equation of state
-can be approximated by a parabola. Such an approximation greatly
-simplifies the calculation of the bulk modulus, that is proportional to
-the second derivative of the energy (a more advanced
-treatment requires fitting the curve with, e.g., the Birch–Murnaghan
-expression).
+The ultimate aim of this section is to create a workflow to calculate the equation of state of silicon.
+This is a very common task for an *ab initio* researcher.
+An equation of state consists in calculating the total energy (E) as a function of the unit cell volume (V).
+The minimal energy is reached at the equilibrium volume.
+Equivalently, the equilibrium is defined by a vanishing pressure (p=-dE/dV).
+In the vicinity of the minimum, the functional form of the equation of state can be approximated by a parabola.
+Such an approximation greatly simplifies the calculation of the bulk modulus, that is proportional to the second derivative of the energy (a more advanced treatment requires fitting the curve with, e.g., the Birch–Murnaghan expression).
 
-The process of calculating an equation of state puts together several
-operations. First, we need to define and store in the AiiDA database the
-basic structure of, e.g., bulk Si. Next, one has to define several
-structures with different lattice parameters. Those structures must be
-connected between them in the database, in order to ensure that their
-provenance is recorded. In other words, we want to be sure that in the
-future we will know that if we find a bunch of rescaled structures in
-the database, they all descend from the same one. How to link two nodes
-in the database in an easy way is the subject of :ref:`provenancewf`.
+The process of calculating an equation of state puts together several operations.
+First, we need to define and store in the AiiDA database the basic structure of, e.g., bulk Si.
+Next, one has to define several structures with different lattice parameters.
+Those structures must be connected between them in the database, in order to ensure that their provenance is recorded.
+In other words, we want to be sure that in the future we will know that if we find a bunch of rescaled structures in the database, they all descend from the same one.
+How to link two nodes in the database in an easy way is the subject of :ref:`provenancewf`.
 
-In the following sections, the newly created structures will then serve
-as an input for total energy calculations performed, in this tutorial,
-with Quantum ESPRESSO. This task is very similar to what you have done
-in the previous part of the tutorial. Finally, you will fit the
-resulting energies as a function of volume to get the bulk modulus. As
-the EOS task is very common, we will show how to automate its
-computation with workflows, and how to deal with both serial and
-parallel (i.e., independent) execution of multiple tasks. Finally, we
-will show how to introduce more complex logic in your workflows such as
-loops and conditional statements (:ref:`see this section<convpressure>`), with an
-example on a convergence loop to find iteratively the minimum of an EOS.
+In the following sections, the newly created structures will then serve as an input for total energy calculations performed, in this tutorial, with Quantum ESPRESSO.
+This task is very similar to what you have done in the previous part of the tutorial.
+Finally, you will fit the resulting energies as a function of volume to get the bulk modulus.
+As the EOS task is very common, we will show how to automate its computation with workflows, and how to deal with both serial and parallel (i.e., independent) execution of multiple tasks.
+Finally, we will show how to introduce more complex logic in your workflows such as loops and conditional statements (:ref:`see this section<convpressure>`), with an example on a convergence loop to find iteratively the minimum of an EOS.
 
 .. _provenancewf:
 
@@ -243,64 +216,12 @@ We will write a simple script that runs a series of five calculations and at the
 For your convenience, besides the functions that you have written so far in the file ``create_rescale.py``, we provide you with some other utilities to get the correct pseudopotential and to generate a pw input file, in :download:`this file <../scripts/common_wf.py>`.
 
 We have already created the following script, which you can :download:`download <../scripts/simple_sync_workflow.py>`, but please go through the lines carefully and make sure you understand them.
-We will now recreate it step by step.
+We suggest that you first have a careful look at it before running it:
 
-Besides some AiiDA classes and functions:
+.. include:: ../scripts/simple_sync_workflow.py
+    :code: python
 
-.. code:: python
-
-    from aiida.engine import run, Process, calcfunction, workfunction
-    from aiida.orm import load_code
-    from aiida.plugins import CalculationFactory, DataFactory
-
-you need to import functions developed in the previous sections.
-If you haven't done so already put them in the same folder where you store all your modules and then add the following imports:
-
-.. code:: python
-
-    from create_rescale import create_diamond_fcc, rescale
-    from common_wf import generate_scf_input_params
-
-The actual body of the script is the following.
-We suggest that you first have a careful look at it before running it.
-
-.. code:: python
-
-    Dict = DataFactory('dict')
-    Float = DataFactory('float')
-    Str = DataFactory('str')
-
-    # Load the calculation class 'PwCalculation' using its entry point 'quantumespresso.pw'
-    PwCalculation = CalculationFactory('quantumespresso.pw')
-
-
-    @workfunction
-    def run_eos_wf(code, pseudo_family, element):
-        # This will print the pk of the work function
-        print('Running run_eos_wf<{}>'.format(Process.current().pid))
-
-        scale_factors = (0.96, 0.98, 1.0, 1.02, 1.04)
-        labels = ['c1', 'c2', 'c3', 'c4', 'c5']
-
-        results = {}
-        initial_structure = create_diamond_fcc(element)
-
-        for label, factor in zip(labels, scale_factors):
-            structure = rescale(initial_structure, Float(factor))
-            inputs = generate_scf_input_params(structure, code, pseudo_family)
-
-            print('Running a scf for {} with scale factor {}'.format(element, factor))
-            result = run(PwCalculation, **inputs)
-            results[label] = result['output_parameters']
-
-        result = {
-            'initial_structure': initial_structure,
-            'eos': get_eos_data(**results)
-        }
-
-        return result
-
-If you look into the previous snippets of code, you will notice that the way we submit a QE calculation is slightly different from what you have seen in the first part of the tutorial.
+If you look into the previous piece of code, you will notice that the way we submit a QE calculation is slightly different from what you have seen in the first part of the tutorial.
 The following:
 
 .. code:: python
@@ -320,12 +241,19 @@ The global operation is achieved by the command
 To collect these results from the various calculations into a single data node, we need one final calculation function to do so.
 Since the ``run_eos_wf`` is a 'workflow'-like processes, which cannot create data, this operation **cannot** simply be done in the work function body itself.
 To keep the provenance **we have to** do this through a calculation function.
-This is done by the ``get_eos_data`` calculation function, that receives as inputs, the output parameters nodes from the completed calculations:
+This is done by the ``create_eos_dictionary`` calculation function, that receives as inputs, the output parameters nodes from the completed calculations:
 
 .. code:: python
 
     @calcfunction
-    def get_eos_data(**kwargs):
+    def create_eos_dictionary(**kwargs):
+        """Create a single `Dict` node from the `Dict` output parameters of completed `PwCalculations`.
+
+        The dictionary will contain a list of tuples, where each tuple contains the volume, total energy and its units
+        of the results of a calculation.
+
+        :return: `Dict` node with the equation of state results
+        """
         eos = [(result.dict.volume, result.dict.energy, result.dict.energy_units) for label, result in kwargs.items()]
         return Dict(dict={'eos': eos})
 
@@ -381,7 +309,7 @@ To do so, instead of simply calling the work function to run it, use the attribu
 
 .. code:: python
 
-    results, node = run_eos_wf.get_node(Str(codename), Str(pseudo_family), Str(element))
+    results, node = run_eos_wf.get_node(code, Str(pseudo_family), Str(element))
     print('run_eos_wf<{}> completed'.format(node.pk))
 
 Run the workflow by running the following command from the ``tutorial_scripts`` directory:
@@ -402,27 +330,29 @@ Wait for the work function to finish, then call the function ``plot_eos(<pk>)`` 
 Run multiple calculations
 -------------------------
 
-You should have noticed that the calculations for different lattice
-parameters are executed serially, although they might perfectly be
-executed in parallel because their inputs and outputs are not connected
-in any way. In the language of workflows, these calculations are
-executed in a synchronous (or blocking) way, whereas we would like to
-have them running *asynchronously* (i.e., in a non-blocking way, to run
-them in parallel). One way to achieve this, is to submit the calculation to
-the daemon using the ``submit`` function. Make a copy of the script
-``simple_sync_workflow.py`` that we worked on in the previous section
-and name it ``simple_submit_workflow.py``. To make the new script work
-asynchronously, simply change the following subset of lines:
+You should have noticed that the calculations for different lattice parameters are executed serially, although they might perfectly be executed in parallel because their inputs and outputs are not connected in any way.
+In the language of workflows, these calculations are executed in a synchronous (or blocking) way, whereas we would like to have them running *asynchronously* (i.e., in a non-blocking way, to run them in parallel).
+One way to achieve this, is to submit the calculation to the daemon using the ``submit`` function.
+Make a copy of the script ``simple_sync_workflow.py`` that we worked on in the previous section and name it ``simple_submit_workflow.py``.
+To make the new script work asynchronously, simply change the following subset of lines:
 
 .. code:: python
 
     from aiida.engine import run
-    [...]
-    for label, factor in zip(labels, scale_factors):
-        [...]
-        results[label] = run(PwCalculation, **inputs)
 
-    eos = get_eos_data(**{label: result['output_parameters'] for label, result in results.items()})
+    [...]
+
+    for label, factor in zip(labels, scale_factors):
+
+        [...]
+
+        calculations[label] = run(PwCalculation, **inputs)
+
+    [...]
+
+    inputs = {label: result['output_parameters'] for label, result in calculations.items()}
+    eos = create_eos_dictionary(**inputs)
+
     [...]
 
 replacing them with
@@ -431,251 +361,141 @@ replacing them with
 
     from aiida.engine import submit
     from time import sleep
+
     [...]
+
     for label, factor in zip(labels, scale_factors):
         [...]
-        results[label] = submit(PwCalculation, **inputs)
+
+        # Replace `run` with `submit`
+        calculations[label] = submit(PwCalculation, **inputs)
+
     [...]
+
     # Wait for the calculations to finish
-    for calculation in results.values():
+    for calculation in calculations.values():
         while not calculation.is_finished:
             sleep(1)
 
-    inputs = {label: node.get_outgoing().get_node_by_label('output_parameters') for label, node in results.items()}
-    eos = get_eos_data(**inputs)
+    inputs = {label: node.get_outgoing().get_node_by_label('output_parameters') for label, node in calculation.items()}
+    eos = create_eos_dictionary(**inputs)
 
 The main differences are:
 
 -  ``run`` is replaced by ``submit``
+-  The return value of ``submit`` is not a dictionary describing the outputs of the calculation, but it is the node that represents the execution of that calculation.
+-  Each calculation starts in the background and calculation nodes are added to the ``calculations`` dictionary.
+-  At the end of the loop, when all calculations have been launched with ``submit``, another loop is used to wait for all calculations to finish before gathering the results as the final step.
 
--  The return value of ``submit`` is not a dictionary describing the
-   outputs of the calculation, but it is the calculation node for that
-   submission.
-
--  Each calculation starts in the background and calculation nodes are
-   added to the ``results`` dictionary.
-
--  At the end of the loop, when all calculations have been launched with
-   ``submit``, another loop is used to wait for all calculations to
-   finish before gathering the results as the final step.
-
-In the next section we will show you another way to achieve this, which
-has the added bonus that it introduces checkpoints in the work function,
-from which the process can be resumed should it be interrupted.
-
-After applying the modifications, run the script. You will see that all
-calculations start at the same time, without waiting for the previous
-ones to finish.
+In the next section we will show you another way to achieve this, which has the added bonus that it introduces checkpoints in the work function, from which the process can be resumed should it be interrupted.
+After applying the modifications, run the script.
+You will see that all calculations start at the same time, without waiting for the previous ones to finish.
 
 If in the meantime you run ``verdi process status <pk>``, all five calculations are already shown as output.
-Also, if you run ``verdi process list``, you will see how the calculations are
-submitted to the scheduler.
+Also, if you run ``verdi process list``, you will see how the calculations are submitted to the scheduler.
 
 .. _workchainsimple:
 
 Workchains, or how not to get lost if your computer shuts down or crashes
 -------------------------------------------------------------------------
 
-The simple workflows that we have used so far have been launched by a
-python script that needs to be running for the whole time of the
-execution, namely the time in which the calculations are submitted, and
-the actual time needed by Quantum ESPRESSO to perform the calculation
-and the time taken to retrieve the results. If you had killed the main
-python process during this time, the workflow would not have terminated
-correctly. Perhaps you killed the calculation and you experienced the
-unpleasant consequences: intermediate calculation results are
-potentially lost and it is extremely difficult to restart a workflow
-from the exact place where it stopped.
+The simple workflows that we have used so far have been launched by a python script that needs to be running for the whole time of the execution, namely the time in which the calculations are submitted, and the actual time needed by Quantum ESPRESSO to perform the calculation and the time taken to retrieve the results.
+If you had killed the main python process during this time, the workflow would not have terminated correctly.
+Perhaps you killed the calculation and you experienced the unpleasant consequences: intermediate calculation results are potentially lost and it is extremely difficult to restart a workflow from the exact place where it stopped.
 
-In order to overcome this limitation, in AiiDA we have implemented a way
-to insert checkpoints, where the main code defining a workflow can be
-stopped (you can even shut down the machine on which AiiDA is running!).
-We call these work functions with checkpoints 'work chains' because, as
-you will see, they basically amount to splitting a work function in a
-chain of steps. Each step is then ran by the daemon, in a way similar to
-the remote calculations.
+In order to overcome this limitation, in AiiDA we have implemented a way to insert checkpoints, where the main code defining a workflow can be stopped (you can even shut down the machine on which AiiDA is running!).
+We call these work functions with checkpoints 'work chains' because, as you will see, they basically amount to splitting a work function in a chain of steps.
+Each step is then ran by the daemon, in a way similar to the remote calculations.
 
-Here below you can find the basic rules that allow you to convert your
-workfunction-based script to a workchain-based one and a snippet example
-focusing on the code used to perform the calculation of an equation of state.
+Here below you can find the basic rules that allow you to convert your workfunction-based script to a workchain-based one and a snippet example focusing on the code used to perform the calculation of an equation of state.
 
-.. code:: console
+.. include:: ../scripts/equation_of_states.py
+    :code: python
 
-    from aiida.engine import WorkChain, ToContext
-    # ...
+-   Instead of using decorated functions you need to define a class, inheriting from a prototype class called ``WorkChain`` that is provided by AiiDA in the ``aiida.engine`` module.
 
-    class EquationOfStates(WorkChain):
+-   Within your class you need to implement a ``define`` classmethod that always takes ``cls`` and ``spec`` as inputs.
+    Here you specify the main information on the workchain, in particular:
 
-        @classmethod
-        def define(cls, spec):
-            super(EquationOfStates, cls).define(spec)
-            spec.input('element', valid_type=Str)
-            spec.input('code', valid_type=Str)
-            spec.input('pseudo_family', valid_type=Str)
-            spec.outline(
-                cls.run_pw,
-                cls.return_results,
-            )
+    -   The *inputs* that the workchain expects.
+        This is obtained by means of the ``spec.input()`` method, which provides as the key feature the automatic validation of the input types via the ``valid_type`` argument.
+        The same holds true for outputs, as you can use the ``spec.output()`` method to state what output types are expected to be returned by the workchain.
 
+    -   The ``outline`` consisting in a list of 'steps' that you want to run, put in the right sequence.
+        This is obtained by means of the method ``spec.outline()`` which takes as input the steps.
+        *Note*: in this example we just split the main execution in two sequential steps, that is, first ``run_eos`` then ``results``.
+        However, more complex logic is allowed, as will be explained in :ref:`another section<convpressure>`.
 
-        def run_pw(self):
-            # ...
-            self.ctx.s0 = create_diamond_fcc(Str(self.inputs.element))
+-   You need to split your main code into methods, with the names you specified before into the outline (``run_eos`` and ``results`` in this example).
+    Where exactly should you split the code?
+    Well, the splitting points should be put where you would normally block the execution of the script for collecting results in a standard work function, namely whenever you call the method ``.result()``.
+    Each method should accept only one parameter, ``self``, e.g. ``def step_name(self)``.
 
+-   You will notice that the methods reference the attribute ``ctx`` through ``self.ctx``, which is called the *context* and is inherited from the base class ``WorkChain``.
+    A python function or process function normally just stores variables in the local scope of the function.
+    For instance, in the example of :ref:`this subsection<sync>`, you stored the completed calculations in the ``calculations`` dictionary, that was a local variable.
 
-            calcs = {}
-            for label, factor in zip(labels, scale_facs):
-                s = rescale(self.ctx.s0, Float(factor))
-                inputs = generate_scf_input_params(
-                    s, str(self.inputs.code), self.inputs.pseudo_family)
-                # ...
-                future = self.submit(PwCalculation, **inputs)
-                calcs[label] = future
+    In work chains, instead, to preserve variables between different steps, you need to store them in a special dictionary called *context*.
+    As explained above, the context variable ``ctx`` is inherited from the base class ``WorkChain``, and at each step method you just need to update its content.
+    AiiDA will take care of saving the context somewhere between workflow steps (on disk, in the database, depending on how AiiDA was configured).
+    For your convenience, you can also access the value of a context variable as ``self.ctx.varname`` instead of ``self.ctx['varname']``.
 
-            # Ask the workflow to continue when the results are ready and store them in the context
-            return ToContext(**calcs)
+-   Any submission within the workflow should not call the normal ``run`` or ``submit`` functions, but ``self.submit`` to which you have to pass the process class, and a dictionary of inputs.
 
-        def return_results(self):
-            eos = []
-            for label in labels:
-                eos.append(get_info({entry.link_label: entry.node for entry in self.ctx[label].get_outgoing().all()}))
+-   The submission in ``run_eos`` returns a future and not the actual calculation, because at that point in time we have only just launched the calculation to the daemon and it is not yet completed.
+    Therefore it literally is a 'future' result.
+    Yet we still need to add these futures to the context, so that in the next step of the workchain, when the calculations are in fact completed, we can access them and continue the work.
+    To do this, we can use the ``ToContext`` class.
+    This class takes a dictionary, where the values are the futures and the keys will be the names under which the corresponding calculations will be made available in the context when they are done.
+    See how the ``ToContext`` object is created and returned in ``run_eos``.
+    By doing this, the workchain will implicitly wait for the results of all the futures you have specified, and then call the next step *only when all futures have completed*.
 
-            # Return information to plot the EOS
-            Dict = DataFactory('dict')
-            retdict = {
-                'initial_structure': self.ctx.s0,
-                'result': Dict(dict={'eos_data': eos})
-            }
-            for link_name, node in retdict.iteritems():
-                self.out(link_name, node)
+-   *Return values*: While in normal process functions you attach output nodes to the node by invoking the *return* statement, in a workchain you need to call ``self.out(link_name, node)`` for each node you want to return.
+    Of course, if you have already prepared a dictionary of outputs, you can just use the following syntax:
 
--  Instead of using decorated functions you need to define a class,
-   inheriting from a prototype class called ``WorkChain`` that is
-   provided by AiiDA
+    .. code:: python
 
--  Within your class you need to implement a ``define`` classmethod that
-   always takes ``cls`` and ``spec`` as inputs. Here you
-   specify the main information on the workchain, in particular:
+        self.out_many(retdict)  # Keys are link names, value the nodes
 
-   -  the *inputs* that the workchain expects. This is obtained by means
-      of the ``spec.input()`` method, which provides as the key feature the automatic
-      validation of the input types via the ``valid_type`` argument.
-      The same holds true for outputs, as you can use the
-      ``spec.output()`` method to state what output types are expected
-      to be returned by the workchain.
+    The advantage of this different syntax is that you can start emitting output nodes already in the middle of the execution, and not necessarily at the very end as it happens for normal functions (*return* is always the last instruction executed in a function or method).
+    Also, note that once you have called ``self.out(link_name, node)`` on a given ``link_name``, you can no longer call ``self.out()`` on the same ``link_name``: this will raise an exception.
 
-   -  the ``outline`` consisting in a list of 'steps' that you want to
-      run, put in the right sequence. This is obtained by
-      means of the method ``spec.outline()`` which takes as input the
-      steps. *Note*: in this example we just split the main execution in
-      two sequential steps, that is, first ``run_pw`` then
-      ``return_results``. However, more complex logic is allowed, as
-      will be explained in :ref:`another section<convpressure>`.
-
--  You need to split your main code into methods, with the names you
-   specified before into the outline (``run_pw`` and ``return_results``
-   in this example). Where exactly should you split the
-   code? Well, the splitting points should be put where you would
-   normally block the execution of the script for collecting results in
-   a standard work function, namely whenever you call the method
-   ``.result()``. Each method should accept only one parameter,
-   ``self``, e.g. ``def step_name(self)``.
-
--  You will notice that the methods reference the attribute ``ctx``
-   through ``self.ctx``, which is called the *context* and is inherited
-   from the base class ``WorkChain``. A python function or work function
-   normally just stores variables in the local scope of the function.
-   For instance, in the example of :ref:`this subsection<sync>`, you stored
-   the ``calc_results`` in the ``eos`` list, that was a local variable.
-   In work chains, instead, to preserve variables between different
-   steps, you need to store them in a special dictionary called
-   *context*. As explained above, the context variable ``ctx`` is
-   inherited from the base class ``WorkChain``, and at each step method
-   you just need to update its content. AiiDA will take care of saving
-   the context somewhere between workflow steps (on disk, in the
-   database, depending on how AiiDA was configured). For your
-   convenience, you can also access the value of a context variable as
-   ``self.ctx.varname`` instead of ``self.ctx['varname']``.
-
--  Any submission within the workflow should not call the normal ``run``
-   or ``submit`` functions, but ``self.submit`` to which you have to
-   pass the process class, and a dictionary of inputs.
-
--  The submission in ``run_pw`` returns a future and not the actual
-   calculation, because at that point in time we have only just launched
-   the calculation to the daemon and it is not yet completed. Therefore
-   it literally is a 'future' result. Yet we still need to add these
-   futures to the context, so that in the next step of the workchain,
-   when the calculations are in fact completed, we can access them and
-   continue the work. To do this, we can use the ``ToContext`` class.
-   This class takes a dictionary, where the values are the futures and
-   the keys will be the names under which the corresponding calculations
-   will be made available in the context when they are done. See how the
-   ``ToContext`` object is created and returned in ``run_pw``.
-   By doing this, the workchain will implicitly wait for the results of
-   all the futures you have specified, and then call the next step *only
-   when all futures have completed*.
-
--  *Return values*: While in a normal work function you attach output
-   nodes to the ``WorkFunctionNode`` by invoking the *return*
-   statement, in a workchain you need to call
-   ``self.out(link_name, node)`` for each node you want to return.
-   Of course, if you have already prepared a dictionary of
-   outputs, you can just use the following syntax:
-
-   .. code:: python
-
-       self.out_many(retdict)  # Keys are link names, value the nodes
-
-   The advantage of this different syntax is that you can start emitting
-   output nodes already in the middle of the execution, and not
-   necessarily at the very end as it happens for normal functions
-   (*return* is always the last instruction executed in a function or method).
-   Also, note that once you have called ``self.out(link_name, node)`` on
-   a given ``link_name``, you can no longer call ``self.out()`` on the
-   same ``link_name``: this will raise an exception.
-
-Finally, the workflow has to be run. For this you have to use the
-function ``run`` passing as arguments the ``EquationOfStates`` class and
-the inputs as key-value arguments. For example, you can execute
+Finally, the workflow has to be run.
+For this you have to use the function ``run`` passing as arguments the ``EquationOfStates`` class and the inputs as key-value arguments.
+For example, you can execute:
 
 .. code:: python
 
-     run(EquationOfStates, element=Str('Si'), code=Str('qe-pw-6.2.1@localhost'),
-         pseudo_family=Str('GBRV_lda'))
+    run(EquationOfStates, element=Str('Si'), code=load_code('qe-pw-6.2.1@localhost'), pseudo_family=Str('GBRV_lda'))
 
-While the workflow is running, you can check (in a different terminal)
-what is happening to the calculations using ``verdi process list``.
-You will see that after a few seconds the calculations are all submitted
-to the scheduler and can potentially run at the same time.
+While the workflow is running, you can check (in a different terminal) what is happening to the calculations using ``verdi process list``.
+You will see that after a few seconds the calculations are all submitted to the scheduler and can potentially run at the same time.
 
-**Note:** You will see warnings that say
-``Exception trying to save checkpoint, this means you will not be able to restart in case of a crash until the next successful checkpoint``,
-these are generated by the ``PwCalculation`` which is unable to save a
-checkpoint because it is not in a so called 'importable path'. Simply
-put, this means that if AiiDA were to try and reload the class it
-wouldn't know which file to find it in. To get around this you could
-simply put the workchain in a different file that is in the 'PYTHONPATH'
-and then launch it by importing it in your launch file. In this way AiiDA
-knows where to find it next time it loads the checkpoint.
+.. warning::
 
-As an additional exercise (optional), instead of running the main
-workflow (``EquationOfStates``), try to submit it. Note that the file
-where the work chains is defined will need to be globally importable (so
-the daemon knows how to load it) and you need to launch it (with
-``submit``) from a different python file. The easiest way to achieve
-this is typically to embed the workflow inside a python package.
+    The calculations launched by the work chain will now be submitted to the daemon, instead of run in the same interpreter
+    However, by using ``run`` on the work chain itself, it will still not be able to restart.
+    To make the work chain save its checkpoints, you should use the ``submit`` launcher instead.
 
-**Note:** As good practice, you should try to keep the steps as short as
-possible in term of execution time. The reason is that the daemon can be
-stopped and restarted only between execution steps and not if a step is
-in the middle of a long execution.
+As an additional exercise (optional), instead of running the main workflow ``EquationOfStates``, try to submit it.
+Note that the file where the work chains is defined will need to be globally importable (so the daemon knows how to load it) and you need to launch it (with ``submit``) from a different python file.
+The easiest way to achieve this is typically to embed the workflow inside a python package.
 
-Finally, as an optional exercise if you have time, you can jump to
-:ref:`this appendix<convpressure>`, which shows how to introduce more complex
-logic into your work chains (if conditionals, while loops etc.). The
-exercise will show how to realize a convergence loop to obtain the
-minimum-volume structure in a EOS using the Newton's algorithm.
+.. note::
+
+    As good practice, you should try to keep the steps as short as possible in term of execution time.
+    The reason is that the daemon can be stopped and restarted only between execution steps and not if a step is in the middle of a long execution.
+
+Finally, as an optional exercise if you have time, you can jump to :ref:`this appendix<convpressure>`, which shows how to introduce more complex logic into your work chains (if conditionals, while loops etc.).
+The exercise will show how to realize a convergence loop to obtain the minimum-volume structure in a EOS using the Newton's algorithm.
+
+.. note::
+
+    You might see warnings that say ``Exception trying to save checkpoint, this means you will not be able to restart in case of a crash until the next successful checkpoint``.
+    These are generated by the ``PwCalculation`` which is unable to save a checkpoint because it is not in a so called 'importable path'.
+    Simply put, this means that if AiiDA were to try and reload the class it wouldn't know which file to find it in.
+    To get around this you could simply put the workchain in a different file that is in the 'PYTHONPATH' and then launch it by importing it in your launch file.
+    In this way AiiDA knows where to find it next time it loads the checkpoint.
 
 
 .. rubric:: Footnotes

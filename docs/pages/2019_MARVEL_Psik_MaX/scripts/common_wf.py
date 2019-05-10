@@ -1,32 +1,19 @@
+# -*- coding: utf-8 -*-
+import numpy as np
 from aiida.plugins import CalculationFactory, DataFactory
 from aiida_quantumespresso.utils.pseudopotential import validate_and_prepare_pseudos_inputs
-import numpy as np
 
+Dict = DataFactory('dict')
+KpointsData = DataFactory('array.kpoints')
 PwCalculation = CalculationFactory('quantumespresso.pw')
 
 
 def generate_scf_input_params(structure, code, pseudo_family):
-    # The inputs
-    builder = PwCalculation.get_builder()
+    """Construct a builder for the `PwCalculation` class and populate its inputs.
 
-    # The structure
-    builder.structure = structure
-
-    builder.code = code
-    builder.metadata.label = "PW test"
-    builder.metadata.description = "My first AiiDA calculation of Silicon with Quantum ESPRESSO"
-    builder.metadata.options.resources = {'num_machines': 1}
-    builder.metadata.options.max_wallclock_seconds = 30 * 60
-
-    # Kpoints
-    KpointsData = DataFactory('array.kpoints')
-    kpoints = KpointsData()
-    kpoints_mesh = 2
-    kpoints.set_kpoints_mesh([kpoints_mesh, kpoints_mesh, kpoints_mesh])
-    builder.kpoints = kpoints
-
-    # Calculation parameters
-    parameters_dict = {
+    :return: `ProcessBuilder` instance for `PwCalculation` with preset inputs
+    """
+    parameters = {
         'CONTROL': {
             'calculation': 'scf',
             'tstress': True,  # Important that this stays to get stress
@@ -40,19 +27,27 @@ def generate_scf_input_params(structure, code, pseudo_family):
             'conv_thr': 1.e-6,
         }
     }
-    Dict = DataFactory('dict')
-    builder.parameters = Dict(dict=parameters_dict)
 
-    # Pseudopotentials
+    kpoints = KpointsData()
+    kpoints.set_kpoints_mesh([2, 2, 2])
+
+    builder = PwCalculation.get_builder()
+    builder.code = code
+    builder.structure = structure
+    builder.kpoints = kpoints
+    builder.parameters = Dict(dict=parameters)
     builder.pseudos = validate_and_prepare_pseudos_inputs(structure, pseudo_family=pseudo_family)
+    builder.metadata.label = "PW test"
+    builder.metadata.description = "My first AiiDA calculation of Silicon with Quantum ESPRESSO"
+    builder.metadata.options.resources = {'num_machines': 1}
+    builder.metadata.options.max_wallclock_seconds = 30 * 60
 
     return builder
 
 
 def birch_murnaghan(V, E0, V0, B0, B01):
     r = (V0 / V) ** (2. / 3.)
-    return E0 + 9. / 16. * B0 * V0 * (r - 1.) ** 2 * \
-                (2. + (B01 - 4.) * (r - 1.))
+    return E0 + 9. / 16. * B0 * V0 * (r - 1.) ** 2 * (2. + (B01 - 4.) * (r - 1.))
 
 
 def fit_birch_murnaghan_params(volumes_, energies_):
@@ -81,11 +76,9 @@ def plot_eos(eos_pk):
     import pylab as pl
     from aiida.orm import load_node
     eos_calc = load_node(eos_pk)
-    eos_result = eos_calc.out.result
-    raw_data = eos_result.dict.eos_data
 
     data = []
-    for V, E, units in raw_data:
+    for V, E, units in eos_calc.outputs.eos.dict.eos:
         data.append((V, E))
 
     data = np.array(data)

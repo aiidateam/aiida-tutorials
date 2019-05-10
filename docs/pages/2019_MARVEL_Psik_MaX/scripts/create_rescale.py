@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from aiida.engine import calcfunction
 
 
@@ -48,9 +49,7 @@ def rescale(structure, scale):
     """
     from aiida import orm
 
-    the_ase = structure.get_ase()
-    new_ase = the_ase.copy()
-    new_ase.set_cell(the_ase.get_cell() * float(scale), scale_atoms=True)
-    new_structure = orm.StructureData(ase=new_ase)
+    ase = structure.get_ase()
+    ase.set_cell(ase.get_cell() * float(scale), scale_atoms=True)
 
-    return new_structure
+    return orm.StructureData(ase=ase)
