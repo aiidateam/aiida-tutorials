@@ -31,25 +31,25 @@ the expected output band structures are plotted in :numref:`fig_calc_bands_1`
 to :numref:`fig_calc_bands_4`.
 
 .. _fig_calc_bands_1:
-.. figure:: include/images/bandstructures/Al_bands.png
-   :scale: 48 %
+.. figure:: include/images/bandstructures/Al_bands.png  
+   :width: 100%
 
    Electronic band structures of Al computed with AiiDA’s PwBandsWorkChain
 
 .. _fig_calc_bands_2:
 .. figure:: include/images/bandstructures/GaAs_bands.png
-   :scale: 48 %
+   :width: 100%
 
    Electronic band structures of GaAs computed with AiiDA’s PwBandsWorkChain
 
 .. _fig_calc_bands_3:
 .. figure:: include/images/bandstructures/CaF2_bands.png
-   :scale: 48 %
+   :width: 100%
 
-   Electronic band structures of CaF_2 computed with AiiDA’s PwBandsWorkChain
+   Electronic band structures of CaF\ :sub:`2` computed with AiiDA’s PwBandsWorkChain
 
 .. _fig_calc_bands_4:
 .. figure:: include/images/bandstructures/hBN_bands.png
-   :scale: 48 %
+   :width: 100%
 
    Electronic band structures of BN computed with AiiDA’s PwBandsWorkChain
