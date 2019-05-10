@@ -17,12 +17,12 @@ one to execute bash commands.
 
 The second option is based on Jupyter notebooks and is probably most suitable
 to the purposes of our tutorial. Go to the browser where you have opened
-``jupyter`` and click ``New`` → ``Python 2`` (top right corner). This will
-open an IPython-based Jupyter notebook based on cells where you can type
+``jupyter`` and click ``New`` → ``Python 3`` (top right corner). This will
+open an IPython-based Jupyter notebook, made of cells in which you can type
 portions of python code. The code will not be executed until you press
 ``Shift+Enter`` from within a cell. Type in the first cell
 
-.. code:: python
+.. code:: ipython
 
      %aiida
 
@@ -30,7 +30,7 @@ and execute it. This will set exactly the same environment as the
 ``verdi shell``. The notebook will be automatically saved upon any
 modification and when you think you are done, you can export your notebook in
 many formats by going to ``File`` → ``Download as``. We suggest you to have a
-look to the drop-down menus ``Insert`` and ``Cell`` where you will find the
+look at the drop-down menus ``Insert`` and ``Cell`` where you will find the
 main commands to manage the cells of your notebook.
 
 .. note::
@@ -56,10 +56,10 @@ be written with a white background:
      some bash command
 
 Alternatively, to avoid changing terminal, you can execute ``bash`` commands
-within the ``verdi shell`` or the notebook adding an exclamation mark before
-the command itself
+within the ``verdi shell`` or the notebook by adding an exclamation mark before
+the command itself:
 
-.. code:: python
+.. code:: ipython
 
      !some bash command
 
@@ -90,7 +90,7 @@ You can also type
 
      node.res.
 
-and then press ``TAB`` to see all the possible output results of the
+and then press ``TAB`` to see all the available output results of the
 calculation.
 
 Loading different kinds of nodes
@@ -99,7 +99,7 @@ Loading different kinds of nodes
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
-From the graph displayed in Section :ref:`aiidagraph`, find the ``PK`` of the
+From the graph displayed in :numref:`fig_graph`, find the ``PK`` of the
 pseudopotential file (LDA). Load it and show what elements it corresponds to by typing:
 
 .. code:: python
@@ -113,7 +113,7 @@ k-points
 ~~~~~~~~
 
 A set of k-points in the Brillouin zone is represented by an instance of the
-``KpointsData`` class. Choose one from the graph of Section :ref:`aiidagraph`,
+``KpointsData`` class. Choose one from the graph of :numref:`fig_graph`,
 load it as ``kpoints`` and inspect its content:
 
 .. code:: python
@@ -153,18 +153,20 @@ point (i.e. without offset). This can be done with the following commands:
      kpoints.set_kpoints_mesh([kpoints_mesh] * 3)
      kpoints.store()
 
-While it is possible to import KpointsData directly, it is recommended
-(and easier) to use the ``DataFactory`` function instead of an explicit import.
-
 This function loads the appropriate class defined in a string (here
 ``array.kpoints``). Therefore, ``KpointsData`` is not a class instance, but
 the kpoints class itself!
+
+While it is also possible to import ``KpointsData`` directly, it is recommended
+to use the ``DataFactory`` function instead, as this is more future-proof:
+even if the import path of the class changes in the future, its entry point
+string (``array.kpoints``) will remain stable.
 
 Parameters
 ~~~~~~~~~~
 
 Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
-Get the PK and load the input parameters of a calculation in the graph of Section :ref:`aiidagraph`.
+Get the PK and load the input parameters of a calculation in the graph of :numref:`fig_graph`.
 Then display its content by typing
 
 .. code:: python
@@ -188,11 +190,11 @@ created and initialized by the command
 
      new_params = Dict(dict=YOUR_DICT)
 
-where ``YOUR_DICT`` is the modified dictionary. Note that the dict object is
+where ``YOUR_DICT`` is the modified python dictionary. Note that the dict object is
 not yet stored in the database. In fact, if you simply type ``new_params`` in
-the verdi shell, you will be prompted with a string notifying you the
-'unstored' status. To save an entry in the database corresponding to the
-``new_params`` object, you need to type a last command in the verdi shell:
+the verdi shell, you will be prompted with a string notifying you of its
+'unstored' status. To record in the database an entry corresponding to the
+``new_params`` object, you need to type one last command in the verdi shell:
 
 .. code:: python
 
@@ -201,7 +203,7 @@ the verdi shell, you will be prompted with a string notifying you the
 Structures
 ~~~~~~~~~~
 
-Find a structure in the graph of Section :ref:`aiidagraph` and load it.
+Find a structure in the graph of :numref:`fig_graph` and load it.
 Display its chemical formula, atomic positions and species using
 
 .. code:: python
@@ -231,14 +233,14 @@ with lattice parameter `a`\ :sub:`lat`\ `= 5.4` Å:
      Default units for crystal structure cell and coordinates in AiiDA are Å
      (Ångström).
 
-Structures in AiiDA are instances of ``StructureData`` class: load it in the
+Structures in AiiDA are instances of the class ``StructureData``: load it in the
 verdi shell
 
 .. code:: python
 
      StructureData = DataFactory('structure')
 
-Now, initialize the class instance (i.e. is the structure we want to study) by
+Now, initialize the class instance (i.e. the actual structure we want to study) by
 the command
 
 .. code:: python
@@ -407,7 +409,7 @@ following ``verdi`` command:
     verdi data upf uploadfamily SSSP_efficiency_pseudos 'SSSP' 'SSSP pseudopotential library'
 
 In the command above, ``SSSP_efficiency_pseudos`` is the folder containing the
-pseudopotentials, ’SSSP’ is the name given to the family, and the last argument
+pseudopotentials, ``'SSSP'`` is the name given to the family, and the last argument
 is its description. Finally, you can list all the pseudo families present in
 the database with
 
