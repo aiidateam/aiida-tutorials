@@ -51,13 +51,13 @@ Process functions: a way to generalize provenance in AiiDA
 Imagine having a function that takes as input a string of the name of a chemical element and generates the corresponding bulk structure as a ``StructureData`` object.
 The function might look like the following snippet:
 
-.. include:: include/snippets/workflows_create_diamond_fcc.py
-    :code: python
+.. literalinclude:: include/snippets/workflows_create_diamond_fcc.py
+    :language: python
 
 For the equation of state you need another function that takes as input a ``StructureData`` object and a rescaling factor, and returns a ``StructureData`` object with the rescaled lattice parameter:
 
-.. include:: include/snippets/workflows_rescale.py
-    :code: python
+.. literalinclude:: include/snippets/workflows_rescale.py
+    :language: python
 
 In order to generate the rescaled starting structures, say for five different lattice parameters you would combine the two functions.
 Open a ``verdi shell``, define the two functions from the previous snippets and enter the following commands:
@@ -75,7 +75,7 @@ and store them in the database:
     for structure in rescaled_structures:
        structure.store()
 
-As expected, all the structures that you have created are not linked in any manner as you can verify via the ``get_incoming()/get_outgoing()`` methods of the ``StuctureData`` class.
+As expected, all the structures that you have created are not linked in any manner as you can verify via the ``get_incoming()``/``get_outgoing()`` methods of the ``StuctureData`` class.
 Instead, you would like these objects to be connected as sketched in :numref:`fig_provenance_process_functions`.
 
 .. _fig_provenance_process_functions:
@@ -135,7 +135,7 @@ Try now to run the following script:
 and check now that the output of ``initial_structure`` as well as the input of the rescaled structures point to an intermediate node, representing the execution of the calculation function, see :numref:`fig_provenance_process_functions`.
 For instance, you can check that the output links of ``initial_structure`` are the five ``rescale`` calculations:
 
-.. code:: console
+.. code:: python
 
     initial_structure.get_outgoing().all_nodes()
 
@@ -186,7 +186,7 @@ and create an already rescaled structure by typing
 
 Now inspect the input links of ``rescaled``:
 
-.. code:: python
+.. code:: ipython
 
     In [6]: rescaled.get_incoming().all_nodes()
     Out[6]:
@@ -198,7 +198,7 @@ These correspond to the calculations 'create_rescaled' and 'rescale' as shown in
 To see the 'call' link, inspect now the outputs of the ``WorkFunctionNode`` which corresponds to the ``create_rescaled`` work function.
 Write down its ``<pk>`` (in general, it will be different from 441), then in the shell load the corresponding node and inspect the outputs:
 
-.. code:: python
+.. code:: ipython
 
     In [12]: node = load_node(<pk>)
     In [13]: node.get_outgoing().all()
@@ -298,7 +298,7 @@ For simplicity, we have included few lines at the end of the script that invoke 
 
 .. code:: python
 
-    def run_eos(code=load_code('qe-pw-6.2.1@localhost'), pseudo_family='GBRV_lda', element='Si'):
+    def run_eos(code=load_code('qe-pw-6.3@localhost'), pseudo_family='SSSP', element='Si'):
         return run_eos_wf(code, Str(pseudo_family), Str(element))
 
     if __name__ == '__main__':
@@ -466,7 +466,7 @@ For example, you can execute:
 
 .. code:: python
 
-    run(EquationOfStates, element=Str('Si'), code=load_code('qe-pw-6.2.1@localhost'), pseudo_family=Str('GBRV_lda'))
+    run(EquationOfStates, element=Str('Si'), code=load_code('qe-pw-6.3@localhost'), pseudo_family=Str('SSSP'))
 
 While the workflow is running, you can check (in a different terminal) what is happening to the calculations using ``verdi process list``.
 You will see that after a few seconds the calculations are all submitted to the scheduler and can potentially run at the same time.

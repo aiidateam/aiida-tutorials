@@ -66,7 +66,7 @@ def run_eos_wf(code, pseudo_family, element):
     return result
 
 
-def run_eos(code=load_code('qe-pw-6.2.1@localhost'), pseudo_family='GBRV_lda', element='Si'):
+def run_eos(code=load_code('qe-pw-6.3@localhost'), pseudo_family='SSSP', element='Si'):
     return run_eos_wf(code, Str(pseudo_family), Str(element))
 
 
