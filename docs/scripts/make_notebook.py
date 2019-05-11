@@ -2,9 +2,11 @@
 """Prepare teaching + solution verison of querybuilder notebook"""
 # pylint: disable=invalid-name
 from __future__ import print_function
+from __future__ import absolute_import
 import copy
 import json
 import sys
+from six.moves import range
 
 
 def remove_lines_from_cell(cell, remove_from_string, remove_to_string,

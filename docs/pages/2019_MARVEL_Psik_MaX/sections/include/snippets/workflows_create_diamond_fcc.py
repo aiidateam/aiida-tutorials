@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 def create_diamond_fcc(element):
     """Calculation function to create the crystal structure of a given element.
 

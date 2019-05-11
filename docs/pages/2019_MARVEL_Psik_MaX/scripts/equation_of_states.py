@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 from aiida.engine import WorkChain, ToContext, calcfunction
 from aiida.orm import Code, Dict, Float, Str, StructureData
 from aiida.plugins import CalculationFactory
 
-from create_rescale import create_diamond_fcc, rescale
-from common_wf import generate_scf_input_params
+from .create_rescale import create_diamond_fcc, rescale
+from .common_wf import generate_scf_input_params
+from six.moves import zip
 
 PwCalculation = CalculationFactory('quantumespresso.pw')
 scale_facs = (0.96, 0.98, 1.0, 1.02, 1.04)

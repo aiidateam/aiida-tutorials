@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 """Pressure convergence WorkChain"""
+from __future__ import absolute_import
+from __future__ import print_function
 from aiida.engine import WorkChain, ToContext, while_, calcfunction, workfunction
 from aiida.orm import Code, Float, Str, StructureData
 from aiida.plugins import CalculationFactory, DataFactory
 
-from common_wf import generate_scf_input_params
-from create_rescale import rescale
+from .common_wf import generate_scf_input_params
+from .create_rescale import rescale
 
 Dict = DataFactory('dict')
 KpointsData = DataFactory('array.kpoints')
@@ -125,8 +127,8 @@ def get_step_data(parameters_first, parameters_second=None):
 def bundle_step_data(step0, **kwargs):
     """Bundle step data into Dict."""
     steps = [step.get_dict() for step in kwargs.values()]
-    print(step0, type(step0))
-    print(steps, type(steps))
+    print((step0, type(step0)))
+    print((steps, type(steps)))
     return Dict(dict={'step0': step0.get_dict(), 'steps': steps})
 
 

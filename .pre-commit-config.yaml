@@ -6,7 +6,12 @@
   sha: 5650894e684250b8dd7a7d552adeea98eb8663ba
   hooks:
   - id: python-modernize
-    exclude: ^docs/
+    exclude: &exclude_files >
+      (?x)^(
+        docs/pages/2019_molsim_school_Amsterdam/assets/raspa_loading.py|
+        docs/assets/2018_PRACE_MaX/latex/de-macro.py|
+        docs/pages/2019_MARVEL_Psik_MaX/sections/include/snippets/.*
+      )$
     args:
       - --write
       - --nobackups
@@ -20,12 +25,7 @@
     language: system
     types: [python]
     args: ["-i"]
-    exclude: &exclude_files >
-      (?x)^(
-        docs/pages/2019_molsim_school_Amsterdam/assets/raspa_loading.py|
-        docs/assets/2018_PRACE_MaX/latex/de-macro.py|
-        docs/pages/2019_MARVEL_Psik_MaX/sections/include/snippets/.*
-      )$
+    exclude: *exclude_files
 
   # prospector: collection of linters
   - id: prospector

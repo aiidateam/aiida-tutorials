@@ -4,6 +4,7 @@ Filters for conversion from LaTeX to MarkDown.
 
  * handle bash/python code blocks
 """
+from __future__ import absolute_import
 from pandocfilters import toJSONFilter, CodeBlock
 
 

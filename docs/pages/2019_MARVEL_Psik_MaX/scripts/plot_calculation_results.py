@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import print_function
 import sys
 import numpy as np
 from argparse import ArgumentParser
 from matplotlib import gridspec, pyplot as plt
+from six.moves import map
+from six.moves import range
+from six.moves import zip
 
 
 def plot_results(inputfname, outputfname=None, plotformat=None):
@@ -41,12 +46,13 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
         try:
             (formula, pseudo_family, smearing, smearing_units, magnetization,
              magnetization_units) = [i.strip() for i in line.split(',')]
-            smearing, magnetization = map(float, (smearing, magnetization))
+            smearing, magnetization = list(
+                map(float, (smearing, magnetization)))
         except Exception as e:
             print("There was an {} reading line:\n"
-                  "{}"
-                  "Exception: {}\n"
-                  "Skipping this line\n".format(type(e), line, e))
+                   "{}"
+                   "Exception: {}\n"
+                   "Skipping this line\n".format(type(e), line, e))
             continue
 
         # If this is a new formula, not present in results,
@@ -64,7 +70,7 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
 
     # Sorting by formula:
     sorted_results = sorted(results_dict.items())
-    formula_list = zip(*sorted_results)[0]
+    formula_list = list(zip(*sorted_results))[0]
     nr_of_results = len(formula_list)
 
     # Checks that I have not more than 3 pseudo families.

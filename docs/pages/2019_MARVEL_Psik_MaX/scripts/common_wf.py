@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import numpy as np
 from aiida.plugins import CalculationFactory, DataFactory
 from aiida_quantumespresso.utils.pseudopotential import validate_and_prepare_pseudos_inputs

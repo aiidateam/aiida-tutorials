@@ -1,3 +1,7 @@
+from __future__ import absolute_import
+import six
+
+
 def multiply_unit_cell(cif, cutoff):
     """Returns the multiplication factors (tuple of 3 int) for the cell vectors
     that are needed to respect: min(perpendicular_width) > threshold
@@ -6,7 +10,7 @@ def multiply_unit_cell(cif, cutoff):
     import numpy as np
     deg2rad = pi / 180.
 
-    struct = cif.values.dictionary.itervalues().next()
+    struct = six.itervalues(cif.values.dictionary)
 
     a = float(struct['_cell_length_a'])
     b = float(struct['_cell_length_b'])

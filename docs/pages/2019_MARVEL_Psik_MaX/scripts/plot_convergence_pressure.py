@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import print_function
 from aiida.orm import load_node
+from six.moves import range
 
 
 def parabola(x, a, b, c):
@@ -75,7 +78,9 @@ if __name__ == '__main__':
     try:
         pk = int(sys.argv[1])
     except (IndexError, ValueError):
-        print >> sys.stderr, 'Pass as parameter the PK of the WorkChain calculating the pressure'
-        print >> sys.stderr, 'convergence to generate the plot.'
+        print(
+            'Pass as parameter the PK of the WorkChain calculating the pressure',
+            file=sys.stderr)
+        print('convergence to generate the plot.', file=sys.stderr)
         sys.exit(1)
     show_parabola_results(pk)
