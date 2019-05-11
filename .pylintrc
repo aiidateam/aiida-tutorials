@@ -11,7 +11,8 @@
 # --disable=W".
 disable=import-error,
         locally-disabled,
-        invalid-name
+        invalid-name,
+        relative-beyond-top-level
 
 
 [FORMAT]

@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-import six
-
-
 def multiply_unit_cell(cif, cutoff):
     """Returns the multiplication factors (tuple of 3 int) for the cell vectors
     that are needed to respect: min(perpendicular_width) > threshold
@@ -21,7 +17,8 @@ def multiply_unit_cell(cif, cutoff):
     gamma = float(struct['_cell_angle_gamma']) * deg2rad
 
     # first step is computing cell parameters according to  https://en.wikipedia.org/wiki/Fractional_coordinates
-    # Note: this is the algorithm implemented in Raspa (framework.c/UnitCellBox). There also is a simpler one but it is less robust.
+    # Note: this is the algorithm implemented in Raspa (framework.c/UnitCellBox). 
+    # There also is a simpler one but it is less robust.
     v = sqrt(1 - cos(alpha)**2 - cos(beta)**2 - cos(gamma)**2 +
              2 * cos(alpha) * cos(beta) * cos(gamma))
     cell = np.zeros((3, 3))

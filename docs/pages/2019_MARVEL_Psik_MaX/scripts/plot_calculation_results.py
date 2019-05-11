@@ -1,16 +1,16 @@
 # -*- coding: utf-8 -*-
+"""Plot results of your calculations."""
 from __future__ import absolute_import
 from __future__ import print_function
 import sys
-import numpy as np
 from argparse import ArgumentParser
+from six.moves import map, range, zip
+
+import numpy as np
 from matplotlib import gridspec, pyplot as plt
-from six.moves import map
-from six.moves import range
-from six.moves import zip
 
 
-def plot_results(inputfname, outputfname=None, plotformat=None):
+def plot_results(inputfname, outputfname=None, plotformat=None):  # pylint: disable=too-many-locals,too-many-statements,too-many-branches
     """
     :param inputfile: the filename of the inputfile
     :param (opt) outputfile:
@@ -48,11 +48,11 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
              magnetization_units) = [i.strip() for i in line.split(',')]
             smearing, magnetization = list(
                 map(float, (smearing, magnetization)))
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             print("There was an {} reading line:\n"
-                   "{}"
-                   "Exception: {}\n"
-                   "Skipping this line\n".format(type(e), line, e))
+                  "{}"
+                  "Exception: {}\n"
+                  "Skipping this line\n".format(type(e), line, e))
             continue
 
         # If this is a new formula, not present in results,
@@ -76,8 +76,7 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
     # Checks that I have not more than 3 pseudo families.
     # If more are needed, define more colors
 
-    pseudo_list = list(pseudo_family_set)
-    if len(pseudo_list) > 3:
+    if len(pseudo_family_set) > 3:
         raise Exception('I was expecting 3 or less pseudo families')
 
     colors = ['b', 'r', 'g']
@@ -87,8 +86,10 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
     fig = plt.figure(figsize=(16, 9), facecolor='w', edgecolor=None)
 
     # Defining barwidth
-    barwidth = 1. / (len(pseudo_list) + 1)
-    offset = [-0.5 + (0.5 + n) * barwidth for n in range(len(pseudo_list))]
+    barwidth = 1. / (len(pseudo_family_set) + 1)
+    offset = [
+        -0.5 + (0.5 + n) * barwidth for n in range(len(pseudo_family_set))
+    ]
 
     # Axing labels with units:
     yaxis = ("Smearing energy [{}]".format(smearing_unit_set.pop()),
@@ -102,7 +103,7 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
     # Making two plots, one for the smearing, the lower for magnetization
     for index in range(2):
         ax = fig.add_subplot(gs[index])
-        for i, pseudo_family in enumerate(pseudo_list):
+        for i, pseudo_family in enumerate(pseudo_family_set):
             X = np.arange(nr_of_results) + offset[i]
             Y = np.array([
                 thisres[1][pseudo_family][index] for thisres in sorted_results
@@ -117,18 +118,21 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
         ax.set_ylabel(yaxis[index], fontsize=14, labelpad=15 * index + 5)
         ax.set_xlim(-0.5, nr_of_results - 0.5)
         ax.set_xticks(np.arange(nr_of_results))
+
         if index:
             plt.setp(ax.get_yticklabels()[-1], visible=False)
         else:
             plt.setp(ax.get_yticklabels()[0], visible=False)
             ax.xaxis.tick_top()
             ax.legend(loc=3, prop={'size': 18})
+
         for i in range(0, nr_of_results, 2):
             ax.axvspan(i - 0.5, i + 0.5, facecolor='y', alpha=0.2)
         ax.set_xticklabels(list(formula_list),
                            rotation=90,
                            size=14,
                            ha='center')
+
     if outputfname is not None:
         plt.savefig(outputfname, format=plotformat)
     else:

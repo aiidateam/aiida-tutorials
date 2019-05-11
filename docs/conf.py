@@ -50,7 +50,11 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'AiiDA Tutorials'
-copyright = u'2019, ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (Theory and Simulation of Materials (THEOS) and National Centre for Computational Design and Discovery of Novel Materials (NCCR MARVEL)), Switzerland and ROBERT BOSCH LLC, USA. All rights reserved'
+# pylint: disable=redefined-builtin
+copyright = u'\
+2019, ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (Theory and Simulation of Materials (THEOS) \
+and National Centre for Computational Design and Discovery of Novel Materials (NCCR MARVEL)), Switzerland \
+and ROBERT BOSCH LLC, USA. All rights reserved'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -201,8 +205,8 @@ latex_elements = {
     # Additional stuff for the LaTeX preamble.
     'preamble':
     u'''
-\\usepackage{newunicodechar} 
-\\newunicodechar{⏹}{\ensuremath{\square}}
+\\usepackage{newunicodechar}
+\\newunicodechar{⏹}{\\ensuremath{\\square}}
 ''',
 }
 
@@ -321,6 +325,7 @@ suppress_warnings = ['misc.highlighting_failure']
 
 
 def setup(app):
+    """Setup function called by sphinx."""
     app.add_stylesheet('css/custom.css')
 
 

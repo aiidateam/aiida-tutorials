@@ -1,3 +1,4 @@
+"""Deliverable capacity WorkChain."""
 from __future__ import absolute_import
 from aiida.orm import CalculationFactory, DataFactory, Code
 from aiida.orm.data.base import Float
@@ -15,7 +16,7 @@ ZeoppCalculation = CalculationFactory('zeopp.network')
 @workfunction
 def update_raspa_parameters(parameters, pressure):
     """Store input parameters of Raspa for given pressure.
-    
+
     Note: In order to keep the provenance of both Raspa calculations,
     changing the pressure force us to create a new ParameterData node.
     "workfunctions" will take care of linking the user-provided ParameterData
@@ -32,7 +33,7 @@ class DcMethane(WorkChain):
     @classmethod
     def define(cls, spec):
         """Define workflow specification.
-        
+
         This is the most important method of a Workchain, which defines the
         inputs it takes, the logic of the execution and the outputs
         that are generated in the process.
@@ -107,18 +108,20 @@ class DcMethane(WorkChain):
         return ToContext(zeopp=Outputs(future))
 
     def run_loading_raspa_low_p(self):
+        """Run raspa loading calculation at low pressure."""
         self.ctx.current_pressure = 5.8e5
         self.ctx.current_pressure_label = "low"
         return self._run_loading_raspa()
 
     def run_loading_raspa_high_p(self):
+        """Run raspa loading calculation at high pressure."""
         self.ctx.current_pressure = 65e5
         self.ctx.current_pressure_label = "high"
         return self._run_loading_raspa()
 
     def _run_loading_raspa(self):
         """Perform raspa calculation at given pressure.
-        
+
         Most of the runtime will be spent in this function.
         """
         # Create the input dictionary
@@ -155,7 +158,7 @@ class DcMethane(WorkChain):
 
     def extract_results(self):
         """Extract results of the workflow.
-        
+
         Attaches the results of the raspa calculation and the initial structure to the outputs.
         """
         from math import sqrt
@@ -181,4 +184,3 @@ class DcMethane(WorkChain):
 
         self.report("Workchain <{}> completed successfully".format(
             self.calc.pk))
-        return

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""Helper CalcFunctions for equation of state."""
 from __future__ import absolute_import
 from aiida.engine import calcfunction
 

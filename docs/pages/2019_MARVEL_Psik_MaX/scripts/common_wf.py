@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+"""Helper functions."""
 from __future__ import absolute_import
 import numpy as np
 from aiida.plugins import CalculationFactory, DataFactory
@@ -48,11 +49,13 @@ def generate_scf_input_params(structure, code, pseudo_family):
 
 
 def birch_murnaghan(V, E0, V0, B0, B01):
+    """Compute energy by Birch Murnaghan formula."""
     r = (V0 / V)**(2. / 3.)
     return E0 + 9. / 16. * B0 * V0 * (r - 1.)**2 * (2. + (B01 - 4.) * (r - 1.))
 
 
 def fit_birch_murnaghan_params(volumes_, energies_):
+    """Fit Birch Murnaghan parameters."""
     from scipy.optimize import curve_fit
 
     volumes = np.array(volumes_)
@@ -85,7 +88,7 @@ def plot_eos(eos_pk):
         data.append((V, E))
 
     data = np.array(data)
-    params, covariance = fit_birch_murnaghan_params(data[:, 0], data[:, 1])
+    params, _covariance = fit_birch_murnaghan_params(data[:, 0], data[:, 1])
 
     vmin = data[:, 0].min()
     vmax = data[:, 0].max()
@@ -96,5 +99,5 @@ def plot_eos(eos_pk):
 
     pl.xlabel("Volume (ang^3)")
     # I take the last value in the list of units assuming units do not change
-    pl.ylabel("Energy ({})".format(units))
+    pl.ylabel("Energy ({})".format(units))  # pylint: disable=undefined-loop-variable
     pl.show()

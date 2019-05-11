@@ -2,13 +2,14 @@
 """Simple workflow example"""
 from __future__ import absolute_import
 from __future__ import print_function
+from six.moves import zip
+
 from aiida.engine import run, Process, calcfunction, workfunction
 from aiida.orm import load_code, Dict, Float, Str
 from aiida.plugins import CalculationFactory
 
 from .create_rescale import create_diamond_fcc, rescale
 from .common_wf import generate_scf_input_params
-from six.moves import zip
 
 # Load the calculation class 'PwCalculation' using its entry point 'quantumespresso.pw'
 PwCalculation = CalculationFactory('quantumespresso.pw')
@@ -44,7 +45,7 @@ def run_eos_wf(code, pseudo_family, element):
     initial_structure = create_diamond_fcc(element)
 
     # Loop over the label and scale_factor pairs
-    for label, factor in zip(labels, scale_factors):
+    for label, factor in list(zip(labels, scale_factors)):
 
         # Generated the scaled structure from the initial structure
         structure = rescale(initial_structure, Float(factor))

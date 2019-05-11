@@ -409,7 +409,7 @@ Each step is then ran by the daemon, in a way similar to the remote calculations
 
 Here below you can find the basic rules that allow you to convert your workfunction-based script to a workchain-based one and a snippet example focusing on the code used to perform the calculation of an equation of state.
 
-.. include:: ../scripts/equation_of_states.py
+.. include:: ../scripts/equation_of_state.py
     :code: python
 
 -   Instead of using decorated functions you need to define a class, inheriting from a prototype class called ``WorkChain`` that is provided by AiiDA in the ``aiida.engine`` module.
@@ -461,12 +461,12 @@ Here below you can find the basic rules that allow you to convert your workfunct
     Also, note that once you have called ``self.out(link_name, node)`` on a given ``link_name``, you can no longer call ``self.out()`` on the same ``link_name``: this will raise an exception.
 
 Finally, the workflow has to be run.
-For this you have to use the function ``run`` passing as arguments the ``EquationOfStates`` class and the inputs as key-value arguments.
+For this you have to use the function ``run`` passing as arguments the ``EquationOfState`` class and the inputs as key-value arguments.
 For example, you can execute:
 
 .. code:: python
 
-    run(EquationOfStates, element=Str('Si'), code=load_code('qe-pw-6.3@localhost'), pseudo_family=Str('SSSP'))
+    run(EquationOfState, element=Str('Si'), code=load_code('qe-pw-6.3@localhost'), pseudo_family=Str('SSSP'))
 
 While the workflow is running, you can check (in a different terminal) what is happening to the calculations using ``verdi process list``.
 You will see that after a few seconds the calculations are all submitted to the scheduler and can potentially run at the same time.
@@ -477,7 +477,7 @@ You will see that after a few seconds the calculations are all submitted to the 
     However, by using ``run`` on the work chain itself, it will still not be able to restart.
     To make the work chain save its checkpoints, you should use the ``submit`` launcher instead.
 
-As an additional exercise (optional), instead of running the main workflow ``EquationOfStates``, try to submit it.
+As an additional exercise (optional), instead of running the main workflow ``EquationOfState``, try to submit it.
 Note that the file where the work chains is defined will need to be globally importable (so the daemon knows how to load it) and you need to launch it (with ``submit``) from a different python file.
 The easiest way to achieve this is typically to embed the workflow inside a python package.
 

@@ -10,7 +10,8 @@
       (?x)^(
         docs/pages/2019_molsim_school_Amsterdam/assets/raspa_loading.py|
         docs/assets/2018_PRACE_MaX/latex/de-macro.py|
-        docs/pages/2019_MARVEL_Psik_MaX/sections/include/snippets/.*
+        docs/pages/2019_MARVEL_Psik_MaX/sections/include/snippets/.*|
+        docs/pages/2019_molsim_school_Amsterdam/assets/multiply_unitcell.py
       )$
     args:
       - --write

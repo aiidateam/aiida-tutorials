@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
+"""Plot parabola using matplotlib."""
 from __future__ import absolute_import
 from __future__ import print_function
-from aiida.orm import load_node
 from six.moves import range
+from aiida.orm import load_node
 
 
 def parabola(x, a, b, c):
+    """Parabola."""
     return a * x**2 + b * x + c
 
 
-def show_parabola_results(pk):
+def show_parabola_results(pk):  # pylint: disable=too-many-locals
+    """Plot (and show) parabola using matplotlib."""
     out_p = load_node(pk).outputs.steps.get_dict()
 
     step0 = out_p['step0']
@@ -76,11 +79,11 @@ def show_parabola_results(pk):
 if __name__ == '__main__':
     import sys
     try:
-        pk = int(sys.argv[1])
+        pk_value = int(sys.argv[1])
     except (IndexError, ValueError):
         print(
             'Pass as parameter the PK of the WorkChain calculating the pressure',
             file=sys.stderr)
         print('convergence to generate the plot.', file=sys.stderr)
         sys.exit(1)
-    show_parabola_results(pk)
+    show_parabola_results(pk_value)
