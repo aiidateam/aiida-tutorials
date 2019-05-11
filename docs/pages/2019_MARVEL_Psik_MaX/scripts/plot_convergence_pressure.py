@@ -44,10 +44,15 @@ def show_parabola_results(pk):
 
         color = 0.8
         for idx, step in enumerate(steps, start=1):
-            pl.plot(V_range, parabola(V_range, step['a'], step['b'], step['c']), color=(color, color, color))
+            pl.plot(V_range,
+                    parabola(V_range, step['a'], step['b'], step['c']),
+                    color=(color, color, color))
             parabola_Vmin = -step['b'] / 2. / step['a']
-            parabola_Emin = parabola(parabola_Vmin, step['a'], step['b'], step['c'])
-            pl.plot([parabola_Vmin], [parabola_Emin], 'x', color=(color, color, color))
+            parabola_Emin = parabola(parabola_Vmin, step['a'], step['b'],
+                                     step['c'])
+            pl.plot([parabola_Vmin], [parabola_Emin],
+                    'x',
+                    color=(color, color, color))
             pl.annotate(str(idx), xy=(step['V'], step['E']))
             pl.axvline(step['V'], color=(1., 0.7, 1.), linestyle='--')
             color -= 0.25

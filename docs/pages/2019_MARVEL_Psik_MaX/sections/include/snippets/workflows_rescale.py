@@ -1,4 +1,3 @@
-
 def rescale(structure, scale):
     """Calculation function to rescale a structure
 

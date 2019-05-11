@@ -13,12 +13,12 @@ labels = ['c1', 'c2', 'c3', 'c4', 'c5']
 
 @calcfunction
 def get_eos_data(**kwargs):
-    eos = [(result.dict.volume, result.dict.energy, result.dict.energy_units) for label, result in kwargs.items()]
+    eos = [(result.dict.volume, result.dict.energy, result.dict.energy_units)
+           for label, result in kwargs.items()]
     return Dict(dict={'eos': eos})
 
 
 class EquationOfStates(WorkChain):
-
     @classmethod
     def define(cls, spec):
         super(EquationOfStates, cls).define(spec)
@@ -42,9 +42,12 @@ class EquationOfStates(WorkChain):
         for label, factor in zip(labels, scale_facs):
 
             structure = rescale(initial_structure, Float(factor))
-            inputs = generate_scf_input_params(structure, self.inputs.code, self.inputs.pseudo_family)
+            inputs = generate_scf_input_params(structure, self.inputs.code,
+                                               self.inputs.pseudo_family)
 
-            self.report('Running an SCF calculation for {} with scale factor {}'.format(self.inputs.element, factor))
+            self.report(
+                'Running an SCF calculation for {} with scale factor {}'.
+                format(self.inputs.element, factor))
             future = self.submit(PwCalculation, **inputs)
             calculations[label] = future
 
@@ -52,7 +55,11 @@ class EquationOfStates(WorkChain):
         return ToContext(**calculations)
 
     def results(self):
-        inputs = {label: self.ctx[label].get_outgoing().get_node_by_label('output_parameters') for label in labels}
+        inputs = {
+            label: self.ctx[label].get_outgoing().get_node_by_label(
+                'output_parameters')
+            for label in labels
+        }
         eos = get_eos_data(**inputs)
 
         # Attach Equation of State results as output node to be able to plot the EOS later

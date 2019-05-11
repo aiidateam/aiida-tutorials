@@ -39,17 +39,14 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
     # Looping through results:
     for line in lines:
         try:
-            (
-                formula, pseudo_family, smearing,
-                smearing_units, magnetization, magnetization_units
-            ) = [i.strip() for i in line.split(',')]
+            (formula, pseudo_family, smearing, smearing_units, magnetization,
+             magnetization_units) = [i.strip() for i in line.split(',')]
             smearing, magnetization = map(float, (smearing, magnetization))
         except Exception as e:
-            print(
-                "There was an {} reading line:\n"
-                "{}"
-                "Exception: {}\n"
-                "Skipping this line\n".format(type(e), line, e))
+            print("There was an {} reading line:\n"
+                  "{}"
+                  "Exception: {}\n"
+                  "Skipping this line\n".format(type(e), line, e))
             continue
 
         # If this is a new formula, not present in results,
@@ -88,10 +85,8 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
     offset = [-0.5 + (0.5 + n) * barwidth for n in range(len(pseudo_list))]
 
     # Axing labels with units:
-    yaxis = (
-        "Smearing energy [{}]".format(smearing_unit_set.pop()),
-        "Total magnetization [{}]".format(magnetization_unit_set.pop())
-    )
+    yaxis = ("Smearing energy [{}]".format(smearing_unit_set.pop()),
+             "Total magnetization [{}]".format(magnetization_unit_set.pop()))
     # If more than one unit was specified, I will exit:
     if smearing_unit_set:
         raise Exception('Found different units for smearing')
@@ -104,15 +99,15 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
         for i, pseudo_family in enumerate(pseudo_list):
             X = np.arange(nr_of_results) + offset[i]
             Y = np.array([
-                thisres[1][pseudo_family][index]
-                for thisres
-                in sorted_results
+                thisres[1][pseudo_family][index] for thisres in sorted_results
             ])
 
-            ax.bar(
-                X, Y, width=0.2, facecolor=colors[i], edgecolor=colors[i],
-                label=pseudo_family
-            )
+            ax.bar(X,
+                   Y,
+                   width=0.2,
+                   facecolor=colors[i],
+                   edgecolor=colors[i],
+                   label=pseudo_family)
         ax.set_ylabel(yaxis[index], fontsize=14, labelpad=15 * index + 5)
         ax.set_xlim(-0.5, nr_of_results - 0.5)
         ax.set_xticks(np.arange(nr_of_results))
@@ -124,7 +119,10 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
             ax.legend(loc=3, prop={'size': 18})
         for i in range(0, nr_of_results, 2):
             ax.axvspan(i - 0.5, i + 0.5, facecolor='y', alpha=0.2)
-        ax.set_xticklabels(list(formula_list), rotation=90, size=14, ha='center')
+        ax.set_xticklabels(list(formula_list),
+                           rotation=90,
+                           size=14,
+                           ha='center')
     if outputfname is not None:
         plt.savefig(outputfname, format=plotformat)
     else:
@@ -133,13 +131,20 @@ def plot_results(inputfname, outputfname=None, plotformat=None):
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-    parser.add_argument('inputfile', help='The input file with the data to plot')
-    parser.add_argument('-o', '--outputfile', help='The outputfile to plot results to', default=None)
-    parser.add_argument('-f', '--format', default=None,
-        help='The format to plot, if outputfile is specified and no valid extension is provided')
-    parsed_args = parser.parse_args(sys.argv[1:])
-    plot_results(
-        inputfname=parsed_args.inputfile,
-        outputfname=parsed_args.outputfile,
-        plotformat=parsed_args.format
+    parser.add_argument('inputfile',
+                        help='The input file with the data to plot')
+    parser.add_argument('-o',
+                        '--outputfile',
+                        help='The outputfile to plot results to',
+                        default=None)
+    parser.add_argument(
+        '-f',
+        '--format',
+        default=None,
+        help=
+        'The format to plot, if outputfile is specified and no valid extension is provided'
     )
+    parsed_args = parser.parse_args(sys.argv[1:])
+    plot_results(inputfname=parsed_args.inputfile,
+                 outputfname=parsed_args.outputfile,
+                 plotformat=parsed_args.format)

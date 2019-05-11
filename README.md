@@ -31,10 +31,12 @@ If you have a question, feel free to just [open an issue](https://github.com/aii
 
 ### Build instructions
 
-```
+```bash
 git clone https://github.com/aiidateam/aiida-tutorials.git
-cd aiida-tutorials/docs
+cd aiida-tutorials
 pip install -r requirements.txt
+pre-commit install   # enable pre-commit hooks (optional)
+cd docs/
 make
 # open build/html/index.html
 ```

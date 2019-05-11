@@ -36,7 +36,8 @@ def generate_scf_input_params(structure, code, pseudo_family):
     builder.structure = structure
     builder.kpoints = kpoints
     builder.parameters = Dict(dict=parameters)
-    builder.pseudos = validate_and_prepare_pseudos_inputs(structure, pseudo_family=pseudo_family)
+    builder.pseudos = validate_and_prepare_pseudos_inputs(
+        structure, pseudo_family=pseudo_family)
     builder.metadata.label = "PW test"
     builder.metadata.description = "My first AiiDA calculation of Silicon with Quantum ESPRESSO"
     builder.metadata.options.resources = {'num_machines': 1}
@@ -46,8 +47,8 @@ def generate_scf_input_params(structure, code, pseudo_family):
 
 
 def birch_murnaghan(V, E0, V0, B0, B01):
-    r = (V0 / V) ** (2. / 3.)
-    return E0 + 9. / 16. * B0 * V0 * (r - 1.) ** 2 * (2. + (B01 - 4.) * (r - 1.))
+    r = (V0 / V)**(2. / 3.)
+    return E0 + 9. / 16. * B0 * V0 * (r - 1.)**2 * (2. + (B01 - 4.) * (r - 1.))
 
 
 def fit_birch_murnaghan_params(volumes_, energies_):
@@ -56,15 +57,16 @@ def fit_birch_murnaghan_params(volumes_, energies_):
     volumes = np.array(volumes_)
     energies = np.array(energies_)
     params, covariance = curve_fit(
-        birch_murnaghan, xdata=volumes, ydata=energies,
+        birch_murnaghan,
+        xdata=volumes,
+        ydata=energies,
         p0=(
             energies.min(),  # E0
             volumes.mean(),  # V0
             0.1,  # B0
             3.,  # B01
         ),
-        sigma=None
-    )
+        sigma=None)
     return params, covariance
 
 
