@@ -26,7 +26,7 @@ If you have a question, feel free to just [open an issue](https://github.com/aii
 
 ### Prerequisites
 
- * python 2.7 or greater
+ * python 3.5 or greater
  * [pandoc](https://pandoc.org/)
 
 ### Build instructions
