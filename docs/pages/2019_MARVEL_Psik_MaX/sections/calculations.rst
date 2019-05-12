@@ -11,7 +11,7 @@ launch a simple `density functional theory
 the silicon crystal using the  :doi:`PBE exchange-correlation functional <10.1103/PhysRevB.54.16533>`
 and check its results.  
 While we're going to debug these issues ‘manually’ here, workflows (which you'll 
-encounter later in this tutorial) can help you automate this task.
+encounter later in this tutorial) can help you avoid these issues systematically.
 
 Note that besides the ``aiida-quantumespresso`` plugin, AiiDA comes with
 plugins for a range of other codes,
@@ -80,7 +80,7 @@ Let's have a look at the codes already installed on your machine:
 
     verdi code list
 
-There should be a number of them. Here, we're interested in the "PW" executable of Quantum Espresso, i.e. in codes for the ``quantumespresso.pw`` plugin:
+There should be a number of them. Here, we're interested in the "PWscf" executable of Quantum Espresso, i.e. in codes for the ``quantumespresso.pw`` plugin:
 
 .. code:: console
 
@@ -135,10 +135,10 @@ Preparation of inputs
 
 A Quantum Espresso calculation needs a number of input files:
 
-1. Pseudopotentials
+1. `Pseudopotentials <https://en.wikipedia.org/wiki/Pseudopotential>`_
 2. a structure
 3. a mesh in reciprocal space (k-points)
-4. a number of `input parameters <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_
+4. a number of input parameters
 
 These are mirrored in the inputs of the ``aiida-quantumespresso`` plugin
 (see `documentation <https://aiida-quantumespresso.readthedocs.io/en/stable/user_guide/calculation_plugins/pw.html>`_).
@@ -175,41 +175,37 @@ attach it to the calculation:
   AiiDA will take care of storing the unstored nodes upon submission.
   If you decide not to submit, nothing will be stored in the database.
 
-Moreover, PWscf also needs information on the pseudopotentials,
-specified by UpfData objects. This is set by storing a dictionary in
-“builder.pseudo”, with keys being the kind names, and value being the
-UpfData pseudopotential nodes. To simplify the task of choosing
-pseudopotentials, we can however use a helper function that
-automatically returns this dictionary picking the pseudopotentials from
-a given UPF family.
-
+PWscf also needs information on the pseudopotentials,
+in the form of a dictionary, where keys are the names of the elements and the values are the corresponding ``UpfData`` objects containing the information on the pseudopotential.
+However, instead of creating the dictionary by hand, we can use a helper function that picks the right pseudopotentials for our structure from a pseudopotential *family*.
 You can list the preconfigured families from the command line:
 
 .. code:: console
 
     verdi data upf listfamilies
 
-Pick the one you configured earlier or one of the ``SSSP`` families that
-we provide, and link it to the calculation using the command:
+Pick the one you configured earlier (or one of the ``SSSP`` families that
+we provide) and link it to the calculation using the command:
 
 .. code:: python
 
     from aiida.orm.nodes.data.upf import get_pseudos_from_structure
     builder.pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY_NAME>')
 
+
+
 Preparing and debugging input parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The last thing we miss is a set of parameters (i.e. cutoffs, convergence
-thresholds, etc…) to launch the Quantum ESPRESSO calculation. This part
-requires acquaintance with Quantum ESPRESSO and, very often, this is the
-part to tune when a calculation shows a problem. Let’s therefore use
-this part of the tutorial to learn how to debug problems, and **let’s
-introduce errors intentionally**. Note also that some of the problems we
-will investigate appear the first times you launch calculations and can
-be systematically avoided by using workflows.
+Finally, we need to specify a number of input parameters  (i.e. plane wave cutoffs, convergence thresholds, etc.).
+to launch the Quantum ESPRESSO calculation. This part
+The structure of the parameter dictionary closely follows the structure of the `PWscf input file <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_.
 
-Let’s define a set of input parameters for Quantum ESPRESSO, preparing a
+Since these are often the parameters to tune in a calculation,
+let's **introduce a few mistakes intentionally**
+and use this part of the tutorial to learn how to debug problems.
+
+Define a set of input parameters for Quantum ESPRESSO, preparing a
 dictionary of the form:
 
 .. code:: python
@@ -231,16 +227,12 @@ dictionary of the form:
     }
 
 This dictionary is almost a valid input for the Quantum ESPRESSO plugin,
-except for an invalid key called “mickeymouse”. When Quantum ESPRESSO
-receives an unrecognized key (even when you misspell one) its behavior
-is to stop almost immediately. By default, the AiiDA plugin will not
-validate your input and simply pass it over. Therefore let’s pass this
-dictionary to the calculation and observe this unsuccessful behavior.
+except for an invalid key ``mickeymouse``. When Quantum ESPRESSO
+receives an unrecognized key, it will stop.
+By default, the AiiDA plugin will *not* validate your input and simply pass
+it on to the code. 
 
-Finally, we need to attach those parameters to our builder, however,
-bear in mind that ``parameters_dict`` is a python dictionary instead of
-an AiiDA model that can be stored in the database, thus we need to wrap
-the ``parameters_dict`` on a ``Dict`` model:
+Let’s wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node and see what happens.
 
 .. code:: python
 
@@ -249,27 +241,24 @@ the ``parameters_dict`` on a ``Dict`` model:
 Simulate submission
 ~~~~~~~~~~~~~~~~~~~
 
-At this stage, you have recreated in memory (it’s not yet stored in the
-database) the input of the graph shown bellow, whereas the outputs will
-be created later by the daemon.
+At this stage, you have created in memory (it’s not yet stored in the
+database) the input of the graph shown below. The outputs will
+be created by the daemon later on.
 
 .. figure:: include/images/verdi_graph/si/graph-full.png
    :alt:
 
-In order to check how AiiDA creates the actual input files for the
-calculation, we can perform a *dry run* of the submission process, to
-achieve that, we should modify the metadata of our builder, first
-specifying that we want a dry run, and then telling it that we don't
-want to store the provenance of this calculation (yet):
+In order to check which input files AiiDA creates, 
+we can perform a *dry run* of the submission process.
+Let's tell the builder that we want a dry run and that
+we don't want to store the provenance of the dry run:
 
 .. code:: python
 
     builder.metadata.dry_run = True
     builder.metadata.store_provenance = False
 
-After setting the appropriate metadata, is time for us to actually run
-the *dry run*, to do that we need to reach for AiiDA's run
-functionality:
+It's time run:
 
 .. code:: python
 
@@ -277,16 +266,17 @@ functionality:
     run(builder)
 
 This creates a folder of the form ``submit_test/[date]-0000[x]`` in the
-current directory. Check (in your second terminal) the input file
-``aiida.in`` within this folder, comparing it with the content of the
-input data nodes you created earlier, and that the ‘pseudo’ folder
-contains the needed pseudopotentials. You can also check the submission
-script ``_aiidasubmit.sh`` (the scheduler that is installed on the
-machine is Torque, so AiiDA creates the files with the proper format for
-this scheduler). Note: you cannot correct the input file from the
-``submit_test`` folder: you have to correct the script and re-execute
-it; the files created by ``submit_test()`` are only for final
-inspection.
+current directory. In your second terminal:
+
+ * open the input file ``aiida.in`` within this folder
+ * compare it to input data nodes you created earlier
+ * verify that the `pseudo` folder contains the needed pseudopotentials
+ * have a look at the submission script ``_aiidasubmit.sh`` 
+   
+.. note:: 
+
+   The files created by ``submit_test()`` are only intended for  inspection
+   and cannot be used to correct the inputs of your calculation.
 
 Storing and submitting the calculation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
