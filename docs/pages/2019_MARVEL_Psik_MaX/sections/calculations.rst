@@ -3,30 +3,33 @@
 Submit, monitor and debug calculations
 ======================================
 
-The goal of this section is to understand how to create new data in
-AiiDA. We will launch a total energy calculation and check its results.
-We will introduce intentionally some common mistakes along the process
-of defining and submitting a calculation and we will explain you how to
-recognize and correct them. While this debugging is done here
-‘manually’, workflows (that we will learn later in this tutorial) can
-automate this procedure considerably. For computing the DFT energy of
-the silicon crystal (with a PBE functional) we will use Quantum
-ESPRESSO , in particular the PWscf code (``pw.x``). Besides the
-AiiDA-core package, a number of plugins exist for many different codes.
-These are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
-In particular, the ``aiida-quantumespresso`` plugin (already installed in
-your machine) provides a very extensive set of plugins, covering most
-(if not all) the functionalities of the underlying codes.
+In this section we'll be learning how to create new data in AiiDA. 
+
+We will use the `Quantum Espresso <https://www.quantum-espresso.org/>`_ package to
+launch a simple `density functional theory
+<https://en.wikipedia.org/wiki/Density_functional_theory>`_ calculation of 
+the silicon crystal using the  :doi:`PBE exchange-correlation functional <10.1103/PhysRevB.54.16533>`
+and check its results.  
+While we're going to debug these issues ‘manually’ here, workflows (which you'll 
+encounter later in this tutorial) can help you automate this task.
+
+Note that besides the ``aiida-quantumespresso`` plugin, AiiDA comes with
+plugins for a range of other codes,
+all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
 
 The AiiDA daemon
 ----------------
 
 First of all, check that the AiiDA daemon is actually running. The AiiDA
-daemon is a program running all the time in the background, checking if
-new calculations appear and need to be submitted to the scheduler. The
-daemon also takes care of all the necessary operations before the
-calculation submission, and after the calculation has completed on the
-cluster. Type in the terminal
+daemon is a program that
+
+ * runs continuously in the background
+ * waits for new calculations to be submitted 
+ * transfers the inputs of new calculations to your compute resource 
+ * checks the status of your calculation at the compute resource, and
+ * retrieves the results back from the compute resource
+
+Check the status of the daemon process by typing in the terminal:
 
 .. code:: console
 
@@ -55,139 +58,122 @@ to start the daemon.
 Creating a new calculation
 --------------------------
 
-To launch a calculation, you will need to interact with AiiDA mainly in
-the ``verdi shell``. We strongly suggest you to first try the commands
-in the shell, and then copy them in a script ``test_pw.py`` using a text
-editor. This will be very useful for later execution of a similar series
-of commands.
+In the following, we'll be working in the ``verdi shell``.
+As you go along, feel free to keep track of your commands by
+copying them into a python script ``test_pw.py``.
 
-**The best way to run python scripts using AiiDA functionalities is to
-run them in a terminal by means of the command**
+.. note::
+
+    The ``verdi shell`` imports a number of AiiDA internals so that you as the user don't have to.
+    You can also make those available to a python script, by running it using
+
+    .. code:: console
+    
+        verdi run <scriptname>
+
+
+Every calculation sent to a cluster is linked to a *code*, which describes
+the executable file to be used as well as some metadata.
+Let's have a look at the codes already installed on your machine:
 
 .. code:: console
 
-    verdi run <scriptname>
+    verdi code list
 
-Every calculation sent to a cluster is linked to a code, which describes
-the executable file to be used. Therefore, first load the suitable code:
-
-.. code:: python
-
-    code = load_code("<codename>")
-
-Here ``load_code`` (imported for you by ``verdi shell`` or the
-``verdi run`` command) returns a ``Code`` which is the general AiiDA
-class handling all possible codes, and ``code`` is an instance labeled
-as ``<codename>`` (see the first part of the tutorial for listing all
-codes installed in your AiiDA machine). You might also want to list only
-the codes that define a default calculation plugin for the pw.x code of
-Quantum ESPRESSO. You can do this with the following command:
+There should be a number of them. Here, we're interested in the "PW" executable of Quantum Espresso, i.e. in codes for the ``quantumespresso.pw`` plugin:
 
 .. code:: console
 
     verdi code list -P quantumespresso.pw
 
 Pick the correct codename, that might look like, e.g.
-``qe-6.3-pw@localhost``.
+``qe-6.3-pw@localhost`` and load it in the verdi shell.
 
-Once run, AiiDA calculations are instances of the class ``CalcJob``,
-more precisely of one of its subclasses, each corresponding to a code
-specific plugin (for example, the PWscf plugin). You have already seen
-``CalcJob`` classes in the previous sections.
+.. code:: python
 
-However, to create a new calculation, rather than manually creating a
-new class, the suggested way is to use a ``Builder``, that helps in
-setting the various calculation inputs and parameters, and provides
-TAB-completion.
+    code = load_code("<codename>")
 
-To obtain a new builder, we can use the ``get_builder`` method of the
-``code`` object:
+.. note::
+
+   ``load_code`` returns an object of type ``Code``, which is the general AiiDA class for describing simulation codes. 
+
+Let's build the inputs for a new ``PwCalculation`` (defined by the ``quantumespresso.pw`` plugin, the default plugin for the code you chose before)
 
 .. code:: python
 
     builder = code.get_builder()
 
-This returns a builder that helps in setting up the inputs for the
-``PwCalculation`` class (associated to the ``quantumespresso.pw``
-plugin, the default plugin for the code you chose before).
-
-As the first step, you can assign a (short) label or a (long)
-description to the calculation that you are going to create, that you
-might find convenient in the future. This can be achieved with:
+As the first step, assign a (short) label or a (long) description to your
+calculation, that you might find convenient in the future.
 
 .. code:: python
 
     builder.metadata.label = "PW test"
     builder.metadata.description = "My first AiiDA calc with Quantum ESPRESSO on Si"
 
-This information will be saved in the database for later query or
+This information will be saved in the database for later queries or
 inspection. Note that you can press TAB after writing ``builder.`` to
-see all available inputs.
+see all inputs available for this calculation.
 
-Now you have to specify the number of machines (a.k.a. cluster nodes)
+Now, specify the number of machines (a.k.a. cluster nodes)
 you are going to run on and the maximum time allowed for the
-calculation. These general calculation options, that are independent of
-the code or plugin, but rather mainly passed later to the scheduler that
-handles the queue, are all grouped under “builder.options”:
+calculation. 
+The general options grouped under ``builder.options`` are independent of
+the code or plugin, and will be passed to the scheduler that handles the
+queue on your compute resource .
 
 .. code:: python
 
     builder.metadata.options.resources = {'num_machines': 1}
     builder.metadata.options.max_wallclock_seconds = 30 * 60
 
-Just like the normal inputs, these builder options are also
-TAB-completed. Type ``builder.metadata.options.`` and hit the TAB button
-to see the list of available options.
+Again, to see the list of available options, type
+``builder.metadata.options.`` and hit the TAB button.
 
 Preparation of inputs
 ~~~~~~~~~~~~~~~~~~~~~
 
-Quantum ESPRESSO requires an input file containing Fortran namelists and
-variables, plus some cards sections (the documentation is available
-`here <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_).
-The Quantum ESPRESSO plugin of AiiDA requires quite a few nodes in
-input, which are also documented
-`online <https://aiida-quantumespresso.readthedocs.io/en/stable/user_guide/calculation_plugins/pw.html>`_.
-Here we will instruct our calculation with a minimal configuration for
-computing the energy of silicon. We need:
+A Quantum Espresso calculation needs a number of input files:
 
 1. Pseudopotentials
 2. a structure
-3. the k-points
-4. the input parameters
+3. a mesh in reciprocal space (k-points)
+4. a number of `input parameters <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_
 
-We leave the parameters as the last thing to setup and start with
-structure, k-points, and pseudopotentials.
+These are mirrored in the inputs of the ``aiida-quantumespresso`` plugin
+(see `documentation <https://aiida-quantumespresso.readthedocs.io/en/stable/user_guide/calculation_plugins/pw.html>`_).
+We'll start with the structure, k-points, and pseudopotentials
+and leave the input parameters as the last thing to setup.
 
-Use what you learned in the previous section and define these two kinds
-of objects in this script. Define in particular a silicon structure and
-a ``2x2x2`` mesh of k-points. Notice that if you just copy and paste the
-code that you executed previously, you will create duplicated
-information in the database (i.e. every time you will execute the
-script, you will create another StructureData, another KpointsData,
-...). In fact, you already have the opportunity to re-use an already
-existing structure [#f1]_. Use therefore a combination of the bash command
-``verdi data structure list`` and of the shell command ``load_node()``
-to get an object representing the structure created earlier.
+.. admonition:: Exercise
+
+  Use what you learned in the previous section to load the ``structure`` and ``kpoints`` inputs for your calculation:
+
+    * Use a silicon crystal structure
+    * Define a ``2x2x2`` mesh of k-points. 
+      
+  Note: If you just copy and paste code that you executed previously, 
+  this may result in duplication of information on your database.
+  In fact, you can re-use an existing structure stored in your database [#f1]_. Use a combination of the bash command
+  ``verdi data structure list`` and of the shell command ``load_node()``
+  to get an object representing the structure created earlier.
 
 Attaching the input information to the calculation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So far we have defined (or loaded) some of the input data, but we
-haven’t instructed the calculation to use them. To do this, let’s just
-set the appropriate attributes of the builder (we assume here that you
-created the structure and k-points AiiDA nodes before and called them
-``structure`` and ``kpoints``, respectively):
+Once you've created a ``structure`` node and a ``kpoints`` node,
+attach it to the calculation:
 
 .. code:: python
 
     builder.structure = structure
     builder.kpoints = kpoints
 
-Note that you can set in the builder both stored and unstored nodes.
-AiiDA will take care of storing the unstored nodes upon submission.
-Otherwise, if you decide not to submit, nothing will be stored in the
-database.
+.. note:: 
+
+  The builder accepts both *stored* and *unstored* data nodes.
+  AiiDA will take care of storing the unstored nodes upon submission.
+  If you decide not to submit, nothing will be stored in the database.
 
 Moreover, PWscf also needs information on the pseudopotentials,
 specified by UpfData objects. This is set by storing a dictionary in
@@ -537,3 +523,16 @@ calculation.
 
 .. [#f1] However, to avoid duplication of KpointsData, you should first learn how to query the database, therefore we will ignore this duplication issue for now.
 .. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminatd, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
+
+
+Once run, AiiDA calculations are instances of the class ``CalcJob``,
+more precisely of one of its subclasses, each corresponding to a code
+specific plugin (for example, the PWscf plugin). You have already seen
+``CalcJob`` classes in the previous sections.
+
+However, to create a new calculation, rather than manually creating a
+new class, the suggested way is to use a ``Builder``, that helps in
+setting the various calculation inputs and parameters, and provides
+TAB-completion.
+
+

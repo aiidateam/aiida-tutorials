@@ -23,11 +23,15 @@ needs_sphinx = '1.6.0'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo', 'sphinx.ext.imgmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'IPython.sphinxext.ipython_console_highlighting', 'IPython.sphinxext.ipython_directive', 'recommonmark', 'nbsphinx']
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo', 'sphinx.ext.imgmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'IPython.sphinxext.ipython_console_highlighting', 'IPython.sphinxext.ipython_directive', 'recommonmark', 'nbsphinx', 'sphinx.ext.extlinks']
 ipython_mplbackend = ""
 imgmath_image_format = 'svg'
 
 todo_include_todos = True
+
+extlinks = {
+    'doi': ('https://doi.org/%s', 'doi:'),
+}
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
