@@ -105,6 +105,8 @@ For example, this lists all processes launched since yesterday:
 
     verdi process list -a -p1
 
+.. _2019-aiida-identifiers:
+
 Each row of the output identifies a process with some basic information about its status.
 For a more detailed list of properties, you can use ``verdi process show``, but to address any specific process, you need an identifier for it.
 An identifier for any entity in AiiDA comes in three different forms:

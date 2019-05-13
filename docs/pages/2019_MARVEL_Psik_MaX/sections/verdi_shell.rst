@@ -42,14 +42,14 @@ main commands to manage the cells of your notebook.
 You will still sometimes need to type command-line instructions in ``bash`` in
 the first terminal you opened. To differentiate these from the commands to be
 typed in the ``verdi shell``, the latter will be marked in this document by a
-yellow background, like:
+green background, like:
 
 .. code:: python
 
      some verdi shell command
 
 while command-line instructions in ``bash`` to be typed into a terminal will
-be written with a white background:
+be written with a blue background:
 
 .. code:: console
 
