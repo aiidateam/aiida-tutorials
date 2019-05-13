@@ -27,7 +27,7 @@ daemon is a program that
  * waits for new calculations to be submitted 
  * transfers the inputs of new calculations to your compute resource 
  * checks the status of your calculation at the compute resource, and
- * retrieves the results back from the compute resource
+ * retrieves the results from the compute resource
 
 Check the status of the daemon process by typing in the terminal:
 
@@ -114,11 +114,13 @@ calculation, that you might find convenient in the future.
 This information will be saved in the database for later queries or
 inspection. Note that you can press TAB after writing ``builder.`` to
 see all inputs available for this calculation.
+In order to figure out which data type is expected for a particular input, such as ``builder.structure``,
+and whether the input is optional or required, use ``builder.structure??``.
 
 Now, specify the number of machines (a.k.a. cluster nodes)
 you are going to run on and the maximum time allowed for the
 calculation. 
-The general options grouped under ``builder.options`` are independent of
+The general options grouped under ``builder.metadata.options`` are independent of
 the code or plugin, and will be passed to the scheduler that handles the
 queue on your compute resource .
 
@@ -133,7 +135,7 @@ Again, to see the list of available options, type
 Preparation of inputs
 ~~~~~~~~~~~~~~~~~~~~~
 
-A Quantum Espresso calculation needs a number of input files:
+A Quantum Espresso calculation needs a number of inputs:
 
 1. `Pseudopotentials <https://en.wikipedia.org/wiki/Pseudopotential>`_
 2. a structure
@@ -192,13 +194,13 @@ we provide) and link it to the calculation using the command:
     from aiida.orm.nodes.data.upf import get_pseudos_from_structure
     builder.pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY_NAME>')
 
-
+Print the content of the `pseudos` namespace (`print(builder.pseudos)`) to see what the helper function created.
 
 Preparing and debugging input parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Finally, we need to specify a number of input parameters  (i.e. plane wave cutoffs, convergence thresholds, etc.).
-to launch the Quantum ESPRESSO calculation. This part
+to launch the Quantum ESPRESSO calculation.
 The structure of the parameter dictionary closely follows the structure of the `PWscf input file <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_.
 
 Since these are often the parameters to tune in a calculation,
@@ -275,7 +277,7 @@ current directory. In your second terminal:
    
 .. note:: 
 
-   The files created by ``submit_test()`` are only intended for  inspection
+   The files created by a dry run are only intended for  inspection
    and cannot be used to correct the inputs of your calculation.
 
 Storing and submitting the calculation
@@ -304,6 +306,14 @@ And then rely on the submit machinery of AiiDA,
     calculation = submit(builder)
 
 As soon as you have executed these lines, the ``calculation`` variable contains a ``PwCalculation`` instance, already submitted to the daemon. 
+
+.. note::
+
+   You may have noticed that we used ``submit`` here instead of ``run``.
+   ``submit`` and ``run`` work just the same, except that ``submit`` will hand over the calculation to the daemon,
+   making sure that everything can execute in the background, while ``run`` will execute all tasks in the current
+   shell.
+   The difference between ``run`` and ``submit
 
 The calculation is now stored in the database and was assigned a "database primary key" or ``pk`` (``calculation.pk``) as well as a UUID (``calculation.uuid``).
 See the :ref:`previous section <2019-aiida-identifiers>` for more details on these identifiers.
@@ -508,5 +518,5 @@ calculation.
 .. rubric:: Footnotes
 
 .. [#f1] In order to avoid duplication of KpointsData, you would first need to learn how to query the database, therefore we will ignore this issue for now.
-.. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminatd, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
+.. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminated, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
 
