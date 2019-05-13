@@ -1,4 +1,4 @@
-
+from __future__ import absolute_import
 def rescale(structure, scale):
     """Calculation function to rescale a structure
 

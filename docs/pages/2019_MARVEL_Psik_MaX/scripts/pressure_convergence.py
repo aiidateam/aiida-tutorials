@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
+"""Pressure convergence WorkChain"""
+from __future__ import absolute_import
+from __future__ import print_function
 from aiida.engine import WorkChain, ToContext, while_, calcfunction, workfunction
 from aiida.orm import Code, Float, Str, StructureData
 from aiida.plugins import CalculationFactory, DataFactory
 
-from common_wf import generate_scf_input_params
-from create_rescale import rescale
+from .common_wf import generate_scf_input_params
+from .create_rescale import rescale
 
 Dict = DataFactory('dict')
 KpointsData = DataFactory('array.kpoints')
@@ -109,14 +112,23 @@ def get_step_data(parameters_first, parameters_second=None):
     ddE = get_energy_second_derivative(parameters_first, parameters_second)
     a, b, c = get_parabola_coefficients(V, E, dE, ddE)
 
-    return Dict(dict={'V': V, 'E': E, 'dE': dE, 'ddE': ddE, 'a': a, 'b': b, 'c': c})
+    return Dict(dict={
+        'V': V,
+        'E': E,
+        'dE': dE,
+        'ddE': ddE,
+        'a': a,
+        'b': b,
+        'c': c
+    })
 
 
 @calcfunction
 def bundle_step_data(step0, **kwargs):
+    """Bundle step data into Dict."""
     steps = [step.get_dict() for step in kwargs.values()]
-    print(step0, type(step0))
-    print(steps, type(steps))
+    print((step0, type(step0)))
+    print((steps, type(steps)))
     return Dict(dict={'step0': step0.get_dict(), 'steps': steps})
 
 
@@ -125,36 +137,48 @@ class PressureConvergence(WorkChain):
 
     @classmethod
     def define(cls, spec):
+        """Define spec of WorkChain."""
         super(PressureConvergence, cls).define(spec)
-        spec.input('code', valid_type=Code,
+        spec.input(
+            'code',
+            valid_type=Code,
             help='Code setup to run `pw.x` to use for the calculations.')
-        spec.input('structure', valid_type=StructureData,
-            help='The structure to minimize.')
-        spec.input('pseudo_family', valid_type=Str,
+        spec.input('structure',
+                   valid_type=StructureData,
+                   help='The structure to minimize.')
+        spec.input(
+            'pseudo_family',
+            valid_type=Str,
             help='Family of pseudopotentials to use for the calculations.')
-        spec.input('volume_tolerance', valid_type=Float,
-            help='Stop if the volume difference of two consecutive calculations is less than this threshold.')
-        spec.output('steps', valid_type=Dict,
-            help='The data of all the steps in the minimization process containing info about energy and volume')
-        spec.output('structure', valid_type=StructureData,
-            help='Final relaxed structure.')
-        spec.outline(
-            cls.setup,
-            cls.put_step0_in_ctx,
-            cls.move_next_step,
-            while_(cls.not_converged)(
-                cls.move_next_step,
-            ),
-            cls.finish
+        spec.input(
+            'volume_tolerance',
+            valid_type=Float,
+            help=
+            'Stop if the volume difference of two consecutive calculations is less than this threshold.'
         )
+        spec.output(
+            'steps',
+            valid_type=Dict,
+            help=
+            'The data of all the steps in the minimization process containing info about energy and volume'
+        )
+        spec.output('structure',
+                    valid_type=StructureData,
+                    help='Final relaxed structure.')
+        spec.outline(cls.setup, cls.put_step0_in_ctx, cls.move_next_step,
+                     while_(cls.not_converged)(cls.move_next_step, ),
+                     cls.finish)
 
     def setup(self):
         """Launch the first calculation for the input structure, and a second calculation for a shifted volume."""
         scaled_structure = get_structure(self.inputs.structure)
         self.ctx.last_structure = scaled_structure
 
-        inputs0 = generate_scf_input_params(self.inputs.structure, self.inputs.code, self.inputs.pseudo_family)
-        inputs1 = generate_scf_input_params(scaled_structure, self.inputs.code, self.inputs.pseudo_family)
+        inputs0 = generate_scf_input_params(self.inputs.structure,
+                                            self.inputs.code,
+                                            self.inputs.pseudo_family)
+        inputs1 = generate_scf_input_params(scaled_structure, self.inputs.code,
+                                            self.inputs.pseudo_family)
 
         # Run two `PwCalculations`
         future0 = self.submit(PwCalculation, **inputs0)
@@ -180,7 +204,8 @@ class PressureConvergence(WorkChain):
         the most recent.
         """
         # Computer the new Volume using Newton's algorithm and create the new corresponding structure by scaling it
-        new_step_data = get_step_data(self.ctx.r0.outputs.output_parameters, self.ctx.r1.outputs.output_parameters)
+        new_step_data = get_step_data(self.ctx.r0.outputs.output_parameters,
+                                      self.ctx.r1.outputs.output_parameters)
         scaled_structure = get_structure(self.inputs.structure, new_step_data)
         self.ctx.steps.append(new_step_data)
 
@@ -188,7 +213,8 @@ class PressureConvergence(WorkChain):
         self.ctx.r0 = self.ctx.r1
         self.ctx.last_structure = scaled_structure
 
-        inputs = generate_scf_input_params(scaled_structure, self.inputs.code, self.inputs.pseudo_family)
+        inputs = generate_scf_input_params(scaled_structure, self.inputs.code,
+                                           self.inputs.pseudo_family)
         future = self.submit(PwCalculation, **inputs)
 
         return ToContext(r1=future)
@@ -198,11 +224,15 @@ class PressureConvergence(WorkChain):
         r0_out = self.ctx.r0.outputs.output_parameters
         r1_out = self.ctx.r1.outputs.output_parameters
 
-        return abs(r1_out.dict.volume - r0_out.dict.volume) > self.inputs.volume_tolerance
+        return abs(r1_out.dict.volume -
+                   r0_out.dict.volume) > self.inputs.volume_tolerance
 
     def finish(self):
         """Attach the result nodes as outputs."""
-        steps = {'step{}'.format(index + 1): step for index, step in enumerate(self.ctx.steps)}
+        steps = {
+            'step{}'.format(index + 1): step
+            for index, step in enumerate(self.ctx.steps)
+        }
         bundled_steps = bundle_step_data(step0=self.ctx.step0, **steps)
 
         self.out('steps', bundled_steps)
