@@ -298,7 +298,7 @@ For simplicity, we have included few lines at the end of the script that invoke 
 
 .. code:: python
 
-    def run_eos(code=load_code('qe-pw-6.3@localhost'), pseudo_family='SSSP', element='Si'):
+    def run_eos(code=load_code('qe-6.3-pw@localhost'), pseudo_family='SSSP', element='Si'):
         return run_eos_wf(code, Str(pseudo_family), Str(element))
 
     if __name__ == '__main__':
@@ -312,7 +312,7 @@ To do so, instead of simply calling the work function to run it, use the attribu
     results, node = run_eos_wf.get_node(code, Str(pseudo_family), Str(element))
     print('run_eos_wf<{}> completed'.format(node.pk))
 
-Run the workflow by running the following command from the ``tutorial_scripts`` directory:
+Run the workflow:
 
 .. code:: console
 
