@@ -466,6 +466,7 @@ For example, you can execute:
 
 .. code:: python
 
+    from aiida.engine import run
     run(EquationOfState, element=Str('Si'), code=load_code('qe-pw-6.3@localhost'), pseudo_family=Str('SSSP'))
 
 While the workflow is running, you can check (in a different terminal) what is happening to the calculations using ``verdi process list``.
