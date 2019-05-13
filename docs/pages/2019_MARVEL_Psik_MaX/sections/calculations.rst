@@ -303,7 +303,8 @@ And then rely on the submit machinery of AiiDA,
     from aiida.engine import submit
     calculation = submit(builder)
 
-As soon as you have executed these lines, the ``calculation`` variable contains a ``PwCalculation``, already submitted to the daemon. 
+As soon as you have executed these lines, the ``calculation`` variable contains a ``PwCalculation`` instance, already submitted to the daemon. 
+
 The calculation is now stored in the database and was assigned a "database primary key" or ``pk`` (``calculation.pk``) as well as a UUID (``calculation.uuid``).
 See the :ref:`previous section <2019-aiida-identifiers>` for more details on these identifiers.
 
@@ -387,11 +388,11 @@ error code near the "Finished" status of the State should be non-zero,
     $ # Anything but [0] after the Finished state signals a failure
 
 This was expected, since we used an invalid key in the input parameters.
-Situations like this happen (probably often...) in real life, so we
-built in AiiDA the tools to traceback the problem source and correct it.
+Situations like this happen in real life, so AiiDA provides
+tools to trace back to the source of the problem and correct it.
 
-A first way to proceed is the manual inspection of the output file of
-PWscf. You can visualize it with:
+A first way to proceed is to inspect the output file of
+PWscf.
 
 .. code:: console
 
@@ -400,9 +401,8 @@ PWscf. You can visualize it with:
 This might be enough to understand the reason why the calculation
 failed.
 
-However, AiiDA provides some extra tools for troubleshooting in a more
-compact way, for starters, even if the calculation failed you can read a
-summary of it by running ``verdi process show <pk>``:
+AiiDA provides further tools for troubleshooting in a more compact way. 
+For any calculation, both successful and failed, you can get a summary by:
 
 .. code:: console
 
@@ -440,13 +440,12 @@ summary of it by running ``verdi process show <pk>``:
     There are 2 log messages for this calculation
     Run 'verdi process report 98' to see them
 
-In the last part of the output of this command you can read that there
+The last part of the output alerts you to the fact that there
 are some log messages waiting for you, if you run
 ``verdi process report <pk>``.
 
-Finally, after figuring out the invalid parameter from the calculation
-output, we can clear it out from the parameters dict and see if our
-calculation succeeds,
+Let's now correct our input parameters dictionary by leaving out the invalid
+key and see if our calculation succeeds:
 
 .. code:: python
 
@@ -465,16 +464,15 @@ calculation succeeds,
     builder.parameters = Dict(dict=parameters_dict)
     calculation = submit(builder)
 
-If you have been using the separate script approach, then you can modify
-the script to remove the faulty input and run the script again with:
+If you have been using the separate script approach, modify
+the script to remove the faulty input and run it again with:
 
 .. code:: console
 
     verdi run test_pw.py
 
-Sure enough the calculation will reach the finished status, with zero
-exit code now, you can verify that by running
-``verdi process list -a -p1`` again.
+Use ``verdi process list -a -p1`` to verify that
+the calculation reaches the finished status, with exit code zero.
 
 Using the calculation results
 -----------------------------
@@ -488,40 +486,27 @@ note down the pk of the calculation so that you can load it in the
     calculation = load_node(<pk>)
     calculation.res.energy
 
-Notice that, in general, an AiiDA plugin won't limit itself to write
-some input files, running the software for you, storing the output
-files, and connecting it all together in your provenance graph. AiiDA
-will also try to interpret your program's output, and make the output
-values of interest available through an output dict node (as depicted in
-the graph above). In the case of the AiiDA quantum espresso plugin this
-output node is available at ``calculation.outputs.output_parameters``
-and you can access all the available attributes (not only the energy
-used above) using:
+Besides writing input files, running the software for you, storing the output
+files, and connecting it all together in your provenance graph,
+many AiiDA plugins will parse the output of your code and make output values
+of interest available through an output dictionary node (as depicted in the
+graph above). 
+In the case of the ``aiida-quantumespresso`` plugin this output node
+is available at ``calculation.outputs.output_parameters`` and you can access
+all the available attributes (not only the energy) using:
 
 .. code:: python
 
     calculation.outputs.output_parameters.attributes
 
-Since the name of this output dictionary node is an implementation
-detail of each plugin, AiiDA provides the shortcut ``calculation.res``
-where the developers can indicate what they think is the result of the
+While the name of this output dictionary node can be chosen by the plugin,
+AiiDA provides the "results" shortcut ``calculation.res``
+that plugin developers can use to provide what they consider the result of the
 calculation.
 
 
 .. rubric:: Footnotes
 
-.. [#f1] However, to avoid duplication of KpointsData, you should first learn how to query the database, therefore we will ignore this duplication issue for now.
+.. [#f1] In order to avoid duplication of KpointsData, you would first need to learn how to query the database, therefore we will ignore this issue for now.
 .. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminatd, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
-
-
-Once run, AiiDA calculations are instances of the class ``CalcJob``,
-more precisely of one of its subclasses, each corresponding to a code
-specific plugin (for example, the PWscf plugin). You have already seen
-``CalcJob`` classes in the previous sections.
-
-However, to create a new calculation, rather than manually creating a
-new class, the suggested way is to use a ``Builder``, that helps in
-setting the various calculation inputs and parameters, and provides
-TAB-completion.
-
 
