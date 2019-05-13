@@ -281,13 +281,15 @@ current directory. In your second terminal:
 Storing and submitting the calculation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Up to now our calculation has been kept in memory and not in the
-database. Now that we have inspected the input files and are sure that
+Up to now we've just been playing around and our calculation has been kept
+in memory and not in the database. 
+Now that we have inspected the input files and convinced ourselves that
 Quantum ESPRESSO will have all the information it needs to perform the
-calculation, we will submit the calculation for a full run, doing so
-will store the inputs that are living in memory, run and store the
-calculation and link the outputs to it, to achieve this, we first need
-to declare our intent in the builder metadata,
+calculation, we will submit the calculation properly.
+Doing so will make sure that all inputs are stored in the database,
+will run and store the calculation and link the outputs to it.
+
+Let's revert the following values in our builder to their defaults:
 
 .. code:: python
 
@@ -301,34 +303,30 @@ And then rely on the submit machinery of AiiDA,
     from aiida.engine import submit
     calculation = submit(builder)
 
-``calculation`` will now be the stored ``PwCalculation``, already
-submitted to the daemon. The calculation has now a "database primary
-key" or ``pk`` (an integer ID) to the calculation (typing
-``calculation.pk`` will print this number). Moreover, it also gets a
-universally-unique ID (``UUID``), visible with ``calculation.uuid`` that
-does not change even upon sharing the data with collaborators (while the
-``pk`` will change in that case).
+As soon as you have executed these lines, the ``calculation`` variable contains a ``PwCalculation``, already submitted to the daemon. 
+The calculation is now stored in the database and was assigned a "database primary key" or ``pk`` (``calculation.pk``) as well as a UUID (``calculation.uuid``).
+See the :ref:`previous section <2019-aiida-identifiers>` for more details on these identifiers.
 
-Now that the calculation is stored, you can also attach any additional
-attributes of your choice, which are called “extra” and defined in as
-key-value pairs. For example, you can add an extra attribute called
-``element``, with value ``Si`` through
+Note that while AiiDA will prevent you from changing the content of stored nodes,
+the concept of "extras" allows you to set extra attributes, e.g. as a way of 
+labelling nodes and providing information for querying.
+
+For example, let's add an extra attribute called ``element``, with value ``Si``:
 
 .. code:: python
 
     calculation.set_extra("element", "Si")
 
-You will see later the advantage of doing so for querying.
-
-In the mean time, as soon as you submitted your calculation, the daemon
-picked it up and started to perform all the operations to do the actual
-submission, going through input file generation, submission to the
-queue, waiting for it to run and finish, retrieving the output files,
-parsing them, storing them in the database and setting the state of the
+In the mean time, after you submitted your calculation, the daemon
+picked it up and started to: generate the input files, submit the calculation
+to the queue, wait for it to run and finish, retrieve the output files,
+parse them, store them in the database and set the state of the
 calculation to ``Finished``.
 
-**Note** If the daemon is not running the calculation will remain in the
-``NEW`` state until when you start it.
+.. note::
+
+   If the daemon is not running, the calculation will remain in the
+   ``NEW`` state until you start the daemon.
 
 Checking the status of the calculation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -339,16 +337,17 @@ You can check the calculation status from the command line:
 
     verdi process list
 
-Note that ``verdi`` commands can be slow in this tutorial when the
-calculation is running (because you just have one CPU which is also used
-by the PWscf calculation).
+.. note::
 
-By now, it is possible that the calculation you submitted has already
-finished, and therefore that you don’t see any calculation in the
-output. In fact, by default, the command only prints calculations that are still active [#f2]_.
+   Since you are running your DFT calculation directly on the VM,
+   ``verdi`` commands can be a bit slow until the calculation finishes.
 
-To see also (your) calculations that have finished (and limit those only
-to the one created in the past day), use instead
+If you don’t see any calculation in the
+output, the calculation you submitted has already finished.
+
+By default, the command only prints calculations that are still active [#f2]_.
+Let's also list your finished calculations (and limit those only
+to the one created in the past day):
 
 .. code:: console
 
@@ -356,16 +355,16 @@ to the one created in the past day), use instead
 
 as explained in the first section.
 
-To inspect the list of input files generated by the AiiDA (this can be
-done even when the calculation did not finish yet), type
+Similar to the dry run, we can also inspect the input files of the *actual*
+calculation:
 
 .. code:: console
 
     verdi calcjob inputls <pk_number> -c
 
-with ``pk_number`` the pk number of your calculation. This will show the
-contents of the input directory (``-c`` prints directories in colour).
-Then you can also check the content of the actual input file with
+for the ``pk_number`` of your calculation. This will show the
+contents of the input directory (``-c`` prints directories in color).
+Check the content of input files with
 
 .. code:: console
 
@@ -374,7 +373,7 @@ Then you can also check the content of the actual input file with
 Troubleshooting
 ---------------
 
-After all this work the calculation should end up in a FAILED Job state
+Your calculation should end up in a FAILED state
 (last column of ``verdi process list -a -p1``), and correspondingly the
 error code near the "Finished" status of the State should be non-zero,
 
