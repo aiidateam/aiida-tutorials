@@ -1,6 +1,5 @@
 language: python
 python:
-  - "2.7"
   - "3.6"
 
 addons:
@@ -22,14 +21,24 @@ addons:
 
 env:
   matrix:
-    - TARGET: html
+    - BUILD: docs
+      TARGET: html
       SPHINXOPTS: -W
-    - TARGET: latexpdf
+    - BUILD: docs
+      TARGET: latexpdf
+    - BUILD: pre-commit
 
 install:
   - pip install --upgrade pip
-  - pip install -r docs/requirements.txt
+  - pip install -r requirements.txt
 
 script: 
-  - make -C docs pre-docs
-  - make -C docs $TARGET
+  - >
+    if [ "$BUILD" == "docs" ]; then 
+     # -C docs: switch to docs/ directory
+      make -C docs pre-docs
+      make -C docs $TARGET
+    else
+      pre-commit install
+      pre-commit run --all-files || ( git status --short; git diff ; exit 1 )
+    fi

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+"""Helper CalcFunctions for equation of state."""
+from __future__ import absolute_import
 from aiida.engine import calcfunction
 
 
@@ -27,14 +29,13 @@ def create_diamond_fcc(element):
 
     # Create cell starting having lattice parameter alat corresponding to the element
     alat = elem_alat[symbol]
-    cell = np.array([[0., 0.5, 0.5],
-                    [0.5, 0., 0.5],
-                    [0.5, 0.5, 0.]]) * alat
+    cell = np.array([[0., 0.5, 0.5], [0.5, 0., 0.5], [0.5, 0.5, 0.]]) * alat
 
     # Create a structure data object
     structure = orm.StructureData(cell=cell)
     structure.append_atom(position=(0., 0., 0.), symbols=symbol)
-    structure.append_atom(position=(0.25 * alat, 0.25 * alat, 0.25 * alat), symbols=symbol)
+    structure.append_atom(position=(0.25 * alat, 0.25 * alat, 0.25 * alat),
+                          symbols=symbol)
 
     return structure
 
