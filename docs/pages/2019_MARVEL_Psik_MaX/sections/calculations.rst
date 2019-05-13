@@ -3,30 +3,33 @@
 Submit, monitor and debug calculations
 ======================================
 
-The goal of this section is to understand how to create new data in
-AiiDA. We will launch a total energy calculation and check its results.
-We will introduce intentionally some common mistakes along the process
-of defining and submitting a calculation and we will explain you how to
-recognize and correct them. While this debugging is done here
-‘manually’, workflows (that we will learn later in this tutorial) can
-automate this procedure considerably. For computing the DFT energy of
-the silicon crystal (with a PBE functional) we will use Quantum
-ESPRESSO , in particular the PWscf code (``pw.x``). Besides the
-AiiDA-core package, a number of plugins exist for many different codes.
-These are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
-In particular, the ``aiida-quantumespresso`` plugin (already installed in
-your machine) provides a very extensive set of plugins, covering most
-(if not all) the functionalities of the underlying codes.
+In this section we'll be learning how to create new data in AiiDA. 
+
+We will use the `Quantum Espresso <https://www.quantum-espresso.org/>`_ package to
+launch a simple `density functional theory
+<https://en.wikipedia.org/wiki/Density_functional_theory>`_ calculation of 
+the silicon crystal using the  :doi:`PBE exchange-correlation functional <10.1103/PhysRevB.54.16533>`
+and check its results.  
+While we're going to debug these issues ‘manually’ here, workflows (which you'll 
+encounter later in this tutorial) can help you avoid these issues systematically.
+
+Note that besides the ``aiida-quantumespresso`` plugin, AiiDA comes with
+plugins for a range of other codes,
+all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
 
 The AiiDA daemon
 ----------------
 
 First of all, check that the AiiDA daemon is actually running. The AiiDA
-daemon is a program running all the time in the background, checking if
-new calculations appear and need to be submitted to the scheduler. The
-daemon also takes care of all the necessary operations before the
-calculation submission, and after the calculation has completed on the
-cluster. Type in the terminal
+daemon is a program that
+
+ * runs continuously in the background
+ * waits for new calculations to be submitted 
+ * transfers the inputs of new calculations to your compute resource 
+ * checks the status of your calculation at the compute resource, and
+ * retrieves the results from the compute resource
+
+Check the status of the daemon process by typing in the terminal:
 
 .. code:: console
 
@@ -55,175 +58,156 @@ to start the daemon.
 Creating a new calculation
 --------------------------
 
-To launch a calculation, you will need to interact with AiiDA mainly in
-the ``verdi shell``. We strongly suggest you to first try the commands
-in the shell, and then copy them in a script ``test_pw.py`` using a text
-editor. This will be very useful for later execution of a similar series
-of commands.
+In the following, we'll be working in the ``verdi shell``.
+As you go along, feel free to keep track of your commands by
+copying them into a python script ``test_pw.py``.
 
-**The best way to run python scripts using AiiDA functionalities is to
-run them in a terminal by means of the command**
+.. note::
+
+    The ``verdi shell`` imports a number of AiiDA internals so that you as the user don't have to.
+    You can also make those available to a python script, by running it using
+
+    .. code:: console
+    
+        verdi run <scriptname>
+
+
+Every calculation sent to a cluster is linked to a *code*, which describes
+the executable file to be used as well as some metadata.
+Let's have a look at the codes already installed on your machine:
 
 .. code:: console
 
-    verdi run <scriptname>
+    verdi code list
 
-Every calculation sent to a cluster is linked to a code, which describes
-the executable file to be used. Therefore, first load the suitable code:
-
-.. code:: python
-
-    code = load_code("<codename>")
-
-Here ``load_code`` (imported for you by ``verdi shell`` or the
-``verdi run`` command) returns a ``Code`` which is the general AiiDA
-class handling all possible codes, and ``code`` is an instance labeled
-as ``<codename>`` (see the first part of the tutorial for listing all
-codes installed in your AiiDA machine). You might also want to list only
-the codes that define a default calculation plugin for the pw.x code of
-Quantum ESPRESSO. You can do this with the following command:
+There should be a number of them. Here, we're interested in the "PWscf" executable of Quantum Espresso, i.e. in codes for the ``quantumespresso.pw`` plugin:
 
 .. code:: console
 
     verdi code list -P quantumespresso.pw
 
 Pick the correct codename, that might look like, e.g.
-``qe-6.3-pw@localhost``.
+``qe-6.3-pw@localhost`` and load it in the verdi shell.
 
-Once run, AiiDA calculations are instances of the class ``CalcJob``,
-more precisely of one of its subclasses, each corresponding to a code
-specific plugin (for example, the PWscf plugin). You have already seen
-``CalcJob`` classes in the previous sections.
+.. code:: python
 
-However, to create a new calculation, rather than manually creating a
-new class, the suggested way is to use a ``Builder``, that helps in
-setting the various calculation inputs and parameters, and provides
-TAB-completion.
+    code = load_code("<codename>")
 
-To obtain a new builder, we can use the ``get_builder`` method of the
-``code`` object:
+.. note::
+
+   ``load_code`` returns an object of type ``Code``, which is the general AiiDA class for describing simulation codes. 
+
+Let's build the inputs for a new ``PwCalculation`` (defined by the ``quantumespresso.pw`` plugin, the default plugin for the code you chose before)
 
 .. code:: python
 
     builder = code.get_builder()
 
-This returns a builder that helps in setting up the inputs for the
-``PwCalculation`` class (associated to the ``quantumespresso.pw``
-plugin, the default plugin for the code you chose before).
-
-As the first step, you can assign a (short) label or a (long)
-description to the calculation that you are going to create, that you
-might find convenient in the future. This can be achieved with:
+As the first step, assign a (short) label or a (long) description to your
+calculation, that you might find convenient in the future.
 
 .. code:: python
 
     builder.metadata.label = "PW test"
     builder.metadata.description = "My first AiiDA calc with Quantum ESPRESSO on Si"
 
-This information will be saved in the database for later query or
+This information will be saved in the database for later queries or
 inspection. Note that you can press TAB after writing ``builder.`` to
-see all available inputs.
+see all inputs available for this calculation.
+In order to figure out which data type is expected for a particular input, such as ``builder.structure``,
+and whether the input is optional or required, use ``builder.structure??``.
 
-Now you have to specify the number of machines (a.k.a. cluster nodes)
+Now, specify the number of machines (a.k.a. cluster nodes)
 you are going to run on and the maximum time allowed for the
-calculation. These general calculation options, that are independent of
-the code or plugin, but rather mainly passed later to the scheduler that
-handles the queue, are all grouped under “builder.options”:
+calculation. 
+The general options grouped under ``builder.metadata.options`` are independent of
+the code or plugin, and will be passed to the scheduler that handles the
+queue on your compute resource .
 
 .. code:: python
 
     builder.metadata.options.resources = {'num_machines': 1}
     builder.metadata.options.max_wallclock_seconds = 30 * 60
 
-Just like the normal inputs, these builder options are also
-TAB-completed. Type ``builder.metadata.options.`` and hit the TAB button
-to see the list of available options.
+Again, to see the list of available options, type
+``builder.metadata.options.`` and hit the TAB button.
 
 Preparation of inputs
 ~~~~~~~~~~~~~~~~~~~~~
 
-Quantum ESPRESSO requires an input file containing Fortran namelists and
-variables, plus some cards sections (the documentation is available
-`here <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_).
-The Quantum ESPRESSO plugin of AiiDA requires quite a few nodes in
-input, which are also documented
-`online <https://aiida-quantumespresso.readthedocs.io/en/stable/user_guide/calculation_plugins/pw.html>`_.
-Here we will instruct our calculation with a minimal configuration for
-computing the energy of silicon. We need:
+A Quantum Espresso calculation needs a number of inputs:
 
-1. Pseudopotentials
+1. `Pseudopotentials <https://en.wikipedia.org/wiki/Pseudopotential>`_
 2. a structure
-3. the k-points
-4. the input parameters
+3. a mesh in reciprocal space (k-points)
+4. a number of input parameters
 
-We leave the parameters as the last thing to setup and start with
-structure, k-points, and pseudopotentials.
+These are mirrored in the inputs of the ``aiida-quantumespresso`` plugin
+(see `documentation <https://aiida-quantumespresso.readthedocs.io/en/stable/user_guide/calculation_plugins/pw.html>`_).
+We'll start with the structure, k-points, and pseudopotentials
+and leave the input parameters as the last thing to setup.
 
-Use what you learned in the previous section and define these two kinds
-of objects in this script. Define in particular a silicon structure and
-a ``2x2x2`` mesh of k-points. Notice that if you just copy and paste the
-code that you executed previously, you will create duplicated
-information in the database (i.e. every time you will execute the
-script, you will create another StructureData, another KpointsData,
-...). In fact, you already have the opportunity to re-use an already
-existing structure [#f1]_. Use therefore a combination of the bash command
-``verdi data structure list`` and of the shell command ``load_node()``
-to get an object representing the structure created earlier.
+.. admonition:: Exercise
+
+  Use what you learned in the previous section to load the ``structure`` and ``kpoints`` inputs for your calculation:
+
+    * Use a silicon crystal structure
+    * Define a ``2x2x2`` mesh of k-points. 
+      
+  Note: If you just copy and paste code that you executed previously, 
+  this may result in duplication of information on your database.
+  In fact, you can re-use an existing structure stored in your database [#f1]_. Use a combination of the bash command
+  ``verdi data structure list`` and of the shell command ``load_node()``
+  to get an object representing the structure created earlier.
 
 Attaching the input information to the calculation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So far we have defined (or loaded) some of the input data, but we
-haven’t instructed the calculation to use them. To do this, let’s just
-set the appropriate attributes of the builder (we assume here that you
-created the structure and k-points AiiDA nodes before and called them
-``structure`` and ``kpoints``, respectively):
+Once you've created a ``structure`` node and a ``kpoints`` node,
+attach it to the calculation:
 
 .. code:: python
 
     builder.structure = structure
     builder.kpoints = kpoints
 
-Note that you can set in the builder both stored and unstored nodes.
-AiiDA will take care of storing the unstored nodes upon submission.
-Otherwise, if you decide not to submit, nothing will be stored in the
-database.
+.. note:: 
 
-Moreover, PWscf also needs information on the pseudopotentials,
-specified by UpfData objects. This is set by storing a dictionary in
-“builder.pseudo”, with keys being the kind names, and value being the
-UpfData pseudopotential nodes. To simplify the task of choosing
-pseudopotentials, we can however use a helper function that
-automatically returns this dictionary picking the pseudopotentials from
-a given UPF family.
+  The builder accepts both *stored* and *unstored* data nodes.
+  AiiDA will take care of storing the unstored nodes upon submission.
+  If you decide not to submit, nothing will be stored in the database.
 
+PWscf also needs information on the pseudopotentials,
+in the form of a dictionary, where keys are the names of the elements and the values are the corresponding ``UpfData`` objects containing the information on the pseudopotential.
+However, instead of creating the dictionary by hand, we can use a helper function that picks the right pseudopotentials for our structure from a pseudopotential *family*.
 You can list the preconfigured families from the command line:
 
 .. code:: console
 
     verdi data upf listfamilies
 
-Pick the one you configured earlier or one of the ``SSSP`` families that
-we provide, and link it to the calculation using the command:
+Pick the one you configured earlier (or one of the ``SSSP`` families that
+we provide) and link it to the calculation using the command:
 
 .. code:: python
 
     from aiida.orm.nodes.data.upf import get_pseudos_from_structure
     builder.pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY_NAME>')
 
+Print the content of the `pseudos` namespace (`print(builder.pseudos)`) to see what the helper function created.
+
 Preparing and debugging input parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The last thing we miss is a set of parameters (i.e. cutoffs, convergence
-thresholds, etc…) to launch the Quantum ESPRESSO calculation. This part
-requires acquaintance with Quantum ESPRESSO and, very often, this is the
-part to tune when a calculation shows a problem. Let’s therefore use
-this part of the tutorial to learn how to debug problems, and **let’s
-introduce errors intentionally**. Note also that some of the problems we
-will investigate appear the first times you launch calculations and can
-be systematically avoided by using workflows.
+Finally, we need to specify a number of input parameters  (i.e. plane wave cutoffs, convergence thresholds, etc.).
+to launch the Quantum ESPRESSO calculation.
+The structure of the parameter dictionary closely follows the structure of the `PWscf input file <https://www.quantum-espresso.org/Doc/INPUT_PW.html>`_.
 
-Let’s define a set of input parameters for Quantum ESPRESSO, preparing a
+Since these are often the parameters to tune in a calculation,
+let's **introduce a few mistakes intentionally**
+and use this part of the tutorial to learn how to debug problems.
+
+Define a set of input parameters for Quantum ESPRESSO, preparing a
 dictionary of the form:
 
 .. code:: python
@@ -245,16 +229,12 @@ dictionary of the form:
     }
 
 This dictionary is almost a valid input for the Quantum ESPRESSO plugin,
-except for an invalid key called “mickeymouse”. When Quantum ESPRESSO
-receives an unrecognized key (even when you misspell one) its behavior
-is to stop almost immediately. By default, the AiiDA plugin will not
-validate your input and simply pass it over. Therefore let’s pass this
-dictionary to the calculation and observe this unsuccessful behavior.
+except for an invalid key ``mickeymouse``. When Quantum ESPRESSO
+receives an unrecognized key, it will stop.
+By default, the AiiDA plugin will *not* validate your input and simply pass
+it on to the code. 
 
-Finally, we need to attach those parameters to our builder, however,
-bear in mind that ``parameters_dict`` is a python dictionary instead of
-an AiiDA model that can be stored in the database, thus we need to wrap
-the ``parameters_dict`` on a ``Dict`` model:
+Let’s wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node and see what happens.
 
 .. code:: python
 
@@ -263,55 +243,66 @@ the ``parameters_dict`` on a ``Dict`` model:
 Simulate submission
 ~~~~~~~~~~~~~~~~~~~
 
-At this stage, you have recreated in memory (it’s not yet stored in the
-database) the input of the graph shown bellow, whereas the outputs will
-be created later by the daemon.
+At this stage, you have created in memory (it’s not yet stored in the
+database) the input of the graph shown below. The outputs will
+be created by the daemon later on.
 
 .. figure:: include/images/verdi_graph/si/graph-full.png
    :alt:
 
-In order to check how AiiDA creates the actual input files for the
-calculation, we can perform a *dry run* of the submission process, to
-achieve that, we should modify the metadata of our builder, first
-specifying that we want a dry run, and then telling it that we don't
-want to store the provenance of this calculation (yet):
+In order to check which input files AiiDA creates, 
+we can perform a *dry run* of the submission process.
+Let's tell the builder that we want a dry run and that
+we don't want to store the provenance of the dry run:
 
 .. code:: python
 
     builder.metadata.dry_run = True
     builder.metadata.store_provenance = False
 
-After setting the appropriate metadata, is time for us to actually run
-the *dry run*, to do that we need to reach for AiiDA's run
-functionality:
+It's time to run:
 
 .. code:: python
 
     from aiida.engine import run
     run(builder)
 
+.. note::
+
+   Instead of using the builder, you can also simply pass the calculation class
+   as the first argument, followed by the inputs as keyword arguments, e.g.:
+
+   .. code:: python
+
+      run(PwCalculation, structure=structure, pseudos={'Si': pseudo_node}, ....)
+
+   The builder is simply a convenience wrapper providing tab-completion in the shell and automatic help strings.
+
 This creates a folder of the form ``submit_test/[date]-0000[x]`` in the
-current directory. Check (in your second terminal) the input file
-``aiida.in`` within this folder, comparing it with the content of the
-input data nodes you created earlier, and that the ‘pseudo’ folder
-contains the needed pseudopotentials. You can also check the submission
-script ``_aiidasubmit.sh`` (the scheduler that is installed on the
-machine is Torque, so AiiDA creates the files with the proper format for
-this scheduler). Note: you cannot correct the input file from the
-``submit_test`` folder: you have to correct the script and re-execute
-it; the files created by ``submit_test()`` are only for final
-inspection.
+current directory. In your second terminal:
+
+ * open the input file ``aiida.in`` within this folder
+ * compare it to input data nodes you created earlier
+ * verify that the `pseudo` folder contains the needed pseudopotentials
+ * have a look at the submission script ``_aiidasubmit.sh`` 
+   
+.. note:: 
+
+   The files created by a dry run are only intended for  inspection
+   and cannot be used to correct the inputs of your calculation.
 
 Storing and submitting the calculation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Up to now our calculation has been kept in memory and not in the
-database. Now that we have inspected the input files and are sure that
+Up to now we've just been playing around and our calculation has been kept
+in memory and not in the database. 
+Now that we have inspected the input files and convinced ourselves that
 Quantum ESPRESSO will have all the information it needs to perform the
-calculation, we will submit the calculation for a full run, doing so
-will store the inputs that are living in memory, run and store the
-calculation and link the outputs to it, to achieve this, we first need
-to declare our intent in the builder metadata,
+calculation, we will submit the calculation properly.
+Doing so will make sure that all inputs are stored in the database,
+will run and store the calculation and link the outputs to it.
+
+Let's revert the following values in our builder to their defaults:
 
 .. code:: python
 
@@ -325,34 +316,47 @@ And then rely on the submit machinery of AiiDA,
     from aiida.engine import submit
     calculation = submit(builder)
 
-``calculation`` will now be the stored ``PwCalculation``, already
-submitted to the daemon. The calculation has now a "database primary
-key" or ``pk`` (an integer ID) to the calculation (typing
-``calculation.pk`` will print this number). Moreover, it also gets a
-universally-unique ID (``UUID``), visible with ``calculation.uuid`` that
-does not change even upon sharing the data with collaborators (while the
-``pk`` will change in that case).
+As soon as you have executed these lines, the ``calculation`` variable contains a ``PwCalculation`` instance, already submitted to the daemon. 
 
-Now that the calculation is stored, you can also attach any additional
-attributes of your choice, which are called “extra” and defined in as
-key-value pairs. For example, you can add an extra attribute called
-``element``, with value ``Si`` through
+.. note::
+
+   You may have noticed that we used ``submit`` here instead of ``run``.
+   The difference is that ``submit`` will hands over the calculation to the daemon running in the background,
+   while ``run`` will execute all tasks in the current shell.
+
+   All processes in AiiDA (you will soon get to know more) can be "launched" using one of available functions:
+
+    * run
+    * run_get_node
+    * run_get_pk
+    * submit
+
+   which are explained in more detail in the `online documentation <https://aiida-core.readthedocs.io/en/latest/working/processes.html#launching-processes>`_.
+
+
+The calculation is now stored in the database and was assigned a "database primary key" or ``pk`` (``calculation.pk``) as well as a UUID (``calculation.uuid``).
+See the :ref:`previous section <2019-aiida-identifiers>` for more details on these identifiers.
+
+Note that while AiiDA will prevent you from changing the content of stored nodes,
+the concept of "extras" allows you to set extra attributes, e.g. as a way of 
+labelling nodes and providing information for querying.
+
+For example, let's add an extra attribute called ``element``, with value ``Si``:
 
 .. code:: python
 
     calculation.set_extra("element", "Si")
 
-You will see later the advantage of doing so for querying.
-
-In the mean time, as soon as you submitted your calculation, the daemon
-picked it up and started to perform all the operations to do the actual
-submission, going through input file generation, submission to the
-queue, waiting for it to run and finish, retrieving the output files,
-parsing them, storing them in the database and setting the state of the
+In the mean time, after you submitted your calculation, the daemon
+picked it up and started to: generate the input files, submit the calculation
+to the queue, wait for it to run and finish, retrieve the output files,
+parse them, store them in the database and set the state of the
 calculation to ``Finished``.
 
-**Note** If the daemon is not running the calculation will remain in the
-``NEW`` state until when you start it.
+.. note::
+
+   If the daemon is not running, the calculation will remain in the
+   ``NEW`` state until you start the daemon.
 
 Checking the status of the calculation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -363,16 +367,17 @@ You can check the calculation status from the command line:
 
     verdi process list
 
-Note that ``verdi`` commands can be slow in this tutorial when the
-calculation is running (because you just have one CPU which is also used
-by the PWscf calculation).
+.. note::
 
-By now, it is possible that the calculation you submitted has already
-finished, and therefore that you don’t see any calculation in the
-output. In fact, by default, the command only prints calculations that are still active [#f2]_.
+   Since you are running your DFT calculation directly on the VM,
+   ``verdi`` commands can be a bit slow until the calculation finishes.
 
-To see also (your) calculations that have finished (and limit those only
-to the one created in the past day), use instead
+If you don’t see any calculation in the
+output, the calculation you submitted has already finished.
+
+By default, the command only prints calculations that are still active [#f2]_.
+Let's also list your finished calculations (and limit those only
+to the one created in the past day):
 
 .. code:: console
 
@@ -380,16 +385,16 @@ to the one created in the past day), use instead
 
 as explained in the first section.
 
-To inspect the list of input files generated by the AiiDA (this can be
-done even when the calculation did not finish yet), type
+Similar to the dry run, we can also inspect the input files of the *actual*
+calculation:
 
 .. code:: console
 
     verdi calcjob inputls <pk_number> -c
 
-with ``pk_number`` the pk number of your calculation. This will show the
-contents of the input directory (``-c`` prints directories in colour).
-Then you can also check the content of the actual input file with
+for the ``pk_number`` of your calculation. This will show the
+contents of the input directory (``-c`` prints directories in color).
+Check the content of input files with
 
 .. code:: console
 
@@ -398,7 +403,7 @@ Then you can also check the content of the actual input file with
 Troubleshooting
 ---------------
 
-After all this work the calculation should end up in a FAILED Job state
+Your calculation should end up in a FAILED state
 (last column of ``verdi process list -a -p1``), and correspondingly the
 error code near the "Finished" status of the State should be non-zero,
 
@@ -412,11 +417,11 @@ error code near the "Finished" status of the State should be non-zero,
     $ # Anything but [0] after the Finished state signals a failure
 
 This was expected, since we used an invalid key in the input parameters.
-Situations like this happen (probably often...) in real life, so we
-built in AiiDA the tools to traceback the problem source and correct it.
+Situations like this happen in real life, so AiiDA provides
+tools to trace back to the source of the problem and correct it.
 
-A first way to proceed is the manual inspection of the output file of
-PWscf. You can visualize it with:
+A first way to proceed is to inspect the output file of
+PWscf.
 
 .. code:: console
 
@@ -425,9 +430,8 @@ PWscf. You can visualize it with:
 This might be enough to understand the reason why the calculation
 failed.
 
-However, AiiDA provides some extra tools for troubleshooting in a more
-compact way, for starters, even if the calculation failed you can read a
-summary of it by running ``verdi process show <pk>``:
+AiiDA provides further tools for troubleshooting in a more compact way. 
+For any calculation, both successful and failed, you can get a summary by:
 
 .. code:: console
 
@@ -465,13 +469,12 @@ summary of it by running ``verdi process show <pk>``:
     There are 2 log messages for this calculation
     Run 'verdi process report 98' to see them
 
-In the last part of the output of this command you can read that there
+The last part of the output alerts you to the fact that there
 are some log messages waiting for you, if you run
 ``verdi process report <pk>``.
 
-Finally, after figuring out the invalid parameter from the calculation
-output, we can clear it out from the parameters dict and see if our
-calculation succeeds,
+Let's now correct our input parameters dictionary by leaving out the invalid
+key and see if our calculation succeeds:
 
 .. code:: python
 
@@ -490,16 +493,15 @@ calculation succeeds,
     builder.parameters = Dict(dict=parameters_dict)
     calculation = submit(builder)
 
-If you have been using the separate script approach, then you can modify
-the script to remove the faulty input and run the script again with:
+If you have been using the separate script approach, modify
+the script to remove the faulty input and run it again with:
 
 .. code:: console
 
     verdi run test_pw.py
 
-Sure enough the calculation will reach the finished status, with zero
-exit code now, you can verify that by running
-``verdi process list -a -p1`` again.
+Use ``verdi process list -a -p1`` to verify that
+the calculation reaches the finished status, with exit code zero.
 
 Using the calculation results
 -----------------------------
@@ -513,27 +515,27 @@ note down the pk of the calculation so that you can load it in the
     calculation = load_node(<pk>)
     calculation.res.energy
 
-Notice that, in general, an AiiDA plugin won't limit itself to write
-some input files, running the software for you, storing the output
-files, and connecting it all together in your provenance graph. AiiDA
-will also try to interpret your program's output, and make the output
-values of interest available through an output dict node (as depicted in
-the graph above). In the case of the AiiDA quantum espresso plugin this
-output node is available at ``calculation.outputs.output_parameters``
-and you can access all the available attributes (not only the energy
-used above) using:
+Besides writing input files, running the software for you, storing the output
+files, and connecting it all together in your provenance graph,
+many AiiDA plugins will parse the output of your code and make output values
+of interest available through an output dictionary node (as depicted in the
+graph above). 
+In the case of the ``aiida-quantumespresso`` plugin this output node
+is available at ``calculation.outputs.output_parameters`` and you can access
+all the available attributes (not only the energy) using:
 
 .. code:: python
 
     calculation.outputs.output_parameters.attributes
 
-Since the name of this output dictionary node is an implementation
-detail of each plugin, AiiDA provides the shortcut ``calculation.res``
-where the developers can indicate what they think is the result of the
+While the name of this output dictionary node can be chosen by the plugin,
+AiiDA provides the "results" shortcut ``calculation.res``
+that plugin developers can use to provide what they consider the result of the
 calculation.
 
 
 .. rubric:: Footnotes
 
-.. [#f1] However, to avoid duplication of KpointsData, you should first learn how to query the database, therefore we will ignore this duplication issue for now.
-.. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminatd, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
+.. [#f1] In order to avoid duplication of KpointsData, you would first need to learn how to query the database, therefore we will ignore this issue for now.
+.. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminated, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
+
