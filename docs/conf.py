@@ -7,23 +7,34 @@
 # For further information on the license, see the LICENSE.txt file        #
 # For further information please visit http://www.aiida.net               #
 ###########################################################################
+"""Sphinx configuration for aiida-tutorials"""
 # All configuration values have a default; values that are commented out
 # serve to show the default.
+# pylint: disable=invalid-name
 from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
-import os
-import sys
-
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-needs_sphinx = '1.6.0'
+needs_sphinx = '2.0.0'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = ['sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo', 'sphinx.ext.imgmath', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode', 'IPython.sphinxext.ipython_console_highlighting', 'IPython.sphinxext.ipython_directive', 'recommonmark', 'nbsphinx', 'sphinx.ext.extlinks']
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.doctest',
+    'sphinx.ext.todo',
+    'sphinx.ext.imgmath',
+    'sphinx.ext.ifconfig',
+    'sphinx.ext.viewcode',
+    'IPython.sphinxext.ipython_console_highlighting',
+    'IPython.sphinxext.ipython_directive',
+    'recommonmark',
+    'nbsphinx',
+    'sphinx.ext.extlinks',
+]
 ipython_mplbackend = ""
 imgmath_image_format = 'svg'
 
@@ -50,7 +61,11 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'AiiDA Tutorials'
-copyright = u'2019, ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (Theory and Simulation of Materials (THEOS) and National Centre for Computational Design and Discovery of Novel Materials (NCCR MARVEL)), Switzerland and ROBERT BOSCH LLC, USA. All rights reserved'
+# pylint: disable=redefined-builtin
+copyright = u'\
+2019, ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (Theory and Simulation of Materials (THEOS) \
+and National Centre for Computational Design and Discovery of Novel Materials (NCCR MARVEL)), Switzerland \
+and ROBERT BOSCH LLC, USA. All rights reserved'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -59,7 +74,7 @@ copyright = u'2019, ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (Theory and Simulat
 # The short X.Y version.
 version = ""
 # The full version, including alpha/beta/rc tags.
-release = "2019.04"
+release = ""
 
 author = "The AiiDA team."
 
@@ -76,12 +91,12 @@ author = "The AiiDA team."
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = [
-  'build/*', 
-  'assets/*', 
-  '**/.ipynb_checkpoints/',
-  'pages/*/notebooks/*-solutions.ipynb', 
-  'pages/*/notebooks/*-template.ipynb',
-  'pages/2019_MARVEL_Psik_MaX/notebooks/bandstructure.ipynb',
+    'build/*',
+    'assets/*',
+    '**/.ipynb_checkpoints/',
+    'pages/*/notebooks/*-solutions.ipynb',
+    'pages/*/notebooks/*-template.ipynb',
+    'pages/2019_MARVEL_Psik_MaX/notebooks/bandstructure.ipynb',
 ]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
@@ -103,7 +118,6 @@ pygments_style = 'sphinx'
 
 # A list of ignored prefixes for module index sorting.
 #modindex_common_prefix = []
-
 
 # -- Options for HTML output ---------------------------------------------------
 
@@ -188,30 +202,30 @@ html_static_path = ['_static']
 # Output file base name for HTML help builder.
 # htmlhelp_basename = 'aiidadoc'
 
-
 # -- Options for LaTeX output --------------------------------------------------
 
 #latex_engine = 'xelatex'
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+    # The paper size ('letterpaper' or 'a4paper').
+    #'papersize': 'letterpaper',
 
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    #'pointsize': '10pt',
 
-# Additional stuff for the LaTeX preamble.
-'preamble': u'''
-\\usepackage{newunicodechar} 
-\\newunicodechar{⏹}{\ensuremath{\square}}
+    # Additional stuff for the LaTeX preamble.
+    'preamble':
+    u'''
+\\usepackage{newunicodechar}
+\\newunicodechar{⏹}{\\ensuremath{\\square}}
 ''',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'aiida-tutorials.tex', u'AiiDA Tutorials',
-   author.replace(',',r'\and'), 'manual'),
+    ('index', 'aiida-tutorials.tex', u'AiiDA Tutorials',
+     author.replace(',', r'\and'), 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -234,19 +248,14 @@ latex_documents = [
 # If false, no module index is generated.
 #latex_domain_indices = True
 
-
 # -- Options for manual page output --------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [
-    ('index', 'aiida', u'AiiDA Tutorials',
-     [author], 1)
-]
+man_pages = [('index', 'aiida', u'AiiDA Tutorials', [author], 1)]
 
 # If true, show URL addresses after external links.
 #man_show_urls = False
-
 
 # -- Options for Texinfo output ------------------------------------------------
 
@@ -254,9 +263,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'aiida-tutorials', u'AiiDA Tutorials',
-   author, 'aiida-tutorials', 'Tutorials and demos for AiiDA',
-   'Miscellaneous'),
+    ('index', 'aiida-tutorials', u'AiiDA Tutorials', author, 'aiida-tutorials',
+     'Tutorials and demos for AiiDA', 'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -267,7 +275,6 @@ texinfo_documents = [
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
 #texinfo_show_urls = 'footnote'
-
 
 # -- Options for Epub output ---------------------------------------------------
 
@@ -314,10 +321,9 @@ epub_copyright = copyright
 # otherwise, readthedocs.org uses their theme by default, so no need
 # to specify it
 
-
 # Warnings to ignore when using the -n (nitpicky) option
 # We should ignore any python built-in exception, for instance
-nitpick_ignore = [('py:class','Warning'), ('py:class', 'exceptions.Warning')]
+nitpick_ignore = [('py:class', 'Warning'), ('py:class', 'exceptions.Warning')]
 
 #for line in open('nitpick-exceptions'):
 #    if line.strip() == "" or line.startswith("#"):
@@ -326,11 +332,13 @@ nitpick_ignore = [('py:class','Warning'), ('py:class', 'exceptions.Warning')]
 #    target = target.strip()
 #    nitpick_ignore.append((dtype, target))
 
-suppress_warnings = [ 'misc.highlighting_failure' ]
+suppress_warnings = ['misc.highlighting_failure']
 
 
 def setup(app):
+    """Setup function called by sphinx."""
     app.add_stylesheet('css/custom.css')
+
 
 # We are not installing a full aiida environment
 nbsphinx_execute = 'never'

@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
+"""Simple workflow example"""
+from __future__ import absolute_import
+from __future__ import print_function
+from six.moves import zip
+
 from aiida.engine import run, Process, calcfunction, workfunction
 from aiida.orm import load_code, Dict, Float, Str
 from aiida.plugins import CalculationFactory
 
-from create_rescale import create_diamond_fcc, rescale
-from common_wf import generate_scf_input_params
+from .create_rescale import create_diamond_fcc, rescale
+from .common_wf import generate_scf_input_params
 
 # Load the calculation class 'PwCalculation' using its entry point 'quantumespresso.pw'
 PwCalculation = CalculationFactory('quantumespresso.pw')
@@ -19,7 +24,8 @@ def create_eos_dictionary(**kwargs):
 
     :return: `Dict` node with the equation of state results
     """
-    eos = [(result.dict.volume, result.dict.energy, result.dict.energy_units) for label, result in kwargs.items()]
+    eos = [(result.dict.volume, result.dict.energy, result.dict.energy_units)
+           for label, result in kwargs.items()]
     return Dict(dict={'eos': eos})
 
 
@@ -39,7 +45,7 @@ def run_eos_wf(code, pseudo_family, element):
     initial_structure = create_diamond_fcc(element)
 
     # Loop over the label and scale_factor pairs
-    for label, factor in zip(labels, scale_factors):
+    for label, factor in list(zip(labels, scale_factors)):
 
         # Generated the scaled structure from the initial structure
         structure = rescale(initial_structure, Float(factor))
@@ -48,25 +54,29 @@ def run_eos_wf(code, pseudo_family, element):
         inputs = generate_scf_input_params(structure, code, pseudo_family)
 
         # Launch a `PwCalculation` for each scaled structure
-        print('Running a scf for {} with scale factor {}'.format(element, factor))
+        print('Running a scf for {} with scale factor {}'.format(
+            element, factor))
         calculations[label] = run(PwCalculation, **inputs)
 
     # Bundle the individual results from each `PwCalculation` in a single dictionary node.
     # Note: since we are 'creating' new data from existing data, we *have* to go through a `calcfunction`, otherwise
     # the provenance would be lost!
-    inputs = {label: result['output_parameters'] for label, result in calculations.items()}
+    inputs = {
+        label: result['output_parameters']
+        for label, result in calculations.items()
+    }
     eos = create_eos_dictionary(**inputs)
 
     # Finally, return the results of this work function
-    result = {
-        'initial_structure': initial_structure,
-        'eos': eos
-    }
+    result = {'initial_structure': initial_structure, 'eos': eos}
 
     return result
 
 
-def run_eos(code=load_code('qe-pw-6.3@localhost'), pseudo_family='SSSP', element='Si'):
+def run_eos(code=load_code('qe-pw-6.3@localhost'),
+            pseudo_family='SSSP',
+            element='Si'):
+    """Helper function to run EOS WorkChain."""
     return run_eos_wf(code, Str(pseudo_family), Str(element))
 
 

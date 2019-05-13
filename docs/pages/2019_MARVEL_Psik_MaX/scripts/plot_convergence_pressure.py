@@ -1,12 +1,18 @@
 # -*- coding: utf-8 -*-
+"""Plot parabola using matplotlib."""
+from __future__ import absolute_import
+from __future__ import print_function
+from six.moves import range
 from aiida.orm import load_node
 
 
 def parabola(x, a, b, c):
+    """Parabola."""
     return a * x**2 + b * x + c
 
 
-def show_parabola_results(pk):
+def show_parabola_results(pk):  # pylint: disable=too-many-locals
+    """Plot (and show) parabola using matplotlib."""
     out_p = load_node(pk).outputs.steps.get_dict()
 
     step0 = out_p['step0']
@@ -44,10 +50,15 @@ def show_parabola_results(pk):
 
         color = 0.8
         for idx, step in enumerate(steps, start=1):
-            pl.plot(V_range, parabola(V_range, step['a'], step['b'], step['c']), color=(color, color, color))
+            pl.plot(V_range,
+                    parabola(V_range, step['a'], step['b'], step['c']),
+                    color=(color, color, color))
             parabola_Vmin = -step['b'] / 2. / step['a']
-            parabola_Emin = parabola(parabola_Vmin, step['a'], step['b'], step['c'])
-            pl.plot([parabola_Vmin], [parabola_Emin], 'x', color=(color, color, color))
+            parabola_Emin = parabola(parabola_Vmin, step['a'], step['b'],
+                                     step['c'])
+            pl.plot([parabola_Vmin], [parabola_Emin],
+                    'x',
+                    color=(color, color, color))
             pl.annotate(str(idx), xy=(step['V'], step['E']))
             pl.axvline(step['V'], color=(1., 0.7, 1.), linestyle='--')
             color -= 0.25
@@ -68,9 +79,11 @@ def show_parabola_results(pk):
 if __name__ == '__main__':
     import sys
     try:
-        pk = int(sys.argv[1])
+        pk_value = int(sys.argv[1])
     except (IndexError, ValueError):
-        print >> sys.stderr, 'Pass as parameter the PK of the WorkChain calculating the pressure'
-        print >> sys.stderr, 'convergence to generate the plot.'
+        print(
+            'Pass as parameter the PK of the WorkChain calculating the pressure',
+            file=sys.stderr)
+        print('convergence to generate the plot.', file=sys.stderr)
         sys.exit(1)
-    show_parabola_results(pk)
+    show_parabola_results(pk_value)

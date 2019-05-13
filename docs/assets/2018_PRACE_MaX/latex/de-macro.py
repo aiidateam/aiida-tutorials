@@ -1,5 +1,4 @@
 #!/usr/bin/python -O
-
 """
 Copyright 2005 Peter Gacs
 Licensed under the Academic Free Licence version 2.1
@@ -76,8 +75,10 @@ import sys, os, re, shelve
 
 # Utilities
 
+
 class No_detail:
     strerror = ""
+
 
 no_detail = No_detail()
 
@@ -85,6 +86,7 @@ no_detail = No_detail()
 class Error(Exception):
     """Base class for exceptions in this module."""
     pass
+
 
 class Empty_text_error(Error):
     """Exception raised for errors in the input.
@@ -98,23 +100,27 @@ class Empty_text_error(Error):
         self.data = data
         self.message = message
 
-def warn(error_message, detail = no_detail):
+
+def warn(error_message, detail=no_detail):
     sys.stderr.write(error_message + "\n")
     if no_detail != detail:
         sys.stderr.write(detail.strerror + "\n")
 
-def die(error_message, detail = no_detail):
-    warn(error_message, detail = no_detail)
+
+def die(error_message, detail=no_detail):
+    warn(error_message, detail=no_detail)
     sys.exit(1)
+
 
 def getopt_map(one_letter_opts, long_optlist):
     "Turns long options into an option map, using getopt."
     import getopt
-    optlist, args = getopt.getopt(sys.argv[1:],
-                                  one_letter_opts, long_optlist)
+    optlist, args = getopt.getopt(sys.argv[1:], one_letter_opts, long_optlist)
     opt_map = {}
-    for pair in optlist: opt_map[pair[0]] = pair[1] or 1
+    for pair in optlist:
+        opt_map[pair[0]] = pair[1] or 1
     return opt_map, args
+
 
 def newer(file1, file2):
 
@@ -122,18 +128,19 @@ def newer(file1, file2):
         return False
 
     try:
-        stat_return = os.lstat(file1) 
+        stat_return = os.lstat(file1)
     except OSError, detail:
-	die("lstat " + file1 + " failed:", detail)
+        die("lstat " + file1 + " failed:", detail)
     time1 = stat_return.st_mtime
 
     try:
-        stat_return = os.lstat(file2) 
+        stat_return = os.lstat(file2)
     except OSError, detail:
-	die("lstat " + file2 + " failed:", detail)
+        die("lstat " + file2 + " failed:", detail)
     time2 = stat_return.st_mtime
 
-    return time1 > time2    
+    return time1 > time2
+
 
 def cut_extension(filename, ext):
     """
@@ -142,7 +149,7 @@ def cut_extension(filename, ext):
     """
     file = filename
     index = filename.rfind(ext)
-    if 0 <= index and len(file)-len(ext) == index:
+    if 0 <= index and len(file) - len(ext) == index:
         file = file[:index]
     return file
 
@@ -158,11 +165,11 @@ class Stream:
     def uplegal(self):
         return self.pos < len(self.data)
 
-    def __init__(self, data_v = None):
+    def __init__(self, data_v=None):
         self.data = data_v
         if self.data:
-           self.pos = 0
-           self.item = self.data[self.pos]
+            self.pos = 0
+            self.item = self.data[self.pos]
 
     def next(self):
         self.pos += 1
@@ -175,7 +182,7 @@ class Stream:
             self.pos = 0
             self.item = self.data[0]
             return self.item
-        
+
 
 # Basic classes
 
@@ -185,11 +192,13 @@ braced_filename_re = re.compile(r"^\s*{\s*(\w*)\s*}")
 blank_or_rbrace_re = re.compile(r"[\s}]")
 pos_digit_re = re.compile(r"[1-9]")
 
+
 def isletter(c, isatletter=False):
     if "@" == c:
         return isatletter
     else:
         return c.isalpha()
+
 
 class Token:
     """Type 0 means ordinary character, type 1 means escape sequence
@@ -199,7 +208,7 @@ class Token:
     esc_symb_ty = 1
     esc_str_ty = 2
     comment_ty = 3
-    
+
     type = simple_ty
     val = " "
 
@@ -211,19 +220,18 @@ class Token:
         out = ""
         if simple_ty == self.type or comment_ty == self.type:
             out = self.val
-        else: 
+        else:
             out = "\\" + self.val
         return out
 
 
 # Constants
 
-g_token = Token(0," ")  # generic token
+g_token = Token(0, " ")  # generic token
 simple_ty = g_token.simple_ty
 comment_ty = g_token.comment_ty
 esc_symb_ty = g_token.esc_symb_ty
 esc_str_ty = g_token.esc_str_ty
-
 
 
 def detokenize(text):
@@ -238,16 +246,17 @@ def detokenize(text):
     out += text[pos].show()
     pos += 1
     while pos < len(text):
-        previtem = text[pos-1]
+        previtem = text[pos - 1]
         item = text[pos]
         """Insert a separating space after an escape sequence if it is a
         string and is followed by a letter."""
-        if (esc_str_ty == previtem.type
-            and simple_ty == item.type and isletter(item.val[0], False)):
+        if (esc_str_ty == previtem.type and simple_ty == item.type
+                and isletter(item.val[0], False)):
             out += " "
         out += item.show()
         pos += 1
     return out
+
 
 def strip_comments(text):
     """
@@ -260,13 +269,14 @@ def strip_comments(text):
             out.append(token)
     return out
 
+
 class Group:
     """type 0 means a token, type 1 means contents of a group within {}
     """
     token_ty = 0
     group_ty = 1
     type = token_ty
-    val = [] # Value is a token list.
+    val = []  # Value is a token list.
 
     def __init__(self, type_v, val_v):
         self.type = type_v
@@ -275,8 +285,9 @@ class Group:
     def show(self):
         if token_ty == self.type:
             return self.val.show()
-        else: 
+        else:
             return "{%s}" % detokenize(self.val)
+
 
 # Constants
 
@@ -289,7 +300,7 @@ def tokenize(in_str):
     """Returns a list of tokens.
     """
     text = []
-    isatletter=False
+    isatletter = False
     cs = Char_stream(in_str)
     cs.reset()
     if not cs.legal():
@@ -306,21 +317,20 @@ def tokenize(in_str):
             name = cs.scan_escape_token(isatletter)
             if isletter(name[0], isatletter):
                 token = Token(esc_str_ty, name)
-            else: 
+            else:
                 token = Token(esc_symb_ty, name)
             text.append(token)
             if "makeatletter" == name:
-                isatletter=True
+                isatletter = True
             elif "makeatother" == name:
-                isatletter=False
+                isatletter = False
     return text
 
 
-        
 class Command_def:
     name = "1"
     numargs = 0
-    body= ""
+    body = ""
 
     def __init__(self, name_v, numargs_v, body_v):
         self.name = name_v
@@ -365,7 +375,7 @@ class Command_instance:
         self.args = args_v
 
     def show(self):
-        out = "\\"+self.name
+        out = "\\" + self.name
         for arg in self.args:
             out += "{%s}" % detokenize(arg)
         return out
@@ -388,14 +398,14 @@ class Env_instance:
         out += "\\end{%s}" % self.name
         return out
 
-class Char_stream(Stream):
 
+class Char_stream(Stream):
     def scan_escape_token(self, isatletter=False):
         """
         Starts after the escape sign, assumes that it is scanning a symbol.
         Returns a token-string.
         """
-        out = self.item # Continue only if this is a letter.
+        out = self.item  # Continue only if this is a letter.
         item = self.next()
         if isletter(out, isatletter):
             while self.uplegal() and isletter(item, isatletter):
@@ -410,12 +420,12 @@ class Char_stream(Stream):
         including the % and all empty space after it.
         """
         comment = ""
-        while "\n" != self .item:
+        while "\n" != self.item:
             comment += self.item
             self.next()
         while self.uplegal() and blank_re.match(self.item):
             comment += self.item
-            self.next() 
+            self.next()
         return comment
 
     def scan_input_filename(self):
@@ -467,7 +477,7 @@ class Tex_stream(Stream):
         """
         self.data = []
         text = self.data
-        isatletter=False
+        isatletter = False
         cs = Char_stream(in_str)
         cs.reset()
         if not cs.legal():
@@ -489,9 +499,11 @@ class Tex_stream(Stream):
                 elif "usepackage" == name:
                     while cs.uplegal() and blank_re.match(cs.item):
                         cs.next()
-                    if "[" == cs.item: # private packages have no options
-                        text.extend([Token(esc_str_ty, "usepackage"),
-                                     Token(simple_ty, "[")])
+                    if "[" == cs.item:  # private packages have no options
+                        text.extend([
+                            Token(esc_str_ty, "usepackage"),
+                            Token(simple_ty, "[")
+                        ])
                         cs.next()
                         continue
                     files = cs.scan_package_filenames()
@@ -502,10 +514,10 @@ class Tex_stream(Stream):
                         if p < 0 or not len(file) - len("-private") == p:
                             i += 1
                             continue
-                        defs_db_file = file+".db"
+                        defs_db_file = file + ".db"
                         self.add_defs(file)
-                        del files[i:(i+1)]
-                    if files: # non-private packages left
+                        del files[i:(i + 1)]
+                    if files:  # non-private packages left
                         group_content = ",".join(files)
                         to_add_str = "\\usepackage{%s}" % (group_content)
                         to_add = tokenize(to_add_str)
@@ -513,13 +525,13 @@ class Tex_stream(Stream):
                 else:
                     if isletter(name[0], isatletter):
                         token = Token(esc_str_ty, name)
-                    else: 
+                    else:
                         token = Token(esc_symb_ty, name)
                     text.append(token)
                     if "makeatletter" == name:
-                        isatletter=True
+                        isatletter = True
                     elif "makeatother" == name:
-                        isatletter=False
+                        isatletter = False
         self.reset()
         return self.data
 
@@ -539,7 +551,8 @@ class Tex_stream(Stream):
             """Insert a separating space after an escape sequence if it is a
             string and is followed by a letter."""
             if (None != previtem and esc_str_ty == previtem.type
-                and simple_ty == item.type and isletter(item.val[0], False)):
+                    and simple_ty == item.type
+                    and isletter(item.val[0], False)):
                 out += " "
             previtem = item
             if not (esc_str_ty == item.type and "input" == item.val):
@@ -551,7 +564,7 @@ class Tex_stream(Stream):
                 file = detokenize(group.val)
                 clean_file = "%s-clean.tex" % (file)
                 print "Reading file %s" % (clean_file)
-                fp = open(clean_file,"r")
+                fp = open(clean_file, "r")
                 content = fp.read()
                 fp.close()
                 out += content
@@ -559,11 +572,11 @@ class Tex_stream(Stream):
 
     # Basic tex scanning
 
-    def skip_blank_tokens(self): # we also skip comment tokens.
+    def skip_blank_tokens(self):  # we also skip comment tokens.
         item = self.item
-        while (self.uplegal() and
-               (comment_ty == item.type or
-                (simple_ty == item.type and blank_re.match(item.val)))):
+        while (self.uplegal()
+               and (comment_ty == item.type or
+                    (simple_ty == item.type and blank_re.match(item.val)))):
             item = self.next()
         return item
 
@@ -631,13 +644,13 @@ class Tex_stream(Stream):
         item = self.item
         numargs = 0
         if not simple_ty == item.type:
-            raise "Illegal command or environment definition: "+name
+            raise "Illegal command or environment definition: " + name
         if "[" == item.val:
             if not 4 < len(self.data):
-                raise "Command or environment definition is illegal: "+name
+                raise "Command or environment definition is illegal: " + name
             item = self.next()
             if not simple_ty == item.type:
-                raise "Illegal command or environment definition: "+name
+                raise "Illegal command or environment definition: " + name
             numargs = item.val
             if not pos_digit_re.match(numargs):
                 raise "%s must be argument number after %s" % (numargs, name)
@@ -645,9 +658,9 @@ class Tex_stream(Stream):
             self.next()
             item = self.skip_blank_tokens()
             if not simple_ty == item.type:
-                raise "Illegal command definition: "+name
+                raise "Illegal command definition: " + name
             if "]" != item.val:
-                raise "Illegal command definition: "+name
+                raise "Illegal command definition: " + name
             self.next()
             self.skip_blank_tokens()
         return numargs
@@ -664,7 +677,7 @@ class Tex_stream(Stream):
             raise "Command definition is illegal."
         # newcommand or renewcommand
         if not item.type in [esc_symb_ty, esc_str_ty]:
-            raise "Command definition should begin with control sequence: "+item.val
+            raise "Command definition should begin with control sequence: " + item.val
         if item.val not in ["newcommand", "renewcommand"]:
             raise "Command definition should begin with control sequence."
         self.next()
@@ -675,7 +688,7 @@ class Tex_stream(Stream):
 
         body_group = self.scan_group()
         if group_ty != body_group.type:
-            raise "Command body missing: "+cmd_name
+            raise "Command body missing: " + cmd_name
         body_val = strip_comments(body_group.val)
         return Command_def(cmd_name, numargs, body_val)
 
@@ -692,14 +705,16 @@ class Tex_stream(Stream):
         item = self.skip_blank_tokens()
         name = ""
         if not simple_ty == item.type:
-            raise ("1. Env. def. begins with cont. seq. %s, not with env.name."
-                 % (item.val))
+            raise (
+                "1. Env. def. begins with cont. seq. %s, not with env.name." %
+                (item.val))
         while self.uplegal() and not blank_or_rbrace_re.match(item.val):
             name += item.val
             item = self.next()
             if not simple_ty == item.type:
-                raise ("2. Env. def. begins with cont. seq. %s, not with env.name."
-                       % (item.val))
+                raise (
+                    "2. Env. def. begins with cont. seq. %s, not with env.name."
+                    % (item.val))
         item = self.skip_blank_tokens()
         if not "}" == item.val:
             raise "Command definition does not begin with control sequence."
@@ -720,7 +735,7 @@ class Tex_stream(Stream):
         pos = 0
 
         if not item.type in [esc_symb_ty, esc_str_ty]:
-            raise ("Env. definition does not begin with control sequence:"+
+            raise ("Env. definition does not begin with control sequence:" +
                    item.val)
         if item.val not in ["newenvironment", "renewenvironment"]:
             raise "Env. definition does not begin with control sequence."
@@ -733,18 +748,18 @@ class Tex_stream(Stream):
 
         begin_group = self.scan_group()
         if group_ty != begin_group.type:
-            raise "Begin body missing: "+env_name
+            raise "Begin body missing: " + env_name
         begin_val = strip_comments(begin_group.val)
 
         self.skip_blank_tokens()
 
         end_group = self.scan_group()
         if group_ty != end_group.type:
-            raise "End body missing:"+env_name
+            raise "End body missing:" + env_name
         end_val = strip_comments(end_group.val)
 
         return Env_def(env_name, numargs, begin_val, end_val)
-    
+
     def scan_defs(self):
         if not self.legal():
             raise "No definitions to scan."
@@ -752,11 +767,11 @@ class Tex_stream(Stream):
         command_defs, env_defs = self.defs
         while self.uplegal():
             if (esc_str_ty == self.item.type
-                and self.item.val in ["newcommand", "renewcommand"]):
+                    and self.item.val in ["newcommand", "renewcommand"]):
                 command_def = self.scan_command_def()
                 command_defs[command_def.name] = command_def
-            elif (esc_str_ty == self.item.type and self.item.val
-                  in ["newenvironment", "renewenvironment"]):
+            elif (esc_str_ty == self.item.type
+                  and self.item.val in ["newenvironment", "renewenvironment"]):
                 env_def = self.scan_env_def()
                 env_defs[env_def.name] = env_def
             else:
@@ -808,9 +823,9 @@ class Tex_stream(Stream):
         """
         d = 0
         if esc_str_ty == item.type:
-            if "begin"==item.val:
+            if "begin" == item.val:
                 d = 1
-            elif "end"==item.val:
+            elif "end" == item.val:
                 d = -1
         return d
 
@@ -848,7 +863,7 @@ class Tex_stream(Stream):
         """
         if not self.legal():
             raise "No environment rest to scan."
-        count = 1 # We are already within a boundary.
+        count = 1  # We are already within a boundary.
         args = self.scan_args(env_def)
         body = []
         while count and self.uplegal():
@@ -862,7 +877,7 @@ class Tex_stream(Stream):
             else:
                 self.next()
             if 0 < count:
-                body.extend(self.data[old_pos : self.pos])
+                body.extend(self.data[old_pos:self.pos])
         return Env_instance(env_def.name, args, body)
 
     # Definitions
@@ -910,12 +925,12 @@ class Tex_stream(Stream):
                 for def_name in command_defs.keys():
                     out += command_defs[def_name].show() + "\n"
                 for def_name in env_defs.keys():
-                    out += env_defs[def_name].show() +"\n"
+                    out += env_defs[def_name].show() + "\n"
                 print "Definitions after reading %s:" % (defs_file)
                 print out
 
     # Applying definitions, recursively
-    # (maybe not quite in Knuth order, so avoid tricks!)    
+    # (maybe not quite in Knuth order, so avoid tricks!)
 
     def subst_args(self, body, args):
         out = []
@@ -934,7 +949,7 @@ class Tex_stream(Stream):
             argnum = int(argnum)
             if argnum > len(args):
                 raise "Too large argument number."
-            arg = args[argnum-1]
+            arg = args[argnum - 1]
             out += arg
             pos += 1
         return out
@@ -963,7 +978,6 @@ class Tex_stream(Stream):
         body, args = env_instance.body, env_instance.args
         out = self.subst_args(begin, args) + body + self.subst_args(end, args)
         return self.apply_all_recur(out)
-        
 
     def apply_all_recur(self, data, report=False):
         ts = Tex_stream(data)
@@ -987,7 +1001,7 @@ class Tex_stream(Stream):
                 old_pos = ts.pos
                 env_name = ts.scan_env_begin()
                 if not env_defs.has_key(env_name):
-                    out.extend(ts.data[old_pos : ts.pos])
+                    out.extend(ts.data[old_pos:ts.pos])
                     continue
                 else:
                     env_def = env_defs[env_name]
@@ -1004,7 +1018,6 @@ class Tex_stream(Stream):
                 result = ts.apply_command_recur(command_inst)
                 out.extend(result)
         return out
-
 
     # Processing files
 
@@ -1046,8 +1059,8 @@ class Tex_stream(Stream):
         Returns tokenized \input{file}.
         """
         file = cut_extension(file, ".tex")
-        tex_file = file+".tex"
-        clean_tex_file = file+"-clean.tex"
+        tex_file = file + ".tex"
+        clean_tex_file = file + "-clean.tex"
         if newer(clean_tex_file, tex_file):
             print "Using %s." % (clean_tex_file)
         else:
@@ -1061,7 +1074,7 @@ class Tex_stream(Stream):
 
 # Main
 
-long_optlist = ["debug","defs="]
+long_optlist = ["debug", "defs="]
 options, restargs = getopt_map("x", long_optlist)
 
 debug = False
@@ -1072,10 +1085,10 @@ root = restargs[0]
 root = cut_extension(root, ".tex")
 if options.has_key("--defs"):
     defs_root = options["--defs"]
-else: 
+else:
     defs_root = "%s" % (root)
 defs_db = defs_root
-defs_db_file = defs_root+".db"
+defs_db_file = defs_root + ".db"
 
 ts = Tex_stream()
 ts.defs_db = defs_db
