@@ -260,12 +260,23 @@ we don't want to store the provenance of the dry run:
     builder.metadata.dry_run = True
     builder.metadata.store_provenance = False
 
-It's time run:
+It's time to run:
 
 .. code:: python
 
     from aiida.engine import run
     run(builder)
+
+.. note::
+
+   Instead of using the builder, you can also simply pass the calculation class
+   as the first argument, followed by the inputs as keyword arguments, e.g.:
+
+   .. code:: python
+
+      run(PwCalculation, structure=structure, pseudos={'Si': pseudo_node}, ....)
+
+   The builder is simply a convenience wrapper providing tab-completion in the shell and automatic help strings.
 
 This creates a folder of the form ``submit_test/[date]-0000[x]`` in the
 current directory. In your second terminal:
@@ -310,10 +321,18 @@ As soon as you have executed these lines, the ``calculation`` variable contains 
 .. note::
 
    You may have noticed that we used ``submit`` here instead of ``run``.
-   ``submit`` and ``run`` work just the same, except that ``submit`` will hand over the calculation to the daemon,
-   making sure that everything can execute in the background, while ``run`` will execute all tasks in the current
-   shell.
-   The difference between ``run`` and ``submit
+   The difference is that ``submit`` will hands over the calculation to the daemon running in the background,
+   while ``run`` will execute all tasks in the current shell.
+
+   All processes in AiiDA (you will soon get to know more) can be "launched" using one of available functions:
+
+    * run
+    * run_get_node
+    * run_get_pk
+    * submit
+
+   which are explained in more detail in the `online documentation <https://aiida-core.readthedocs.io/en/latest/working/processes.html#launching-processes>`_.
+
 
 The calculation is now stored in the database and was assigned a "database primary key" or ``pk`` (``calculation.pk``) as well as a UUID (``calculation.uuid``).
 See the :ref:`previous section <2019-aiida-identifiers>` for more details on these identifiers.
