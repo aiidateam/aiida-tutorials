@@ -20,7 +20,7 @@ Let's import one from the web:
 
 .. code:: console
 
-    verdi import <ISSUE#40 REPLACE_THIS_LINK>
+    verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2019_05_perovskites_v0.1.aiida
 
 Contrary to most databases, AiiDA databases contain not only results of calculations but also their inputs and information on how a particular result was obtained.
 This information (provenance) is stored in the form of a directed acyclic graph (DAG).
