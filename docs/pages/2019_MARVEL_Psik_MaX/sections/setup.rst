@@ -45,6 +45,8 @@ Linux and MacOS
          Hostname IP_ADDRESS
          User aiida
          IdentityFile ~/.ssh/aiida_tutorial_NUM
+         ForwardX11 yes
+         ForwardX11Trusted yes
          LocalForward 8888 localhost:8888
 
    where you replace ``IP_ADDRESS`` with the IP address provided to you.
