@@ -330,7 +330,7 @@ Similarly, if you type:
 
 .. code:: python
 
-    calc2.outputs.
+    calc.outputs.
 
 and then ``TAB``, you will list all output link names of the calculation. One
 of them leads to the structure that was the input of ``calc`` we loaded
@@ -338,7 +338,7 @@ previously:
 
 .. code:: python
 
-    calc2.outputs.output_structure
+    calc.outputs.output_structure
 
 Note that links have a single name, that was assigned by the calculation that
 used the corresponding input or produced the corresponding output, as
