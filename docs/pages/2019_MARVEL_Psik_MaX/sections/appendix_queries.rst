@@ -68,18 +68,18 @@ The graphical representation of this query can be seen in :numref:`fig_qb_exampl
     qb.append(
             StructureData,
             project=['extras.formula'],
-            filters={'extras.formula': 'Sn2O3'},
+            filters={'extras.formula': 'BaO3Ti'},
             tag='structure'
         )
     qb.append(
-            Calculation,
+            CalcJobNode,
             tag='calculation',
             with_incoming='structure'
         )
     qb.append(
             Dict,
             tag='results',
-            filters={'attributes.energy_smearing':{'<=':-0.0001}},
+            filters={'attributes.energy_smearing':{'<=':-1e-8}},
             project=[
                 'attributes.energy_smearing',
                 'attributes.energy_smearing_units',

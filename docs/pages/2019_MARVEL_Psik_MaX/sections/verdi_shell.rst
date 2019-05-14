@@ -99,8 +99,9 @@ Loading different kinds of nodes
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
-From the graph displayed in :numref:`fig_graph`, find the ``PK`` of the
-pseudopotential file (LDA). Load it and show what elements it corresponds to by typing:
+From the graph you generated in  section :ref:`aiidagraph`,
+find the ``PK`` of the pseudopotential file (LDA). Load it and
+show what elements it corresponds to by typing:
 
 .. code:: python
 
@@ -113,7 +114,8 @@ k-points
 ~~~~~~~~
 
 A set of k-points in the Brillouin zone is represented by an instance of the
-``KpointsData`` class. Choose one from the graph of :numref:`fig_graph`,
+``KpointsData`` class. Choose one from the graph of 
+produced in section :ref:`aiidagraph`,
 load it as ``kpoints`` and inspect its content:
 
 .. code:: python
@@ -166,7 +168,7 @@ Parameters
 ~~~~~~~~~~
 
 Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
-Get the PK and load the input parameters of a calculation in the graph of :numref:`fig_graph`.
+Get the PK and load the input parameters of a calculation in the graph produced in  section :ref:`aiidagraph`.
 Then display its content by typing
 
 .. code:: python
@@ -203,7 +205,7 @@ the verdi shell, you will be prompted with a string notifying you of its
 Structures
 ~~~~~~~~~~
 
-Find a structure in the graph of :numref:`fig_graph` and load it.
+Find a structure in the graph you generated in section :ref:`aiidagraph` and load it.
 Display its chemical formula, atomic positions and species using
 
 .. code:: python
@@ -328,7 +330,7 @@ Similarly, if you type:
 
 .. code:: python
 
-    calc2.outputs.
+    calc.outputs.
 
 and then ``TAB``, you will list all output link names of the calculation. One
 of them leads to the structure that was the input of ``calc`` we loaded
@@ -336,11 +338,11 @@ previously:
 
 .. code:: python
 
-    calc2.outputs.output_structure
+    calc.outputs.output_structure
 
 Note that links have a single name, that was assigned by the calculation that
 used the corresponding input or produced the corresponding output, as
-illustrated in :numref:`fig_graph`.
+illustrated in section :ref:`aiidagraph`.
 
 For a more programmatic approach, you can get a represenation of the inputs and outputs of a node, say ``calc``, through the following methods:
 
