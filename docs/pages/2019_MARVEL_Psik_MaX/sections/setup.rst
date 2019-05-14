@@ -20,9 +20,9 @@ The software on this VM is based on `Quantum Mobile
 pre-configured AiiDA installation as well as some test data for the tutorial.
 
 .. note::
-  
+
    If you decide to work in pairs, one of you should forward their credentials
-   to the other and you should both use the same IP address and ssh key. 
+   to the other and you should both use the same IP address and ssh key.
    Since you will be sharing the VM and user account, be careful not to delete
    the work of your colleague.
 
@@ -32,8 +32,8 @@ Linux and MacOS
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
 
--  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub`` 
-   in the ``~/.ssh`` directory 
+-  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub``
+   in the ``~/.ssh`` directory
 
 -  Set the correct permissions on the private key:
    ``chmod 600 ~/.ssh/aiida_tutorial_NUM``.
@@ -66,7 +66,7 @@ with SSH *forwarding* the graphical output to your computer (can be slow).
 
 .. note::
 
-   On MacOS you may need to install `XQuartz <https://xquartz.macosforge.org/landing/>`_ 
+   On MacOS you may need to install `XQuartz <https://xquartz.macosforge.org/landing/>`_
    in order to use X-forwarding.
 
 Windows
@@ -77,7 +77,7 @@ If you're running Windows 10, you may want to consider `installing the Windows S
 -  Install the `PuTTY SSH client <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`_.
 
 -  Run PuTTYGen, load the ``aiida_tutorial_NN`` private key (button
-   ``"Load"``). You may need to choose to show “All files (\*.\*)”, 
+   ``"Load"``). You may need to choose to show “All files (\*.\*)”,
    and select the file without any extension (Type: File).
 
 -  In the same window, click on “Save private Key”, and save the key
@@ -108,6 +108,8 @@ In order to enable X-forwarding:
 
 -  Configure PuTTy as described in the `Xming wiki <https://wiki.centos.org/HowTos/Xming>`_.
 
+.. _setup_jupyter:
+
 Start jupyter
 -------------
 
@@ -125,10 +127,10 @@ allowing you to use AiiDA. Now type in the same shell:
      jupyter notebook --no-browser
 
 This will run a server with a web application called ``jupyter``, which
-is used to create interactive python notebooks. 
+is used to create interactive python notebooks.
 In order to connect to the jupyter notebook server:
 
- - copy the URL that has been printed to the terminal (similar to ``http://localhost:8888/?token=2a3ba37cd1...``)  
+ - copy the URL that has been printed to the terminal (similar to ``http://localhost:8888/?token=2a3ba37cd1...``)
  - open a web browser **on your laptop** and paste the URL
  - You will see a list of folders on your personal VM.
 
@@ -138,9 +140,25 @@ terminal is the one we will actually use in this tutorial.
 
 .. note::
 
-   Our SSH configuration assumes that ``jupyter`` will serve the notebooks on port 8888. 
+   Our SSH configuration assumes that ``jupyter`` will serve the notebooks on port 8888.
    If you want to serve notebooks on different ports, you'll also need to adjust
    the SSH configuration.
+
+
+.. _setup_downloading_files:
+
+Downloading files
+-----------------
+
+Throughout this tutorial, you might encounter links through which you can download files, example and or solution scripts for example.
+Often the idea is to click on the link to download the file and put it in your working directory for the tutorial.
+If you are running the tutorial code on a different machine from which you are reading this tutorial, you can always directly download the files using ``wget``.
+Simply copy the address of the link and execute the following command:
+
+   wget <LINK>
+
+where you replace ``<LINK>`` with the actual HTTPS link that you copied from the tutorial text in your browser.
+This will download that file in your current directory.
 
 
 Troubleshooting

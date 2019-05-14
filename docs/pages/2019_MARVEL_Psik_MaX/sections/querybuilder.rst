@@ -3,46 +3,20 @@
 Queries in AiiDA: The Querybuilder
 ==================================
 
-This part of the tutorial is provided only in interactive mode through a
-Jupyter notebook, which you will be able to run in your browser. To
-accomplish this we first need to start the Jupyter server, if you didn’t
-do it already at the very beginning of the tutorial. First make sure you
-are connected to the virtual machine with local forwarding enabled, as
-described in section :numref:`connect`. Then, on the virtual machine, first
-make sure your are in the ``aiida`` virtual environment:
+This part of the tutorial is provided only in interactive mode through a Jupyter notebook, which you will be able to run in your browser.
+For instructions on starting the Jupyter server, please refer to the :ref:`setup section<setup_jupyter>`.
+Once the server is running, :download:`download this tutorial notebook <../notebooks/querybuilder-tutorial.ipynb>` and open it in Jupyter.
+For instructions on downloading these files on a machine through which are connected through SSH, refer to :ref:`this section<setup_downloading_files>`.
 
-.. code:: console
+The notebook will show you how the ``QueryBuilder`` can be used to query your database for specific data.
+It will demonstrate certain concepts and then ask you to use those to perform certain queries on your own database.
+Some of these question cells will have partial solutions that you will have to complete.
 
-    workon aiida
+Once you have finished the notebook, you can downloaded a :download:`notebook with the solutions <../notebooks/querybuilder-solutions.ipynb>` but try not to use them at first!
 
-If the virtual environment is successfully loaded, your prompt should be
-prefixed with ``(aiida)``. To finally launch the Jupyter server, execute
-the following commands:
+See below for a rendered version of the notebook:
 
-.. code:: console
-
-    cd ~/examples/aiida-demos/tutorial/
-    jupyter notebook --no-browser
-
-If all went well, you should now be able to open up a browser on your
-local machine and point it to the following address
-``http://localhost:8888/?token=2a3ba3...`` (replace the token with the
-one printed on output by the previous command). This should now show you
-a directory navigator. 
-
-To open the notebook, click on ``querybuilder`` and then select the file
-``tutorial.ipynb``. Note that there is also a ``solution.ipynb``, which is a
-copy of the same notebook, but which contains the solutions to all the
-exercises. You can use this version at your own discretion if you get stuck at
-some point (but we suggest that you try not to look at it at first).
-
-See below for a rendered version of the notebook, that can also be downloaded
-from :download:`here <../notebooks/querybuilder-tutorial.ipynb>`.
-
-.. toctree:: 
+.. toctree::
 
    QueryBuilder Notebook <../notebooks/querybuilder-tutorial.ipynb>
 
-The solutions can also be downloaded from 
-:download:`here <../notebooks/querybuilder-solutions.ipynb>`: but again, 
-try not to use them at first!
