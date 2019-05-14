@@ -138,36 +138,30 @@ class PressureConvergence(WorkChain):
     @classmethod
     def define(cls, spec):
         """Define spec of WorkChain."""
+        # yapf: disable
+        # pylint: disable=bad-continuation
         super(PressureConvergence, cls).define(spec)
-        spec.input(
-            'code',
-            valid_type=Code,
+        spec.input('code', valid_type=Code,
             help='Code setup to run `pw.x` to use for the calculations.')
-        spec.input('structure',
-                   valid_type=StructureData,
-                   help='The structure to minimize.')
-        spec.input(
-            'pseudo_family',
-            valid_type=Str,
+        spec.input('structure', valid_type=StructureData,
+            help='The structure to minimize.')
+        spec.input('pseudo_family', valid_type=Str,
             help='Family of pseudopotentials to use for the calculations.')
-        spec.input(
-            'volume_tolerance',
-            valid_type=Float,
-            help=
-            'Stop if the volume difference of two consecutive calculations is less than this threshold.'
+        spec.input('volume_tolerance', valid_type=Float,
+            help='Stop if the volume difference of two consecutive calculations is less than this threshold.')
+        spec.output('steps', valid_type=Dict,
+            help='The data of all the steps in the minimization process containing info about energy and volume')
+        spec.output('structure', valid_type=StructureData,
+            help='Final relaxed structure.')
+        spec.outline(
+            cls.setup,
+            cls.put_step0_in_ctx,
+            cls.move_next_step,
+            while_(cls.not_converged)(
+                cls.move_next_step,
+            ),
+            cls.finish
         )
-        spec.output(
-            'steps',
-            valid_type=Dict,
-            help=
-            'The data of all the steps in the minimization process containing info about energy and volume'
-        )
-        spec.output('structure',
-                    valid_type=StructureData,
-                    help='Final relaxed structure.')
-        spec.outline(cls.setup, cls.put_step0_in_ctx, cls.move_next_step,
-                     while_(cls.not_converged)(cls.move_next_step, ),
-                     cls.finish)
 
     def setup(self):
         """Launch the first calculation for the input structure, and a second calculation for a shifted volume."""

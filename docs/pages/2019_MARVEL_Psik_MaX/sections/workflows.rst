@@ -377,7 +377,7 @@ replacing them with
         while not calculation.is_finished:
             sleep(1)
 
-    inputs = {label: node.get_outgoing().get_node_by_label('output_parameters') for label, node in calculation.items()}
+    inputs = {label: node.get_outgoing().get_node_by_label('output_parameters') for label, node in calculations.items()}
     eos = create_eos_dictionary(**inputs)
 
 The main differences are:
@@ -467,7 +467,7 @@ For example, you can execute:
 .. code:: python
 
     from aiida.engine import run
-    run(EquationOfState, element=Str('Si'), code=load_code('qe-pw-6.3@localhost'), pseudo_family=Str('SSSP'))
+    run(EquationOfState, element=Str('Si'), code=load_code('qe-6.3-pw@localhost'), pseudo_family=Str('SSSP'))
 
 While the workflow is running, you can check (in a different terminal) what is happening to the calculations using ``verdi process list``.
 You will see that after a few seconds the calculations are all submitted to the scheduler and can potentially run at the same time.
