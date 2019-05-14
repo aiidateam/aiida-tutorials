@@ -29,6 +29,9 @@ pre-configured AiiDA installation as well as some test data for the tutorial.
 Linux and MacOS
 ~~~~~~~~~~~~~~~
 
+It's recommended for you to place the ssh key you received in a folder
+dedicated to your ssh configuration, to do so:
+
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
 
@@ -36,33 +39,53 @@ Linux and MacOS
    in the ``~/.ssh`` directory
 
 -  Set the correct permissions on the private key:
-   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``.
-   You can check check with ``ls -l`` that the permissions of this file are now ``-rw-------``.
+   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
+   that the permissions of this file are now ``-rw-------``.
 
--  Create (or modify) the ``~/.ssh/config`` file, adding the following lines:
+After that ssh key is in place, you can go two routes, the first through an
+ssh configuration file specific to the IP address you are going to connect, or,
+using a command in your shell with several configuration options.
 
-   .. code:: console
+If you prefer the configuration route, first you want to add the following code
+block to your ``~/.ssh/condfig`` file,
 
-       Host aiidatutorial
-         Hostname IP_ADDRESS
-         User aiida
-         IdentityFile ~/.ssh/aiida_tutorial_NUM
-         ForwardX11 yes
-         ForwardX11Trusted yes
-         LocalForward 8888 localhost:8888
+.. code::
 
-   where you replace ``IP_ADDRESS`` with the IP address provided to you.
+     Host aiidatutorial
+          Hostname 34.242.168.15
+          User max
+          IdentityFile ~/.ssh/aiida-tutorial-max.pem
+          ForwardX11 yes
+          ForwardX11Trusted yes
+          LocalForward 8888 localhost:8888
 
--  You should now be able to ``ssh`` to your virtual machine using simply
+Remember to update the ``Hostname`` IP address, for the one you received, after
+adding this configuration you can connect to the server using,
 
-   .. code:: console
+.. code:: console
 
-         ssh -X -C aiidatutorial
+     ssh aiidatutorial
 
+All the options (user, x11 forwarding, etc) will be implied from this
+configuration file using that simple command.
 
-Connecting with ``-X`` (sometimes ``-Y`` is needed instead) allows you
-to run graphical programs such as ``xmgrace`` or ``gnuplot`` on the virtual machine,
-with SSH *forwarding* the graphical output to your computer (can be slow).
+If you instead prefer to use a copy-paste ready command, you can skip the
+configuration block and instead use the following command straight into your
+console:
+
+.. code:: console
+
+     ssh \
+          -i ~/.ssh/aiida-tutorial-max.pem \
+          -L 8888:localhost:8888 \
+          -X -C \
+          max@34.242.168.15
+
+replacing the IP address in the last portion of the command by your own.
+
+x11 forwarding allows you to run graphical programs such as ``xmgrace`` or
+``gnuplot`` on the virtual machine, with SSH *forwarding* the graphical
+output to your computer (can be slow).
 
 .. note::
 
