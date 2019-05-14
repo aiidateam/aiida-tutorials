@@ -6,8 +6,8 @@ from aiida.engine import WorkChain, ToContext, while_, calcfunction, workfunctio
 from aiida.orm import Code, Float, Str, StructureData
 from aiida.plugins import CalculationFactory, DataFactory
 
-from .common_wf import generate_scf_input_params
-from .create_rescale import rescale
+from common_wf import generate_scf_input_params
+from create_rescale import rescale
 
 Dict = DataFactory('dict')
 KpointsData = DataFactory('array.kpoints')
