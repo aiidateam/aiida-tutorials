@@ -1,6 +1,8 @@
 Getting set up
 ==============
 
+.. _connect:
+
 Connect to your virtual machine
 -------------------------------
 

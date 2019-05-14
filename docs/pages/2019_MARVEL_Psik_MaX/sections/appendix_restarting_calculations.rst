@@ -48,7 +48,8 @@ The only thing that now remains to be done, is to replace those inputs that caus
 
 .. code:: python
 
-    parameters = dict(restart_builder.parameters.dict)['ELECTRONS']['electron_maxstep'] = 80
+    parameters = restart_builder.parameters.get_dict()
+    parameters['ELECTRONS']['electron_maxstep'] = 80
     restart_builder.parameters = Dict(dict=parameters)
 
 Simply giving the calculation some more steps in the convergence cycle will probably already fix the problem.
@@ -62,7 +63,8 @@ To do so, we simply have to set the input ``parent_folder`` to the remote workin
 
 .. code:: python
 
-    parameters = dict(restart_builder.parameters.dict)['CONTROL']['restart_mode'] = 'restart'
+    parameters = restart_builder.parameters.get_dict()
+    parameters['CONTROL']['restart_mode'] = 'restart'
     restart_builder.parameters = Dict(dict=parameters)
     restart_builder.parent_folder = failed_calculation.outputs.remote_folder
 
