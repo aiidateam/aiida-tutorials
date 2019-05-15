@@ -8,9 +8,9 @@ Connect to your virtual machine
 
 You should each have received from the instructors:
 
--  an IP address
--  a private SSH key ``aiida_tutorial_NUM``
--  a public SSH key ``aiida_tutorial_NUM.pub``
+- an IP address
+- a private SSH key ``aiida_tutorial_NUM``
+- a public SSH key ``aiida_tutorial_NUM.pub``
 
 The steps below explain how to use these in order to connect to your
 personal virtual machine (VM) on Amazon Elastic Cloud 2
@@ -34,62 +34,50 @@ dedicated to your ssh configuration, to do so:
 
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
-
 -  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub``
    in the ``~/.ssh`` directory
-
 -  Set the correct permissions on the private key:
    ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
    that the permissions of this file are now ``-rw-------``.
 
-After that ssh key is in place, you can go two routes, the first through an
-ssh configuration file specific to the IP address you are going to connect, or,
-using a command in your shell with several configuration options.
-
-If you prefer the configuration route, first you want to add the following code
-block to your ``~/.ssh/condfig`` file,
+After that ssh key is in place, you can go two routes, editing one
+configuration file, which is a nice trick to have up your sleve, or pasting a
+long command in your terminal, which is convenient. If you prefer the
+configuration route add the following block your ``~/.ssh/config`` file:
 
 .. code::
 
      Host aiidatutorial
-          Hostname 34.242.168.15
-          User max
-          IdentityFile ~/.ssh/aiida-tutorial-max.pem
-          ForwardX11 yes
-          ForwardX11Trusted yes
-          LocalForward 8888 localhost:8888
+         Hostname IP_ADDRESS
+         User max
+         IdentityFile ~/.ssh/aiida_tutorial_NUM
+         ForwardX11 yes
+         ForwardX11Trusted yes
+         LocalForward 8888 localhost:8888
 
-Remember to update the ``Hostname`` IP address, for the one you received, after
-adding this configuration you can connect to the server using,
+Afterwards you can connect to the server using this simple command:
 
 .. code:: console
 
      ssh aiidatutorial
 
-All the options (user, x11 forwarding, etc) will be implied from this
-configuration file using that simple command.
-
-If you instead prefer to use a copy-paste ready command, you can skip the
-configuration block and instead use the following command straight into your
-console:
+If you prefer to use the copy-paste ready command, skip the configuration
+block and use the following command:
 
 .. code:: console
 
      ssh \
-          -i ~/.ssh/aiida-tutorial-max.pem \
-          -L 8888:localhost:8888 \
-          -X -C \
-          max@34.242.168.15
+         -i ~/.ssh/aiida-tutorial-max.pem \
+         -L 8888:localhost:8888 \
+         -X -C \
+         max@IP_ADDRESS
 
-replacing the IP address in the last portion of the command by your own.
-
-x11 forwarding allows you to run graphical programs such as ``xmgrace`` or
-``gnuplot`` on the virtual machine, with SSH *forwarding* the graphical
-output to your computer (can be slow).
+replacingthe IP address (``IP_ADDRESS``) and the ``NUM`` in either option by
+the one you received.
 
 .. note::
 
-   On MacOS you may need to install `XQuartz <https://xquartz.macosforge.org/landing/>`_
+   On MacOS you need to install `XQuartz <https://xquartz.macosforge.org/landing/>`_
    in order to use X-forwarding.
 
 Windows
