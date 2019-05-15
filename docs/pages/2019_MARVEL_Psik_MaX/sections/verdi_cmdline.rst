@@ -12,6 +12,53 @@ Whenever you want to see a detailed explanation of any command, simply add the `
 
     verdi --help
 
+For more detailed information about ``verdi``, you can refer to the `online documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html>`_.
+
+
+Setting up a profile
+--------------------
+
+After you install AiiDA, the next important step is to create a "profile".
+Each AiiDA installation supports multiple profiles, each of which can have its very own database, that won't interact with the other.
+In this way, one can view an AiiDA profile as a representation of an individual project you want to work on.
+
+The official way of setting up a new profile is through the command ``verdi setup``.
+This command will interactively ask you about all the necessary information, but it will assume that certain external resources, like the database have already been pre-configured.
+To make this process easier, there is also ``verdi quicksetup``, which will try to do this for you automatically, as much as possible.
+Let's try and setup a profile that we will use to work on during this tutorial:
+
+.. code:: console
+
+    verdi quicksetup
+
+This should prompt you with some questions about who you are.
+This information will be stored in the database of the profile and will be used to associate all the data that you create within it.
+This is useful for attribution when you start sharing your data with others.
+After you have answered all the questions, a new profile should have been created, along with the required database and repository.
+To see this profile, and any others that may have been configured, you can run:
+
+.. code:: console
+
+    verdi profile list
+
+This should show something like the following:
+
+.. code:: console
+
+    Info: configuration folder: /home/aiida/.aiida
+    * quicksetup
+      profile_one
+
+Each line, ``quicksetup`` and ``basic`` in this example, corresponds to a profile, where the one marked with an asterisk is the "default" profile.
+This means that each ``verdi`` command that you execute, will be automatically applied to that profile.
+If you want to change the default profile, you can use:
+
+.. code:: console
+
+    verdi profile setdefault
+
+
+
 Importing some data
 -------------------
 

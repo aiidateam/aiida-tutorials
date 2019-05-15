@@ -150,10 +150,9 @@ terminal is the one we will actually use in this tutorial.
 Downloading files
 -----------------
 
-Throughout this tutorial, you might encounter links through which you can download files, example and or solution scripts for example.
-Often the idea is to click on the link to download the file and put it in your working directory for the tutorial.
-If you are running the tutorial code on a different machine from which you are reading this tutorial, you can always directly download the files using ``wget``.
-Simply copy the address of the link and execute the following command:
+Throughout this tutorial, you will encounter links to download python scripts, jupyter notebooks and more.
+These files should be downloaded to the environment/working directory you use to run the tutorial.
+In particular, when running the tutorial on a linux virtual machine, copy the link address and download the files to the machine using the ``wget`` utility on the terminal:
 
    wget <LINK>
 
