@@ -8,7 +8,7 @@ classes, methods and functions are accessible. Type in the terminal
 
 .. code:: console
 
-     verdi shell
+    verdi shell
 
 For all the everyday AiiDA-based operations, i.e. creating, querying, and
 using AiiDA objects, the ``verdi shell`` is probably the best tool. In this
@@ -24,7 +24,7 @@ portions of python code. The code will not be executed until you press
 
 .. code:: ipython
 
-     %aiida
+    %aiida
 
 and execute it. This will set exactly the same environment as the
 ``verdi shell``. The notebook will be automatically saved upon any
@@ -35,9 +35,9 @@ main commands to manage the cells of your notebook.
 
 .. note::
 
-     The ``verdi shell`` and Jupyter
-     notebook are completely equivalent. Use either according to your
-     personal preference.
+    The ``verdi shell`` and Jupyter
+    notebook are completely equivalent. Use either according to your
+    personal preference.
 
 You will still sometimes need to type command-line instructions in ``bash`` in
 the first terminal you opened. To differentiate these from the commands to be
@@ -46,14 +46,14 @@ green background, like:
 
 .. code:: python
 
-     some verdi shell command
+    some verdi shell command
 
 while command-line instructions in ``bash`` to be typed into a terminal will
 be written with a blue background:
 
 .. code:: console
 
-     some bash command
+    some bash command
 
 Alternatively, to avoid changing terminal, you can execute ``bash`` commands
 within the ``verdi shell`` or the notebook by adding an exclamation mark before
@@ -61,7 +61,7 @@ the command itself:
 
 .. code:: ipython
 
-     !some bash command
+    !some bash command
 
 .. _loadnode:
 
@@ -74,7 +74,7 @@ in the shell:
 
 .. code:: python
 
-     node = load_node(PK)
+    node = load_node(PK)
 
 Load a node using one of the calculation ``PK`` s visible in the graph you
 displayed in the previous section of the tutorial. Then get the energy of the
@@ -82,13 +82,13 @@ calculation with the command
 
 .. code:: python
 
-     node.res.energy
+    node.res.energy
 
 You can also type
 
 .. code:: python
 
-     node.res.
+    node.res.
 
 and then press ``TAB`` to see all the available output results of the
 calculation.
@@ -105,8 +105,8 @@ show what elements it corresponds to by typing:
 
 .. code:: python
 
-     upf = load_node(PK)
-     upf.element
+    upf = load_node(PK)
+    upf.element
 
 All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing ``TAB``.
 
@@ -114,34 +114,34 @@ k-points
 ~~~~~~~~
 
 A set of k-points in the Brillouin zone is represented by an instance of the
-``KpointsData`` class. Choose one from the graph of 
+``KpointsData`` class. Choose one from the graph of
 produced in section :ref:`aiidagraph`,
 load it as ``kpoints`` and inspect its content:
 
 .. code:: python
 
-     kpoints.get_kpoints_mesh()
+    kpoints.get_kpoints_mesh()
 
 Then get the full (explicit) list of k-points belonging to this mesh using
 
 .. code:: python
 
-     kpoints.get_kpoints_mesh(print_list=True)
+    kpoints.get_kpoints_mesh(print_list=True)
 
-If you incurred in a ``AttributeError``, it means that the kpoints instance
-does not represent a regular mesh but rather a list of k-points defined by
-their crystal coordinates (typically used when plotting a band structure).
+If this throws an ``AttributeError``, it means that the kpoints instance does not represent a regular mesh but rather a list of k-points defined by their crystal coordinates (typically used when plotting a band structure).
 In this case, get the list of k-points coordinates using
 
 .. code:: python
 
-     kpoints.get_kpoints()
+    kpoints.get_kpoints()
+
+Conversely, if the `KpointsData` node `does` actually represent a mesh, this method is the one, that when called, will throw an ``AttributeError``.
 
 If you prefer Cartesian (rather than crystal) coordinates, type
 
 .. code:: python
 
-     kpoints.get_kpoints(cartesian=True)
+    kpoints.get_kpoints(cartesian=True)
 
 For later use in this tutorial, let us try now to create a kpoints instance,
 to describe a regular (2 x 2 x 2) mesh of k-points, centered at the Gamma
@@ -149,11 +149,11 @@ point (i.e. without offset). This can be done with the following commands:
 
 .. code:: python
 
-     KpointsData = DataFactory('array.kpoints')
-     kpoints = KpointsData()
-     kpoints_mesh = 2
-     kpoints.set_kpoints_mesh([kpoints_mesh] * 3)
-     kpoints.store()
+    KpointsData = DataFactory('array.kpoints')
+    kpoints = KpointsData()
+    kpoints_mesh = 2
+    kpoints.set_kpoints_mesh([kpoints_mesh] * 3)
+    kpoints.store()
 
 This function loads the appropriate class defined in a string (here
 ``array.kpoints``). Therefore, ``KpointsData`` is not a class instance, but
@@ -173,7 +173,7 @@ Then display its content by typing
 
 .. code:: python
 
-     params.get_dict()
+    params.get_dict()
 
 where ``params`` is the ``Dict`` node you loaded. Modify the dictionary
 content so that the wave-function cutoff is now set to 20 Ry. Note that you
@@ -183,14 +183,14 @@ discussed before, first load the ``Dict`` class by typing
 
 .. code:: python
 
-     Dict = DataFactory('dict')
+    Dict = DataFactory('dict')
 
 Then an instance of the class (i.e. the dict object that we want to create) is
 created and initialized by the command
 
 .. code:: python
 
-     new_params = Dict(dict=YOUR_DICT)
+    new_params = Dict(dict=YOUR_DICT)
 
 where ``YOUR_DICT`` is the modified python dictionary. Note that the dict object is
 not yet stored in the database. In fact, if you simply type ``new_params`` in
@@ -200,7 +200,7 @@ the verdi shell, you will be prompted with a string notifying you of its
 
 .. code:: python
 
-     new_params.store()
+    new_params.store()
 
 Structures
 ~~~~~~~~~~
@@ -210,16 +210,16 @@ Display its chemical formula, atomic positions and species using
 
 .. code:: python
 
-     structure.get_formula()
-     structure.sites
+    structure.get_formula()
+    structure.sites
 
 where ``structure`` is the structure you loaded. If you are familiar with ASE
 and PYMATGEN, you can convert this structure to those formats by typing
 
 .. code:: python
 
-     structure.get_ase()
-     structure.get_pymatgen()
+    structure.get_ase()
+    structure.get_pymatgen()
 
 Let’s try now to define a new structure to study, specifically a silicon
 crystal. In the ``verdi shell``, define a cubic unit cell as a 3 x 3 matrix,
@@ -227,48 +227,47 @@ with lattice parameter `a`\ :sub:`lat`\ `= 5.4` Å:
 
 .. code:: python
 
-     alat = 5.4
-     the_cell = [[alat/2, alat/2, 0.], [alat/2, 0., alat/2], [0., alat/2, alat/2]]
+    alat = 5.4
+    the_cell = [[alat/2, alat/2, 0.], [alat/2, 0., alat/2], [0., alat/2, alat/2]]
 
 .. note::
 
-     Default units for crystal structure cell and coordinates in AiiDA are Å
-     (Ångström).
+    Default units for crystal structure cell and coordinates in AiiDA are Å (Ångström).
 
 Structures in AiiDA are instances of the class ``StructureData``: load it in the
 verdi shell
 
 .. code:: python
 
-     StructureData = DataFactory('structure')
+    StructureData = DataFactory('structure')
 
 Now, initialize the class instance (i.e. the actual structure we want to study) by
 the command
 
 .. code:: python
 
-     structure = StructureData(cell=the_cell)
+    structure = StructureData(cell=the_cell)
 
 which sets the cubic cell defined before. From now on, you can access the cell
 with the command
 
 .. code:: python
 
-     structure.cell
+    structure.cell
 
 Finally, append each of the 2 atoms of the cell command. You can do it using
 commands like
 
 .. code:: python
 
-     structure.append_atom(position=(alat/4., alat/4., alat/4.), symbols="Si")
+    structure.append_atom(position=(alat/4., alat/4., alat/4.), symbols="Si")
 
 for the first ‘Si’ atom. Repeat it for the other atomic site (0, 0, 0). You
 can access and inspect the structure sites with the command
 
 .. code:: python
 
-     structure.sites
+    structure.sites
 
 If you make a mistake, start over from
 ``structure = StructureData(cell=the_cell)``, or equivalently use
@@ -278,16 +277,16 @@ structures [#f1]_ using
 
 .. code:: python
 
-     from ase.spacegroup import crystal
-     ase_structure = crystal('Si', [(0, 0, 0)], spacegroup=227,
-                     cellpar=[alat, alat, alat, 90, 90, 90], primitive_cell=True)
-     structure = StructureData(ase=ase_structure)
+    from ase.spacegroup import crystal
+    ase_structure = crystal('Si', [(0, 0, 0)], spacegroup=227,
+                 cellpar=[alat, alat, alat, 90, 90, 90], primitive_cell=True)
+    structure = StructureData(ase=ase_structure)
 
 Now you can store the new structure object in the database with the command:
 
 .. code:: python
 
-     structure.store()
+    structure.store()
 
 Finally, we can also import the silicon structure from an external (online)
 repository such as the Crystallography Open Database (COD):
@@ -297,9 +296,9 @@ repository such as the Crystallography Open Database (COD):
     from aiida.tools.dbimporters.plugins.cod import CodDbImporter
     importer = CodDbImporter()
     for entry in importer.query(formula='Si', spacegroup='F d -3 m'):
-            structure = entry.get_aiida_structure()
-            print("Formula", structure.get_formula())
-            print("Unit cell volume: ", structure.get_cell_volume())
+        structure = entry.get_aiida_structure()
+        print("Formula", structure.get_formula())
+        print("Unit cell volume: ", structure.get_cell_volume())
 
 In that case two duplicate structures are found for 'Si'.
 
@@ -368,7 +367,6 @@ If you print one, you will see something like:
 
 There are many other convenience methods on the ``LinkManager``.
 For example if you are only interested in the link labels you can use:
-
 
 .. code:: python
 
