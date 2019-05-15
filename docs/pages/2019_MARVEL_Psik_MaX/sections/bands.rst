@@ -31,7 +31,7 @@ the expected output band structures are plotted in :numref:`fig_calc_bands_1`
 to :numref:`fig_calc_bands_4`.
 
 .. _fig_calc_bands_1:
-.. figure:: include/images/bandstructures/Al_bands.png  
+.. figure:: include/images/bandstructures/Al_bands.png
    :width: 100%
 
    Electronic band structures of Al computed with AiiDA’s PwBandsWorkChain
