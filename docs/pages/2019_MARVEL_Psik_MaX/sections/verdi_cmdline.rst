@@ -15,25 +15,32 @@ Whenever you want to see a detailed explanation of any command, simply add the `
 For more detailed information about ``verdi``, you can refer to the `online documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html>`_.
 
 
+.. _setup_verdi_quicksetup:
+
 Setting up a profile
 --------------------
 
 After you install AiiDA, the next important step is to create a "profile".
-Each AiiDA installation supports multiple profiles, each of which can have its very own database, that won't interact with the other.
-In this way, one can view an AiiDA profile as a representation of an individual project you want to work on.
+Typically, you would be using one profile per independent research project.
 
-The official way of setting up a new profile is through the command ``verdi setup``.
-This command will interactively ask you about all the necessary information, but it will assume that certain external resources, like the database have already been pre-configured.
-To make this process easier, there is also ``verdi quicksetup``, which will try to do this for you automatically, as much as possible.
+The easiest way of setting up a new profile is through the command ``verdi quicksetup``.
+
+.. note::
+
+    The command ``verdi quicksetup`` is a clever version of the ``verdi setup`` command that is the standard way of setting up a process.
+    The latter expects certain external resources, like the database to already have been pre-configured.
+    The former, ``verdi quicksetup`` will try to do this automatically, but for certain environments might not be successful.
+    In that case, you may have to refer to the `manual instructions to set up the database <https://aiida-core.readthedocs.io/en/latest/install/installation.html#database-setup>`_.
+
 Let's try and setup a profile that we will use to work on during this tutorial:
 
 .. code:: console
 
     verdi quicksetup
 
-This should prompt you with some questions about who you are.
-This information will be stored in the database of the profile and will be used to associate all the data that you create within it.
-This is useful for attribution when you start sharing your data with others.
+This will prompt you for some information, such as the name of the profile, your name, etc.
+The information about you as a user will be associated with all the data that you create in AiiDA.
+This is useful for attribution, when you start sharing your data with others.
 After you have answered all the questions, a new profile should have been created, along with the required database and repository.
 To see this profile, and any others that may have been configured, you can run:
 
@@ -45,18 +52,31 @@ This should show something like the following:
 
 .. code:: console
 
-    Info: configuration folder: /home/aiida/.aiida
-    * quicksetup
-      profile_one
+    Info: configuration folder: /home/max/.aiida
+    * generic
+      quicksetup
 
-Each line, ``quicksetup`` and ``basic`` in this example, corresponds to a profile, where the one marked with an asterisk is the "default" profile.
+.. note::
+
+    The output you get may differ.
+    The ``generic`` profile is a pre-configured profile on the virtual machine built for the tutorial (and that we are not going to use here).
+    If you are running on your own installation instead, this of course won't be present.
+
+Each line, ``generic`` and ``quicksetup`` in this example, corresponds to a profile, where the one marked with an asterisk is the "default" profile.
 This means that each ``verdi`` command that you execute, will be automatically applied to that profile.
-If you want to change the default profile, you can use:
+Let's change the default profile to the newly created ``quicksetup`` for the rest of the tutorial:
 
 .. code:: console
 
-    verdi profile setdefault
+    verdi profile setdefault quicksetup
 
+From now on, all ``verdi`` commands will apply to the ``quicksetup`` profile.
+
+.. note::
+
+    If you want to quickly perform a single command on a profile that is currently not the default, you can always override it with the ``-p/--profile`` option:
+    For example, you can execute ``verdi -p generic profile show``.
+    Note that this now displays the configuration of the ``generic`` profile, despite it not being the current default profile.
 
 
 Importing some data
