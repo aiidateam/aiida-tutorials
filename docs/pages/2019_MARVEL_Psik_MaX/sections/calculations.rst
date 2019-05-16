@@ -40,7 +40,7 @@ Finally, you need to provide AiiDA with information on how to access the ``Compu
 For remote computers with ``ssh`` transport, this would involve e.g. an SSH key.
 For ``local`` computers, this is just a "formality" (press enter to confirm the default cooldown time):
 
-.. literalinclude:: include/configuration/computer.yml
+.. code:: console
 
     verdi computer configure local localhost
 
