@@ -10,75 +10,70 @@ While we're going to debug these issues 'manually' here, workflows (which you'll
 
 Note that besides the ``aiida-quantumespresso`` plugin, AiiDA comes with plugins for a range of other codes, all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
 
-Set up a code
--------------
+Computer setup
+--------------
 
-To run an external code through AiiDA, such as we will be doing with Quantum ESPRESSO's pw.x in this tutorial, we first need to set it up.
-Each code needs to be associated with a computer on which it can run, therefore we first need to configure a computer.
-For the purposes of this tutorial, we are going to run the calculations on the local machine, also referred to as "localhost".
+In a production environment, AiiDA would typically be running on your work station or laptop, while launching calculations
+on some remote high-performance compute resource that you have SSH access to.
+For this reason AiiDA has the concept of a ``Computer`` to run calculations on.
 
-A computer is setup with the command ``verdi computer setup``.
-Just as you have seen when :ref:`setting up a profile<setup_verdi_quicksetup>`, this command will interactively ask you for the information it needs.
-We don't want to focus here on the details of setting up a computer, so we will use the ``--config`` option of the command.
-This allows you to configure a computer from a ``.yml`` file.
-For the virtual machine, we have already prepared this configuration file that you can :download:`download here <include/configuration/computer.yml>` and it should contain:
-
-.. literalinclude:: include/configuration/computer.yml
-    :language: yaml
-
-.. warning::
-
-    The contents of this configuration file will most likely only work for the virtual machine that comes with this tutorial.
-    If you are following this tutorial on your own AiiDA installation, you will have to adapt it yourself.
-    Instructions on how to do this are explained in :ref:`this appendix<appendix_computer_code_setup>`.
-
-You can of course also manually copy and paste the content above in a file named ``computer.yml``.
-After you have created or downloaded the file to your local working environment, call the command:
+To keep things simple, Quantum ESPRESSO (together with several other *ab initio* codes) has been installed directly in the
+``codes`` subfolder of your virtual machine,
+and you are going to launch your first calculations on the same computer where AiiDA is installed.
+Nevertheless, we're now going to set up this computer for launching calculations:
 
 .. code:: console
 
     verdi computer setup --config computer.yml
 
-If everything worked correctly, you should now be able to see this computer by calling:
+where ``computer.yml`` is a configuration file in the `YAML format <https://en.wikipedia.org/wiki/YAML#Syntax>`_)  that you can :download:`download here <include/configuration/computer.yml>`. This are its contents:
 
-.. code:: console
-
-    verdi computer list
-
-Before the computer can actually be used, we need to actually configure it for a specific user, which allows to connect to that computer.
-Imagine for example that you setup a remote cluster that needs to be accessed over SSH with certain credentials.
-To configure a computer, execute the command:
-
-.. code:: console
-
-    verdi computer configure local <COMPUTER>
-
-replacing ``<COMPUTER>`` with the name of the computer you want to configure, for example ``localhost``.
-This will interactively ask for the configuration details, which for a computer using local transport, such as the localhost, is just the one.
+.. literalinclude:: include/configuration/computer.yml
 
 .. note::
+    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<setup_verdi_quicksetup>`.
+    The configuration file should work for the virtual machine that comes with this tutorial
+    but may need to be adapted when you are running AiiDA in a different environment,
+    as explained in :ref:`this appendix<appendix_computer_code_setup>`.
 
-    The command we use here is ``verdi computer configure local`` because the ``localhost`` was configured to use ``local`` transport.
-    If you create a computer that requires ``ssh`` transport, the command to configure connection details would be ``verdi computer configure ssh``.
+Finally, you need to provide AiiDA with information on how to access the ``Computer``.
+For remote computers with ``ssh`` transport, this would involve e.g. an SSH key.
+For ``local`` computers, this is just a "formality" (press enter to confirm the default cooldown time):
 
-Now that we have our localhost set up, we can configure the ``pw.x`` executable that we will be running.
-As with the computer, for the virtual machine that comes with the tutorial, you can download the configuration file :download:`here <include/configuration/computer.yml>` and it should contain:
+.. code:: console
+
+    verdi computer configure local localhost
+
+
+Your ``localhost`` computer should now show up in ``verdi computer list``.
+Before proceeding, test that it works:
+
+.. code:: console
+
+    verdi computer test localhost
+
+
+Code setup
+----------
+
+Now that we have our localhost set up, let's configure the ``Code``, namely the ``pw.x`` executable.
+As with the computer, we have prepared a configuration file for you to :download:`download <include/configuration/computer.yml>`.
+This is its content:
 
 .. literalinclude:: include/configuration/code.yml
     :language: yaml
 
-.. warning::
-
-    The contents of this configuration file will most likely only work for the virtual machine that comes with this tutorial.
-    If you are following this tutorial on your own AiiDA installation, you will have to adapt it yourself.
-    Instructions on how to do this are explained in :ref:`this appendix<appendix_computer_code_setup>`.
-    In addition, you will need a compiled version of Quantum ESPRESSO on your computer.
-
-After you have created or downloaded the file to your local working environment, call the command:
+Once you have the configuration file in your local working environment, set up the code:
 
 .. code:: console
 
     verdi code setup --config code.yml
+
+.. warning::
+
+    The configuration should work for the virtual machine that comes with this tutorial.
+    If you are following this tutorial in a different environment, you will need to install Quantum ESPRESSO and adapt the configuration to your needs, 
+    as explained in :ref:`this appendix<appendix_computer_code_setup>`.
 
 Similar to the computers, you can list all the configured codes with:
 
@@ -87,11 +82,17 @@ Similar to the computers, you can list all the configured codes with:
     verdi code list
 
 Verify that it now contains a code named ``qe-6.3-pw`` that we just configured.
-If you want to see the configuration details, you can call:
+You can always check the configuration details of an existing code using:
 
 .. code:: console
 
-    verdi code show
+    verdi code show qe-6.3-pw
+
+.. note::
+
+   The ``generic`` profile has already a number of other codes configured.
+   See ``verdi -p generic code list``.
+
 
 The AiiDA daemon
 ----------------
