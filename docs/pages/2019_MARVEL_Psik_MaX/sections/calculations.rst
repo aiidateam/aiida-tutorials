@@ -3,29 +3,105 @@
 Submit, monitor and debug calculations
 ======================================
 
-In this section we'll be learning how to create new data in AiiDA. 
+In this section we'll be learning how to create new data in AiiDA.
 
-We will use the `Quantum Espresso <https://www.quantum-espresso.org/>`_ package to
-launch a simple `density functional theory
-<https://en.wikipedia.org/wiki/Density_functional_theory>`_ calculation of 
-the silicon crystal using the  :doi:`PBE exchange-correlation functional <10.1103/PhysRevB.54.16533>`
-and check its results.  
-While we're going to debug these issues ‘manually’ here, workflows (which you'll 
-encounter later in this tutorial) can help you avoid these issues systematically.
+We will use the `Quantum Espresso <https://www.quantum-espresso.org/>`_ package to launch a simple `density functional theory <https://en.wikipedia.org/wiki/Density_functional_theory>`_ calculation of a silicon crystal using the :doi:`PBE exchange-correlation functional <10.1103/PhysRevB.54.16533>` and check its results.
+While we're going to debug these issues 'manually' here, workflows (which you'll encounter later in this tutorial) can help you avoid these issues systematically.
 
-Note that besides the ``aiida-quantumespresso`` plugin, AiiDA comes with
-plugins for a range of other codes,
-all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
+Note that besides the ``aiida-quantumespresso`` plugin, AiiDA comes with plugins for a range of other codes, all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
+
+Set up a code
+-------------
+
+To run an external code through AiiDA, such as we will be doing with Quantum ESPRESSO's pw.x in this tutorial, we first need to set it up.
+Each code needs to be associated with a computer on which it can run, therefore we first need to configure a computer.
+For the purposes of this tutorial, we are going to run the calculations on the local machine, also referred to as "localhost".
+
+A computer is setup with the command ``verdi computer setup``.
+Just as you have seen when :ref:`setting up a profile<setup_verdi_quicksetup>`, this command will interactively ask you for the information it needs.
+We don't want to focus here on the details of setting up a computer, so we will use the ``--config`` option of the command.
+This allows you to configure a computer from a ``.yml`` file.
+For the virtual machine, we have already prepared this configuration file that you can :download:`download here <include/configuration/computer.yml>` and it should contain:
+
+.. literalinclude:: include/configuration/computer.yml
+    :language: yaml
+
+.. warning::
+
+    The contents of this configuration file will most likely only work for the virtual machine that comes with this tutorial.
+    If you are following this tutorial on your own AiiDA installation, you will have to adapt it yourself.
+    Instructions on how to do this are explained in :ref:`this appendix<appendix_computer_code_setup>`.
+
+You can of course also manually copy and paste the content above in a file named ``computer.yml``.
+After you have created or downloaded the file to your local working environment, call the command:
+
+.. code:: console
+
+    verdi computer setup --config computer.yml
+
+If everything worked correctly, you should now be able to see this computer by calling:
+
+.. code:: console
+
+    verdi computer list
+
+Before the computer can actually be used, we need to actually configure it for a specific user, which allows to connect to that computer.
+Imagine for example that you setup a remote cluster that needs to be accessed over SSH with certain credentials.
+To configure a computer, execute the command:
+
+.. code:: console
+
+    verdi computer configure local <COMPUTER>
+
+replacing ``<COMPUTER>`` with the name of the computer you want to configure, for example ``localhost``.
+This will interactively ask for the configuration details, which for a computer using local transport, such as the localhost, is just the one.
+
+.. note::
+
+    The command we use here is ``verdi computer configure local`` because the ``localhost`` was configured to use ``local`` transport.
+    If you create a computer that requires ``ssh`` transport, the command to configure connection details would be ``verdi computer configure ssh``.
+
+Now that we have our localhost set up, we can configure the ``pw.x`` executable that we will be running.
+As with the computer, for the virtual machine that comes with the tutorial, you can download the configuration file :download:`here <include/configuration/computer.yml>` and it should contain:
+
+.. literalinclude:: include/configuration/code.yml
+    :language: yaml
+
+.. warning::
+
+    The contents of this configuration file will most likely only work for the virtual machine that comes with this tutorial.
+    If you are following this tutorial on your own AiiDA installation, you will have to adapt it yourself.
+    Instructions on how to do this are explained in :ref:`this appendix<appendix_computer_code_setup>`.
+    In addition, you will need a compiled version of Quantum ESPRESSO on your computer.
+
+After you have created or downloaded the file to your local working environment, call the command:
+
+.. code:: console
+
+    verdi code setup --config code.yml
+
+Similar to the computers, you can list all the configured codes with:
+
+.. code:: console
+
+    verdi code list
+
+Verify that it now contains a code named ``qe-6.3-pw`` that we just configured.
+If you want to see the configuration details, you can call:
+
+.. code:: console
+
+    verdi code show
 
 The AiiDA daemon
 ----------------
 
-First of all, check that the AiiDA daemon is actually running. The AiiDA
-daemon is a program that
+First of all, check that the AiiDA daemon is actually running.
+The AiiDA daemon is a program that
 
  * runs continuously in the background
- * waits for new calculations to be submitted 
- * transfers the inputs of new calculations to your compute resource 
+ * waits for new calculations to be submitted
+ * transfers the inputs of new calculations to your compute resource
  * checks the status of your calculation at the compute resource, and
  * retrieves the results from the compute resource
 
@@ -68,7 +144,7 @@ copying them into a python script ``test_pw.py``.
     You can also make those available to a python script, by running it using
 
     .. code:: console
-    
+
         verdi run <scriptname>
 
 
@@ -95,7 +171,7 @@ Pick the correct codename, that might look like, e.g.
 
 .. note::
 
-   ``load_code`` returns an object of type ``Code``, which is the general AiiDA class for describing simulation codes. 
+   ``load_code`` returns an object of type ``Code``, which is the general AiiDA class for describing simulation codes.
 
 Let's build the inputs for a new ``PwCalculation`` (defined by the ``quantumespresso.pw`` plugin, the default plugin for the code you chose before)
 
@@ -119,7 +195,7 @@ and whether the input is optional or required, use ``builder.structure??``.
 
 Now, specify the number of machines (a.k.a. cluster nodes)
 you are going to run on and the maximum time allowed for the
-calculation. 
+calculation.
 The general options grouped under ``builder.metadata.options`` are independent of
 the code or plugin, and will be passed to the scheduler that handles the
 queue on your compute resource .
@@ -152,9 +228,9 @@ and leave the input parameters as the last thing to setup.
   Use what you learned in the previous section to load the ``structure`` and ``kpoints`` inputs for your calculation:
 
     * Use a silicon crystal structure
-    * Define a ``2x2x2`` mesh of k-points. 
-      
-  Note: If you just copy and paste code that you executed previously, 
+    * Define a ``2x2x2`` mesh of k-points.
+
+  Note: If you just copy and paste code that you executed previously,
   this may result in duplication of information on your database.
   In fact, you can re-use an existing structure stored in your database [#f1]_. Use a combination of the bash command
   ``verdi data structure list`` and of the shell command ``load_node()``
@@ -171,7 +247,7 @@ attach it to the calculation:
     builder.structure = structure
     builder.kpoints = kpoints
 
-.. note:: 
+.. note::
 
   The builder accepts both *stored* and *unstored* data nodes.
   AiiDA will take care of storing the unstored nodes upon submission.
@@ -232,9 +308,9 @@ This dictionary is almost a valid input for the Quantum ESPRESSO plugin,
 except for an invalid key ``mickeymouse``. When Quantum ESPRESSO
 receives an unrecognized key, it will stop.
 By default, the AiiDA plugin will *not* validate your input and simply pass
-it on to the code. 
+it on to the code.
 
-Let’s wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node and see what happens.
+Let's wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node and see what happens.
 
 .. code:: python
 
@@ -243,14 +319,14 @@ Let’s wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node
 Simulate submission
 ~~~~~~~~~~~~~~~~~~~
 
-At this stage, you have created in memory (it’s not yet stored in the
+At this stage, you have created in memory (it's not yet stored in the
 database) the input of the graph shown below. The outputs will
 be created by the daemon later on.
 
 .. figure:: include/images/verdi_graph/si/graph-full.png
    :alt:
 
-In order to check which input files AiiDA creates, 
+In order to check which input files AiiDA creates,
 we can perform a *dry run* of the submission process.
 Let's tell the builder that we want a dry run and that
 we don't want to store the provenance of the dry run:
@@ -284,9 +360,9 @@ current directory. In your second terminal:
  * open the input file ``aiida.in`` within this folder
  * compare it to input data nodes you created earlier
  * verify that the `pseudo` folder contains the needed pseudopotentials
- * have a look at the submission script ``_aiidasubmit.sh`` 
-   
-.. note:: 
+ * have a look at the submission script ``_aiidasubmit.sh``
+
+.. note::
 
    The files created by a dry run are only intended for  inspection
    and cannot be used to correct the inputs of your calculation.
@@ -295,7 +371,7 @@ Storing and submitting the calculation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Up to now we've just been playing around and our calculation has been kept
-in memory and not in the database. 
+in memory and not in the database.
 Now that we have inspected the input files and convinced ourselves that
 Quantum ESPRESSO will have all the information it needs to perform the
 calculation, we will submit the calculation properly.
@@ -316,7 +392,7 @@ And then rely on the submit machinery of AiiDA,
     from aiida.engine import submit
     calculation = submit(builder)
 
-As soon as you have executed these lines, the ``calculation`` variable contains a ``PwCalculation`` instance, already submitted to the daemon. 
+As soon as you have executed these lines, the ``calculation`` variable contains a ``PwCalculation`` instance, already submitted to the daemon.
 
 .. note::
 
@@ -338,7 +414,7 @@ The calculation is now stored in the database and was assigned a "database prima
 See the :ref:`previous section <2019-aiida-identifiers>` for more details on these identifiers.
 
 Note that while AiiDA will prevent you from changing the content of stored nodes,
-the concept of "extras" allows you to set extra attributes, e.g. as a way of 
+the concept of "extras" allows you to set extra attributes, e.g. as a way of
 labelling nodes and providing information for querying.
 
 For example, let's add an extra attribute called ``element``, with value ``Si``:
@@ -372,7 +448,7 @@ You can check the calculation status from the command line:
    Since you are running your DFT calculation directly on the VM,
    ``verdi`` commands can be a bit slow until the calculation finishes.
 
-If you don’t see any calculation in the
+If you don't see any calculation in the
 output, the calculation you submitted has already finished.
 
 By default, the command only prints calculations that are still active [#f2]_.
@@ -430,7 +506,7 @@ PWscf.
 This might be enough to understand the reason why the calculation
 failed.
 
-AiiDA provides further tools for troubleshooting in a more compact way. 
+AiiDA provides further tools for troubleshooting in a more compact way.
 For any calculation, both successful and failed, you can get a summary by:
 
 .. code:: console
@@ -519,7 +595,7 @@ Besides writing input files, running the software for you, storing the output
 files, and connecting it all together in your provenance graph,
 many AiiDA plugins will parse the output of your code and make output values
 of interest available through an output dictionary node (as depicted in the
-graph above). 
+graph above).
 In the case of the ``aiida-quantumespresso`` plugin this output node
 is available at ``calculation.outputs.output_parameters`` and you can access
 all the available attributes (not only the energy) using:
