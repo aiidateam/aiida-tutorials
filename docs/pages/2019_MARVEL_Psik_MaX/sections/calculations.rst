@@ -14,7 +14,7 @@ Computer setup
 --------------
 
 In a production environment, AiiDA would typically be running on your work station or laptop, while launching calculations
-on remote high-performance compute resources that you have SSH access to.
+on some remote high-performance compute resource that you have SSH access to.
 For this reason AiiDA has the concept of a ``Computer`` to run calculations on.
 
 To keep things simple, Quantum ESPRESSO (together with several other *ab initio* codes) has been installed directly in the
@@ -26,7 +26,7 @@ Nevertheless, we're now going to set up this computer for launching calculations
 
     verdi computer setup --config computer.yml
 
-where ``computer.yml`` is a configuration file in the `YAML format <https://en.wikipedia.org/wiki/YAML#Syntax>`_)  that you can :download:`download here <include/configuration/computer.yml>`. This is its content:
+where ``computer.yml`` is a configuration file in the `YAML format <https://en.wikipedia.org/wiki/YAML#Syntax>`_)  that you can :download:`download here <include/configuration/computer.yml>`. This are its contents:
 
 .. literalinclude:: include/configuration/computer.yml
 
@@ -44,16 +44,8 @@ For ``local`` computers, this is just a "formality" (press enter to confirm the 
 
     verdi computer configure local localhost
 
-.. note::
 
-   For remote computers with ``ssh`` transport, use ``verdi computer configure ssh`` instead of ``verdi computer configure local``.
-
-Your ``localhost`` computer should now show up in 
-
-.. code:: console
-
-   verdi computer list
-
+Your ``localhost`` computer should now show up in ``verdi computer list``.
 Before proceeding, test that it works:
 
 .. code:: console
