@@ -44,7 +44,7 @@ For ``local`` computers, this is just a "formality" (press enter to confirm the 
 
     verdi computer configure local localhost
 
-.. note:: console
+.. note::
 
    For remote computers with ``ssh`` transport, use ``verdi computer configure ssh`` instead of ``verdi computer configure local``.
 
