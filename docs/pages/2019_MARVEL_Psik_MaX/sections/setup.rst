@@ -52,6 +52,7 @@ After that ssh key is in place, you can add the following block your
          ForwardX11 yes
          ForwardX11Trusted yes
          LocalForward 8888 localhost:8888
+         LocalForward 5000 localhost:5000
 
 Afterwards you can connect to the server using this simple command:
 
@@ -87,30 +88,36 @@ If you're running Windows 10, you may want to consider `installing the Windows S
 
 -  Install the `PuTTY SSH client <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`_.
 
--  Run PuTTYGen, load the ``aiida_tutorial_NN`` private key (button
-   ``"Load"``). You may need to choose to show “All files (\*.\*)”,
-   and select the file without any extension (Type: File).
+-  Run PuTTYGen
 
--  In the same window, click on “Save private Key”, and save the key
-   with the name ``aiida_tutorial_NN.ppk``.
+   -  Load the ``aiida_tutorial_NN`` private key (button
+      "Load"). You may need to choose to show "All files (*.*)",
+      and select the file without any extension (Type: File).
+   -  In the same window, click on "Save private Key", and save the key
+      with the name ``aiida_tutorial_NN.ppk`` (don't specify a password).
 
--  Run Pageant: it will add a new icon near the clock, in the bottom
-   right of your screen.
+-  Run Pageant
 
--  Right click on this Pageant icon, and click on “View Keys”.
+   -  It will add a new icon near the clock, in the bottom right of your screen.
+   -  Right click on this Pageant icon, and click on “View Keys”.
+   -  Click on "Add key" and select the ``aiida_tutorial_NN.ppk`` you saved a few steps above.
 
--  Click on ``"Add key"`` and select the ``aiida_tutorial_NN.ppk`` you
-   saved a few steps above.
+-  Run PuTTY
 
--  Run PuTTY, put the given IP address as hostname. Write
-   ``aiidatutorial`` in Saved Sessions and click ``Save``. Go to
-   Connection Data and put ``aiida`` as autologin username. Under
-   Connection, go to SSH Tunnels, type ``8888`` in the
-   ``Source Port`` box and ``localhost:8888`` in ``Destination`` and
-   click ``Add``. Click on ``Save`` again on the Session screen.
+   -  Put the given IP address as hostname, type ``aiidatutorial`` in "Saved Sessions"
+      and click "Save". 
+   -  Go to Connection > Data and put ``max`` as autologin username. 
+   -  Go to Connection > SSH > Tunnels, type ``8888`` in the
+      "Source Port" box, type ``localhost:8888`` in "Destination" and click "Add". 
+   -  Repeat the previous step for port ``5000`` instead of ``8888``.
+   -  Go back to the "Session" screen, select "aiidatutorial" and click "Save"
+   -  Finally, click "Open" (and click "Yes" on the putty security alert
+      to add the VM to your known hosts).
+      You should be redirected to a bash terminal on the virtual machine.
 
--  Now select ``aiidatutorial`` from the session list, click ``Load``
-   and, finally, ``open``.
+.. note::
+    Next time you open PuTTY, select ``aiidatutorial`` and click "Load"
+    before clicking "Open".
 
 
 In order to enable X-forwarding:

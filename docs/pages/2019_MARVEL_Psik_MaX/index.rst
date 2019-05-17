@@ -43,6 +43,7 @@ Appendices
    :maxdepth: 1
    :numbered:
 
+   ./sections/appendix_computer_code_setup
    ./sections/appendix_input_validation
    ./sections/appendix_restarting_calculations
    ./sections/appendix_queries
