@@ -40,10 +40,8 @@ dedicated to your ssh configuration, to do so:
    ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
    that the permissions of this file are now ``-rw-------``.
 
-After that ssh key is in place, you can go two routes, editing one
-configuration file, which is a nice trick to have up your sleve, or pasting a
-long command in your terminal, which is convenient. If you prefer the
-configuration route add the following block your ``~/.ssh/config`` file:
+After that ssh key is in place, you can add the following block your
+``~/.ssh/config`` file:
 
 .. code::
 
@@ -61,19 +59,21 @@ Afterwards you can connect to the server using this simple command:
 
      ssh aiidatutorial
 
-If you prefer to use the copy-paste ready command, skip the configuration
-block and use the following command:
-
-.. code:: console
-
-     ssh \
-         -i ~/.ssh/aiida-tutorial-max.pem \
-         -L 8888:localhost:8888 \
-         -X -C \
-         max@IP_ADDRESS
-
 replacingthe IP address (``IP_ADDRESS``) and the ``NUM`` in either option by
 the one you received.
+
+.. note::
+
+   Here's a copy-paste ready command for you to use directly with zero
+   configuration [1]_ [2]_
+
+   .. code:: console
+
+      ssh \
+            -i ~/.ssh/aiida-tutorial-max.pem \
+            -L 8888:localhost:8888 \
+            -X -C \
+            max@IP_ADDRESS
 
 .. note::
 
@@ -198,3 +198,6 @@ Please consider:
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
  * asking your neighbor
  * asking a tutor
+
+.. [1] In software development zero config build tools are on the rise for instance `parseljs <https://parceljs.org/>`_
+.. [2] In networking the concept is pretty dated already `Zero-configuration networking <https://en.wikipedia.org/wiki/Zero-configuration_networking>`_
