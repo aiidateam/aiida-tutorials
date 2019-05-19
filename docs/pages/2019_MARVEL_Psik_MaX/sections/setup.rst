@@ -43,7 +43,7 @@ dedicated to your ssh configuration, to do so:
 After that ssh key is in place, you can add the following block your
 ``~/.ssh/config`` file:
 
-.. code::
+   .. code:: bash
 
      Host aiidatutorial
          Hostname IP_ADDRESS
@@ -54,14 +54,14 @@ After that ssh key is in place, you can add the following block your
          LocalForward 8888 localhost:8888
          LocalForward 5000 localhost:5000
 
+replacing the IP address (``IP_ADDRESS``) and the ``NUM`` by
+the one you received.
+
 Afterwards you can connect to the server using this simple command:
 
 .. code:: console
 
      ssh aiidatutorial
-
-replacing the IP address (``IP_ADDRESS``) and the ``NUM`` by
-the one you received.
 
 .. note::
 
@@ -134,14 +134,14 @@ Start jupyter
 
 Once connected to your virtual machine, type in the remote terminal
 
-.. code:: console
+.. code:: bash
 
      workon aiida
 
 This will enable the virtual environment in which AiiDA is installed,
 allowing you to use AiiDA. Now type in the same shell:
 
-.. code:: console
+.. code:: bash
 
      jupyter notebook --no-browser
 
