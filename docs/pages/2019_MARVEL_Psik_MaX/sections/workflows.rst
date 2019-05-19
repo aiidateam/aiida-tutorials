@@ -141,7 +141,7 @@ For instance, you can check that the output links of ``initial_structure`` are t
 
 which outputs
 
-.. code:: console
+.. code:: bash
 
     [<CalcFunctionNode: uuid: 9bc5e0f5-fbe4-4fad-a0d1-cf5893dac132 (pk: 437) (abc.rescale)>,
      <CalcFunctionNode: uuid: 338858ce-779b-455a-8fad-6ac71ba0d1e3 (pk: 434) (abc.rescale)>,
@@ -158,7 +158,7 @@ and the inputs of each ``CalcFunctionNode`` 'rescale' are obtained with:
 
 that will return
 
-.. code:: console
+.. code:: bash
 
     [<StructureData: uuid: 65f50f4c-9925-4362-9c6e-f82eea83f6ce (pk: 423)>, <Float: uuid: 2adb3204-4686-4f6f-a1f5-dc2df7d4aff7 (pk: 436) value: 1.2>]
     [<StructureData: uuid: 65f50f4c-9925-4362-9c6e-f82eea83f6ce (pk: 423)>, <Float: uuid: 047406f8-c72c-4e7f-8fb2-947b81a60652 (pk: 433) value: 1.1>]
@@ -314,7 +314,7 @@ To do so, instead of simply calling the work function to run it, use the attribu
 
 Run the workflow:
 
-.. code:: console
+.. code:: bash
 
     verdi run simple_sync_workflow.py
 

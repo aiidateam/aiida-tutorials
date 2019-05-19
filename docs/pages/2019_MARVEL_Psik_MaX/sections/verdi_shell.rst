@@ -6,7 +6,7 @@ basic AiiDA classes already loaded. We propose two realizations of such a
 tool. The first consists of a special IPython shell where all the AiiDA
 classes, methods and functions are accessible. Type in the terminal
 
-.. code:: console
+.. code:: bash
 
     verdi shell
 
@@ -51,7 +51,7 @@ green background, like:
 while command-line instructions in ``bash`` to be typed into a terminal will
 be written with a blue background:
 
-.. code:: console
+.. code:: bash
 
     some bash command
 
@@ -396,7 +396,7 @@ pseudo per element. We will see how to work with UPF pseudopotentials (the
 format used by Quantum ESPRESSO and some other codes). Download and untar the
 SSSP pseudopotentials via the commands:
 
-.. code:: console
+.. code:: bash
 
     wget https://archive.materialscloud.org/file/2018.0001/v1/SSSP_efficiency_pseudos.tar.gz
     tar -zxvf SSSP_efficiency_pseudos.tar.gz
@@ -404,7 +404,7 @@ SSSP pseudopotentials via the commands:
 Then you can upload the whole set of pseudopotentials to AiiDA by using the
 following ``verdi`` command:
 
-.. code:: console
+.. code:: bash
 
     verdi data upf uploadfamily SSSP_efficiency_pseudos 'SSSP' 'SSSP pseudopotential library'
 
@@ -413,7 +413,7 @@ pseudopotentials, ``'SSSP'`` is the name given to the family, and the last argum
 is its description. Finally, you can list all the pseudo families present in
 the database with
 
-.. code:: console
+.. code:: bash
 
     verdi data upf listfamilies
 

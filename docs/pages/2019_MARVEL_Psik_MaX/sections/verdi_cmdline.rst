@@ -8,7 +8,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
  * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag, e.g.:
 
-   .. code:: console
+   .. code:: bash
 
        verdi quicksetup -h
 
@@ -26,7 +26,7 @@ Typically, you would be using one profile per independent research project.
 The easiest way of setting up a new profile is through ``verdi quicksetup``.
 Let's set up a new profile that we will use throughout this tutorial:
 
-.. code:: console
+.. code:: bash
 
     verdi quicksetup
 
@@ -44,7 +44,7 @@ with the required database and repository.
 
 To see this profile, and any others that may have been configured, run:
 
-.. code:: console
+.. code:: bash
 
     verdi profile list
 
@@ -62,7 +62,7 @@ The one marked with an asterisk is the "default" profile, meaning that any ``ver
 
 Let's change the default profile to the newly created ``quicksetup`` for the rest of the tutorial:
 
-.. code:: console
+.. code:: bash
 
     verdi profile setdefault quicksetup
 
@@ -80,7 +80,7 @@ Importing data
 Before we start running calculations ourselves, we are going to look at an AiiDA database already created by someone else.
 Let's import one from the web:
 
-.. code:: console
+.. code:: bash
 
     verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2019_05_perovskites_v0.2.aiida
 
@@ -130,13 +130,13 @@ While PKs are often shorter than UUIDs and can be easier to remember, they are o
 For the remainder of this section, fields enclosed in angular brackets, such as ``<IDENTIFIER>``, are placeholders that you should replace before executing the command.
 With that in mind, let's generate a graph for the calculation node with UUID ``ce81c420-7751-48f6-af8e-eb7c6a30cec3``:
 
-.. code:: console
+.. code:: bash
 
     verdi graph generate <IDENTIFIER>
 
 This command will create the file ``<PK>.dot`` that can be rendered by means of the utility ``dot`` as follows:
 
-.. code:: console
+.. code:: bash
 
     dot -Tpdf -o <PK>.pdf <PK>.dot
 
@@ -146,7 +146,7 @@ which will create a pdf file ``<PK>.pdf``.
 You can open this file on the Amazon machine by using ``evince`` or, if the ssh connection is too slow, copy it via ``scp`` to your local machine.
 To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
 
-.. code:: console
+.. code:: bash
 
     scp aiidatutorial:<path_with_the_graph_pdf> <local_folder>
 
@@ -164,7 +164,7 @@ Cloud <https://www.materialscloud.org>`__.
 
 In order to use it, we first need to start the `AiiDA REST API <https://aiida-core.readthedocs.io/en/latest/restapi/index.html>`_:
 
-.. code:: console
+.. code:: bash
 
     verdi restapi
      * Serving Flask app "aiida.restapi.run_api" (lazy loading)
@@ -216,7 +216,7 @@ Processes
 Anything that 'runs' in AiiDA, be it calculations or workflows, is considered a ``Process``.
 To get a list of currently running processes, use:
 
-.. code:: console
+.. code:: bash
 
     verdi process list
 
@@ -227,7 +227,7 @@ To get a list of currently running processes, use:
 
 which should be empty:
 
-.. code:: console
+.. code:: bash
 
     PK    Created    State    Process label    Process status
     ----  ---------  -------  ---------------  ----------------
@@ -238,13 +238,13 @@ which should be empty:
 
 Let's see whether there are any *finished* processes in the database by passing the ``-S/--process-state`` flag:
 
-.. code:: console
+.. code:: bash
 
     verdi process list -S finished
 
 This command will list all the processes that have a process state ``Finished`` and should look something like:
 
-.. code:: console
+.. code:: bash
 
     PK    Created    State           Process label    Process status
     ----  ---------  --------------  ---------------  ----------------
@@ -274,7 +274,7 @@ The `official documentation <https://aiida-core.readthedocs.io/en/latest/concept
 
 In order to list processes of *all* states, use the ``-a/--all`` flag:
 
-.. code:: console
+.. code:: bash
 
     verdi process list -a
 
@@ -283,7 +283,7 @@ As your database will grow, so will the output of this command.
 To limit the number of results, you can use the ``-p/--past-days <NUM>`` option, that will only show processes that were created ``NUM`` days ago.
 For example, this lists all processes launched since yesterday:
 
-.. code:: console
+.. code:: bash
 
     verdi process list -a -p1
 
@@ -294,13 +294,13 @@ For a more detailed list of properties, you can use ``verdi process show``, but 
 
 Let's revisit the process with the UUID ``ce81c420-7751-48f6-af8e-eb7c6a30cec3``, this time using the CLI:
 
-.. code:: console
+.. code:: bash
 
     verdi process show ce81c420-7751-48f6-af8e-eb7c6a30cec
 
 Producing the output:
 
-.. code:: console
+.. code:: bash
 
     Property       Value
     -------------  ------------------------------------
@@ -349,7 +349,7 @@ Dict and CalcJobNode
 Let's investigate some of the nodes appearing in the graph.
 Choose the node of the type ``Dict`` with input link name ``parameters`` and type in the terminal:
 
-.. code:: console
+.. code:: bash
 
     verdi data dict show <IDENTIFIER>
 
@@ -358,7 +358,7 @@ We will learn how to run queries later on in this tutorial.
 The command above will print the content dictionary, containing the parameters used to define the input file for the calculation.
 You can compare the dictionary with the content of the raw input file to Quantum ESPRESSO (that was generated by AiiDA) via the command:
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob inputcat <IDENTIFIER>
 
@@ -369,7 +369,7 @@ Even if you don't know the meaning of the input flags of a Quantum ESPRESSO calc
 The previous command just printed the content of the 'default' input file ``aiida.in``.
 To see a list of all the files used to run a calculation (input file, submission script, etc.) instead type:
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob inputls <IDENTIFIER>
 
@@ -377,7 +377,7 @@ Adding a ``--color`` flag allows you to easily distinguish files from folders by
 Once you know the name of the file you want to visualize, you can call the ``verdi calcjob inputcat [PATH]`` command specifying the path.
 For instance, to see the submission script, you can do:
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob inputcat <IDENTIFIER> _aiidasubmit.sh
 
@@ -390,7 +390,7 @@ Such objects can be inspected interactively by means of an atomic viewer such as
 AiiDA however supports several other viewers such as ``xcrysden``, ``jmol``, and ``vmd``.
 Type in the terminal:
 
-.. code:: console
+.. code:: bash
 
     verdi data structure show --format ase <IDENTIFIER>
 
@@ -412,7 +412,7 @@ This is achieved by typing in the terminal:
 You can open the generated ``xsf`` file and observe the cell and the coordinates.
 Then, you can then copy ``<IDENTIFIER>.xsf`` from the Amazon machine to your local one and then visualize it, e.g. with ``xcrysden`` (if you have it installed):
 
-.. code:: console
+.. code:: bash
 
     xcrysden --xsf <IDENTIFIER>.xsf
 
@@ -423,14 +423,14 @@ Let us focus now on the nodes of type ``Code``.
 A code represents (in the database) the actual executable used to run the calculation.
 Find the identifier of such a node in the graph and type:
 
-.. code:: console
+.. code:: bash
 
     verdi code show <IDENTIFIER>
 
 The command prints information on the plugin used to interface the code to AiiDA, the remote machine on which the code is executed, the path of its executable, etc.
 To show a list of all available codes type:
 
-.. code:: console
+.. code:: bash
 
     verdi code list
 
@@ -439,14 +439,14 @@ Now, among the entries of the output you should also find the code just shown.
 
 Similarly, the list of computers on which AiiDA can submit calculations is accessible by means of the command:
 
-.. code:: console
+.. code:: bash
 
     verdi computer list -a
 
 The ``-a`` flag shows all computers, also the one imported in your database but that you did not configure, i.e. to which you don't have access.
 Details about each computer can be obtained by the command:
 
-.. code:: console
+.. code:: bash
 
     verdi computer show <COMPUTERNAME>
 
@@ -458,14 +458,14 @@ Calculation results
 The results of a calculation can be accessed directly from the calculation node.
 Type in the terminal:
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob res <IDENTIFIER>
 
 which will print the output dictionary of the 'scalar' results parsed by AiiDA at the end of the calculation.
 Note that this is actually a shortcut for:
 
-.. code:: console
+.. code:: bash
 
     verdi data dict show <IDENTIFIER>
 
@@ -474,13 +474,13 @@ By looking at the output of the command, what is the Fermi energy of the calcula
 
 Similarly to what you did for the calculation inputs, you can access the output files via the commands:
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob outputls <IDENTIFIER>
 
 and
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob outputcat <IDENTIFIER>
 
@@ -502,13 +502,13 @@ The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the p
 AiiDA offers the possibility to attach comments to a any node, in order to be able to remember more easily its details.
 Node with UUID prefix ``ce81c420`` should have no comments, but you can add a very instructive one by typing in the terminal:
 
-.. code:: console
+.. code:: bash
 
     verdi comment add "vc-relax of a BaTiO3 done with QE pw.x" -N <IDENTIFIER>
 
 Now, if you ask for a list of all comments associated to that calculation by typing:
 
-.. code:: console
+.. code:: bash
 
     verdi comment show <IDENTIFIER>
 
@@ -522,14 +522,14 @@ In AiiDA, calculations (and more generally nodes) can be organized in groups, wh
 This allows you to have quick access to a whole set of calculations with no need for tedious browsing of the database or writing complex scripts for retrieving the desired nodes.
 Type in the terminal:
 
-.. code:: console
+.. code:: bash
 
     verdi group list
 
 to show a list of the groups that already exist in the database.
 Choose the PK of the group named ``tutorial_pbesol`` and look at the calculations that it contains by typing:
 
-.. code:: console
+.. code:: bash
 
     verdi group show <IDENTIFIER>
 
@@ -538,6 +538,6 @@ Among the rows printed by the last command you will be able to find the calculat
 
 If, instead, you want to know all the groups to which a specific node belongs, you can run:
 
-.. code:: console
+.. code:: bash
 
     verdi group list -N/--node <IDENTIFIER>
