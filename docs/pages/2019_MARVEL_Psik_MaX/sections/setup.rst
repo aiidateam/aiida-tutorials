@@ -60,7 +60,7 @@ Afterwards you can connect to the server using this simple command:
 
      ssh aiidatutorial
 
-replacingthe IP address (``IP_ADDRESS``) and the ``NUM`` in either option by
+replacing the IP address (``IP_ADDRESS``) and the ``NUM`` by
 the one you received.
 
 .. note::
