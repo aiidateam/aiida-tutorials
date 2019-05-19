@@ -66,7 +66,7 @@ the one you received.
 .. note::
 
    Here's a copy-paste ready command for you to use directly with zero
-   configuration [1]_ [2]_
+   configuration:
 
    .. code:: console
 
@@ -205,6 +205,3 @@ Please consider:
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
  * asking your neighbor
  * asking a tutor
-
-.. [1] In software development zero config build tools are on the rise for instance `parseljs <https://parceljs.org/>`_
-.. [2] In networking the concept is pretty dated already `Zero-configuration networking <https://en.wikipedia.org/wiki/Zero-configuration_networking>`_
