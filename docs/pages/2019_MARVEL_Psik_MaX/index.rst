@@ -1,22 +1,20 @@
-+-----------------+--------------------------------------------+
-| Prerequisite    | Version                                    |
-+=================+============================================+
-| Virtual Machine | `Quantum Mobile 19.05.0`_                  |
-+-----------------+--------------------------------------------+
-| python packages | `aiida-core 1.0.0b3`_, `aiidalab 19.04.2`_ |
-+-----------------+--------------------------------------------+
-| codes           | `Quantum Espresso 6.3`_                    |
-+-----------------+--------------------------------------------+
++-----------------+----------------------------------------------------------------------------+
+| Prerequisite    | Version                                                                    |
++=================+============================================================================+
+| Virtual Machine | `Quantum Mobile 19.05.0-tutorial`_                                         |
++-----------------+----------------------------------------------------------------------------+
+| python packages | `aiida-core 1.0.0b3`_, `aiida-quantumespresso 3.0.0a3`_, `aiidalab 19.05`_ |
++-----------------+----------------------------------------------------------------------------+
+| codes           | `Quantum Espresso 6.3`_                                                    |
++-----------------+----------------------------------------------------------------------------+
 
-.. _Quantum Mobile 19.05.0: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.05.0
+.. _Quantum Mobile 19.05.0-tutorial: https://github.com/marvel-nccr/quantum-mobile/releases/tag/tutorial-2019-05
 .. _aiida-core 1.0.0b3: https://pypi.org/project/aiida-core/1.0.0b3
-.. _aiidalab 19.04.2: https://pypi.org/project/aiidalab/19.4.2
+.. _aiida-quantumespresso 3.0.0a3: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0a3
+.. _aiidalab 19.05: https://github.com/aiidalab/aiidalab-metapkg/releases/tag/tutorial-2019-05
 .. _Quantum Espresso 6.3: https://github.com/QEF/q-e/releases/tag/qe-6.3
 
-These are the notes of the `AiiDA tutorial on writing reproducible workflows
-for computational materials science
-<http://www.aiida.net/tutorial-reproducible-workflows/>`__  (supported by MARVEL, Psi-k, MaX, swissuniversitites and INTERSECT) taking place from
-May 21-24, 2019 at EPF Lausanne, Switzerand.
+These are the notes of the `AiiDA tutorial on writing reproducible workflows for computational materials science <http://www.aiida.net/tutorial-reproducible-workflows/>`__  (supported by MARVEL, Psi-k, MaX, swissuniversitites and INTERSECT) taking place from May 21-24, 2019 at EPF Lausanne, Switzerland.
 
 Writing reproducible workflows for computational materials science
 ==================================================================
