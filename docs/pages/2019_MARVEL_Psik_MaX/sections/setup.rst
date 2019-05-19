@@ -73,6 +73,7 @@ the one you received.
       ssh \
             -i ~/.ssh/aiida-tutorial-max.pem \
             -L 8888:localhost:8888 \
+            -L 5000:localhost:5000 \
             -X -C \
             max@IP_ADDRESS
 
