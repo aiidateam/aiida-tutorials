@@ -8,9 +8,9 @@ Connect to your virtual machine
 
 You should each have received from the instructors:
 
--  an IP address
--  a private SSH key ``aiida_tutorial_NUM``
--  a public SSH key ``aiida_tutorial_NUM.pub``
+- an IP address
+- a private SSH key ``aiida_tutorial_NUM``
+- a public SSH key ``aiida_tutorial_NUM.pub``
 
 The steps below explain how to use these in order to connect to your
 personal virtual machine (VM) on Amazon Elastic Cloud 2
@@ -29,45 +29,57 @@ pre-configured AiiDA installation as well as some test data for the tutorial.
 Linux and MacOS
 ~~~~~~~~~~~~~~~
 
+It's recommended for you to place the ssh key you received in a folder
+dedicated to your ssh configuration, to do so:
+
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
-
 -  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub``
    in the ``~/.ssh`` directory
-
 -  Set the correct permissions on the private key:
-   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``.
-   You can check check with ``ls -l`` that the permissions of this file are now ``-rw-------``.
+   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
+   that the permissions of this file are now ``-rw-------``.
 
--  Create (or modify) the ``~/.ssh/config`` file, adding the following lines:
+After that ssh key is in place, you can add the following block your
+``~/.ssh/config`` file:
 
    .. code:: bash
 
-       Host aiidatutorial
+     Host aiidatutorial
          Hostname IP_ADDRESS
-         User aiida
+         User max
          IdentityFile ~/.ssh/aiida_tutorial_NUM
          ForwardX11 yes
          ForwardX11Trusted yes
          LocalForward 8888 localhost:8888
          LocalForward 5000 localhost:5000
 
-   where you replace ``IP_ADDRESS`` with the IP address provided to you.
+replacing the IP address (``IP_ADDRESS``) and the ``NUM`` by
+the one you received.
 
--  You should now be able to ``ssh`` to your virtual machine using simply
+Afterwards you can connect to the server using this simple command:
 
-   .. code:: bash
+.. code:: console
 
-         ssh -X -C aiidatutorial
-
-
-Connecting with ``-X`` (sometimes ``-Y`` is needed instead) allows you
-to run graphical programs such as ``xmgrace`` or ``gnuplot`` on the virtual machine,
-with SSH *forwarding* the graphical output to your computer (can be slow).
+     ssh aiidatutorial
 
 .. note::
 
-   On MacOS you may need to install `XQuartz <https://xquartz.macosforge.org/landing/>`_
+   Here's a copy-paste ready command for you to use directly with zero
+   configuration:
+
+   .. code:: console
+
+      ssh \
+            -i ~/.ssh/aiida-tutorial-max.pem \
+            -L 8888:localhost:8888 \
+            -L 5000:localhost:5000 \
+            -X -C \
+            max@IP_ADDRESS
+
+.. note::
+
+   On MacOS you need to install `XQuartz <https://xquartz.macosforge.org/landing/>`_
    in order to use X-forwarding.
 
 Windows
