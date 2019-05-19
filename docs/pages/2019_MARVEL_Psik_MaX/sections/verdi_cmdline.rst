@@ -1,18 +1,18 @@
 Verdi command line
 ==================
 
-This part of the tutorial will help to familiarize you with the command-line utility ``verdi``, one of the most common ways to interact with AiiDA.
-The ``verdi`` CLI tool, with its subcommands, enables a variety of operations, e.g. to manage your installation and inspect the contents of your database.
-Similar to the ``bash`` shell, the ``verdi`` command supports tab-completion.
-Try right now to type ``verdi``, followed by a space, in a terminal and tap the 'Tab' key twice.
-This should display a list of all the available sub commands.
-Whenever you want to see a detailed explanation of any command, simply add the ``--help/-h`` flag, e.g.:
+This part of the tutorial will familiarize you with the ``verdi`` command-line interface (CLI), 
+which lets you manage your AiiDA installation, inspect the contents of your database,  control running calculations and more.
 
-.. code:: console
+ * The ``verdi`` command supports **tab-completion**:
+   In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
+ * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag, e.g.:
 
-    verdi --help
+   .. code:: console
 
-For more detailed information about ``verdi``, you can refer to the `online documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html>`_.
+       verdi quicksetup -h
+
+More details on ``verdi`` can be found in the `online documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html>`_.
 
 
 .. _setup_verdi_quicksetup:
@@ -74,26 +74,147 @@ From now on, all ``verdi`` commands will apply to the ``quicksetup`` profile.
     For example, ``verdi -p generic profile show`` will display the configuration of the ``generic`` profile, despite it not being the current default profile.
 
 
-Importing some data
--------------------
+Importing data
+--------------
 
-Before we start creating data ourselves, we are going to look at an AiiDA database already created by someone else.
+Before we start running calculations ourselves, we are going to look at an AiiDA database already created by someone else.
 Let's import one from the web:
 
 .. code:: console
 
     verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2019_05_perovskites_v0.2.aiida
 
-Contrary to most databases, AiiDA databases contain not only results of calculations but also their inputs and information on how a particular result was obtained.
-This information (provenance) is stored in the form of a directed acyclic graph (DAG).
-In the following, we are going to introduce you to different ways of browsing this graph and ask you to find out some information regarding the database you just imported.
+Contrary to most databases, AiiDA databases contain not only *results* of calculations but also their inputs and information on how a particular result was obtained.
+This information, the *data provenance*, is stored in the form of a *directed acyclic graph* (DAG).
+In the following, we are going to introduce you to different ways of browsing this graph and will ask you to find out some information regarding the database you just imported.
+
+.. _aiidagraph:
+
+Your first AiiDA graph
+----------------------
+
+:numref:`fig_graph_input_only` shows a typcial example of a calculation represented in an AiiDA graph.
+Have a look to the figure and its caption before moving on.
+
+.. _fig_graph_input_only:
+.. figure:: include/images/verdi_graph/batio3/graph-input.png
+   :width: 100%
+
+   Graph with all inputs (data, circles; and code, diamond) to the Quantum ESPRESSO calculation (square) that you will create in the :ref:`calculations` section of this tutorial.
+
+.. _fig_graph:
+.. figure:: include/images/verdi_graph/batio3/graph-full.png
+   :width: 100%
+
+   Same as :numref:`fig_graph_input_only`, but also with the outputs that the engine will create and connect automatically.
+   The ``RemoteData`` node is created during submission and can be thought as a symbolic link to the remote folder in which the calculation runs on the cluster.
+   The other nodes are created when the calculation has finished, after retrieval and parsing.
+   The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
+   Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
+
+:numref:`fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the *identifier* of a calculation node to ``verdi graph generate <IDENTIFIER>``.
+Identifiers in AiiDA come in three forms:
+
+ * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
+ * `Universally Unique Identifier <https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)>`_ (UUID): A string, e.g. ``ce81c420-7751-48f6-af8e-eb7c6a30cec3`` that identifies your entity globally (automatically assigned)
+ * Label: A human-readable string, e.g. ``test_qe_calculation`` (manually assigned)
+
+Any ``verdi`` command that expects an identifier will accept a PK, a UUID or a label (although not all entities have a label by default).
+While PKs are often shorter than UUIDs and can be easier to remember, they are only unique within your database.
+**Whenever you intend to share your data with others, use UUIDs to refer to nodes.**
+
+.. note::
+    For UUIDs, it is sufficient to specify a subset (starting at the beginning) as long as it can already be uniquely resolved.
+    For more information on identifiers in ``verdi`` and AiiDA in general, see the `documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html#cli-identifiers>`_.
+
+For the remainder of this section, fields enclosed in angular brackets, such as ``<IDENTIFIER>``, are placeholders that you should replace before executing the command.
+With that in mind, let's generate a graph for the calculation node with UUID ``ce81c420-7751-48f6-af8e-eb7c6a30cec3``:
+
+.. code:: console
+
+    verdi graph generate <IDENTIFIER>
+
+This command will create the file ``<PK>.dot`` that can be rendered by means of the utility ``dot`` as follows:
+
+.. code:: console
+
+    dot -Tpdf -o <PK>.pdf <PK>.dot
+
+which will create a pdf file ``<PK>.pdf``.
 
 
-The list of processes
----------------------
+You can open this file on the Amazon machine by using ``evince`` or, if the ssh connection is too slow, copy it via ``scp`` to your local machine.
+To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
 
-Anything that 'runs' in AiiDA, be it calculations or workflows, are called processes.
-To find out about currently running processes or processes that have already finished, we can use the following command:
+.. code:: console
+
+    scp aiidatutorial:<path_with_the_graph_pdf> <local_folder>
+
+and then open the file.
+Alternatively, you can use graphical software to achieve the same, for instance: WinSCP on Windows, Cyberduck on the Mac, or the 'Connect to server' option in the main menu after clicking on the desktop for Ubuntu.
+
+
+The provenance browser
+----------------------
+
+While the ``verdi`` CLI provides full access to the data underlying the provenance graph (and we will return to it in :numref:`inspecting_nodes`),
+a more intuitive tool for browsing AiiDA graphs is the interactive
+provenance browser available on `Materials
+Cloud <https://www.materialscloud.org>`__.
+
+In order to use it, we first need to start the `AiiDA REST API <https://aiida-core.readthedocs.io/en/latest/restapi/index.html>`_:
+
+.. code:: console
+
+    verdi restapi
+     * Serving Flask app "aiida.restapi.run_api" (lazy loading)
+     * Environment: production
+       WARNING: Do not use the development server in a production environment.
+       Use a production WSGI server instead.
+     * Debug mode: off
+     * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+
+Now you can connect the provenance browser to your local REST API:
+
+-  Open the |provenance_browser| on your laptop
+-  In the form, paste the (local) URL ``http://127.0.0.1:5000/api/v3``
+   of our REST API 
+-  Click "GO!"
+
+.. |provenance_browser| raw:: html
+
+   <a href="https://dev-www.materialscloud.org/explore/connect" target="_blank">provenance explorer</a>
+
+Once the provenance browser javascript application has been loaded by your browser, it is communicating directly with the REST API and your data never leaves your computer.
+
+.. note::
+    In order for this to work on your laptop, while the REST API is running on the virtual machine, we've enabled SSH tunneling for port ``5000`` in :ref:`connect`.
+
+Start by clicking on the Details of a ``CalcJobNode`` and use the graph explorer to complete the exercise below.
+If you ever get lost, just go to the "Details" tab, enter ``ce81c420-7751-48f6-af8e-eb7c6a30cec3`` and click on the "GO" button.
+
+.. admonition:: Exercise
+
+   Use the provenance browser in order to figure out:
+
+   -  When was the calculation run and who run it?
+   -  Was it a serial or a parallel calculation? How many MPI processes were used?
+   -  What inputs did the calculation take?
+   -  What code was used and what was the name of the executable?
+   -  How many calculations were performed using this code?
+
+
+.. _inspecting_nodes:
+
+Inspecting the nodes of a graph
+-------------------------------
+
+
+Processes
+---------
+
+Anything that 'runs' in AiiDA, be it calculations or workflows, is considered a ``Process``.
+To get a list of currently running processes, use:
 
 .. code:: console
 
@@ -101,11 +222,10 @@ To find out about currently running processes or processes that have already fin
 
 .. note::
 
-    The first time you run this command, it might take a few seconds as it is the first time you are accessing the database in the virtual machine.
+    The first time you run this command, it might take a few seconds.
     Subsequent calls will be faster.
 
-This will print the list of currently active processes, which should be empty, because there should be no processes running.
-The first output line should look something like:
+which should be empty:
 
 .. code:: console
 
@@ -116,7 +236,7 @@ The first output line should look something like:
 
     Info: last time an entry changed state: never
 
-In order to print a list with all processes that have already finished, you can use the ``-S/--process-state`` flag as follows:
+Let's see whether there are any *finished* processes in the database by passing the ``-S/--process-state`` flag:
 
 .. code:: console
 
@@ -139,7 +259,7 @@ This command will list all the processes that have a process state ``Finished`` 
 
     Info: last time an entry changed state: never
 
-The 'Finished' state is not the only state that a process can have, but a process can have any of the following states:
+Processes can be in any of the following states:
 
     * ``Created``
     * ``Waiting``
@@ -171,37 +291,14 @@ For example, this lists all processes launched since yesterday:
 
 Each row of the output identifies a process with some basic information about its status.
 For a more detailed list of properties, you can use ``verdi process show``, but to address any specific process, you need an identifier for it.
-An identifier for any entity in AiiDA comes in three different forms:
 
- * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
- * `Universally Unique Identifier <https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)>`_ (UUID): A string, e.g. ``ce81c420-7751-48f6-af8e-eb7c6a30cec3`` that identifies your entity globally (automatically assigned)
- * Label: A string, e.g. ``test_process`` that allows you to assign a human readable label
-
-The first one, the PK or primary key, you have already seen in the first column of the output printed by ``verdi process list``.
-That is why, in addition to their PK, all AiiDA entities also have a UUID (Universal Unique Identifier), which as the name suggests, should be unique, `even across databases`, and will never change.
-That is to say, if you share some of your data with somebody else, the UUIDs will remain identical, unlike the PKs, which will most likely change.
-
-.. note::
-
-    Any ``verdi`` parameter that expects an identifier will accept either a PK, a UUID or a label, although, not all entities will have a label, as it is an optional field.
-    For a UUID you can even specify only a part of it, as long as it starts at the beginning and the partial can be uniquely resolved.
-    You may be wondering why AiiDA doesn't rely just on UUIDs.
-    Besides the historical fact that PKs came first, UUIDs need to encode more information in order to be universally unique.
-    While we recommend using UUIDs wherever they feel comfortable, PKs are shorter and can be easier to work with.
-    For more information on identifiers in ``verdi`` and AiiDA in general, refer to the `documentation online <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html#cli-identifiers>`_.
-
-Let's now consider the process with the UUID ``ce81c420-7751-48f6-af8e-eb7c6a30cec3``.
-Use this identifier to get more information about it:
+Let's revisit the process with the UUID ``ce81c420-7751-48f6-af8e-eb7c6a30cec3``, this time using the CLI:
 
 .. code:: console
 
-    verdi process show <IDENTIFIER>
+    verdi process show ce81c420-7751-48f6-af8e-eb7c6a30cec
 
-.. note::
-
-    For the remainder of this section, when commands are displayed, any fields enclosed in angular brackets, such as ``<IDENTIFIER>``, are placeholders to be replaced by the actual value of that field.
-
-Again, since the UUID is universally unique, we know what it represents, even in your database: a Quantum Espresso ``pw.x`` relaxation of a BaTiO\ :sub:`3` unit cell.
+Producing the output:
 
 .. code:: console
 
@@ -239,8 +336,6 @@ Again, since the UUID is universally unique, we know what it represents, even in
     remote_folder             357  RemoteData
     retrieved                  60  FolderData
 
-The output should show a overview with some general information about the process.
-Additionally, it will show what its inputs and outputs were and if it was called by another process, or if it called other processes itself.
 You can use the PKs shown for the inputs and outputs to get more information about those nodes.
 
 .. warning::
@@ -248,66 +343,10 @@ You can use the PKs shown for the inputs and outputs to get more information abo
     Since the inputs and outputs are ``Data`` nodes, not ``Process`` nodes, use ``verdi node show`` instead.
 
 
-.. _aiidagraph:
-
-A typical AiiDA graph
----------------------
-
-AiiDA stores inputs, used by a calculation, as well as the outputs it created, in the database.
-These objects are connected in a graph that looks like :numref:`fig_graph_input_only`.
-We suggest that you have a look to the figure before going ahead.
-
-.. _fig_graph_input_only:
-.. figure:: include/images/verdi_graph/batio3/graph-input.png
-   :width: 100%
-
-   Graph with all inputs (data, circles; and code, diamond) to the Quantum ESPRESSO calculation (square) that you will create in the :ref:`calculations` section of this tutorial.
-
-.. _fig_graph:
-.. figure:: include/images/verdi_graph/batio3/graph-full.png
-   :width: 100%
-
-   Same as :numref:`fig_graph_input_only`, but also with the outputs that the engine will create and connect automatically.
-   The ``RemoteData`` node is created during submission and can be thought as a symbolic link to the remote folder in which the calculation runs on the cluster.
-   The other nodes are created when the calculation has finished, after retrieval and parsing.
-   The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
-   Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
-
-You can create a similar graph for any calculation node by using the utility ``verdi graph generate <IDENTIFIER>``.
-For example, before you obtained information (in text form) for UUID ``ce81c420`` using the command ``verdi process show``.
-To visualize similar information in graph(ical) form, run the command:
-
-.. code:: console
-
-    verdi graph generate <IDENTIFIER>
-
-This command will create the file ``<PK>.dot`` that can be rendered by means of the utility ``dot`` as follows:
-
-.. code:: console
-
-    dot -Tpdf -o <PK>.pdf <PK>.dot
-
-you will create a pdf file ``<PK>.pdf``.
-You can open this file on the Amazon machine by using ``evince`` or, if you feel that the ssh connection is too slow, copy it via ``scp`` to your local machine.
-To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
-
-.. code:: console
-
-    scp aiidatutorial:<path_with_the_graph_pdf> <local_folder>
-
-and then open the file.
-Alternatively, you can use graphical software to achieve the same, for instance: WinSCP on Windows, Cyberduck on the Mac, or the 'Connect to server' option in the main menu after clicking on the desktop for Ubuntu.
-
-Spend some time to familiarize yourself with the graph structure.
-After that, you can continue to the next section where we will inspect the different elements of this graph.
-
-Inspecting the nodes of a graph
--------------------------------
-
 Dict and CalcJobNode
 ~~~~~~~~~~~~~~~~~~~~
 
-Now, let us have a closer look at the some of the nodes appearing in the graph.
+Let's investigate some of the nodes appearing in the graph.
 Choose the node of the type ``Dict`` with input link name ``parameters`` and type in the terminal:
 
 .. code:: console
