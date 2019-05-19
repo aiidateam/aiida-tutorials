@@ -22,7 +22,7 @@ To keep things simple, Quantum ESPRESSO (together with several other *ab initio*
 and you are going to launch your first calculations on the same computer where AiiDA is installed.
 Nevertheless, we're now going to set up this computer for launching calculations:
 
-.. code:: console
+.. code:: bash
 
     verdi computer setup --config computer.yml
 
@@ -40,7 +40,7 @@ Finally, you need to provide AiiDA with information on how to access the ``Compu
 For remote computers with ``ssh`` transport, this would involve e.g. an SSH key.
 For ``local`` computers, this is just a "formality" (press enter to confirm the default cooldown time):
 
-.. code:: console
+.. code:: bash
 
     verdi computer configure local localhost
 
@@ -50,13 +50,13 @@ For ``local`` computers, this is just a "formality" (press enter to confirm the 
 
 Your ``localhost`` computer should now show up in 
 
-.. code:: console
+.. code:: bash
 
    verdi computer list
 
 Before proceeding, test that it works:
 
-.. code:: console
+.. code:: bash
 
     verdi computer test localhost
 
@@ -73,7 +73,7 @@ This is its content:
 
 Once you have the configuration file in your local working environment, set up the code:
 
-.. code:: console
+.. code:: bash
 
     verdi code setup --config code.yml
 
@@ -85,14 +85,14 @@ Once you have the configuration file in your local working environment, set up t
 
 Similar to the computers, you can list all the configured codes with:
 
-.. code:: console
+.. code:: bash
 
     verdi code list
 
 Verify that it now contains a code named ``qe-6.3-pw`` that we just configured.
 You can always check the configuration details of an existing code using:
 
-.. code:: console
+.. code:: bash
 
     verdi code show qe-6.3-pw
 
@@ -116,13 +116,13 @@ The AiiDA daemon is a program that
 
 Check the status of the daemon process by typing in the terminal:
 
-.. code:: console
+.. code:: bash
 
     verdi daemon status
 
 If the daemon is running, the output should look like
 
-.. code:: console
+.. code:: bash
 
     Profile: default
     Daemon is running as PID 2050 since 2019-04-30 12:37:12
@@ -134,7 +134,7 @@ If the daemon is running, the output should look like
 
 If this is not the case, type in the terminal
 
-.. code:: console
+.. code:: bash
 
     verdi daemon start
 
@@ -152,7 +152,7 @@ copying them into a python script ``test_pw.py``.
     The ``verdi shell`` imports a number of AiiDA internals so that you as the user don't have to.
     You can also make those available to a python script, by running it using
 
-    .. code:: console
+    .. code:: bash
 
         verdi run <scriptname>
 
@@ -161,13 +161,13 @@ Every calculation sent to a cluster is linked to a *code*, which describes
 the executable file to be used as well as some metadata.
 Let's have a look at the codes already installed on your machine:
 
-.. code:: console
+.. code:: bash
 
     verdi code list
 
 There should be a number of them. Here, we're interested in the "PWscf" executable of Quantum Espresso, i.e. in codes for the ``quantumespresso.pw`` plugin:
 
-.. code:: console
+.. code:: bash
 
     verdi code list -P quantumespresso.pw
 
@@ -267,7 +267,7 @@ in the form of a dictionary, where keys are the names of the elements and the va
 However, instead of creating the dictionary by hand, we can use a helper function that picks the right pseudopotentials for our structure from a pseudopotential *family*.
 You can list the preconfigured families from the command line:
 
-.. code:: console
+.. code:: bash
 
     verdi data upf listfamilies
 
@@ -448,7 +448,7 @@ Checking the status of the calculation
 
 You can check the calculation status from the command line:
 
-.. code:: console
+.. code:: bash
 
     verdi process list
 
@@ -464,7 +464,7 @@ By default, the command only prints calculations that are still active [#f2]_.
 Let's also list your finished calculations (and limit those only
 to the one created in the past day):
 
-.. code:: console
+.. code:: bash
 
     verdi process list -a -p1
 
@@ -473,7 +473,7 @@ as explained in the first section.
 Similar to the dry run, we can also inspect the input files of the *actual*
 calculation:
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob inputls <pk_number> -c
 
@@ -481,7 +481,7 @@ for the ``pk_number`` of your calculation. This will show the
 contents of the input directory (``-c`` prints directories in color).
 Check the content of input files with
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob inputcat <pk_number> | less
 
@@ -492,7 +492,7 @@ Your calculation should end up in a FAILED state
 (last column of ``verdi process list -a -p1``), and correspondingly the
 error code near the "Finished" status of the State should be non-zero,
 
-.. code:: console
+.. code:: bash
 
     $ verdi process list -a -p1
       PK  Created    State             Process label    Process status
@@ -508,7 +508,7 @@ tools to trace back to the source of the problem and correct it.
 A first way to proceed is to inspect the output file of
 PWscf.
 
-.. code:: console
+.. code:: bash
 
     verdi calcjob outputcat <pk_number> | less
 
@@ -518,7 +518,7 @@ failed.
 AiiDA provides further tools for troubleshooting in a more compact way.
 For any calculation, both successful and failed, you can get a summary by:
 
-.. code:: console
+.. code:: bash
 
     $ verdi process show <pk_number>
     Property       Value
@@ -581,7 +581,7 @@ key and see if our calculation succeeds:
 If you have been using the separate script approach, modify
 the script to remove the faulty input and run it again with:
 
-.. code:: console
+.. code:: bash
 
     verdi run test_pw.py
 

@@ -41,7 +41,7 @@ Linux and MacOS
 
 -  Create (or modify) the ``~/.ssh/config`` file, adding the following lines:
 
-   .. code:: console
+   .. code:: bash
 
        Host aiidatutorial
          Hostname IP_ADDRESS
@@ -56,7 +56,7 @@ Linux and MacOS
 
 -  You should now be able to ``ssh`` to your virtual machine using simply
 
-   .. code:: console
+   .. code:: bash
 
          ssh -X -C aiidatutorial
 
@@ -122,14 +122,14 @@ Start jupyter
 
 Once connected to your virtual machine, type in the remote terminal
 
-.. code:: console
+.. code:: bash
 
      workon aiida
 
 This will enable the virtual environment in which AiiDA is installed,
 allowing you to use AiiDA. Now type in the same shell:
 
-.. code:: console
+.. code:: bash
 
      jupyter notebook --no-browser
 
