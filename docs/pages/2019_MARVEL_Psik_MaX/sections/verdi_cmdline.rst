@@ -404,9 +404,10 @@ You should be able to rotate the view with the right mouse button.
 Alternatively, especially if showing them interactively is too slow over SSH, you can export the content of a structure node in various popular formats such as ``xyz`` or ``xsf``.
 This is achieved by typing in the terminal:
 
-.. code:: console
+.. code:: bash
 
-    verdi data structure export --format xsf <IDENTIFIER> > <IDENTIFIER>.xsf
+    # verdi data structure export --format xsf <IDENTIFIER> > <IDENTIFIER>.xsf
+    verdi data structure export --format xsf 254e5a86 > 254e5a86.xsf
 
 You can open the generated ``xsf`` file and observe the cell and the coordinates.
 Then, you can then copy ``<IDENTIFIER>.xsf`` from the Amazon machine to your local one and then visualize it, e.g. with ``xcrysden`` (if you have it installed):
