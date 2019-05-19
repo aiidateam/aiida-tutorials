@@ -8,6 +8,7 @@ interactive demos and videos.
    :maxdepth: 1
    :caption: Tutorial materials
 
+   aiida-core 1.0.0b3 (2019, EPFL, Switzerland)<./pages/2019_MARVEL_Psik_MaX/index>
    aiida-core 0.12.2 (2019, University of Amsterdam, Netherlands)<./pages/2019_molsim_school_Amsterdam/index>
    aiida-core 1.0.0a1 (2018, Cineca, Italy)<./pages/2018_PRACE_MaX/index>
    aiida-core 0.11.4 (2018, EPFL, Switzerland)<./pages/2018_EPFL_molsim/index>
@@ -27,6 +28,7 @@ interactive demos and videos.
    :maxdepth: 1
    :caption: Videos
 
+   aiida-core 1.0.0b2 (plugin migration lectures) <https://www.youtube.com/playlist?list=PL19kfLn4sO_9laPkLBdv935PquRxX8dCc>
    aiida-core 0.9.0 (lectures) <https://www.youtube.com/watch?v=qUNYEWClS2U&list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR>
    aiida-core 0.8.0 (short videos) <https://www.youtube.com/playlist?list=PL19kfLn4sO_-XDUeXu5jwUq9k7TId8mM0>
    aiida-core 0.6.0 (lectures) <https://www.youtube.com/watch?v=qUNYEWClS2U&list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR&index=4>

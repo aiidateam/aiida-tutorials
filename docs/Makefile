@@ -1,5 +1,4 @@
 # Makefile for Sphinx documentation
-#
 
 # You can set these variables from the command line.
 #SPHINXOPTS    =
@@ -14,16 +13,38 @@ ALLSPHINXOPTS   = -d $(BUILDDIR)/doctrees $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 # the i18n builder cannot share the environment and doctrees with the others
 I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 
-.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext all default
+# Note: if you don't want to directly include the solutions in the HTML documentation
+# but just make it downloadable, remember to add the path to the `exclude_patterns`
+# in the `conf.py` file
+IPYNB_TEMPATE_PATTERNS = $(patsubst %-template.ipynb, %-tutorial.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.ipynb)) $(patsubst %-template.ipynb, %-solutions.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.ipynb))
 
-default:
+.PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext all default defaultdoc templatenotebooks cleannotebooks pre-docs
+
+# First make notebooks, then docs
+default: pre-docs defaultdoc
+
+# Everything needed before compiling the docs
+# This is automatically taken into account above by the 'default' target,
+# that since it is the first one, it will be run when executing 'make' without
+# parameters. However, this must also be called "by hand" in Travis
+pre-docs: templatenotebooks
+
+templatenotebooks: $(IPYNB_TEMPATE_PATTERNS)
+
+%-tutorial.ipynb: %-template.ipynb
+	python scripts/make_notebook.py -t $@ $<
+
+%-solutions.ipynb: %-template.ipynb
+	python scripts/make_notebook.py -s $@ $<
+
+cleannotebooks:
+	rm -f $(IPYNB_TEMPATE_PATTERNS)
+
+# -W: exit on warning
+defaultdoc:
 	$(SPHINXBUILD) -b html -nW $(ALLSPHINXOPTS) $(BUILDDIR)/html
 
-# Same as 'default' but does not exit at the first warning
-debug:
-	$(SPHINXBUILD) -b html -n $(ALLSPHINXOPTS) $(BUILDDIR)/html
-
-all: html
+all: html latexpdf
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -47,7 +68,7 @@ help:
 	@echo "  linkcheck  to check all external links for integrity"
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
-clean:
+clean: cleannotebooks
 	-rm -rf $(BUILDDIR)
 
 html:

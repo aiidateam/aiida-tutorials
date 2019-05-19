@@ -32,8 +32,8 @@ verdi daemon start
 
 to start the daemon.
 
-Creating a new calculation[sec:create<sub>c</sub>alc]
------------------------------------------------------
+Creating a new calculation
+--------------------------
 
 To launch a calculation, you will need to interact with AiiDA mainly in the `verdi shell`. We strongly suggest you to first try the commands in the shell, and then copy them in a script “test\_pw.py” using a text editor. This will be very useful for later execution of a similar series of commands.
 
@@ -131,7 +131,7 @@ Pick the one you configured earlier or one of the `SSSP` families that we provid
 
 ### Preparing and debugging input parameters
 
-The last thing we miss is a set of parameters (i.e. cutoffs, convergence thresholds, etc…) to launch the Quantum ESPRESSO calculation. This part requires acquaintance with Quantum ESPRESSO and, very often, this is the part to tune when a calculation shows a problem. Let’s therefore use this part of the tutorial to learn how to debug problems, and <span>**let’s introduce errors intentionally**</span>. Note also that some of the problems we will investigate appear the first times you launch calculations and can be systematically avoided by using workflows.
+The last thing we miss is a set of parameters (i.e. cutoffs, convergence thresholds, etc…) to launch the Quantum ESPRESSO calculation. This part requires acquaintance with Quantum ESPRESSO and, very often, this is the part to tune when a calculation shows a problem. Let’s therefore use this part of the tutorial to learn how to debug problems, and **let’s introduce errors intentionally**. Note also that some of the problems we will investigate appear the first times you launch calculations and can be systematically avoided by using workflows.
 
 Let’s define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of the form:
 

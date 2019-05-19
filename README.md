@@ -26,18 +26,24 @@ If you have a question, feel free to just [open an issue](https://github.com/aii
 
 ### Prerequisites
 
- * python 2.7 or greater
+ * python 3.5 or greater
  * [pandoc](https://pandoc.org/)
 
 ### Build instructions
 
-```
+```bash
 git clone https://github.com/aiidateam/aiida-tutorials.git
-cd aiida-tutorials/docs
+cd aiida-tutorials
 pip install -r requirements.txt
+pre-commit install   # enable pre-commit hooks (optional)
+cd docs/
 make
 # open build/html/index.html
 ```
+
+Note that `make` will run with the nitpick option, treating warnings as errors.
+If you are updating the documentation and warnings are expected, run `make html` instead.
+This does not use the nitpick exception and will ensure that the documentation compiles despite the warnings.
 
 ## Acknowledgements
 

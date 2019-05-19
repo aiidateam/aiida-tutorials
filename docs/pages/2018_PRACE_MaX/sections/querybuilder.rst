@@ -34,8 +34,13 @@ copy of the same notebook, but which contains the solutions to all the
 exercises. You can use this version at your own discretion if you get stuck at
 some point (but we suggest that you try not to look at it at first).
 
-See below for a rendered version of the notebook.
+See below for a rendered version of the notebook, that can also be downloaded
+from :download:`here <../notebooks/querybuilder-tutorial.ipynb>`.
 
 .. toctree:: 
 
-   QueryBuilder Notebook <../notebooks/querybuilder.ipynb>
+   QueryBuilder Notebook <../notebooks/querybuilder-tutorial.ipynb>
+
+The solutions can also be downloaded from 
+:download:`here <../notebooks/querybuilder-solutions.ipynb>`: but again, 
+try not to use them at first!

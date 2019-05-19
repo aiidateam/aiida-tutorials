@@ -75,6 +75,7 @@ example on a convergence loop to find iteratively the minimum of an EOS.
 ------------------------------------------------------------------------
 
 .. figure:: /assets/2018_PRACE_MaX/workfunctions.png
+   :width: 100%
 
    Typical graphs created by using a workfunction. (a) The workfunction
    ``create_structure`` takes a ``Str`` object as input and returns a single
@@ -582,10 +583,10 @@ code we will refer to the line number appearing in Table [Tab:wf2frag].
     from aiida.work.workchain import WorkChain, ToContext
     # ...
 
-    class EquationOfStates(WorkChain):
+    class EquationOfState(WorkChain):
         @classmethod
         def define(cls, spec):
-            super(EquationOfStates, cls).define(spec)
+            super(EquationOfState, cls).define(spec)
             spec.input('element', valid_type=Str)
             spec.input('code', valid_type=Str)
             spec.input('pseudo_family', valid_type=Str)
@@ -722,12 +723,12 @@ Inspect the example in the table that compares the two versions of
 workfunctions to understand in detail the different syntaxes.
 
 Finally, the workflow has to be run. For this you have to use the
-function ``run`` passing as arguments the ``EquationOfStates`` class and
+function ``run`` passing as arguments the ``EquationOfState`` class and
 the inputs as key-value arguments. For example, you can execute
 
 .. code:: python
 
-     run(EquationOfStates, element=Str('Si'), code=Str('qe-pw-6.2.1@localhost'),
+     run(EquationOfState, element=Str('Si'), code=Str('qe-pw-6.2.1@localhost'),
          pseudo_family=Str('GBRV_lda'))
 
 While the workflow is running, you can check (in a different terminal)
@@ -746,7 +747,7 @@ and then launch it by importing it in your launch file, this way AiiDA
 knows where to find it next time it loads the checkpoint.
 
 As an additional exercise (optional), instead of running the main
-workflow (``EquationOfStates``), try to submit it. Note that the file
+workflow (``EquationOfState``), try to submit it. Note that the file
 where the WorkChain is defined will need to be globally importable (so
 the daemon knows how to load it) and you need to launch it (with
 ``submit``) from a different python file. The easiest way to achieve
