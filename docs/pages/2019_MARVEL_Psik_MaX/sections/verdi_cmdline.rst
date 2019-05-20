@@ -1,7 +1,7 @@
 Verdi command line
 ==================
 
-This part of the tutorial will familiarize you with the ``verdi`` command-line interface (CLI), 
+This part of the tutorial will familiarize you with the ``verdi`` command-line interface (CLI),
 which lets you manage your AiiDA installation, inspect the contents of your database,  control running calculations and more.
 
  * The ``verdi`` command supports **tab-completion**:
@@ -52,7 +52,7 @@ To see this profile, and any others that may have been configured, run:
     * generic
       quicksetup
 
-Each line, ``generic`` and ``quicksetup`` in this example, corresponds to a profile. 
+Each line, ``generic`` and ``quicksetup`` in this example, corresponds to a profile.
 The one marked with an asterisk is the "default" profile, meaning that any ``verdi`` command that you execute will be applied to that profile.
 
 .. note::
@@ -178,7 +178,7 @@ Now you can connect the provenance browser to your local REST API:
 
 -  Open the |provenance_browser| on your laptop
 -  In the form, paste the (local) URL ``http://127.0.0.1:5000/api/v3``
-   of our REST API 
+   of our REST API
 -  Click "GO!"
 
 .. |provenance_browser| raw:: html
@@ -229,8 +229,8 @@ which should be empty:
 
 .. code:: bash
 
-    PK    Created    State    Process label    Process status
-    ----  ---------  -------  ---------------  ----------------
+    PK    Created    Process label   Process State    Process status
+    ----  ---------  --------------  ---------------  ----------------
 
     Total results: 0
 
@@ -246,14 +246,14 @@ This command will list all the processes that have a process state ``Finished`` 
 
 .. code:: bash
 
-    PK    Created    State           Process label    Process status
+    PK    Created    Process label   Process State    Process status
     ----  ---------  --------------  ---------------  ----------------
-    1178  1653D ago  ⏹ Finished [0]  PwCalculaton
-    1953  1653D ago  ⏹ Finished [0]  PwCalculaton
-    1734  1653D ago  ⏹ Finished [0]  PwCalculaton
-     336  1653D ago  ⏹ Finished [0]  PwCalculaton
-    1056  1653D ago  ⏹ Finished [0]  PwCalculaton
-    1369  1653D ago  ⏹ Finished [0]  PwCalculaton
+    1178  1653D ago  PwCalculaton    ⏹ Finished [0]
+    1953  1653D ago  PwCalculaton    ⏹ Finished [0]
+    1734  1653D ago  PwCalculaton    ⏹ Finished [0]
+     336  1653D ago  PwCalculaton    ⏹ Finished [0]
+    1056  1653D ago  PwCalculaton    ⏹ Finished [0]
+    1369  1653D ago  PwCalculaton    ⏹ Finished [0]
 
     Total results: 6
 

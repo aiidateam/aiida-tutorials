@@ -48,7 +48,7 @@ For ``local`` computers, this is just a "formality" (press enter to confirm the 
 
    For remote computers with ``ssh`` transport, use ``verdi computer configure ssh`` instead of ``verdi computer configure local``.
 
-Your ``localhost`` computer should now show up in 
+Your ``localhost`` computer should now show up in
 
 .. code:: bash
 
@@ -65,7 +65,7 @@ Code setup
 ----------
 
 Now that we have our localhost set up, let's configure the ``Code``, namely the ``pw.x`` executable.
-As with the computer, we have prepared a configuration file for you to :download:`download <include/configuration/computer.yml>`.
+As with the computer, we have prepared a configuration file for you to :download:`download <include/configuration/code.yml>`.
 This is its content:
 
 .. literalinclude:: include/configuration/code.yml
@@ -80,7 +80,7 @@ Once you have the configuration file in your local working environment, set up t
 .. warning::
 
     The configuration should work for the virtual machine that comes with this tutorial.
-    If you are following this tutorial in a different environment, you will need to install Quantum ESPRESSO and adapt the configuration to your needs, 
+    If you are following this tutorial in a different environment, you will need to install Quantum ESPRESSO and adapt the configuration to your needs,
     as explained in :ref:`this appendix<appendix_computer_code_setup>`.
 
 Similar to the computers, you can list all the configured codes with:
@@ -376,8 +376,8 @@ current directory. In your second terminal:
    The files created by a dry run are only intended for  inspection
    and cannot be used to correct the inputs of your calculation.
 
-Storing and submitting the calculation
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Submitting the calculation
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Up to now we've just been playing around and our calculation has been kept
 in memory and not in the database.
