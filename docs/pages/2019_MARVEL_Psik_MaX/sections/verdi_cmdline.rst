@@ -183,7 +183,7 @@ Now you can connect the provenance browser to your local REST API:
 
 .. |provenance_browser| raw:: html
 
-   <a href="https://dev-www.materialscloud.org/explore/connect" target="_blank">provenance explorer</a>
+   <a href="https://www.materialscloud.org/explore/connect" target="_blank">provenance explorer</a>
 
 Once the provenance browser javascript application has been loaded by your browser, it is communicating directly with the REST API and your data never leaves your computer.
 
