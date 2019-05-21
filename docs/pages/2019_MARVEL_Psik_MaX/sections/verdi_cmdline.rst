@@ -524,9 +524,9 @@ Type in the terminal:
 
 .. code:: bash
 
-    verdi group list
+    verdi group list -a -A
 
-to show a list of the groups that already exist in the database.
+to show a list of **all** groups that exist in the database.
 Choose the PK of the group named ``tutorial_pbesol`` and look at the calculations that it contains by typing:
 
 .. code:: bash
