@@ -6,3 +6,4 @@ on_computer: true
 remote_abs_path: "/home/max/codes/q-e-90a2aa88298f5005b8ab8f5fcc354c5870481d68/bin/pw.x"
 computer: "localhost"
 prepend_text: "ulimit -s unlimited"
+append_text: " "
