@@ -398,7 +398,7 @@ SSSP pseudopotentials via the commands:
 
 .. code:: bash
 
-    wget https://archive.materialscloud.org/file/2018.0001/v1/SSSP_efficiency_pseudos.tar.gz
+    wget https://archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.tar.gz
     tar -zxvf SSSP_efficiency_pseudos.tar.gz
 
 Then you can upload the whole set of pseudopotentials to AiiDA by using the
