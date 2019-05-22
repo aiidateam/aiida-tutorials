@@ -213,7 +213,7 @@ Run a simple workflow
 Let us now use the work and calculation functions that we have just created to build a simple workflow to calculate the equation of state of silicon.
 We will consider five different values of the lattice parameter obtained rescaling the experimental minimum, ``a=5.431``, by a factor in ``[0.96, 0.98, 1.0, 1.02, 1.04]``.
 We will write a simple script that runs a series of five calculations and at the end returns the volume and the total energy corresponding to each value of the lattice parameter.
-For your convenience, besides the functions that you have written so far in the file ``create_rescale.py``, we provide you with some other utilities to get the correct pseudopotential and to generate a pw input file, in :download:`this file <../scripts/common_wf.py>`.
+For your convenience, besides the functions that you have written so far in the file ``create_rescale.py``, we provide you with some other utilities to get the correct pseudopotential and to generate a pw input file, in :download:`common_wf.py <../scripts/common_wf.py>`.
 
 We have already created the following script, which you can :download:`download <../scripts/simple_sync_workflow.py>`, but please go through the lines carefully and make sure you understand them.
 We suggest that you first have a careful look at it before running it:
