@@ -99,7 +99,7 @@ There are two variants of process functions:
 These operate mostly the same, but they should be used for different purposes, which will become clear later.
 A normal function can be converted to a calculation function by using the ``@calcfunction`` decorator [#f1]_ that takes care of storing the execution as a calculation and adding the links between the input and output data nodes.
 
-To turn the original functions `create_diamond_fcc` and `rescale` into calculation functions, simply change the definition as follows:
+To turn the original functions ``create_diamond_fcc`` and ``rescale`` into calculation functions, simply change the definition as follows:
 
 .. code:: python
 
@@ -109,11 +109,11 @@ To turn the original functions `create_diamond_fcc` and `rescale` into calculati
     # Add decorators
     @calcfunction
     def create_diamond_fcc(element):
-        ...
+        ... (same as above)
 
     @calcfunction
     def rescale(structure, scale):
-        ...
+        ... (same as above)
 
 Note that the only change is that the function definitions were 'decorated' with the ``@calcfunction`` line.
 This is the only thing that is necessary to transform the plain python functions magically into fully-fledged AiiDA process functions.
