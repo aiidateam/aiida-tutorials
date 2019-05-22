@@ -304,8 +304,8 @@ For simplicity, we have included few lines at the end of the script that invoke 
     if __name__ == '__main__':
         run_eos()
 
-To get a reference to the node that represents the function execution, we can ask the ``run`` function to, in addition to the results, also return the node.
-To do so, instead of simply calling the work function to run it, use the attribute ``get_node``, like so:
+To get a reference to the node that represents the function execution, we can ask the ``run`` function to return the node, in addition to the results.
+Instead of calling the work function to run it, we can use the method ``run_get_node``:
 
 .. code:: python
 
