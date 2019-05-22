@@ -309,7 +309,7 @@ To do so, instead of simply calling the work function to run it, use the attribu
 
 .. code:: python
 
-    results, node = run_eos_wf.get_node(code, Str(pseudo_family), Str(element))
+    results, node = run_eos_wf.run_get_node(code, Str(pseudo_family), Str(element))
     print('run_eos_wf<{}> completed'.format(node.pk))
 
 Run the workflow:
