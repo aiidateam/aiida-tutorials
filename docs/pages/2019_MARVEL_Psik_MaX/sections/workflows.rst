@@ -99,7 +99,7 @@ There are two variants of process functions:
 These operate mostly the same, but they should be used for different purposes, which will become clear later.
 A normal function can be converted to a calculation function by using the ``@calcfunction`` decorator [#f1]_ that takes care of storing the execution as a calculation and adding the links between the input and output data nodes.
 
-To turn the original functions `create_diamond_fcc` and `rescale` into calculation functions, simply change the definition as follows:
+To turn the original functions ``create_diamond_fcc`` and ``rescale`` into calculation functions, simply change the definition as follows:
 
 .. code:: python
 
@@ -109,11 +109,11 @@ To turn the original functions `create_diamond_fcc` and `rescale` into calculati
     # Add decorators
     @calcfunction
     def create_diamond_fcc(element):
-        ...
+        ... (same as above)
 
     @calcfunction
     def rescale(structure, scale):
-        ...
+        ... (same as above)
 
 Note that the only change is that the function definitions were 'decorated' with the ``@calcfunction`` line.
 This is the only thing that is necessary to transform the plain python functions magically into fully-fledged AiiDA process functions.
@@ -213,7 +213,7 @@ Run a simple workflow
 Let us now use the work and calculation functions that we have just created to build a simple workflow to calculate the equation of state of silicon.
 We will consider five different values of the lattice parameter obtained rescaling the experimental minimum, ``a=5.431``, by a factor in ``[0.96, 0.98, 1.0, 1.02, 1.04]``.
 We will write a simple script that runs a series of five calculations and at the end returns the volume and the total energy corresponding to each value of the lattice parameter.
-For your convenience, besides the functions that you have written so far in the file ``create_rescale.py``, we provide you with some other utilities to get the correct pseudopotential and to generate a pw input file, in :download:`this file <../scripts/common_wf.py>`.
+For your convenience, besides the functions that you have written so far in the file ``create_rescale.py``, we provide you with some other utilities to get the correct pseudopotential and to generate a pw input file, in :download:`common_wf.py <../scripts/common_wf.py>`.
 
 We have already created the following script, which you can :download:`download <../scripts/simple_sync_workflow.py>`, but please go through the lines carefully and make sure you understand them.
 We suggest that you first have a careful look at it before running it:
@@ -304,8 +304,8 @@ For simplicity, we have included few lines at the end of the script that invoke 
     if __name__ == '__main__':
         run_eos()
 
-To get a reference to the node that represents the function execution, we can ask the ``run`` function to, in addition to the results, also return the node.
-To do so, instead of simply calling the work function to run it, use the attribute ``get_node``, like so:
+To get a reference to the node that represents the function execution, we can ask the ``run`` function to return the node, in addition to the results.
+Instead of calling the work function to run it, we can use the method ``run_get_node``:
 
 .. code:: python
 
