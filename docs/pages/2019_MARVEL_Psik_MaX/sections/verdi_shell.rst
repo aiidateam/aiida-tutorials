@@ -93,8 +93,8 @@ You can also type
 and then press ``TAB`` to see all the available output results of the
 calculation.
 
-Loading different kinds of nodes
---------------------------------
+Loading specific kinds of nodes
+-------------------------------
 
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
@@ -173,30 +173,23 @@ Then display its content by typing
 
 .. code:: python
 
-    params.get_dict()
+    params = load_node('<IDENTIFIER>')
+    YOUR_DICT = params.get_dict()
+    YOUR_DICT
 
-where ``params`` is the ``Dict`` node you loaded. Modify the dictionary
-content so that the wave-function cutoff is now set to 20 Ry. Note that you
-cannot modify an object already stored in the database. To save the
-modification, you must create a new ``Dict`` object. Similarly to what
-discussed before, first load the ``Dict`` class by typing
+Modify the python dictionary ``YOUR_DICT`` so that the wave-function cutoff is now set to 20
+Ry. Note that you cannot modify an object already stored in the database. To
+write the modified dictionary to the database, create a new object of class ``Dict``:
 
 .. code:: python
 
     Dict = DataFactory('dict')
-
-Then an instance of the class (i.e. the dict object that we want to create) is
-created and initialized by the command
-
-.. code:: python
-
     new_params = Dict(dict=YOUR_DICT)
 
-where ``YOUR_DICT`` is the modified python dictionary. Note that the dict object is
-not yet stored in the database. In fact, if you simply type ``new_params`` in
-the verdi shell, you will be prompted with a string notifying you of its
-'unstored' status. To record in the database an entry corresponding to the
-``new_params`` object, you need to type one last command in the verdi shell:
+where ``YOUR_DICT`` is the modified python dictionary. 
+Note that ``new_params`` is not yet stored in the database. 
+In fact, typing ``new_params`` in the verdi shell will print a string notifying you of its 'unstored' status. 
+Let's finish by storing the ``new_params`` dictionary node in the datbase:
 
 .. code:: python
 
