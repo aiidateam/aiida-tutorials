@@ -14,12 +14,9 @@ pseudopotentials, energy cutoffs, k-point meshes, high-symmetry k-point paths,
 and performing the various calculation steps -- are performed automatically by
 the ``WorkChain``.
 
-The demonstration of the ``WorkChain`` will be performed in a Jupyter
-notebook. To run it, follow the instructions that were given for the
-``QueryBuilder`` notebook in :numref:`querybuilder`. The only difference
-is that instead of selecting the notebook in the ``querybuilder``
-directory, go to ``pw/bandstructure`` and choose the ``bandstructure.ipynb``
-notebook. There you will find some example structures that are loaded from
+The demonstration of the WorkChain will be performed in a Jupyter notebook, 
+that you can :download:`download from here <../notebooks/bandstructure.ipynb>`.
+There you will find some example structures that are loaded from the
 Crystallography Open Database (COD), using the COD-importer integrated in
 AiiDA.
 
