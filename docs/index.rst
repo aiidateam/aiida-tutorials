@@ -28,6 +28,7 @@ interactive demos and videos.
    :maxdepth: 1
    :caption: Videos
 
+   aiida-core 1.0.0b3 (workflow tutorial lectures) <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>
    aiida-core 1.0.0b2 (plugin migration lectures) <https://www.youtube.com/playlist?list=PL19kfLn4sO_9laPkLBdv935PquRxX8dCc>
    aiida-core 0.9.0 (lectures) <https://www.youtube.com/watch?v=qUNYEWClS2U&list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR>
    aiida-core 0.8.0 (short videos) <https://www.youtube.com/playlist?list=PL19kfLn4sO_-XDUeXu5jwUq9k7TId8mM0>
