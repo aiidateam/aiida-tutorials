@@ -112,7 +112,7 @@ Have a look to the figure and its caption before moving on.
    The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
    Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
 
-:numref:`fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the *identifier* of a calculation node to ``verdi graph generate <IDENTIFIER>``.
+:numref:`fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi graph generate <IDENTIFIER>``.
 Identifiers in AiiDA come in three forms:
 
  * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
@@ -347,11 +347,13 @@ Dict and CalcJobNode
 ~~~~~~~~~~~~~~~~~~~~
 
 Let's investigate some of the nodes appearing in the graph.
-Choose the node of the type ``Dict`` with input link name ``parameters`` and type in the terminal:
+From the inputs of the process, let's choose the node of type ``Dict`` with input link name ``parameters`` and type in the terminal:
 
 .. code:: bash
 
     verdi data dict show <IDENTIFIER>
+
+where ``<IDENTIFIER>`` is the PK of the node.
 
 A ``Dict`` contains a dictionary (i.e. key–value pairs), stored in the database in a format ready to be queried.
 We will learn how to run queries later on in this tutorial.
@@ -362,7 +364,7 @@ You can compare the dictionary with the content of the raw input file to Quantum
 
     verdi calcjob inputcat <IDENTIFIER>
 
-where you substitute the identifier of the calculation node.
+where you provide the identifier of the calculation node.
 Check the consistency of the parameters written in the input file and those stored in the ``Dict`` node.
 Even if you don't know the meaning of the input flags of a Quantum ESPRESSO calculation, you should be able to see how the input dictionary has been converted to Fortran namelists.
 
