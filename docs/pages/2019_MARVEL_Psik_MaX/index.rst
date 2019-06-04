@@ -14,7 +14,9 @@
 .. _aiidalab 19.05: https://github.com/aiidalab/aiidalab-metapkg/releases/tag/tutorial-2019-05
 .. _Quantum Espresso 6.3: https://github.com/QEF/q-e/releases/tag/qe-6.3
 
-These are the notes of the `AiiDA tutorial on writing reproducible workflows for computational materials science <http://www.aiida.net/tutorial-reproducible-workflows/>`__  (supported by MARVEL, Psi-k, MaX, swissuniversitites and INTERSECT) taking place from May 21-24, 2019 at EPF Lausanne, Switzerland.
+These are the notes of the `AiiDA tutorial on writing reproducible workflows for computational materials science <http://www.aiida.net/tutorial-reproducible-workflows/>`__  which took place from May 21-24, 2019 at EPF Lausanne, Switzerland.
+
+While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above.
 
 Writing reproducible workflows for computational materials science
 ==================================================================
@@ -46,3 +48,32 @@ Appendices
    ./sections/appendix_restarting_calculations
    ./sections/appendix_queries
    ./sections/appendix_workflow_logic
+
+Acknowledgements
+----------------
+
+The `AiiDA tutorial on writing reproducible workflows for computational materials science <http://www.aiida.net/tutorial-reproducible-workflows/>`__  was made possible by support from MARVEL, Psi-k, MaX, swissuniversitites and INTERSECT, and kindly hosted by EPFL.
+
+.. image:: sponsors/marvel.png
+   :target: http://nccr-marvel.ch
+   :width: 105px
+
+.. image:: sponsors/psi-k-crystal_low.png
+   :target: http://psi-k.net
+   :width: 55px
+
+.. image:: sponsors/max.png
+   :target: http://www.max-centre.eu/
+   :width: 135px
+
+.. image:: sponsors/intersect.png
+   :target: http://intersect-project.eu/
+   :width: 125px
+
+.. image:: sponsors/swissuniversities.png
+   :target: https://swissuniversities.ch
+   :width: 115px
+
+.. image:: sponsors/epfl.png
+   :target: https://epfl.ch
+   :width: 105px
