@@ -9,3 +9,6 @@ ipykernel>=4.10,<5.0
 pre-commit>=1.16,<2
 prospector==1.1.6.2
 yapf==0.27.0
+# transifex
+sphinx-intl==2.0.0
+transifex-client==0.13.6
