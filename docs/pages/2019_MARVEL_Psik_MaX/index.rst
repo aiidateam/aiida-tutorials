@@ -16,7 +16,9 @@
 
 These are the notes of the `AiiDA tutorial on writing reproducible workflows for computational materials science <http://www.aiida.net/tutorial-reproducible-workflows/>`__  which took place from May 21-24, 2019 at EPF Lausanne, Switzerland.
 
-While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above.
+While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
+
+You can also watch some of the `recorded lectures and invited talks <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>`_.
 
 Writing reproducible workflows for computational materials science
 ==================================================================
