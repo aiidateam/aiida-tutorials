@@ -1,5 +1,5 @@
 +-----------------+----------------------------------------------------------------------------+
-| Prerequisite    | Version                                                                    |
+| Related resources                                                                            |
 +=================+============================================================================+
 | Virtual Machine | `Quantum Mobile 19.05.0-tutorial`_                                         |
 +-----------------+----------------------------------------------------------------------------+
@@ -7,16 +7,19 @@
 +-----------------+----------------------------------------------------------------------------+
 | codes           | `Quantum Espresso 6.3`_                                                    |
 +-----------------+----------------------------------------------------------------------------+
+| videos          | `recorded lectures and invited talks`_                                     |
++-----------------+----------------------------------------------------------------------------+
 
 .. _Quantum Mobile 19.05.0-tutorial: https://github.com/marvel-nccr/quantum-mobile/releases/tag/tutorial-2019-05
 .. _aiida-core 1.0.0b3: https://pypi.org/project/aiida-core/1.0.0b3
 .. _aiida-quantumespresso 3.0.0a3: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0a3
 .. _aiidalab 19.05: https://github.com/aiidalab/aiidalab-metapkg/releases/tag/tutorial-2019-05
 .. _Quantum Espresso 6.3: https://github.com/QEF/q-e/releases/tag/qe-6.3
+.. _`recorded lectures and invited talks`: https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0
 
 These are the notes of the `AiiDA tutorial on writing reproducible workflows for computational materials science <http://www.aiida.net/tutorial-reproducible-workflows/>`__  which took place from May 21-24, 2019 at EPF Lausanne, Switzerland.
 
-While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above.
+While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
 
 Writing reproducible workflows for computational materials science
 ==================================================================
