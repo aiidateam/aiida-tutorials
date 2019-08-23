@@ -15,7 +15,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
 More details on ``verdi`` can be found in the `online documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html>`_.
 
 
-.. _setup_verdi_quicksetup:
+.. _2019_xmn_setup_verdi_quicksetup:
 
 Setting up a profile
 --------------------
@@ -88,7 +88,7 @@ Contrary to most databases, AiiDA databases contain not only *results* of calcul
 This information, the *data provenance*, is stored in the form of a *directed acyclic graph* (DAG).
 In the following, we are going to introduce you to different ways of browsing this graph and will ask you to find out some information regarding the database you just imported.
 
-.. _aiidagraph:
+.. _2019_xmn_aiidagraph:
 
 Your first AiiDA graph
 ----------------------
@@ -96,13 +96,13 @@ Your first AiiDA graph
 :numref:`fig_graph_input_only` shows a typcial example of a calculation represented in an AiiDA graph.
 Have a look to the figure and its caption before moving on.
 
-.. _fig_graph_input_only:
+.. _2019_xmn_fig_graph_input_only:
 .. figure:: include/images/verdi_graph/batio3/graph-input.png
    :width: 100%
 
    Graph with all inputs (data, circles; and code, diamond) to the Quantum ESPRESSO calculation (square) that you will create in the :ref:`calculations` section of this tutorial.
 
-.. _fig_graph:
+.. _2019_xmn_fig_graph:
 .. figure:: include/images/verdi_graph/batio3/graph-full.png
    :width: 100%
 
@@ -204,7 +204,7 @@ If you ever get lost, just go to the "Details" tab, enter ``ce81c420-7751-48f6-a
    -  How many calculations were performed using this code?
 
 
-.. _inspecting_nodes:
+.. _2019_xmn_inspecting_nodes:
 
 Inspecting the nodes of a graph
 -------------------------------

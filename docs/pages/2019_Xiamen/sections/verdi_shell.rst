@@ -63,7 +63,7 @@ the command itself:
 
     !some bash command
 
-.. _loadnode:
+.. _2019_xmn_loadnode:
 
 Loading a node
 --------------

@@ -1,4 +1,4 @@
-.. _bands:
+.. _2019_xmn_bands:
 
 A real-world ``WorkChain``: Computing a band structure
 ======================================================
@@ -27,25 +27,25 @@ run all these examples as they may take too long to complete. For reference,
 the expected output band structures are plotted in :numref:`fig_calc_bands_1`
 to :numref:`fig_calc_bands_4`.
 
-.. _fig_calc_bands_1:
+.. _2019_xmn_fig_calc_bands_1:
 .. figure:: include/images/bandstructures/Al_bands.png
    :width: 100%
 
    Electronic band structures of Al computed with AiiDA’s PwBandsWorkChain
 
-.. _fig_calc_bands_2:
+.. _2019_xmn_fig_calc_bands_2:
 .. figure:: include/images/bandstructures/GaAs_bands.png
    :width: 100%
 
    Electronic band structures of GaAs computed with AiiDA’s PwBandsWorkChain
 
-.. _fig_calc_bands_3:
+.. _2019_xmn_fig_calc_bands_3:
 .. figure:: include/images/bandstructures/CaF2_bands.png
    :width: 100%
 
    Electronic band structures of CaF\ :sub:`2` computed with AiiDA’s PwBandsWorkChain
 
-.. _fig_calc_bands_4:
+.. _2019_xmn_fig_calc_bands_4:
 .. figure:: include/images/bandstructures/hBN_bands.png
    :width: 100%
 

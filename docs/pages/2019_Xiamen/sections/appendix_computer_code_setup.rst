@@ -1,4 +1,4 @@
-.. _appendix_computer_code_setup:
+.. _2019_xmn_appendix_computer_code_setup:
 
 Setting up computers and codes
 ==============================

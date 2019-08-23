@@ -43,7 +43,7 @@ Finally, you will fit the resulting energies as a function of volume to get the 
 As the EOS task is very common, we will show how to automate its computation with workflows, and how to deal with both serial and parallel (i.e., independent) execution of multiple tasks.
 Finally, we will show how to introduce more complex logic in your workflows such as loops and conditional statements (:ref:`see this section<convpressure>`), with an example on a convergence loop to find iteratively the minimum of an EOS.
 
-.. _provenancewf:
+.. _2019_xmn_provenancewf:
 
 Process functions: a way to generalize provenance in AiiDA
 ----------------------------------------------------------
@@ -78,7 +78,7 @@ and store them in the database:
 As expected, all the structures that you have created are not linked in any manner as you can verify via the ``get_incoming()``/``get_outgoing()`` methods of the ``StuctureData`` class.
 Instead, you would like these objects to be connected as sketched in :numref:`fig_provenance_process_functions`.
 
-.. _fig_provenance_process_functions:
+.. _2019_xmn_fig_provenance_process_functions:
 .. figure:: include/images/process_functions.png
 
    Typical graphs created by using calculation and work functions.
@@ -206,7 +206,7 @@ Write down its ``<pk>`` (in general, it will be different from 441), then in the
 You should be able to identify the two children calculations as well as the final structure (you will see the process nodes linked via CALL links: these are process-to-process links representing the fact that ``create_rescaled`` called two calculation functions).
 The graphical representation of what you have in the database should match :numref:`fig_provenance_process_functions`.
 
-.. _sync:
+.. _2019_xmn_sync:
 
 Run a simple workflow
 ---------------------
@@ -325,7 +325,7 @@ Additionally, you can use the command ``verdi process status <pk>`` to show the 
 
 Wait for the work function to finish, then call the function ``plot_eos(<pk>)`` that we provided in the file ``common_wf.py`` to plot the equation of state and fit it with a Birch–Murnaghan equation.
 
-.. _wf_multiple_calcs:
+.. _2019_xmn_wf_multiple_calcs:
 
 Run multiple calculations
 -------------------------
@@ -394,7 +394,7 @@ You will see that all calculations start at the same time, without waiting for t
 If in the meantime you run ``verdi process status <pk>``, all five calculations are already shown as output.
 Also, if you run ``verdi process list``, you will see how the calculations are submitted to the scheduler.
 
-.. _workchainsimple:
+.. _2019_xmn_workchainsimple:
 
 Workchains, or how not to get lost if your computer shuts down or crashes
 -------------------------------------------------------------------------

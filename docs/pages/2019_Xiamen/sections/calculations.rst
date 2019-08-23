@@ -1,4 +1,4 @@
-.. _calculations:
+.. _2019_xmn_calculations:
 
 Submit, monitor and debug calculations
 ======================================

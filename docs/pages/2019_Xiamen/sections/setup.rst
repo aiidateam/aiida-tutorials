@@ -1,7 +1,7 @@
 Getting set up
 ==============
 
-.. _connect:
+.. _2019_xmn_connect:
 
 Connect to your virtual machine
 -------------------------------
@@ -127,7 +127,7 @@ In order to enable X-forwarding:
 
 -  Configure PuTTy as described in the `Xming wiki <https://wiki.centos.org/HowTos/Xming>`_.
 
-.. _setup_jupyter:
+.. _2019_xmn_setup_jupyter:
 
 Start jupyter
 -------------
@@ -164,7 +164,7 @@ terminal is the one we will actually use in this tutorial.
    the SSH configuration.
 
 
-.. _setup_downloading_files:
+.. _2019_xmn_setup_downloading_files:
 
 Downloading files
 -----------------
