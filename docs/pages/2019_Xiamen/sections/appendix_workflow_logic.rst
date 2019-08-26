@@ -8,7 +8,7 @@ More workflow logic: while loops and conditional statements
 ===========================================================
 
 In the previous sections, you have been introduced to ``WorkChains``, and the reason for using them over 'standard' work functions.
-However, in the :ref:`original example<workchainsimple>`, the ``spec.outline`` was quite simple, with a 'static' sequence of two steps.
+However, in the :ref:`original example<2019_xmn_workchainsimple>`, the ``spec.outline`` was quite simple, with a 'static' sequence of two steps.
 Most often, however, you need dynamic workflows, where you need to decide at runtime whether to continue to compute or not (e.g. in a convergence loop, where you need to stop if convergence has been achieved).
 To support this scenario, the ``spec.outline`` can support logic: `while` loops and `if/elif/else` blocks.
 The simplest way to explain it is to show an example:

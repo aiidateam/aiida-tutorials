@@ -99,7 +99,7 @@ Loading specific kinds of nodes
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
-From the graph you generated in  section :ref:`aiidagraph`,
+From the graph you generated in  section :ref:`2019_xmn_aiidagraph`,
 find the ``PK`` of the pseudopotential file (LDA). Load it and
 show what elements it corresponds to by typing:
 
@@ -115,7 +115,7 @@ k-points
 
 A set of k-points in the Brillouin zone is represented by an instance of the
 ``KpointsData`` class. Choose one from the graph of
-produced in section :ref:`aiidagraph`,
+produced in section :ref:`2019_xmn_aiidagraph`,
 load it as ``kpoints`` and inspect its content:
 
 .. code:: python
@@ -168,7 +168,7 @@ Parameters
 ~~~~~~~~~~
 
 Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
-Get the PK and load the input parameters of a calculation in the graph produced in  section :ref:`aiidagraph`.
+Get the PK and load the input parameters of a calculation in the graph produced in  section :ref:`2019_xmn_aiidagraph`.
 Then display its content by typing
 
 .. code:: python
@@ -186,9 +186,9 @@ write the modified dictionary to the database, create a new object of class ``Di
     Dict = DataFactory('dict')
     new_params = Dict(dict=YOUR_DICT)
 
-where ``YOUR_DICT`` is the modified python dictionary. 
-Note that ``new_params`` is not yet stored in the database. 
-In fact, typing ``new_params`` in the verdi shell will print a string notifying you of its 'unstored' status. 
+where ``YOUR_DICT`` is the modified python dictionary.
+Note that ``new_params`` is not yet stored in the database.
+In fact, typing ``new_params`` in the verdi shell will print a string notifying you of its 'unstored' status.
 Let's finish by storing the ``new_params`` dictionary node in the datbase:
 
 .. code:: python
@@ -198,7 +198,7 @@ Let's finish by storing the ``new_params`` dictionary node in the datbase:
 Structures
 ~~~~~~~~~~
 
-Find a structure in the graph you generated in section :ref:`aiidagraph` and load it.
+Find a structure in the graph you generated in section :ref:`2019_xmn_aiidagraph` and load it.
 Display its chemical formula, atomic positions and species using
 
 .. code:: python
@@ -298,7 +298,7 @@ In that case two duplicate structures are found for 'Si'.
 Accessing inputs and outputs
 ----------------------------
 
-Load again the calculation node used in Section :ref:`loadnode`:
+Load again the calculation node used in Section :ref:`2019_xmn_loadnode`:
 
 .. code:: python
 
@@ -334,7 +334,7 @@ previously:
 
 Note that links have a single name, that was assigned by the calculation that
 used the corresponding input or produced the corresponding output, as
-illustrated in section :ref:`aiidagraph`.
+illustrated in section :ref:`2019_xmn_aiidagraph`.
 
 For a more programmatic approach, you can get a represenation of the inputs and outputs of a node, say ``calc``, through the following methods:
 

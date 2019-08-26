@@ -35,13 +35,13 @@ First, we need to define and store in the AiiDA database the basic structure of,
 Next, one has to define several structures with different lattice parameters.
 Those structures must be connected between them in the database, in order to ensure that their provenance is recorded.
 In other words, we want to be sure that in the future we will know that if we find a bunch of rescaled structures in the database, they all descend from the same one.
-How to link two nodes in the database in an easy way is the subject of :ref:`provenancewf`.
+How to link two nodes in the database in an easy way is the subject of :ref:`2019_xmn_provenancewf`.
 
 In the following sections, the newly created structures will then serve as an input for total energy calculations performed, in this tutorial, with Quantum ESPRESSO.
 This task is very similar to what you have done in the previous part of the tutorial.
 Finally, you will fit the resulting energies as a function of volume to get the bulk modulus.
 As the EOS task is very common, we will show how to automate its computation with workflows, and how to deal with both serial and parallel (i.e., independent) execution of multiple tasks.
-Finally, we will show how to introduce more complex logic in your workflows such as loops and conditional statements (:ref:`see this section<convpressure>`), with an example on a convergence loop to find iteratively the minimum of an EOS.
+Finally, we will show how to introduce more complex logic in your workflows such as loops and conditional statements (:ref:`see this section<2019_xmn_convpressure>`), with an example on a convergence loop to find iteratively the minimum of an EOS.
 
 .. _2019_xmn_provenancewf:
 
@@ -76,7 +76,7 @@ and store them in the database:
        structure.store()
 
 As expected, all the structures that you have created are not linked in any manner as you can verify via the ``get_incoming()``/``get_outgoing()`` methods of the ``StuctureData`` class.
-Instead, you would like these objects to be connected as sketched in :numref:`fig_provenance_process_functions`.
+Instead, you would like these objects to be connected as sketched in :numref:`2019_xmn_fig_provenance_process_functions`.
 
 .. _2019_xmn_fig_provenance_process_functions:
 .. figure:: include/images/process_functions.png
@@ -132,7 +132,7 @@ Try now to run the following script:
     initial_structure = create_diamond_fcc(Str('Si'))
     rescaled_structures = [rescale(initial_structure, Float(factor)) for factor in (0.98, 0.99, 1.0, 1.1, 1.2)]
 
-and check now that the output of ``initial_structure`` as well as the input of the rescaled structures point to an intermediate node, representing the execution of the calculation function, see :numref:`fig_provenance_process_functions`.
+and check now that the output of ``initial_structure`` as well as the input of the rescaled structures point to an intermediate node, representing the execution of the calculation function, see :numref:`2019_xmn_fig_provenance_process_functions`.
 For instance, you can check that the output links of ``initial_structure`` are the five ``rescale`` calculations:
 
 .. code:: python
@@ -194,7 +194,7 @@ Now inspect the input links of ``rescaled``:
      <CalcFunctionNode: uuid: 83b94be8-ded5-4dcf-a929-3d57301d4dde (pk: 444) (abc.rescale)>]
 
 The object ``rescaled`` has two incoming links, corresponding to *two* different calculations as input.
-These correspond to the calculations 'create_rescaled' and 'rescale' as shown in :numref:`fig_provenance_process_functions`.
+These correspond to the calculations 'create_rescaled' and 'rescale' as shown in :numref:`2019_xmn_fig_provenance_process_functions`.
 To see the 'call' link, inspect now the outputs of the ``WorkFunctionNode`` which corresponds to the ``create_rescaled`` work function.
 Write down its ``<pk>`` (in general, it will be different from 441), then in the shell load the corresponding node and inspect the outputs:
 
@@ -204,7 +204,7 @@ Write down its ``<pk>`` (in general, it will be different from 441), then in the
     In [13]: node.get_outgoing().all()
 
 You should be able to identify the two children calculations as well as the final structure (you will see the process nodes linked via CALL links: these are process-to-process links representing the fact that ``create_rescaled`` called two calculation functions).
-The graphical representation of what you have in the database should match :numref:`fig_provenance_process_functions`.
+The graphical representation of what you have in the database should match :numref:`2019_xmn_fig_provenance_process_functions`.
 
 .. _2019_xmn_sync:
 
@@ -424,7 +424,7 @@ Here below you can find the basic rules that allow you to convert your workfunct
     -   The ``outline`` consisting in a list of 'steps' that you want to run, put in the right sequence.
         This is obtained by means of the method ``spec.outline()`` which takes as input the steps.
         *Note*: in this example we just split the main execution in two sequential steps, that is, first ``run_eos`` then ``results``.
-        However, more complex logic is allowed, as will be explained in :ref:`another section<convpressure>`.
+        However, more complex logic is allowed, as will be explained in :ref:`another section<2019_xmn_convpressure>`.
 
 -   You need to split your main code into methods, with the names you specified before into the outline (``run_eos`` and ``results`` in this example).
     Where exactly should you split the code?
@@ -433,7 +433,7 @@ Here below you can find the basic rules that allow you to convert your workfunct
 
 -   You will notice that the methods reference the attribute ``ctx`` through ``self.ctx``, which is called the *context* and is inherited from the base class ``WorkChain``.
     A python function or process function normally just stores variables in the local scope of the function.
-    For instance, in the example of :ref:`this subsection<sync>`, you stored the completed calculations in the ``calculations`` dictionary, that was a local variable.
+    For instance, in the example of :ref:`this subsection<2019_xmn_sync>`, you stored the completed calculations in the ``calculations`` dictionary, that was a local variable.
 
     In work chains, instead, to preserve variables between different steps, you need to store them in a special dictionary called *context*.
     As explained above, the context variable ``ctx`` is inherited from the base class ``WorkChain``, and at each step method you just need to update its content.
@@ -487,7 +487,7 @@ The easiest way to achieve this is typically to embed the workflow inside a pyth
     As good practice, you should try to keep the steps as short as possible in term of execution time.
     The reason is that the daemon can be stopped and restarted only between execution steps and not if a step is in the middle of a long execution.
 
-Finally, as an optional exercise if you have time, you can jump to :ref:`this appendix<convpressure>`, which shows how to introduce more complex logic into your work chains (if conditionals, while loops etc.).
+Finally, as an optional exercise if you have time, you can jump to :ref:`this appendix<2019_xmn_convpressure>`, which shows how to introduce more complex logic into your work chains (if conditionals, while loops etc.).
 The exercise will show how to realize a convergence loop to obtain the minimum-volume structure in a EOS using the Newton's algorithm.
 
 .. note::
