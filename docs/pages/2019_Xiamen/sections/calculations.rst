@@ -31,10 +31,10 @@ where ``computer.yml`` is a configuration file in the `YAML format <https://en.w
 .. literalinclude:: include/configuration/computer.yml
 
 .. note::
-    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<setup_verdi_quicksetup>`.
+    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<2019_xmn_setup_verdi_quicksetup>`.
     The configuration file should work for the virtual machine that comes with this tutorial
     but may need to be adapted when you are running AiiDA in a different environment,
-    as explained in :ref:`this appendix<appendix_computer_code_setup>`.
+    as explained in :ref:`this appendix<2019_xmn_appendix_computer_code_setup>`.
 
 Finally, you need to provide AiiDA with information on how to access the ``Computer``.
 For remote computers with ``ssh`` transport, this would involve e.g. an SSH key.
@@ -81,7 +81,7 @@ Once you have the configuration file in your local working environment, set up t
 
     The configuration should work for the virtual machine that comes with this tutorial.
     If you are following this tutorial in a different environment, you will need to install Quantum ESPRESSO and adapt the configuration to your needs,
-    as explained in :ref:`this appendix<appendix_computer_code_setup>`.
+    as explained in :ref:`this appendix<2019_xmn_appendix_computer_code_setup>`.
 
 Similar to the computers, you can list all the configured codes with:
 
@@ -623,4 +623,3 @@ calculation.
 
 .. [#f1] In order to avoid duplication of KpointsData, you would first need to learn how to query the database, therefore we will ignore this issue for now.
 .. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminated, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
-

@@ -53,6 +53,7 @@ After that ssh key is in place, you can add the following block your
          ForwardX11Trusted yes
          LocalForward 8888 localhost:8888
          LocalForward 5000 localhost:5000
+         ServerAliveInterval 120
 
 replacing the IP address (``IP_ADDRESS``) and the ``NUM`` by
 the one you received.
@@ -74,6 +75,7 @@ Afterwards you can connect to the server using this simple command:
             -i ~/.ssh/aiida-tutorial-max.pem \
             -L 8888:localhost:8888 \
             -L 5000:localhost:5000 \
+            -o ServerAliveInterval=120 \
             -X -C \
             max@IP_ADDRESS
 
@@ -106,10 +108,10 @@ If you're running Windows 10, you may want to consider `installing the Windows S
 -  Run PuTTY
 
    -  Put the given IP address as hostname, type ``aiidatutorial`` in "Saved Sessions"
-      and click "Save". 
-   -  Go to Connection > Data and put ``max`` as autologin username. 
+      and click "Save".
+   -  Go to Connection > Data and put ``max`` as autologin username.
    -  Go to Connection > SSH > Tunnels, type ``8888`` in the
-      "Source Port" box, type ``localhost:8888`` in "Destination" and click "Add". 
+      "Source Port" box, type ``localhost:8888`` in "Destination" and click "Add".
    -  Repeat the previous step for port ``5000`` instead of ``8888``.
    -  Go back to the "Session" screen, select "aiidatutorial" and click "Save"
    -  Finally, click "Open" (and click "Yes" on the putty security alert
@@ -202,7 +204,7 @@ There are a number of helpful resources available to you for getting more inform
 Please consider:
 
  * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
- * asking in the `Slack channel of the tutorial <https://aiidaworkflows2019.slack.com>`_
+ * asking in the `Slack channel of the tutorial <http://bit.ly/ccml-xiamen-2019>`_
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
  * asking your neighbor
  * asking a tutor

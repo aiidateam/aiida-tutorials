@@ -93,7 +93,7 @@ In the following, we are going to introduce you to different ways of browsing th
 Your first AiiDA graph
 ----------------------
 
-:numref:`fig_graph_input_only` shows a typcial example of a calculation represented in an AiiDA graph.
+:numref:`2019_xmn_fig_graph_input_only` shows a typcial example of a calculation represented in an AiiDA graph.
 Have a look to the figure and its caption before moving on.
 
 .. _2019_xmn_fig_graph_input_only:
@@ -106,13 +106,13 @@ Have a look to the figure and its caption before moving on.
 .. figure:: include/images/verdi_graph/batio3/graph-full.png
    :width: 100%
 
-   Same as :numref:`fig_graph_input_only`, but also with the outputs that the engine will create and connect automatically.
+   Same as :numref:`2019_xmn_fig_graph_input_only`, but also with the outputs that the engine will create and connect automatically.
    The ``RemoteData`` node is created during submission and can be thought as a symbolic link to the remote folder in which the calculation runs on the cluster.
    The other nodes are created when the calculation has finished, after retrieval and parsing.
    The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
    Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
 
-:numref:`fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi graph generate <IDENTIFIER>``.
+:numref:`2019_xmn_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi graph generate <IDENTIFIER>``.
 Identifiers in AiiDA come in three forms:
 
  * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
@@ -157,7 +157,7 @@ Alternatively, you can use graphical software to achieve the same, for instance:
 The provenance browser
 ----------------------
 
-While the ``verdi`` CLI provides full access to the data underlying the provenance graph (and we will return to it in :numref:`inspecting_nodes`),
+While the ``verdi`` CLI provides full access to the data underlying the provenance graph (and we will return to it in :numref:`2019_xmn_inspecting_nodes`),
 a more intuitive tool for browsing AiiDA graphs is the interactive
 provenance browser available on `Materials
 Cloud <https://www.materialscloud.org>`__.
