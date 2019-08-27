@@ -27,7 +27,6 @@ env:
     - BUILD: docs
       TARGET: latexpdf
     - BUILD: pre-commit
-    - BUILD: transifex-upload
 
 install:
   - pip install --upgrade pip
@@ -39,14 +38,28 @@ script:
      # -C docs: switch to docs/ directory
       make -C docs pre-docs
       make -C docs $TARGET
-    elif [ "$BUILD" == "transifex-upload" ]; then
-      TRANSIFEX_PROJECT_NAME="aiida-tutorials"
-      sphinx-build -b gettext -D gettext_compact=0 docs locale
-      tx init --no-interactive
-      sphinx-intl update-txconfig-resources --pot-dir locale --transifex-project-name ${TRANSIFEX_PROJECT_NAME}
-      sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\n' > ~/.transifexrc
-      tx push -s
     else
       pre-commit install
       pre-commit run --all-files || ( git status --short; git diff ; exit 1 )
     fi
+
+jobs:
+  include:
+    - stage: transifex_docs
+      if: branch = master
+      services: ignore
+      addons: skip
+      python: 3.6
+      before_install: skip
+      install: skip
+      before_script: skip
+      script: skip
+      env: ignore
+      after_success:
+        - >
+          TRANSIFEX_PROJECT_NAME="aiida-tutorials"
+          sphinx-build -b gettext -D gettext_compact=0 docs locale
+          tx init --no-interactive
+          sphinx-intl update-txconfig-resources --pot-dir locale --transifex-project-name ${TRANSIFEX_PROJECT_NAME}
+          sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"$TRANSIFEX_USER"$'\npassword = '"$TRANSIFEX_PASSWORD"$'\n' > ~/.transifexrc
+          tx push -s
