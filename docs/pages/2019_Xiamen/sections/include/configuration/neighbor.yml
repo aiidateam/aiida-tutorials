@@ -1,0 +1,12 @@
+---
+label: neighbor
+description: Your neighbor's VM.
+hostname: IP_ADDRESS  # replace this
+transport: ssh  # connects via SSH
+scheduler: slurm  # use SLURM scheduler
+work_dir: "/tmp"
+mpirun_command: "mpirun -np {tot_num_mpiprocs}"
+mpiprocs_per_machine: "2"
+shebang: "#!/bin/bash"
+prepend_text: " "
+append_text: " "
