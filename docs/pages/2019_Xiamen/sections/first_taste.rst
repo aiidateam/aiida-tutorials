@@ -62,13 +62,20 @@ Analyzing the outputs of a calculation
    verdi calcjob outputcat
    verdi calcjob res
 
-Provenance
+AiiDA has tracked the provenance of your calculation.
 
 .. code:: bash
 
    verdi node show
 
+This is easier displayed in a provenance graph
 .. + put  pdf in web site + point out that this makes it reproducible)
+
+.. code:: bash
+
+  verdi node graph generate ...
+
+
 
 Moving to a different computer
 ------------------------------
@@ -133,12 +140,13 @@ keeping track of the provenance for full reproducibility.
 
 As the final step, we're going to launch the ``PwBandStructure`` workflow of the ``aiida-quantumespresso`` plugin.
 
-.. Add another python snippet
+.. literalinclude:: include/snippets/demo_bands.py
+
+Save the snipped in ``demo_bands.py`` and run it using
 
 .. code:: bash
 
   verdi run demo_bands.py
-  verdi process list
 
 This workflow will:
 
@@ -154,28 +162,28 @@ The workflow uses the PBE exchange-correlation functional with suitable pseudopo
 .. _2019_xmn_seekpath: https://www.materialscloud.org/work/tools/seekpath
 
 .. K-point mesh is selected to have a minimum k-point density of 0.2 Å-1
-.. A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
+   A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
 
- will take ~X minutes on your virtual machine.
+The workflow should take ~10 minutes on your virtual machine.
+You may notice that ``verdi process list`` now shows more than one entry.
+While you wait for the workflow to complete,
+let's start exploring its provenance.
 
-While you wait for the workflow to complete (it should take ~X minutes on your virtual machine), 
-let's have a look at the provenance generated:
+The full provenance graph obtained from ``verdi node graph generate`` will already be rather complex (you can try!),
+so let's try browsing the provenance interactively instead.
 
-.. Add figure with provenance generated
-
-Once your workflow is completed, you can generate such a graph using
+Let's start the AiiDA REST API
 
 .. code:: bash
 
-  verdi graph generate ...
+  verdi restapi
 
-You can also browse your provenance graph interactively using the `Materials Cloud provenance browser <https://www.materialscloud.org/explore/connect?...`.
+and open the `Materials Cloud provenance browser <https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3`.
 
 .. note::
 
-  The provenance browser is a Javascript application that connects to the AiiDA REST API,
-  which is already running as a system service on the tutorial VMs.
-  In other contexts you can always start it with ``verdi restapi``
+  The provenance browser is a Javascript application that connects to the AiiDA REST API.
+  Your data never leaves your computer.
 
 .. some general comment on importance of the graph?
 .. a sentence on how to continue from here
