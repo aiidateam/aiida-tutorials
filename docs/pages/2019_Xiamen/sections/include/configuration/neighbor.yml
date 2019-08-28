@@ -1,10 +1,10 @@
 ---
 label: neighbor
 description: Your neighbor's VM.
-hostname: IP_ADDRESS  # replace this
+hostname: IP_ADDRESS  # << REPLACE
 transport: ssh  # connects via SSH
 scheduler: slurm  # use SLURM scheduler
-work_dir: "/tmp"
+work_dir: "/tmp/aiida_run"
 mpirun_command: "mpirun -np {tot_num_mpiprocs}"
 mpiprocs_per_machine: "2"
 shebang: "#!/bin/bash"

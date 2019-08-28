@@ -8,7 +8,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
 
  * The ``verdi`` command supports **tab-completion**:
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
- * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag (or see the 
+ * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag:
 
    .. code:: bash
 
@@ -42,7 +42,7 @@ The following short python script :download:`demo_calcjob.py <include/snippets/d
 
 .. literalinclude:: include/snippets/demo_calcjob.py
 
-Copy the script to your working directory and replace the placeholders.
+Copy the ``demo_calcjob.py`` script to your working directory and replace the placeholders.
 Then submit the calculation using:
 
 .. code:: bash
@@ -74,7 +74,7 @@ Moving to a different computer
 ------------------------------
 
 Now, this Quantum ESPRESSO calculation ran on your (virtual) machine, which was already pre-configured in AiiDA.
-This works fine for test calculations but production runs you'll need to run on a compute cluster.
+This works fine for test calculations but for production runs you'll need to run on a compute cluster.
 
 For the purposes of this tutorial, you'll run on your neighbor's computer.
 ask IP address of your neighbor
@@ -144,12 +144,14 @@ This workflow will:
 
   #. Determine the primitive cell of the input structure
   #. Run a calculation on the primitive cell to relax both the cell and the atomic positions (``vc-relax``)
-  #. Refine the symmetry of the relaxed structure to ensure the primitive cell is used 
+  #. Refine the symmetry of the relaxed structure, and find a standardised primitive cell using 2019_xmn_seekpath_.
   #. Run a self-consistent field calculation on the refined structure
-  #. Determine a standard path of high symmetry k-points using `SeeK-path <https://www.materialscloud.org/work/tools/seekpath>`_
-  #. Run a band structure calculation at fixed Kohn-Sham potential along the high-symmetry path
+  #. Run a band structure calculation at fixed Kohn-Sham potential along a standard path between high-symmetry k-points determined by 2019_xmn_seekpath_.
 
-The workflow uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs determined from the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_
+The workflow uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_
+
+
+.. _2019_xmn_seekpath: https://www.materialscloud.org/work/tools/seekpath
 
 .. K-point mesh is selected to have a minimum k-point density of 0.2 Å-1
 .. A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
