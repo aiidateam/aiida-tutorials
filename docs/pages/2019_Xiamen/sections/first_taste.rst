@@ -42,21 +42,31 @@ The following short python script :download:`demo_calcjob.py <include/snippets/d
 
 .. literalinclude:: include/snippets/demo_calcjob.py
 
-Copy the ``demo_calcjob.py`` script to your working directory and replace the placeholders.
+Copy the ``demo_calcjob.py`` script to your working directory.
+
+ #. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the "PW" code and use it in the script.
+ #. replace PK of the structure with the one you obtained
+ #. the VM already contains a number of pseudopotential families. Replace the PP family name with the one for the "SSSP efficiency" library.
+
 Then submit the calculation using:
 
 .. code:: bash
 
     verdi run demo_calcjob.py
 
-From this point onwards, the AiiDA daemon will take care of your calculation.
+From this point onwards, the AiiDA daemon will take care of your calculation: creating the input files, running the calculation, and parsing its results.
 
 Analyzing the outputs of a calculation
 --------------------------------------
 
+Let's have a look how your calculation is doing.
+
 .. code:: bash
 
    verdi process list
+
+.. code:: bash
+
    verdi calcjob inputcat # (compare with python file)
    verdi process list -a
    verdi calcjob outputcat
@@ -66,14 +76,21 @@ AiiDA has tracked the provenance of your calculation.
 
 .. code:: bash
 
-   verdi node show
+   verdi process show
 
 This is easier displayed in a provenance graph
 .. + put  pdf in web site + point out that this makes it reproducible)
 
+.. figure:: include/images/demo_calc.png
+   :width: 100%
+
+   Provenance graph for a single Quantum ESPRESSO calculation.
+
+You can generate such a graph for any calculation or data in AiiDA by running:
+
 .. code:: bash
 
-  verdi node graph generate ...
+  verdi node graph generate <PK>
 
 
 
@@ -84,33 +101,44 @@ Now, this Quantum ESPRESSO calculation ran on your (virtual) machine, which was 
 This works fine for test calculations but for production runs you'll need to run on a compute cluster.
 
 For the purposes of this tutorial, you'll run on your neighbor's computer.
-ask IP address of your neighbor
-
-.. Add template to download (they just need to replace IP address
-
+Download the 
+:download:`neighbor.yml <include/configuration/neighbor.yml>` configuration template script and replace the IP address by the one of your neighbor's VM.
 
 .. literalinclude:: include/configuration/neighbor.yml
-
 
 .. note::
 
     If you're completing this tutorial at a later time and have no partner machine,
     simply use "localhost" instead.
 
-.. literalinclude:: include/configuration/neighbor-config.yml
+Let AiiDA know about this new computer:
 
 .. code:: bash
 
   verdi computer setup --config neighbor.yml
+
+Now AiiDA is aware of the computer but you'll need to let AiiDA know how to connect to it.
+
+
+.. literalinclude:: include/configuration/neighbor-config.yml
+
+.. code:: bash
+
   verdi computer configure ssh neighbor --config neighbor-config.yml --non-interactive
+
+.. code:: bash
+
   verdi computer test
+
+AiiDA has access to the remote computer.
+What is left is to let AiiDA know about the code we are going to use.
 
 .. Add template for code
 .. literalinclude:: include/configuration/qe.yml
 
 .. code:: bash
 
-  verdi code setup
+  verdi code setup --config qe.yml
   verdi code list
 
 Now, modify the code label in your ``demo_calcjob.py`` script to use your newly set up code
@@ -178,7 +206,7 @@ Let's start the AiiDA REST API
 
   verdi restapi
 
-and open the `Materials Cloud provenance browser <https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3`.
+and open the `Materials Cloud provenance browser <https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3`_.
 
 .. note::
 
