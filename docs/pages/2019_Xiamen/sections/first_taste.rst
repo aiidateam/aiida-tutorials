@@ -206,7 +206,7 @@ Let's start the AiiDA REST API
 
   verdi restapi
 
-and open the `Materials Cloud provenance browser <https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3`_.
+and open the `Materials Cloud provenance browser <https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3>`_.
 
 .. note::
 
