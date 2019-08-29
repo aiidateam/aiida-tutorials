@@ -19,6 +19,9 @@ The software on this VM is based on `Quantum Mobile
 <https://materialscloud.org/work/quantum-mobile>`_ and already includes a
 pre-configured AiiDA installation as well as some test data for the tutorial.
 
+Please **read through the steps for your operating system even if you are an experienced user**.
+They contain important configuration options (port forwarding) that are necessary for the remainder of the tutorial.
+
 .. note::
 
    If you decide to work in pairs, one of you should forward their credentials
