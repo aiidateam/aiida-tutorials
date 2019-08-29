@@ -29,6 +29,7 @@ Sections
    :numbered:
 
    ./sections/setup
+   ./sections/first_taste
    ./sections/verdi_cmdline
    ./sections/verdi_shell
    ./sections/calculations
