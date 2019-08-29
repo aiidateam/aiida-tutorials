@@ -18,11 +18,11 @@ These are the notes of a 1-day AiiDA tutorial, given as part of the `Internation
 
 While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
 
-AiiDA hands-on
-==============
+AiiDA hands-on materials
+========================
 
-Sections
---------
+Demo
+----
 
 .. toctree::
    :maxdepth: 1
@@ -30,6 +30,14 @@ Sections
 
    ./sections/setup
    ./sections/first_taste
+
+In-depth tutorial
+-----------------
+
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
    ./sections/verdi_cmdline
    ./sections/verdi_shell
    ./sections/calculations
