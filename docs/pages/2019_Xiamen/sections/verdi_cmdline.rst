@@ -157,10 +157,7 @@ Alternatively, you can use graphical software to achieve the same, for instance:
 The provenance browser
 ----------------------
 
-While the ``verdi`` CLI provides full access to the data underlying the provenance graph (and we will return to it in :numref:`2019_xmn_inspecting_nodes`),
-a more intuitive tool for browsing AiiDA graphs is the interactive
-provenance browser available on `Materials
-Cloud <https://www.materialscloud.org>`__.
+While the ``verdi`` CLI provides full access to the data underlying the provenance graph, a more intuitive tool for browsing AiiDA graphs is the interactive provenance browser available on `Materials Cloud <https://www.materialscloud.org>`__.
 
 In order to use it, we first need to start the `AiiDA REST API <https://aiida-core.readthedocs.io/en/latest/restapi/index.html>`_:
 
@@ -202,12 +199,6 @@ If you ever get lost, just go to the "Details" tab, enter ``ce81c420-7751-48f6-a
    -  What inputs did the calculation take?
    -  What code was used and what was the name of the executable?
    -  How many calculations were performed using this code?
-
-
-.. _2019_xmn_inspecting_nodes:
-
-Inspecting the nodes of a graph
--------------------------------
 
 
 Processes
