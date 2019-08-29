@@ -71,18 +71,6 @@ Again, your calculation will get a PK, which you can use to get more information
    verdi process show <PK>
 
 As you can see, AiiDA has tracked all the inputs provided to the calculation, making sure you (or anyone else) will be able to reproduce it.
-One way to look inside the inputs themselves is:
-
-.. code:: bash
-
-   verdi calcjob inputcat # (compare with python file)
-
-Once the calculation has finished (should take ~1 min), you can look at the outputs as well:
-
-.. code:: bash
-
-   verdi calcjob outputcat <PK>
-   verdi calcjob res <PK>
 
 AiiDA's record of the calculation is best displayed in the form of a provenance graph
 
@@ -91,11 +79,38 @@ AiiDA's record of the calculation is best displayed in the form of a provenance 
 
    Provenance graph for a single Quantum ESPRESSO calculation.
 
+The image above is what you will obtain as soon as the calculation completes to run and is parsed by AiiDA.
 You can generate such a graph for any calculation or data in AiiDA by running:
 
 .. code:: bash
 
   verdi node graph generate <PK>
+
+(Make sure to wait for the calculation to finish in order to see all output nodes).
+
+You might wonder where is the actual input file of Quantum ESPRESSO. This has been generated automatically by AiiDA and
+one way to look to it is:
+
+.. code:: bash
+
+   verdi calcjob inputcat <PK>
+
+As an exercise, compare the Quantum ESPRESSO input file with the python file that you run, to understand how the input
+provided in it (in "AiiDA" format) has been converted into the Quantum ESPRESSO input.
+
+Once the calculation has finished (should take ~1 min), you can look at the outputs as well.
+You can check the raw Quantum ESPRESSO output file with:
+
+.. code:: bash
+
+   verdi calcjob outputcat <PK>
+
+Moreover, AiiDA has parsed a lot of information from the output and stored it in its database. To check what has been
+parsed, you can run:
+
+.. code:: bash
+
+   verdi calcjob res <PK>
 
 
 

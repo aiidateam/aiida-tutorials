@@ -8,7 +8,7 @@ interactive demos and videos.
    :maxdepth: 1
    :caption: Tutorial materials
 
-   2019, Xiamen University, China (aiida-core 1.0.0b5)<./pages/2019_Xiamen/index>
+   2019, Xiamen University, China (aiida-core 1.0.0b6)<./pages/2019_Xiamen/index>
    2019, EPFL, Switzerland (aiida-core 1.0.0b3)<./pages/2019_MARVEL_Psik_MaX/index>
    2019, University of Amsterdam, Netherlands (aiida-core 0.12.2)<./pages/2019_molsim_school_Amsterdam/index>
    2018, Cineca, Italy (aiida-core 1.0.0a1)<./pages/2018_PRACE_MaX/index>
