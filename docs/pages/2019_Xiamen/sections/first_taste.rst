@@ -31,7 +31,7 @@ Remember the PK of the structure, which we will now use to run our first calcula
 .. note::
 
    You can view the structure either `online <http://crystallography.net/cod/9008565.html>`_
-   or use ``jsmol 9008565.cif`` locally.
+   or use ``jmol 9008565.cif`` locally.
 
 .. Let jason/jianxing test speed of SSH forwarding - potentially mention jupyter
 
@@ -227,7 +227,7 @@ and open the `Materials Cloud provenance browser <https://www.materialscloud.org
 .. some general comment on importance of the graph?
 .. a sentence on how to continue from here
 
-Browse your AiiDA datbase.
+Browse your AiiDA database.
  * ... Wait for Snehal/Elsa to add Workflows capability before completing this
 
 What next?
