@@ -1,22 +1,22 @@
-+-----------------+----------------------------------------------------------------------------+
-| Related resources                                                                            |
-+=================+============================================================================+
-| Virtual Machine | `Quantum Mobile 19.08.0`_                                                  |
-+-----------------+----------------------------------------------------------------------------+
-| python packages | `aiida-core 1.0.0b6`_, `aiida-quantumespresso 3.0.0a4`_, `aiidalab 19.05`_ |
-+-----------------+----------------------------------------------------------------------------+
-| codes           | `Quantum Espresso 6.4.1`_                                                  |
-+-----------------+----------------------------------------------------------------------------+
++-----------------+--------------------------------------------------------------------------------+
+| Related resources                                                                                |
++-----------------+--------------------------------------------------------------------------------+
+| Virtual Machine | `Quantum Mobile 19.08.0`_                                                      |
++=================+================================================================================+
+| python packages | `aiida-core 1.0.0b6`_, `aiida-quantumespresso 3.0.0a4`_, `aiidalab 19.08.0a1`_ |
++-----------------+--------------------------------------------------------------------------------+
+| codes           | `Quantum Espresso 6.4.1`_                                                      |
++-----------------+--------------------------------------------------------------------------------+
 
 .. _Quantum Mobile 19.08.0: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.08.0
 .. _aiida-core 1.0.0b6: https://pypi.org/project/aiida-core/1.0.0b6
 .. _aiida-quantumespresso 3.0.0a4: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0a4
-.. _aiidalab 19.05: https://github.com/aiidalab/aiidalab-metapkg/releases/tag/tutorial-2019-05
+.. _aiidalab 19.08.0a1: https://pypi.org/project/aiidalab/19.8.0a1
 .. _Quantum Espresso 6.4.1: https://github.com/QEF/q-e/releases/tag/qe-6.4.1
 
-These are the notes of a 1-day AiiDA tutorial, given as part of the `International Workshop on Chemistry and Machine-learning at Xiamen University <http://pcoss.xmu.edu.cn/workshop/>`__  which took place from September 2-6, 2019.
+These are the hands-on materials from the 1-day AiiDA tutorial, part of the `International Workshop on Chemistry and Machine-learning at Xiamen University <http://pcoss.xmu.edu.cn/workshop/>`__  from September 2-6, 2019.
 
-While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
+While participants of the tutorial used virtual machines on a cloud service, one can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
 
 AiiDA hands-on materials
 ========================
