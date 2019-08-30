@@ -25,13 +25,17 @@ interactive demos and videos.
    interactive notebooks (aiida-core 0.10.0) <https://github.com/aiidateam/aiida-max-examples>
 
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Videos
 
-   2019 tutorial lectures (aiida-core 1.0.0b3) <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>
-   2019 plugin migration workshop lectures (aiida-core 1.0.0b2) <https://www.youtube.com/playlist?list=PL19kfLn4sO_9laPkLBdv935PquRxX8dCc>
-   2017 tutorial lectures (aiida-core 0.9.0) <https://www.youtube.com/playlist?list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR>
-   2017 short demo videos (aiida-core 0.8.0) <https://www.youtube.com/playlist?list=PL19kfLn4sO_-XDUeXu5jwUq9k7TId8mM0>
-   2016 tutorial lectures (aiida-core 0.6.0) <https://www.youtube.com/watch?v=qUNYEWClS2U&list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR&index=4>
+
+Videos
+------
+
+.. Without this, the default list is indented more than the toctree list
+.. rst-class:: toctree-l1
+
+ *  `2019 tutorial lectures (aiida-core 1.0.0b3) <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>`_ (`mirror <https://www.bilibili.com/video/av64190843/>`_)
+ *  `2019 plugin migration workshop lectures (aiida-core 1.0.0b2) <https://www.youtube.com/playlist?list=PL19kfLn4sO_9laPkLBdv935PquRxX8dCc>`_
+ *  `2017 tutorial lectures (aiida-core 0.9.0) <https://www.youtube.com/playlist?list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR>`_
+ *  `2017 short demo videos (aiida-core 0.8.0) <https://www.youtube.com/playlist?list=PL19kfLn4sO_-XDUeXu5jwUq9k7TId8mM0>`_
+ *  `2016 tutorial lectures (aiida-core 0.6.0) <https://www.youtube.com/watch?v=qUNYEWClS2U&list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR&index=4>`_
 
