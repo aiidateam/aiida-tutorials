@@ -221,18 +221,56 @@ Start the AiiDA REST API:
 
   verdi restapi
 
-and open the `Materials Cloud provenance browser <https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3>`_.
+and open the |provenance browser|.
 
-.. note::
+.. |provenance browser| raw:: html
 
-  The provenance browser is a Javascript application that connects to the AiiDA REST API.
-  Your data never leaves your computer.
+   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3" target="_blank">Materials Cloud provenance browser</a>
+
+
+The provenance browser is a Javascript application that connects to the AiiDA REST API.
+Your data never leaves your computer.
 
 .. some general comment on importance of the graph?
 .. a sentence on how to continue from here
 
 Browse your AiiDA database.
- * ... Wait for Snehal/Elsa to add Workflows capability before completing this
+ * Start by finding your structure in Data => Structure
+ * Use the provenance browser to explore the steps of the ``PwBandStructureWorkChain``
+
+.. note:: 
+
+     When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
+
+Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandStructureWorkChain`` and find the PK of its ``band_structure`` output.
+Use this to produce a PDF of the band structure:
+
+.. code:: bash
+
+   verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
+
+
+.. figure:: include/images/si_bands.png
+   :width: 80%
+
+   Band structure computed by the `PwBandStructure` workchain.
+
+.. note::
+   The ``BandsData`` node does contain information about the Fermi energy, so the energy zero in your plot will be arbitrary.
+   You can produce a plot with the Fermi energy set to zero (as above) using the following code in a jupyter notebook:
+
+   .. code:: ipython
+
+        %aiida
+        %matplotlib inline
+     
+        scf_params = load_node(<PK>)  # REPLACE with PK of "scf_parameters" output
+        fermi_energy = scf_params.dict.fermi_energy
+
+        bands = load_node(<PK>)  # REPLACE with PK of "band_structure" output
+        bands.show_mpl(y_origin=fermi_energy, plot_zero_axis=True)
+
+
 
 What next?
 ----------
