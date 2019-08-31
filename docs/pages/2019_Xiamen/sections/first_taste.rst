@@ -25,7 +25,7 @@ Let's download a structure from the `Crystallography Open Database <http://cryst
     verdi data structure import ase 9008565.cif
 
 Each piece of data in AiiDA gets a PK number (and a UUID, more about this later).
-The PK allows you to easily reuse a piece of data anywhere in AiiDA.
+The PK allows you to easily reuse data anywhere in AiiDA.
 Remember the PK of the structure, which we will now use to run our first calculation.
 
 .. note::
@@ -52,7 +52,8 @@ Then submit the calculation using:
 
     verdi run demo_calcjob.py
 
-From this point onwards, the AiiDA daemon will take care of your calculation: creating the input files, running the calculation, and parsing its results.
+From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
+It should take less than one minute to complete.
 
 Analyzing the outputs of a calculation
 --------------------------------------
@@ -70,49 +71,37 @@ Again, your calculation will get a PK, which you can use to get more information
 
    verdi process show <PK>
 
-As you can see, AiiDA has tracked all the inputs provided to the calculation, making sure you (or anyone else) will be able to reproduce it.
-
-AiiDA's record of the calculation is best displayed in the form of a provenance graph
+As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
+AiiDA's record of a calculation is best displayed in the form of a provenance graph
 
 .. figure:: include/images/demo_calc.png
    :width: 100%
 
    Provenance graph for a single Quantum ESPRESSO calculation.
 
-The image above is what you will obtain as soon as the calculation completes to run and is parsed by AiiDA.
-You can generate such a graph for any calculation or data in AiiDA by running:
+You can generate such a provenance graph for any calculation or data in AiiDA by running:
 
 .. code:: bash
 
   verdi node graph generate <PK>
 
-(Make sure to wait for the calculation to finish in order to see all output nodes).
+Try to reproduce the figure using the PK of your calculation.
 
-You might wonder where is the actual input file of Quantum ESPRESSO. This has been generated automatically by AiiDA and
-one way to look to it is:
-
-.. code:: bash
-
-   verdi calcjob inputcat <PK>
-
-As an exercise, compare the Quantum ESPRESSO input file with the python file that you run, to understand how the input
-provided in it (in "AiiDA" format) has been converted into the Quantum ESPRESSO input.
-
-Once the calculation has finished (should take ~1 min), you can look at the outputs as well.
-You can check the raw Quantum ESPRESSO output file with:
+You might wonder what happened under the hood, e.g. where to find the actual input and output files of the calculation.
+You will learn more about this later -- until then, here are a few useful commands:
 
 .. code:: bash
 
-   verdi calcjob outputcat <PK>
+   verdi calcjob inputcat <PK>  # shows the input file of the calculation
+   verdi calcjob outputcat <PK>  # shows the output file of the calculation
+   verdi calcjob res <PK>  # shows the parsed output
 
-Moreover, AiiDA has parsed a lot of information from the output and stored it in its database. To check what has been
-parsed, you can run:
-
-.. code:: bash
-
-   verdi calcjob res <PK>
-
-
+A few questions you could answer using these commands (optional)
+ * How many atoms did the structure contain?
+   How many electrons?
+ * How many k-points were specified? How many k-points were actually computed? Why?
+ * How many SCF iterations were needed for convergence?
+ * How long did Quantum ESPRESSO actually run (wall time)?
 
 Moving to a different computer
 ------------------------------
