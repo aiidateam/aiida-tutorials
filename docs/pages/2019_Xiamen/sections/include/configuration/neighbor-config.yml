@@ -1,6 +1,6 @@
 ---
 username: compute
-key_filename: /home/max/.ssh/aiida-tutorials-compute.pem
+key_filename: /home/max/.ssh/aiida-tutorial-compute.pem
 timeout: 30  # timout for SSH before giving up
 key_policy: AutoAddPolicy  # add to known hosts automatically
 safe_interval: 5  #  Minimum time (s) between consecutive connections
