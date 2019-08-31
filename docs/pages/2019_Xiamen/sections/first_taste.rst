@@ -228,10 +228,8 @@ and open the |provenance browser|.
    <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3" target="_blank">Materials Cloud provenance browser</a>
 
 
-.. note::
-
-  The provenance browser is a Javascript application that connects to the AiiDA REST API.
-  Your data never leaves your computer.
+The provenance browser is a Javascript application that connects to the AiiDA REST API.
+Your data never leaves your computer.
 
 .. some general comment on importance of the graph?
 .. a sentence on how to continue from here
@@ -239,6 +237,10 @@ and open the |provenance browser|.
 Browse your AiiDA database.
  * Start by finding your structure in Data => Structure
  * Use the provenance browser to explore the steps of the ``PwBandStructureWorkChain``
+
+.. note:: 
+
+     When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
 
 Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandStructureWorkChain`` and find the PK of its ``band_structure`` output.
 Use this to produce a PDF of the band structure:
