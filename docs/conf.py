@@ -96,7 +96,7 @@ exclude_patterns = [
     '**/.ipynb_checkpoints/',
     'pages/*/notebooks/*-solutions.ipynb',
     'pages/*/notebooks/*-template.ipynb',
-    'pages/2019_MARVEL_Psik_MaX/notebooks/bandstructure.ipynb',
+    'pages/2019_*/notebooks/bandstructure.ipynb',
 ]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
