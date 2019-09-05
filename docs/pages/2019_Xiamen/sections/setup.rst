@@ -13,9 +13,12 @@ On your Huawei cloud account:
     * Flavor ``s6.large.2`` (2 vCPUs, 4 GB RAM) should be sufficient
     * Use shared image ``aiida-tutorial``
     * Use security group ``aiida-tutorial``
+    * Use name ``workhorse`` (**important**)
+    * No need to set a password
  * Copy the IP address of your new server
 
-Please read the instructions below on how to connect using your operating system.
+Please ask your tutors for the password for the ``max`` user,
+and read the instructions below on how to connect using your operating system.
   
 Linux and MacOS
 ~~~~~~~~~~~~~~~
