@@ -3,32 +3,23 @@ Getting set up
 
 .. _2019_xmn_connect:
 
-Connect to your virtual machine
--------------------------------
+Start your virtual machine
+---------------------------
 
-You should each have received from the instructors:
+On your Huawei cloud account:
 
-- an IP address
-- a private SSH key ``aiida_tutorial_NUM``
-- a public SSH key ``aiida_tutorial_NUM.pub``
+ * Add a new security group ``aiida-tutorial``, open ports 22, 5000, 8888
+ * Start a new server: 
+    * Flavor ``s6.large.2`` (2 vCPUs, 4 GB RAM) should be sufficient
+    * Use shared image ``aiida-tutorial``
+    * Use security group ``aiida-tutorial``
+    * Use name ``workhorse`` (**important**)
+    * No need to set a password
+ * Copy the IP address of your new server
 
-The steps below explain how to use these in order to connect to your
-personal virtual machine (VM) on Amazon Elastic Cloud 2
-using the `Secure Shell <http://en.wikipedia.org/wiki/Secure_Shell>`_ protocol.
-The software on this VM is based on `Quantum Mobile
-<https://materialscloud.org/work/quantum-mobile>`_ and already includes a
-pre-configured AiiDA installation as well as some test data for the tutorial.
-
-Please **read through the steps for your operating system even if you are an experienced user**.
-They contain important configuration options (port forwarding) that are necessary for the remainder of the tutorial.
-
-.. note::
-
-   If you decide to work in pairs, one of you should forward their credentials
-   to the other and you should both use the same IP address and ssh key.
-   Since you will be sharing the VM and user account, be careful not to delete
-   the work of your colleague.
-
+Please ask your tutors for the password for the ``max`` user,
+and read the instructions below on how to connect using your operating system.
+  
 Linux and MacOS
 ~~~~~~~~~~~~~~~
 
@@ -37,13 +28,8 @@ dedicated to your ssh configuration, to do so:
 
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
--  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub``
-   in the ``~/.ssh`` directory
--  Set the correct permissions on the private key:
-   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
-   that the permissions of this file are now ``-rw-------``.
 
-After that ssh key is in place, you can add the following block your
+Add the following block your
 ``~/.ssh/config`` file:
 
    .. code:: bash
@@ -51,7 +37,6 @@ After that ssh key is in place, you can add the following block your
      Host aiidatutorial
          Hostname IP_ADDRESS
          User max
-         IdentityFile ~/.ssh/aiida_tutorial_NUM
          ForwardX11 yes
          ForwardX11Trusted yes
          LocalForward 8888 localhost:8888
@@ -75,7 +60,6 @@ Afterwards you can connect to the server using this simple command:
    .. code:: console
 
       ssh \
-            -i ~/.ssh/aiida_tutorial_NUM \
             -L 8888:localhost:8888 \
             -L 5000:localhost:5000 \
             -o ServerAliveInterval=120 \
@@ -93,20 +77,6 @@ Windows
 If you're running Windows 10, you may want to consider `installing the Windows Subsystem for Linux <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`_ (and then follow the instructions above). Alternatively:
 
 -  Install the `PuTTY SSH client <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`_.
-
--  Run PuTTYGen
-
-   -  Load the ``aiida_tutorial_NUM`` private key (button
-      "Load"). You may need to choose to show "All files (*.*)",
-      and select the file without any extension (Type: File).
-   -  In the same window, click on "Save private Key", and save the key
-      with the name ``aiida_tutorial_NUM.ppk`` (don't specify a password).
-
--  Run Pageant
-
-   -  It will add a new icon near the clock, in the bottom right of your screen.
-   -  Right click on this Pageant icon, and click on “View Keys”.
-   -  Click on "Add key" and select the ``aiida_tutorial_NUM.ppk`` you saved a few steps above.
 
 -  Run PuTTY
 
@@ -207,7 +177,7 @@ There are a number of helpful resources available to you for getting more inform
 Please consider:
 
  * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
- * asking in the `Slack channel of the tutorial <http://bit.ly/ccml-xiamen-2019>`_
+ * asking in the `Slack channel of the tutorial <https://dwz.cn/WPIahDr5>`_
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
  * asking your neighbor
  * asking a tutor

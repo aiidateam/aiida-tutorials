@@ -227,6 +227,10 @@ and open the |provenance browser|.
 
    <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3" target="_blank">Materials Cloud provenance browser</a>
 
+.. note::
+
+   In order for the provenance browser to work, you need to configure SSH to tunnel port 5000 from your VM to your local laptop (see here :ref:`2019_xmn_connect`).
+
 
 The provenance browser is a Javascript application that connects to the AiiDA REST API.
 Your data never leaves your computer.
