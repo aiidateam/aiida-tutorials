@@ -149,9 +149,13 @@ terminal is the one we will actually use in this tutorial.
    If you want to serve notebooks on different ports, you'll also need to adjust
    the SSH configuration.
 
+Additional useful notes
+-----------------------
+Read through the next sections if you are interested in knowing how to download files
+into the virtual machine, how to troubleshoot typical problems, or how to get additional help.
 
 Downloading files
------------------
+~~~~~~~~~~~~~~~~~
 
 Throughout this tutorial, you will encounter links to download python scripts, jupyter notebooks and more.
 These files should be downloaded to the environment/working directory you use to run the tutorial.
@@ -164,7 +168,7 @@ This will download that file in your current directory.
 
 
 Troubleshooting
----------------
+~~~~~~~~~~~~~~~
 
 -  If you get errors ``ImportError: No module named aiida`` or
    ``No command ’verdi’ found``, double check that you have loaded the
@@ -180,13 +184,14 @@ Troubleshooting
 -  See the `jupyter notebook documentation <https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#browser-compatibility>`_ for compatibility of jupyter with various web browsers.
 
 Getting help
-------------
+~~~~~~~~~~~~
 
 There are a number of helpful resources available to you for getting more information about AiiDA.
 Please consider:
 
  * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
- * asking in the `Slack channel of the tutorial <https://dwz.cn/WPIahDr5>`_
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
  * asking your neighbor
  * asking a tutor
+
+.. Add here a link if you are creating a slack channel for the tutorial
