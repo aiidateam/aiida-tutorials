@@ -1,10 +1,19 @@
-A first taste
-=============
+A first taste of AiiDA
+======================
 
 Let's start with a quick demo of how AiiDA can make your life easier as a computational scientist.
 
 We'll be using the ``verdi`` command-line interface,
 which lets you manage your AiiDA installation, inspect the contents of your database,  control running calculations and more.
+
+As the first thing, open a terminal and type ``workon aiida`` to enter the "virtual environment" where AiiDA is installed.
+You will know that you are in the virtual environment because each new line will start with ``(aiida)``, e.g.::
+
+  (aiida) user@qe2019:~$
+
+Note that you will need to retype ``workon aiida`` every time you open a new terminal.
+
+Here are some first tasks for you:
 
  * The ``verdi`` command supports **tab-completion**:
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.

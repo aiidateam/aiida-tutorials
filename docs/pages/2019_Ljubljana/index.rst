@@ -6,7 +6,9 @@
 +-----------------+--------------------------------------------------------------------------------+
 | Related resources                                                                                |
 +=================+================================================================================+
-| Virtual Machine | `Quantum Mobile 19.09.0`_                                                      |
+| Virtual Machine | `Custom VM used for the Ljubljana 2019 tutorial`_                              |
+|                 |                                                                                |
+|                 | or `Quantum Mobile 19.09.0`_                                                   |
 +-----------------+--------------------------------------------------------------------------------+
 | python packages | `aiida-core 1.0.0b6`_, `aiida-quantumespresso 3.0.0a5`_                        |
 +-----------------+--------------------------------------------------------------------------------+
@@ -17,6 +19,9 @@
 .. _aiida-core 1.0.0b6: https://pypi.org/project/aiida-core/1.0.0b6
 .. _aiida-quantumespresso 3.0.0a5: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0a5
 .. _Quantum Espresso 6.3: https://github.com/QEF/q-e/releases/tag/qe-6.3
+.. _Custom VM used for the Ljubljana 2019 tutorial: https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/old_tutorials/AiiDA_tutorial_2019_09_ljubljana-QE2019.ova
+
+.. note:: The credentials of the custom VM are the following: username: ``user``, password: ``qe2019``.
 
 These are the hands-on materials from the 1-day AiiDA tutorial, part of the 
 `Summer School on Advanced Materials and Molecular Modelling <http://qe2019.ijs.si>`_,

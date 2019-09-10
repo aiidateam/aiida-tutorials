@@ -1,5 +1,14 @@
-Getting set up
-==============
+Getting set up (if you are using a cloud machine)
+=================================================
+
+Note: if you are working within a local VirtualBox machine
+(like the Quantum Mobile), you can skip this page and
+you can simply work within the VM.
+
+.. note:: The credentials of the custom VM that you can download
+   from the main page of this tutorial material
+   are the following: username: ``user``, password: ``qe2019``.
+
 
 .. _2019_lbj_connect:
 
