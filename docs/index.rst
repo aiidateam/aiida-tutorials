@@ -4,31 +4,20 @@ AiiDA Tutorials
 The official place to find materials from AiiDA tutorial events,
 interactive demos and videos.
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Tutorial materials
+Most recent tutorials
+---------------------
+If you are looking for the most recent tutorial, we suggest you to follow:
 
-   2019, Xiamen University, China (aiida-core 1.0.0b6)<./pages/2019_Xiamen/index>
-   2019, EPFL, Switzerland (aiida-core 1.0.0b3)<./pages/2019_MARVEL_Psik_MaX/index>
-   2019, University of Amsterdam, Netherlands (aiida-core 0.12.2)<./pages/2019_molsim_school_Amsterdam/index>
-   2018, Cineca, Italy (aiida-core 1.0.0a1)<./pages/2018_PRACE_MaX/index>
-   2018, EPFL, Switzerland (aiida-core 0.11.4)<./pages/2018_EPFL_molsim/index>
-   2017, EPFL, Switzerland (aiida-core 0.9.0)<./pages/2017_MARVEL_Psik_MaX/index>
-   2017, ICTP, Italy (aiida-core 0.7.1)<./pages/2017_ICTP/index>
-   2016, EPFL, Switzerland (aiida-core 0.6.0)<./pages/2016_MARVEL_Psik_MaX/index>
+- for a very basic quick start/demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>`.
+- for a full tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`.
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Interactive demos
-
-   interactive notebooks, binderized (aiida-core 0.12.3) <https://github.com/aiidateam/aiida_demos>
-   interactive notebooks (aiida-core 0.10.0) <https://github.com/aiidateam/aiida-max-examples>
-
-
-
+You can find below a full list (mostly for historical reasons) of our past events with their material.
 
 Videos
 ------
+
+For some events we have also recorded the lectures, that you can find here. You will also find the
+links inside the respective sections.
 
 .. Without this, the default list is indented more than the toctree list
 .. rst-class:: toctree-l1
@@ -39,3 +28,23 @@ Videos
  *  `2017 short demo videos (aiida-core 0.8.0) <https://www.youtube.com/playlist?list=PL19kfLn4sO_-XDUeXu5jwUq9k7TId8mM0>`_
  *  `2016 tutorial lectures (aiida-core 0.6.0) <https://www.youtube.com/watch?v=qUNYEWClS2U&list=PL19kfLn4sO_86ruxDP-sxbRXMuOr0VInR&index=4>`_
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Tutorial materials
+
+   2019, Jožef Stefan Institute, Ljubljana, Slovenia (aiida-core 1.0.0b6)<./pages/2019_Ljubljana/index>
+   2019, Xiamen University, Xiamen, China (aiida-core 1.0.0b6)<./pages/2019_Xiamen/index>
+   2019, EPFL, Lausanne, Switzerland (aiida-core 1.0.0b3)<./pages/2019_MARVEL_Psik_MaX/index>
+   2019, University of Amsterdam, Amsterdam, Netherlands (aiida-core 0.12.2)<./pages/2019_molsim_school_Amsterdam/index>
+   2018, Cineca, Bologna, Italy (aiida-core 1.0.0a1)<./pages/2018_PRACE_MaX/index>
+   2018, EPFL, Lausanne, Switzerland (aiida-core 0.11.4)<./pages/2018_EPFL_molsim/index>
+   2017, EPFL, Lausanne, Switzerland (aiida-core 0.9.0)<./pages/2017_MARVEL_Psik_MaX/index>
+   2017, ICTP, Trieste, Italy (aiida-core 0.7.1)<./pages/2017_ICTP/index>
+   2016, EPFL, Lausanne, Switzerland (aiida-core 0.6.0)<./pages/2016_MARVEL_Psik_MaX/index>
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Interactive demos
+
+   interactive notebooks, binderized (aiida-core 0.12.3) <https://github.com/aiidateam/aiida_demos>
+   interactive notebooks (aiida-core 0.10.0) <https://github.com/aiidateam/aiida-max-examples>

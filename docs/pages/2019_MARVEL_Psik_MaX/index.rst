@@ -1,3 +1,9 @@
+.. _EPFL 2019 Homepage:
+
+2019, EPFL, Lausanne, Switzerland
+=================================
+
+
 +-----------------+----------------------------------------------------------------------------+
 | Related resources                                                                            |
 +=================+============================================================================+
@@ -22,7 +28,7 @@ These are the notes of the `AiiDA tutorial on writing reproducible workflows for
 While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
 
 Writing reproducible workflows for computational materials science
-==================================================================
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Sections
 --------

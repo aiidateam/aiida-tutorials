@@ -185,7 +185,7 @@ Now you can connect the provenance browser to your local REST API:
 Once the provenance browser javascript application has been loaded by your browser, it is communicating directly with the REST API and your data never leaves your computer.
 
 .. note::
-    In order for this to work on your laptop, while the REST API is running on the virtual machine, we've enabled SSH tunneling for port ``5000`` in :ref:`connect`.
+    In order for this to work on your laptop, while the REST API is running on the virtual machine, we've enabled SSH tunneling for port ``5000`` in :ref:`2019_xmn_connect`.
 
 Start by clicking on the Details of a ``CalcJobNode`` and use the graph explorer to complete the exercise below.
 If you ever get lost, just go to the "Details" tab, enter ``ce81c420-7751-48f6-af8e-eb7c6a30cec3`` and click on the "GO" button.

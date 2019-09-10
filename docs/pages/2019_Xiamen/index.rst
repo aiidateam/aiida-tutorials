@@ -1,3 +1,8 @@
+.. _Xiamen 2019 Homepage:
+
+2019, Xiamen University, Xiamen, China
+======================================
+
 +-----------------+--------------------------------------------------------------------------------+
 | Related resources                                                                                |
 +=================+================================================================================+
@@ -19,7 +24,7 @@ These are the hands-on materials from the 1-day AiiDA tutorial, part of the `Int
 While participants of the tutorial used virtual machines on a cloud service, one can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
 
 AiiDA hands-on materials
-========================
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Demo
 ----
