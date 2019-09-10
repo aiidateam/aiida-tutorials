@@ -26,7 +26,13 @@ pre-configured AiiDA installation as well as some test data for the tutorial.
    Since you will be sharing the VM and user account, be careful not to delete
    the work of your colleague.
 
-  
+
+.. note::
+
+   Please make sure you are not running any jupyter notebook on your computer.
+   In this case, please kill all running kernels first. Otherwise, the port tunneling
+   that we are setting up will not work.
+
 Linux and MacOS
 ~~~~~~~~~~~~~~~
 
