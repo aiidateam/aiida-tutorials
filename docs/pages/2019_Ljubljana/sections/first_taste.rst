@@ -23,26 +23,108 @@ Here are some first tasks for you:
 
        verdi -h
 
-Importing a structure and running a calculation
------------------------------------------------
+Importing a structure and inspecting it
+---------------------------------------
 
-Let's download a structure from the `Crystallography Open Database <http://crystallography.net/cod/>`_ and import it into AiiDA:
+Let's download a structure from the `Crystallography Open Database <http://crystallography.net/cod/>`_ and import it into AiiDA.
+
+.. note::
+
+   You can view the structure `online <http://crystallography.net/cod/9008565.html>`_.
+
+
+You can download the file and import it with the following two commands:
 
 .. code:: bash
 
     wget http://crystallography.net/cod/9008565.cif
     verdi data structure import ase 9008565.cif
 
-Each piece of data in AiiDA gets a PK number (and a UUID, more about this later).
-The PK allows you to easily reuse data anywhere in AiiDA.
-Remember the PK of the structure, which we will now use to run our first calculation.
+Each piece of data in AiiDA gets a PK number (a "primary key")
+that identifies it in your database.
+This is printed out on the screen by the ``verdi data structure import`` command.
+Mark it down, as we are going to use it in the next commands.
 
 .. note::
 
-   You can view the structure either `online <http://crystallography.net/cod/9008565.html>`_
-   or use ``jmol 9008565.cif`` locally.
+   In the next commands, replace the string ``<PK>`` with the appropriate PK number.
 
-.. Let jason/jianxing test speed of SSH forwarding - potentially mention jupyter
+Let us first inspect the node you just created:
+
+.. code:: bash
+
+    verdi node show <PK>
+
+You will get in output some information on the node,
+including its type (``StructureData``, the AiiDA data type for storing crystal 
+structures), a label and a description (empty for now, can be changed), 
+a creation time (``ctime``) and a last modification time (``mtime``), 
+the PK of the node and its UUID (universally unique identifier).
+
+.. note::
+
+  **When should I use the PK and when should I use the UUID?**
+
+  A **PK** is a short integer identifying the node and therefore easy to remember. 
+  However, the same PK number (e.g., PK=10)
+  might appear in two different databases referring to two completely different
+  pieces of data.
+
+  A **UUID** is a hexadecimal string that might look like this::
+
+     d11a4829-3e19-4978-bfcf-c28ddeb0891e
+
+  A UUID has instead the nice feature to be globally unique: even if you export
+  your data and a colleague imports it, the UUIDs will remain the same
+  (while the PKs will typically be different).
+
+  Therefore, use the UUID to keep a long-term reference to a node.
+  Feel free to use the PK for quick, everyday use (e.g. to inspect a node).
+
+.. note:: 
+  All AiiDA commands accepting a PK can also accept a UUID. Check this by
+  trying the command before, this time with ``verdi node show <UUID>``.
+
+  Note the following:
+
+  - AiiDA does not require the full UUID, but just the first part of it,
+    as long as only one node starts with the string you provide. E.g., in the example above,
+    you could also say ``verdi node show d11a4829-3e19``. Most probably, instead,
+    ``verdi node show d1`` will return an error, since most probably
+    you have more than one node starting with the string ``d1``.
+
+  - By default, if what you pass is a valid integer, AiiDA will assume it is a PK;
+    if at least one of the characters is not a digit, then AiiDA will assume
+    it is (the first part of) a UUID.
+
+  - How to solve the issue, then, when the first part of the UUID is composed only by
+    digits (e.g. in ``2495301c-dd00-42d6-92e4-1a8c171bbb4a``)? Indeed, using
+    ``verdi node show 24953`` would look for a node with ``PK=24953``. As a solution,
+    just add a dash, e.g. ``verdi node show 24953-`` so that AiiDA will consider
+    this as the beginning of the UUID.
+
+  - Note that you can put the dash in any part of the string, and you don't need
+    to respect the typical UUID pattern with 8-4-4-4-12 characters per section:
+    AiiDA will anyway first strip all dashes, and then put them back in the right
+    place, so e.g. ``verdi node show 24-95-3`` will give you the same result as 
+    ``verdi node show 24953-``.
+
+- Try to use again ``verdi node show`` on the ``StructureData`` node above,
+  just with the first part of the UUID (that you got from the first call to
+  ``verdi node show`` above).
+
+- ``StructureData`` can be exported to file in various formats.
+  As an example, let's export the structure in XSF format:
+   
+  .. code:: bash
+
+    verdi data structure export --format=xsf <PK> > exported.xsf
+
+.. Here one could add ``xcrysden --xsf exported.xsf``; I'm not putting it for
+   now as in the VM there is an issue with the new version of xcrysden.
+
+Running a calculation
+---------------------
 
 The following short python script sets up a self-consistent field calculation for the Quantum ESPRESSO code:
 
