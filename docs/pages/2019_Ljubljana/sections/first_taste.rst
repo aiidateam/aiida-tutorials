@@ -114,14 +114,17 @@ the PK of the node and its UUID (universally unique identifier).
   ``verdi node show`` above).
 
 - ``StructureData`` can be exported to file in various formats.
-  As an example, let's export the structure in XSF format:
+  As an example, let's export the structure in XSF format and visualize it
+  with XCrySDen:
    
   .. code:: bash
 
     verdi data structure export --format=xsf <PK> > exported.xsf
+    xcrysden --xsf exported.xsf
 
-.. Here one could add ``xcrysden --xsf exported.xsf``; I'm not putting it for
-   now as in the VM there is an issue with the new version of xcrysden.
+  You should be visualize to see the Si supercell (8 atoms) that we downloaded 
+  from the COD database (in CIF format), imported into AiiDA and exported back
+  into a different format (XSF).
 
 Running a calculation
 ---------------------
@@ -144,6 +147,19 @@ Then submit the calculation using:
     verdi run demo_calcjob.py
 
 From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
+
+In order to be able to do this, the AiiDA daemon must be running: to check this, you can run the command:
+
+.. code:: bash
+
+    verdi daemon status
+
+and, if the daemon is not running, you can start it with
+
+.. code:: bash
+
+    verdi daemon start
+
 It should take less than one minute to complete.
 
 Analyzing the outputs of a calculation
@@ -312,7 +328,7 @@ Start the AiiDA REST API:
 
   verdi restapi
 
-and open the |provenance browser|.
+and open the |provenance browser| (from the browser inside the virtual machine).
 
 .. |provenance browser| raw:: html
 
@@ -320,11 +336,14 @@ and open the |provenance browser|.
 
 .. note::
 
-   In order for the provenance browser to work, you need to configure SSH to tunnel port 5000 from your VM to your local laptop (see here :ref:`2019_lbj_connect`).
+   As of September 2019, the Materials Cloud provenance browser is still being developed, so some features might still not be
+   available or work as expected.
 
 
-The provenance browser is a Javascript application that connects to the AiiDA REST API.
-Your data never leaves your computer.
+.. note::
+   
+   The provenance browser is a Javascript application that connects to the AiiDA REST API.
+   Your data never leaves your computer.
 
 .. some general comment on importance of the graph?
 .. a sentence on how to continue from here
@@ -356,9 +375,12 @@ Use this to produce a PDF of the band structure:
 
    .. code:: ipython
 
-        %aiida
         %matplotlib inline
-     
+        import aiida
+        aiida.load_profile()
+
+        from aiida.orm import load_node
+
         scf_params = load_node(<PK>)  # REPLACE with PK of "scf_parameters" output
         fermi_energy = scf_params.dict.fermi_energy
 

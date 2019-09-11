@@ -7,6 +7,6 @@ PwBandStructureWorkChain = WorkflowFactory('quantumespresso.pw.band_structure')
 
 results = submit(
     PwBandStructureWorkChain,
-    code=Code.get_from_string("qe-6.4.1-pw@localhost"),
+    code=Code.get_from_string("<CODE LABEL>"), # REPLACE <CODE LABEL>
     structure=load_node(<PK>),  # REPLACE <PK>
 )
