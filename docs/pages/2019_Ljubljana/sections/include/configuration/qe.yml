@@ -1,9 +1,9 @@
 ---
 label: "qe-6.4.1-pw"
-description: "quantum_espresso v6.4.1"
+description: "quantum_espresso v6.4.1 (inside a Singularity container)"
 input_plugin: "quantumespresso.pw"  # input plugin for pw.x code
-computer: "neighbor"
+computer: "ijs"
 on_computer: true
-remote_abs_path: "/usr/local/bin/pw.x"  # path to executable
+remote_abs_path: "/opt/qe-6.4.1/pw.x"  # path to executable (inside singularity)
 prepend_text: "ulimit -s unlimited"  # set stacksize to unlimited
 append_text: " "

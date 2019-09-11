@@ -217,43 +217,54 @@ Now, this Quantum ESPRESSO calculation ran on your (virtual) machine.
 This is fine for tests, but for production calculations you'll typically want to run on a remote compute cluster.
 In AiiDA, moving a calculation from one computer to another means changing one line of code.
 
-For the purposes of this tutorial, you'll run on your neighbor's computer.
-Ask your neighbor for the IP address of their VM.
-Then, download the :download:`neighbor.yml <include/configuration/neighbor.yml>` setup template, replace the placeholder by the IP address and let AiiDA know about this computer by running:
+For the purposes of this tutorial, you'll run on the machine at JSI that you
+have already been using in the past days.
 
-.. .. literalinclude:: include/configuration/neighbor.yml
+Download the :download:`ijs.yml <include/configuration/ijs.yml>` setup
+template, that you can also see here:
+
+.. literalinclude:: include/configuration/ijs.yml
+
+Read it to understand what is needed by AiiDA to setup a new computer.
+Then, let AiiDA know about this computer (that will be called ``ijs``) by running:
 
 .. code:: bash
 
-  verdi computer setup --config neighbor.yml
+  verdi computer setup --config ijs.yml
 
 .. note::
 
-    If you're completing this tutorial at a later time and have no partner machine,
-    simply use "localhost" instead of the IP address.
+    If you're completing this tutorial at a later time and have no access to the
+    ``percolator.ijs.si`` machine, simply use "localhost" instead as the hostname,
+    and adapt the other parameters.
 
 AiiDA is now aware of the existence of the computer but you'll still need to let AiiDA
 know how to connect to it.
 AiiDA does this via `SSH <https://en.wikipedia.org/wiki/Secure_Shell>`_ keys.
-Your tutorial VM already contains a private SSH key for connecting to the ``compute`` user of your neighbor's machine,
+Your tutorial VM already contains a private SSH key for connecting
+to the ``precolator.ijs.si`` machine that you set up on the first day of the tutorial,
 so all that is left is to configure it in AiiDA.
 
-Download the :download:`neighbor-config.yml <include/configuration/neighbor-config.yml>` configuration template and run:
+Download the :download:`ijs-config.yml <include/configuration/ijs-config.yml>` configuration template, that
+looks like this:
 
-.. .. literalinclude:: include/configuration/neighbor-config.yml
+.. literalinclude:: include/configuration/ijs-config.yml
+
+Replace the ``<YOURUSERNAME>`` placeholder with the username on percolator
+that you have been given the first day of the turorial, save the file and then run:
 
 .. code:: bash
 
-  verdi computer configure ssh neighbor --config neighbor-config.yml --non-interactive
+  verdi computer configure ssh ijs --config ijs-config.yml --non-interactive
 
 .. note:: Both ``verdi computer setup`` and ``verdi computer configure`` can be used interactively without
   configuration files, which are provided here just to avoid typing errors.
 
-AiiDA should now have access to your neighbor's computer. Let's quickly test this:
+AiiDA should now have access to the ``percolator.ijs.si`` computer. Let's quickly test this:
 
 .. code:: bash
 
-  verdi computer test neighbor
+  verdi computer test ijs
 
 Finally, let AiiDA know about the **code** we are going to use.
 We've again prepared a template that looks as follows:

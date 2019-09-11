@@ -22,14 +22,13 @@
 .. _Custom VM used for the Ljubljana 2019 tutorial: https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/old_tutorials/AiiDA_tutorial_2019_09_ljubljana-QE2019.ova
 
 .. note:: The credentials of the custom VM are the following: username: ``user``, password: ``qe2019``.
+   Also, when you start it, to make it more performant you might want to set 2 CPUs, and 2GB of RAM or more.
+   If the machine becomes slow after a few hours of use, in VirtualBox 6 you can change the settings of the
+   graphics controller to VMSVGA.
 
 These are the hands-on materials from the 1-day AiiDA tutorial, part of the 
 `Summer School on Advanced Materials and Molecular Modelling <http://qe2019.ijs.si>`_,
 held on September 16-20, 2019 in Ljubljana (Slovenia).
-
-While participants of the tutorial used virtual machines on a cloud service,
-one can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above.
-The image already contains all the required software.
 
 AiiDA hands-on materials
 ^^^^^^^^^^^^^^^^^^^^^^^^
