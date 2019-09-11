@@ -4,7 +4,7 @@ description: Percolator machine at the Jožef Stefan Institute
 hostname: percolator.ijs.si
 transport: ssh  # connects via SSH
 scheduler: slurm  # use SLURM scheduler
-work_dir: "/data0/QE/{username}/aiida_run"
+work_dir: "/home/{username}/aiida_run"
 mpirun_command: "mpirun -np {tot_num_mpiprocs}"
 mpiprocs_per_machine: "8"
 shebang: "#!/bin/bash"
