@@ -360,8 +360,12 @@ and open the |provenance browser| (from the browser inside the virtual machine).
 .. a sentence on how to continue from here
 
 Browse your AiiDA database.
- * Start by finding your structure in Data => Structure
- * Use the provenance browser to explore the steps of the ``PwBandStructureWorkChain``
+ * Start by finding your Quantum ESPRESSO calculation (the type of node is called 
+   a ``CalcJobNode`` in AiiDA, since it is run as a job on a scheduler).
+   Select ``Calculations`` in the left menu to filter for calculations only.
+ * Inspect the raw inputs and outputs of the calculation, and use the provenance
+   browser to explore the input and output nodes of the calculation and the whole
+   provenance of your simulations.
 
 .. note:: 
 
