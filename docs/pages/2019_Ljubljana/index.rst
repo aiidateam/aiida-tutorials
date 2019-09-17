@@ -30,6 +30,10 @@ These are the hands-on materials from the 1-day AiiDA tutorial, part of the
 `Summer School on Advanced Materials and Molecular Modelling <http://qe2019.ijs.si>`_,
 held on September 16-20, 2019 in Ljubljana (Slovenia).
 
+.. note:: During the tutorial, some of the AiiDA developers will be online and
+   available to help on the `qe2019-ljubljana Slack workspace <http://qe2019-ljubljana.slack.com>`_. An invitation
+   link will be given during the tutorial.
+
 AiiDA hands-on materials
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
