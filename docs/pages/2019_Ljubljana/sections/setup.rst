@@ -1,7 +1,16 @@
-Getting set up
-==============
+Getting set up (if you are using a cloud machine)
+=================================================
 
-.. _2019_epfl_connect:
+Note: if you are working within a local VirtualBox machine
+(like the Quantum Mobile), you can skip this page and
+you can simply work within the VM.
+
+.. note:: The credentials of the custom VM that you can download
+   from the main page of this tutorial material
+   are the following: username: ``user``, password: ``qe2019``.
+
+
+.. _2019_lbj_connect:
 
 Connect to your virtual machine
 -------------------------------
@@ -26,6 +35,13 @@ pre-configured AiiDA installation as well as some test data for the tutorial.
    Since you will be sharing the VM and user account, be careful not to delete
    the work of your colleague.
 
+
+.. note::
+
+   Please make sure you are not running any jupyter notebook on your computer.
+   In this case, please kill all running kernels first. Otherwise, the port tunneling
+   that we are setting up will not work.
+
 Linux and MacOS
 ~~~~~~~~~~~~~~~
 
@@ -34,13 +50,8 @@ dedicated to your ssh configuration, to do so:
 
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
--  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub``
-   in the ``~/.ssh`` directory
--  Set the correct permissions on the private key:
-   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
-   that the permissions of this file are now ``-rw-------``.
 
-After that ssh key is in place, you can add the following block your
+Add the following block your
 ``~/.ssh/config`` file:
 
    .. code:: bash
@@ -48,11 +59,11 @@ After that ssh key is in place, you can add the following block your
      Host aiidatutorial
          Hostname IP_ADDRESS
          User max
-         IdentityFile ~/.ssh/aiida_tutorial_NUM
          ForwardX11 yes
          ForwardX11Trusted yes
          LocalForward 8888 localhost:8888
          LocalForward 5000 localhost:5000
+         ServerAliveInterval 120
 
 replacing the IP address (``IP_ADDRESS``) and the ``NUM`` by
 the one you received.
@@ -71,9 +82,9 @@ Afterwards you can connect to the server using this simple command:
    .. code:: console
 
       ssh \
-            -i ~/.ssh/aiida-tutorial-max.pem \
             -L 8888:localhost:8888 \
             -L 5000:localhost:5000 \
+            -o ServerAliveInterval=120 \
             -X -C \
             max@IP_ADDRESS
 
@@ -89,27 +100,13 @@ If you're running Windows 10, you may want to consider `installing the Windows S
 
 -  Install the `PuTTY SSH client <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`_.
 
--  Run PuTTYGen
-
-   -  Load the ``aiida_tutorial_NN`` private key (button
-      "Load"). You may need to choose to show "All files (*.*)",
-      and select the file without any extension (Type: File).
-   -  In the same window, click on "Save private Key", and save the key
-      with the name ``aiida_tutorial_NN.ppk`` (don't specify a password).
-
--  Run Pageant
-
-   -  It will add a new icon near the clock, in the bottom right of your screen.
-   -  Right click on this Pageant icon, and click on “View Keys”.
-   -  Click on "Add key" and select the ``aiida_tutorial_NN.ppk`` you saved a few steps above.
-
 -  Run PuTTY
 
    -  Put the given IP address as hostname, type ``aiidatutorial`` in "Saved Sessions"
-      and click "Save". 
-   -  Go to Connection > Data and put ``max`` as autologin username. 
+      and click "Save".
+   -  Go to Connection > Data and put ``max`` as autologin username.
    -  Go to Connection > SSH > Tunnels, type ``8888`` in the
-      "Source Port" box, type ``localhost:8888`` in "Destination" and click "Add". 
+      "Source Port" box, type ``localhost:8888`` in "Destination" and click "Add".
    -  Repeat the previous step for port ``5000`` instead of ``8888``.
    -  Go back to the "Session" screen, select "aiidatutorial" and click "Save"
    -  Finally, click "Open" (and click "Yes" on the putty security alert
@@ -126,8 +123,6 @@ In order to enable X-forwarding:
 -  Install the `Xming X Server for Windows <http://sourceforge.net/projects/xming/>`_.
 
 -  Configure PuTTy as described in the `Xming wiki <https://wiki.centos.org/HowTos/Xming>`_.
-
-.. _setup_jupyter:
 
 Start jupyter
 -------------
@@ -163,11 +158,13 @@ terminal is the one we will actually use in this tutorial.
    If you want to serve notebooks on different ports, you'll also need to adjust
    the SSH configuration.
 
-
-.. _setup_downloading_files:
+Additional useful notes
+-----------------------
+Read through the next sections if you are interested in knowing how to download files
+into the virtual machine, how to troubleshoot typical problems, or how to get additional help.
 
 Downloading files
------------------
+~~~~~~~~~~~~~~~~~
 
 Throughout this tutorial, you will encounter links to download python scripts, jupyter notebooks and more.
 These files should be downloaded to the environment/working directory you use to run the tutorial.
@@ -180,7 +177,7 @@ This will download that file in your current directory.
 
 
 Troubleshooting
----------------
+~~~~~~~~~~~~~~~
 
 -  If you get errors ``ImportError: No module named aiida`` or
    ``No command ’verdi’ found``, double check that you have loaded the
@@ -196,13 +193,14 @@ Troubleshooting
 -  See the `jupyter notebook documentation <https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#browser-compatibility>`_ for compatibility of jupyter with various web browsers.
 
 Getting help
-------------
+~~~~~~~~~~~~
 
 There are a number of helpful resources available to you for getting more information about AiiDA.
 Please consider:
 
  * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
- * asking in the `Slack channel of the tutorial <https://aiidaworkflows2019.slack.com>`_
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
  * asking your neighbor
  * asking a tutor
+
+.. Add here a link if you are creating a slack channel for the tutorial
