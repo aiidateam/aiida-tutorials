@@ -217,8 +217,24 @@ Now, this Quantum ESPRESSO calculation ran on your (virtual) machine.
 This is fine for tests, but for production calculations you'll typically want to run on a remote compute cluster.
 In AiiDA, moving a calculation from one computer to another means changing one line of code.
 
-For the purposes of this tutorial, you'll run on the machine at JSI that you
-have already been using in the past days.
+For the purposes of this tutorial, you'll run on the machine at the IJS 
+institute that you have already been using in the past days.
+
+.. note:: In case you don't have access to the IJS machine, you can instead use
+  a cloud machine that we have setup on an OpenStack cluster in Switzerland (in
+  the Swiss Supercomputing Centre CSCS), and that will be online (only) during
+  the tutorial.
+
+  In this case, you will need to use the following files instead of the ones
+  discussed below:
+
+  - Computer setup configuration file: :download:`openstack.yml <include/configuration/openstack.yml>`
+  - Computer configure configuration file: :download:`openstack-config.yml <include/configuration/openstack-config.yml>`
+  - Code setup configuration file: :download:`qe-openstack.yml <include/configuration/qe-openstack.yml>`
+
+  In order to know how to use them, continue reading through this
+  section, replacing ``ijs`` with ``openstack``. The code that you will create
+  will be called ``qe-6.3-pw@openstack``.
 
 Download the :download:`ijs.yml <include/configuration/ijs.yml>` setup
 template, that you can also see here:
