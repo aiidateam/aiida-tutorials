@@ -4,14 +4,12 @@ AiiDA Tutorials
 The official place to find materials from AiiDA tutorial events,
 interactive demos and videos.
 
-Most recent tutorials
+Latest tutorials
 ---------------------
-If you are looking for the most recent tutorial, we suggest you to follow:
 
-- for a very basic quick start/demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>`.
-- for a full tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`.
+- short demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>`.
+- full tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`.
 
-You can find below a full list (mostly for historical reasons) of our past events with their material.
 
 Videos
 ------
