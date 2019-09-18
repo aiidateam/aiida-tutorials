@@ -30,6 +30,7 @@ links inside the respective sections.
    :maxdepth: 1
    :caption: Tutorial materials
 
+   2019, SINTEF, Oslo, Norway (aiida-core 1.0.0b6)<./pages/2019_SINTEF/index>
    2019, Jožef Stefan Institute, Ljubljana, Slovenia (aiida-core 1.0.0b6)<./pages/2019_Ljubljana/index>
    2019, Xiamen University, Xiamen, China (aiida-core 1.0.0b6)<./pages/2019_Xiamen/index>
    2019, EPFL, Lausanne, Switzerland (aiida-core 1.0.0b3)<./pages/2019_MARVEL_Psik_MaX/index>
