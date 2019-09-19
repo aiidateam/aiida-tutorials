@@ -1,5 +1,3 @@
-.. _2019_mandi_verdi_cli:
-
 Verdi command line
 ==================
 
