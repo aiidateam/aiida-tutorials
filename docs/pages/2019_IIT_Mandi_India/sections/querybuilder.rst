@@ -1,4 +1,4 @@
-.. _2019_xmn_querybuilder:
+.. _2019_mandi_querybuilder:
 
 Queries in AiiDA: The Querybuilder
 ==================================

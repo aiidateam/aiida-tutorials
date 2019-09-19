@@ -229,7 +229,7 @@ and open the |provenance browser|.
 
 .. note::
 
-   In order for the provenance browser to work, you need to configure SSH to tunnel port 5000 from your VM to your local laptop (see here :ref:`2019_xmn_connect`).
+   In order for the provenance browser to work, you need to configure SSH to tunnel port 5000 from your VM to your local laptop (see here :ref:`2019_mandi_connect`).
 
 
 The provenance browser is a Javascript application that connects to the AiiDA REST API.

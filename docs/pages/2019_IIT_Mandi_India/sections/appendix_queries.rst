@@ -55,7 +55,7 @@ Imagine that you would like to get the smearing energy for all the calculations 
 Moreover, besides the smearing energy, you would like to print the units of this energy and the formula of the structure that was given to the calculation.
 The graphical representation of this query can be seen in :numref:`fig_qb_example_2_2019` and the actual query follows:
 
-.. _2019_xmn_fig_qb_example_2_2019:
+.. _2019_mandi_fig_qb_example_2_2019:
 .. figure:: include/images/qb_example_2.png
     :width: 50%
     :align: center

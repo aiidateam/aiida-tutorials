@@ -63,7 +63,7 @@ the command itself:
 
     !some bash command
 
-.. _2019_xmn_loadnode:
+.. _2019_mandi_loadnode:
 
 Loading a node
 --------------
@@ -99,7 +99,7 @@ Loading specific kinds of nodes
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
-From the graph you generated in  section :ref:`2019_xmn_aiidagraph`,
+From the graph you generated in  section :ref:`2019_mandi_aiidagraph`,
 find the ``PK`` of the pseudopotential file (LDA). Load it and
 show what elements it corresponds to by typing:
 
@@ -115,7 +115,7 @@ k-points
 
 A set of k-points in the Brillouin zone is represented by an instance of the
 ``KpointsData`` class. Choose one from the graph of
-produced in section :ref:`2019_xmn_aiidagraph`,
+produced in section :ref:`2019_mandi_aiidagraph`,
 load it as ``kpoints`` and inspect its content:
 
 .. code:: python
@@ -168,7 +168,7 @@ Parameters
 ~~~~~~~~~~
 
 Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
-Get the PK and load the input parameters of a calculation in the graph produced in  section :ref:`2019_xmn_aiidagraph`.
+Get the PK and load the input parameters of a calculation in the graph produced in  section :ref:`2019_mandi_aiidagraph`.
 Then display its content by typing
 
 .. code:: python
@@ -198,7 +198,7 @@ Let's finish by storing the ``new_params`` dictionary node in the datbase:
 Structures
 ~~~~~~~~~~
 
-Find a structure in the graph you generated in section :ref:`2019_xmn_aiidagraph` and load it.
+Find a structure in the graph you generated in section :ref:`2019_mandi_aiidagraph` and load it.
 Display its chemical formula, atomic positions and species using
 
 .. code:: python
@@ -298,7 +298,7 @@ In that case two duplicate structures are found for 'Si'.
 Accessing inputs and outputs
 ----------------------------
 
-Load again the calculation node used in Section :ref:`2019_xmn_loadnode`:
+Load again the calculation node used in Section :ref:`2019_mandi_loadnode`:
 
 .. code:: python
 
@@ -334,7 +334,7 @@ previously:
 
 Note that links have a single name, that was assigned by the calculation that
 used the corresponding input or produced the corresponding output, as
-illustrated in section :ref:`2019_xmn_aiidagraph`.
+illustrated in section :ref:`2019_mandi_aiidagraph`.
 
 For a more programmatic approach, you can get a represenation of the inputs and outputs of a node, say ``calc``, through the following methods:
 

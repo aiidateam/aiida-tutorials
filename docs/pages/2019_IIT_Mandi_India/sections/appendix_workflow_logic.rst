@@ -2,13 +2,13 @@
 in earlier parts of the tutorial. Go through them only if you
 have time.*
 
-.. _2019_xmn_workflow_logic:
+.. _2019_mandi_workflow_logic:
 
 More workflow logic: while loops and conditional statements
 ===========================================================
 
 In the previous sections, you have been introduced to ``WorkChains``, and the reason for using them over 'standard' work functions.
-However, in the :ref:`original example<2019_xmn_workchainsimple>`, the ``spec.outline`` was quite simple, with a 'static' sequence of two steps.
+However, in the :ref:`original example<2019_mandi_workchainsimple>`, the ``spec.outline`` was quite simple, with a 'static' sequence of two steps.
 Most often, however, you need dynamic workflows, where you need to decide at runtime whether to continue to compute or not (e.g. in a convergence loop, where you need to stop if convergence has been achieved).
 To support this scenario, the ``spec.outline`` can support logic: `while` loops and `if/elif/else` blocks.
 The simplest way to explain it is to show an example:
@@ -53,7 +53,7 @@ A suggestion on how to write new workchains: use the outline to help you in desi
 First create the spec outline writing, almost if you were explaining it in words, what you expect the workflow to do.
 Then, define one by one the methods.
 
-.. _2019_xmn_convpressure:
+.. _2019_mandi_convpressure:
 
 Pressure convergence
 --------------------
@@ -109,7 +109,7 @@ Mainly, we return the output nodes: ``steps`` with the list of results at each s
 The results returned in ``steps`` can be used to represent the evolution of the minimisation algorithm.
 A possible way to visualize it is presented in :numref:`fig_convpressure` obtained with an initial lattice constant of `alat = 5.2`.
 
-.. _2019_xmn_fig_convpressure:
+.. _2019_mandi_fig_convpressure:
 .. figure:: include/images/convergence_pressure.png
 
    Example of results of the convergence algorithm presented in this section.

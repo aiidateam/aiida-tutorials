@@ -15,7 +15,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
 More details on ``verdi`` can be found in the `online documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html>`_.
 
 
-.. _2019_xmn_setup_verdi_quicksetup:
+.. _2019_mandi_setup_verdi_quicksetup:
 
 Setting up a profile
 --------------------
@@ -88,31 +88,31 @@ Contrary to most databases, AiiDA databases contain not only *results* of calcul
 This information, the *data provenance*, is stored in the form of a *directed acyclic graph* (DAG).
 In the following, we are going to introduce you to different ways of browsing this graph and will ask you to find out some information regarding the database you just imported.
 
-.. _2019_xmn_aiidagraph:
+.. _2019_mandi_aiidagraph:
 
 Your first AiiDA graph
 ----------------------
 
-:numref:`2019_xmn_fig_graph_input_only` shows a typcial example of a calculation represented in an AiiDA graph.
+:numref:`2019_mandi_fig_graph_input_only` shows a typcial example of a calculation represented in an AiiDA graph.
 Have a look to the figure and its caption before moving on.
 
-.. _2019_xmn_fig_graph_input_only:
+.. _2019_mandi_fig_graph_input_only:
 .. figure:: include/images/verdi_graph/batio3/graph-input.png
    :width: 100%
 
    Graph with all inputs (data, circles; and code, diamond) to the Quantum ESPRESSO calculation (square) that you will create in the :ref:`calculations` section of this tutorial.
 
-.. _2019_xmn_fig_graph:
+.. _2019_mandi_fig_graph:
 .. figure:: include/images/verdi_graph/batio3/graph-full.png
    :width: 100%
 
-   Same as :numref:`2019_xmn_fig_graph_input_only`, but also with the outputs that the engine will create and connect automatically.
+   Same as :numref:`2019_mandi_fig_graph_input_only`, but also with the outputs that the engine will create and connect automatically.
    The ``RemoteData`` node is created during submission and can be thought as a symbolic link to the remote folder in which the calculation runs on the cluster.
    The other nodes are created when the calculation has finished, after retrieval and parsing.
    The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
    Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
 
-:numref:`2019_xmn_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi graph generate <IDENTIFIER>``.
+:numref:`2019_mandi_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi graph generate <IDENTIFIER>``.
 Identifiers in AiiDA come in three forms:
 
  * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
@@ -185,7 +185,7 @@ Now you can connect the provenance browser to your local REST API:
 Once the provenance browser javascript application has been loaded by your browser, it is communicating directly with the REST API and your data never leaves your computer.
 
 .. note::
-    In order for this to work on your laptop, while the REST API is running on the virtual machine, we've enabled SSH tunneling for port ``5000`` in :ref:`2019_xmn_connect`.
+    In order for this to work on your laptop, while the REST API is running on the virtual machine, we've enabled SSH tunneling for port ``5000`` in :ref:`2019_mandi_connect`.
 
 Start by clicking on the Details of a ``CalcJobNode`` and use the graph explorer to complete the exercise below.
 If you ever get lost, just go to the "Details" tab, enter ``ce81c420-7751-48f6-af8e-eb7c6a30cec3`` and click on the "GO" button.

@@ -1,7 +1,7 @@
-.. _Xiamen 2019 Homepage:
+.. _Mandi 2019 Homepage:
 
-2019, Xiamen University, Xiamen, China
-======================================
+2019, IIT Mandi, Mandi, India
+=============================
 
 +-----------------+--------------------------------------------------------------------------------+
 | Related resources                                                                                |
@@ -19,9 +19,10 @@
 .. _aiidalab 19.08.0a1: https://pypi.org/project/aiidalab/19.8.0a1
 .. _Quantum Espresso 6.4.1: https://github.com/QEF/q-e/releases/tag/qe-6.4.1
 
-These are the hands-on materials from the 1-day AiiDA tutorial, part of the `International Workshop on Chemistry and Machine-learning at Xiamen University <http://pcoss.xmu.edu.cn/workshop/>`__  from September 2-6, 2019.
+These are the hands-on materials from the 3-day AiiDA tutorial `National Workshop on Writing reproducible workflows for computational materials science using AiiDA <http://aiidaworkshop.iitmandi.ac.in/>`__  from October 9-11, 2019.
 
-While participants of the tutorial used virtual machines on a cloud service, one can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
+While participants of the tutorial used virtual machines on a cloud service, one can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above.
+The image already contains all the required software.
 
 AiiDA hands-on materials
 ^^^^^^^^^^^^^^^^^^^^^^^^

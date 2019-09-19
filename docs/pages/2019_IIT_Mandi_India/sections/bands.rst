@@ -1,10 +1,10 @@
-.. _2019_xmn_bands:
+.. _2019_mandi_bands:
 
 A real-world ``WorkChain``: Computing a band structure
 ======================================================
 
 .. note:: *If you still have enough time, you might want to first check*
-          :numref:`Appendix %s <2019_xmn_workflow_logic>` *before continuing with this section.*
+          :numref:`Appendix %s <2019_mandi_workflow_logic>` *before continuing with this section.*
 
 As a final demonstration of the power of ``WorkChain``\ s in AiiDA, we want to
 give a demonstration of a ``WorkChain``, which will take a structure as its
@@ -24,28 +24,28 @@ Note that the required time to calculate the bandstructure for the given
 structures ranges from ~5 minutes to more than an hour, given that the virtual
 machine is running on two cores with CPU throttling. It is not necessary to
 run all these examples as they may take too long to complete. For reference,
-the expected output band structures are plotted in :numref:`2019_xmn_fig_calc_bands_1`
-to :numref:`2019_xmn_fig_calc_bands_4`.
+the expected output band structures are plotted in :numref:`2019_mandi_fig_calc_bands_1`
+to :numref:`2019_mandi_fig_calc_bands_4`.
 
-.. _2019_xmn_fig_calc_bands_1:
+.. _2019_mandi_fig_calc_bands_1:
 .. figure:: include/images/bandstructures/Al_bands.png
    :width: 100%
 
    Electronic band structures of Al computed with AiiDA’s PwBandsWorkChain
 
-.. _2019_xmn_fig_calc_bands_2:
+.. _2019_mandi_fig_calc_bands_2:
 .. figure:: include/images/bandstructures/GaAs_bands.png
    :width: 100%
 
    Electronic band structures of GaAs computed with AiiDA’s PwBandsWorkChain
 
-.. _2019_xmn_fig_calc_bands_3:
+.. _2019_mandi_fig_calc_bands_3:
 .. figure:: include/images/bandstructures/CaF2_bands.png
    :width: 100%
 
    Electronic band structures of CaF\ :sub:`2` computed with AiiDA’s PwBandsWorkChain
 
-.. _2019_xmn_fig_calc_bands_4:
+.. _2019_mandi_fig_calc_bands_4:
 .. figure:: include/images/bandstructures/hBN_bands.png
    :width: 100%
 
