@@ -15,7 +15,7 @@
 
 .. _Quantum Mobile 19.09.0: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.09.0
 .. _aiida-core 1.0.0b6: https://pypi.org/project/aiida-core/1.0.0b6
-.. _aiida-quantumespresso 3.0.0a5: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0a5
+.. _aiida-quantumespresso 3.0.0a5: https://pypi.org/project/aiida-quantumespresso/3.0.0a5
 .. _aiidalab 19.08.0a1: https://pypi.org/project/aiidalab/19.8.0a1
 .. _Quantum Espresso 6.4.1: https://github.com/QEF/q-e/releases/tag/qe-6.4.1
 
