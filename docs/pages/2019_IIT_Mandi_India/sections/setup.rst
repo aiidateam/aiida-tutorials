@@ -46,7 +46,7 @@ Afterwards you can connect to the server using this simple command:
 
 .. code:: console
 
-     ssh aiidatutorial
+   ssh aiidatutorial
 
 .. note::
 
@@ -100,14 +100,14 @@ Once connected to your virtual machine, type in the remote terminal
 
 .. code:: bash
 
-     workon aiida
+   workon aiida
 
 This will enable the virtual environment in which AiiDA is installed, allowing you to use AiiDA.
 Now type in the same shell:
 
 .. code:: bash
 
-     jupyter notebook --no-browser
+   jupyter notebook --no-browser
 
 This will run a server with a web application called ``jupyter``, which is used to create interactive python notebooks.
 In order to connect to the jupyter notebook server:
@@ -132,7 +132,9 @@ Downloading files
 
 Throughout this tutorial, you will encounter links to download python scripts, jupyter notebooks and more.
 These files should be downloaded to the environment/working directory you use to run the tutorial.
-In particular, when running the tutorial on a Linux VM, copy the link address and download the files to the machine using the ``wget`` utility on the terminal::
+In particular, when running the tutorial on a Linux VM, copy the link address and download the files to the machine using ``wget`` in the terminal:
+
+.. code:: bash
 
    wget <LINK>
 
