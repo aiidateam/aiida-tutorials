@@ -19,7 +19,7 @@
 .. _aiidalab 19.08.0a1: https://pypi.org/project/aiidalab/19.8.0a1
 .. _Quantum Espresso 6.4.1: https://github.com/QEF/q-e/releases/tag/qe-6.4.1
 
-These are the hands-on materials from the 3-day AiiDA tutorial `National Workshop on Writing reproducible workflows for computational materials science using AiiDA <http://aiidaworkshop.iitmandi.ac.in/>`__  from October 9-11, 2019.
+These are the hands-on materials from the 3-day AiiDA tutorial |tutorial_name| from October 9-11, 2019.
 
 While participants of the tutorial used virtual machines on a cloud service, one can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above.
 The image already contains all the required software.
@@ -27,8 +27,8 @@ The image already contains all the required software.
 AiiDA hands-on materials
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Demo
-----
+Getting started
+---------------
 
 .. toctree::
    :maxdepth: 1
@@ -37,8 +37,8 @@ Demo
    ./sections/setup
    ./sections/first_taste
 
-In-depth tutorial
------------------
+Sections
+--------
 
 .. toctree::
    :maxdepth: 1
@@ -63,3 +63,32 @@ Appendices
    ./sections/appendix_restarting_calculations
    ./sections/appendix_queries
    ./sections/appendix_workflow_logic
+
+Acknowledgements
+----------------
+
+The |tutorial_name| was made possible by support from IIT Mandi, MARVEL, MaX, MarketPlace and EPFL, and kindly hosted by IIT Mandi.
+
+.. image:: sponsors/iit_mandi.jpg
+   :target: http://iitmandi.ac.in/
+   :width: 90px
+
+.. image:: sponsors/marvel.png
+   :target: http://nccr-marvel.ch
+   :width: 105px
+
+.. image:: sponsors/max.png
+   :target: http://www.max-centre.eu/
+   :width: 135px
+
+.. image:: sponsors/marketplace.png
+   :target: https://the-marketplace-project.eu
+   :width: 115px
+
+.. image:: sponsors/epfl.png
+   :target: https://epfl.ch
+   :width: 105px
+
+.. |tutorial_name| raw:: html
+
+   <a href="http://aiidaworkshop.iitmandi.ac.in/" target="_blank">National Workshop on Writing reproducible workflows for computational materials science using AiiDA</a>
