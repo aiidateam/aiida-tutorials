@@ -48,7 +48,6 @@ In-depth tutorial
    ./sections/calculations
    ./sections/querybuilder
    ./sections/workflows
-   ./sections/bands
 
 Appendices
 ----------
