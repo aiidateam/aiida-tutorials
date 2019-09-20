@@ -158,7 +158,6 @@ AiiDA should now have access to your neighbor's computer. Let's quickly test thi
 Finally, let AiiDA know about the **code** we are going to use.
 We've again prepared a template that looks as follows:
 
-.. Add template for code
 .. literalinclude:: include/configuration/qe.yml
 
 Download the :download:`qe.yml <include/configuration/qe.yml>` code template and run:
@@ -187,8 +186,61 @@ From calculations to workflows
 ------------------------------
 
 AiiDA can help you run individual calculations but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
+As the final step, let's actually run a workflow.
 
-As the final step, we are going to launch the ``PwBandStructure`` workflow of the ``aiida-quantumespresso`` plugin.
+.. code:: bash
+
+  verdi plugin list aiida.workflows
+
+This should show a list of workflows that are currently installed:
+
+.. code:: bash
+
+  Registered entry points for aiida.workflows:
+  * quantumespresso.matdyn.base
+  * quantumespresso.ph.base
+  * quantumespresso.pw.band_structure
+  * quantumespresso.pw.bands
+  * quantumespresso.pw.base
+  * quantumespresso.pw.relax
+  * quantumespresso.q2r.base
+  * zeopp.blockpockets
+
+  Info: Pass the entry point as an argument to display detailed information
+
+Let's try to run the ``quantumespresso.pw.band_structure`` workflow.
+This is a workflow from the ``aiida-quantumespresso`` plugin that, for a given structure, will compute the electronic band structure.
+Let's see what inputs it takes and what outputs it will produce:
+
+.. code:: bash
+
+  verdi plugin list aiida.workflows quantumespresso.pw.band_structure
+
+which should display:
+
+.. code:: bash
+
+  Inputs
+                   code:  required  Code           The `pw.x` code to use for the `PwCalculations`.
+              structure:  required  StructureData  The input structure.
+               metadata:  optional
+                options:  optional  Dict           Optional `options` to use for the `PwCalculations`.
+               protocol:  optional  Dict           The protocol to use for the workchain.
+  Outputs
+        band_parameters:  required  Dict
+         band_structure:  required  BandsData
+    primitive_structure:  required  StructureData
+         scf_parameters:  required  Dict
+    seekpath_parameters:  required  Dict
+  Exit codes
+                      1:  The process has failed with an unspecified error.
+                      2:  The process failed with legacy failure mode.
+                     10:  The process returned an invalid output.
+                     11:  The process did not register a required output.
+                    201:  Input `structuredata` contains an unsupported kind.
+                    401:  The `pwbandsworkchain` sub process failed.
+
+The following snippet shows how you can actually run this workflow.
 
 .. literalinclude:: include/snippets/demo_bands.py
 

@@ -73,7 +73,7 @@ def run_eos_wf(code, pseudo_family, element):
     return result
 
 
-def run_eos(code=load_code('qe-6.3-pw@localhost'),
+def run_eos(code=load_code('qe-6.4.1-pw@localhost'),
             pseudo_family='SSSP',
             element='Si'):
     """Helper function to run EOS WorkChain."""

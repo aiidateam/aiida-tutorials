@@ -298,7 +298,7 @@ For simplicity, we have included few lines at the end of the script that invoke 
 
 .. code:: python
 
-    def run_eos(code=load_code('qe-6.3-pw@localhost'), pseudo_family='SSSP', element='Si'):
+    def run_eos(code=load_code('qe-6.4.1-pw@localhost'), pseudo_family='SSSP', element='Si'):
         return run_eos_wf(code, Str(pseudo_family), Str(element))
 
     if __name__ == '__main__':
@@ -475,7 +475,7 @@ For example, you can execute:
 .. code:: python
 
     from aiida.engine import run
-    run(EquationOfState, element=Str('Si'), code=load_code('qe-6.3-pw@localhost'), pseudo_family=Str('SSSP'))
+    run(EquationOfState, element=Str('Si'), code=load_code('qe-6.4.1-pw@localhost'), pseudo_family=Str('SSSP'))
 
 While the workflow is running, you can check (in a different terminal) what is happening to the calculations using ``verdi process list``.
 You will see that after a few seconds the calculations are all submitted to the scheduler and can potentially run at the same time.
