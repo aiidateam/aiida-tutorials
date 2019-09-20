@@ -112,7 +112,7 @@ Have a look to the figure and its caption before moving on.
    The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
    Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
 
-:numref:`2019_sintef_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi graph generate <IDENTIFIER>``.
+:numref:`2019_sintef_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi node graph generate <IDENTIFIER>``.
 Identifiers in AiiDA come in three forms:
 
  * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
@@ -132,17 +132,9 @@ With that in mind, let's generate a graph for the calculation node with UUID ``c
 
 .. code:: bash
 
-    verdi graph generate <IDENTIFIER>
+    verdi node graph generate <IDENTIFIER>
 
-This command will create the file ``<PK>.dot`` that can be rendered by means of the utility ``dot`` as follows:
-
-.. code:: bash
-
-    dot -Tpdf -o <PK>.pdf <PK>.dot
-
-which will create a pdf file ``<PK>.pdf``.
-
-
+This command will create the file ``<PK>.dot.pdf`` that can be viewed with any PDF document viewer.
 You can open this file on the Amazon machine by using ``evince`` or, if the ssh connection is too slow, copy it via ``scp`` to your local machine.
 To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
 
@@ -497,16 +489,16 @@ Node with UUID prefix ``ce81c420`` should have no comments, but you can add a ve
 
 .. code:: bash
 
-    verdi comment add "vc-relax of a BaTiO3 done with QE pw.x" -N <IDENTIFIER>
+    verdi node comment add "vc-relax of a BaTiO3 done with QE pw.x" -N <IDENTIFIER>
 
 Now, if you ask for a list of all comments associated to that calculation by typing:
 
 .. code:: bash
 
-    verdi comment show <IDENTIFIER>
+    verdi node comment show <IDENTIFIER>
 
 the comment that you just added will appear together with some useful information such as its creator and creation date.
-We let you play with the other options of ``verdi comment`` command to learn how to update or remove comments.
+We let you play with the other options of ``verdi node comment`` command to learn how to update or remove comments.
 
 AiiDA groups of calculations
 ----------------------------
