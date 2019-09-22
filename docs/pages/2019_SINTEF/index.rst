@@ -61,3 +61,12 @@ Appendices
    ./sections/appendix_restarting_calculations
    ./sections/appendix_queries
    ./sections/appendix_workflow_logic
+
+AiiDA-VASP tutorial
+-------------------
+
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
+   ./sections/run_vasp
