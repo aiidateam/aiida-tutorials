@@ -1,7 +1,7 @@
 Getting set up
 ==============
 
-Note: if you are working within a local VirtualBox machine (like the Quantum Mobile), you can skip this page and you can simply work within the VM.
+.. note:: If you are using the Quantum Mobile virtual machine on your laptop, you can skip this section.
 
 .. _2019_sintef_connect:
 
@@ -14,12 +14,8 @@ You should each have received from the instructors:
 - a private SSH key ``aiida_tutorial_NUM``
 - a public SSH key ``aiida_tutorial_NUM.pub``
 
-The steps below explain how to use these in order to connect to your
-personal virtual machine (VM) on Amazon Elastic Cloud 2
-using the `Secure Shell <http://en.wikipedia.org/wiki/Secure_Shell>`_ protocol.
-The software on this VM is based on `Quantum Mobile
-<https://materialscloud.org/work/quantum-mobile>`_ and already includes a
-pre-configured AiiDA installation as well as some test data for the tutorial.
+The steps below explain how to use these in order to connect to your personal virtual machine (VM) on Amazon Elastic Cloud 2 using the `Secure Shell <http://en.wikipedia.org/wiki/Secure_Shell>`_ protocol.
+This VM is closely based on the `Quantum Mobile <https://materialscloud.org/work/quantum-mobile>`_ VM and already includes a pre-configured AiiDA installation.
 
 Linux and MacOS
 ~~~~~~~~~~~~~~~
