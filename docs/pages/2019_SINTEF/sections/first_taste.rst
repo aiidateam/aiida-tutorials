@@ -25,6 +25,18 @@ Here are some first tasks for you:
 
        verdi -h
 
+Getting help
+------------
+
+There are a number of helpful resources available to you for getting more information about AiiDA.
+Please consider:
+
+ * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
+ * asking in the `Slack channel of the tutorial <http://bit.ly/vasp-aiida-2019>`_
+ * asking your neighbor
+ * asking a tutor
+ * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
+
 Importing a structure and running a calculation
 -----------------------------------------------
 

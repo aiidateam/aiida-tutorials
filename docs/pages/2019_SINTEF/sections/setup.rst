@@ -167,14 +167,3 @@ Troubleshooting
 
 -  See the `jupyter notebook documentation <https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#browser-compatibility>`_ for compatibility of jupyter with various web browsers.
 
-Getting help
-------------
-
-There are a number of helpful resources available to you for getting more information about AiiDA.
-Please consider:
-
- * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
- * asking in the `Slack channel of the tutorial <https://dwz.cn/WPIahDr5>`_
- * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
- * asking your neighbor
- * asking a tutor
