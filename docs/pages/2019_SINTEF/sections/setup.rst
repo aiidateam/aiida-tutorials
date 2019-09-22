@@ -1,7 +1,7 @@
 Getting set up
 ==============
 
-.. note:: If you are using the Quantum Mobile virtual machine on your laptop, you can skip this section.
+.. note:: If you are using the Quantum Mobile virtual machine locally inside VirtualBox, you can skip this section.
 
 .. _2019_sintef_connect:
 
