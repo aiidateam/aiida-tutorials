@@ -3,25 +3,39 @@ A first taste
 
 Let's start with a quick demo of how AiiDA can make your life easier as a computational scientist.
 
-We'll be using the ``verdi`` command-line interface,
-which lets you manage your AiiDA installation, inspect the contents of your database,  control running calculations and more.
-
-As the first thing, open a terminal and type ``workon aiida`` to enter the "virtual environment" where AiiDA is installed.
-You will know that you are in the virtual environment because each new line will start with ``(aiida)``, e.g.::
+To get started, type ``workon aiida`` in your terminal to enter the *virtual environment* where AiiDA is installed.
+You have entered the the virtual environment when the prompt starts with ``(aiida)``, e.g.::
 
   (aiida) username@hostname:~$
 
-Note that you will need to retype ``workon aiida`` every time you open a new terminal.
+.. note::
+
+    You need to retype ``workon aiida`` whenever you open a new terminal.
+
+We'll be using the ``verdi`` command-line interface,
+which lets you manage your AiiDA installation, inspect the contents of your database,  control running calculations and more.
 
 Here are some first tasks for you:
 
  * The ``verdi`` command supports **tab-completion**:
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
- * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag:
+ * For help on any ``verdi`` command, simply append the ``--help/-h`` flag:
 
    .. code:: bash
 
        verdi -h
+
+Getting help
+------------
+
+There are a number of helpful resources available to you for getting more information about AiiDA.
+Please consider:
+
+ * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
+ * asking in the `Slack channel of the tutorial <http://bit.ly/vasp-aiida-2019>`_
+ * asking your neighbor
+ * asking a tutor
+ * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
 
 Importing a structure and running a calculation
 -----------------------------------------------
@@ -33,9 +47,9 @@ Let's download a structure from the `Crystallography Open Database <http://cryst
     wget http://crystallography.net/cod/9008565.cif
     verdi data structure import ase 9008565.cif
 
-Each piece of data in AiiDA gets a PK number (and a UUID, more about this later).
-The PK allows you to easily reuse data anywhere in AiiDA.
-Remember the PK of the structure, which we will now use to run our first calculation.
+Each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
+The PK is printed to screen by the ``verdi data structure import`` command.
+**Mark down the PK for your structure and use it to replace the <PK> placeholders in what follows.**
 
 .. note::
 
@@ -94,8 +108,14 @@ You can generate such a provenance graph for any calculation or data in AiiDA by
 
 Try to reproduce the figure using the PK of your calculation.
 
+.. note:: 
+
+  By default, AiiDA uses UUIDs to label nodes in provenance graphs (more about UUIDs vs PKs later). 
+  Try using the ``-h`` option to figure out how to switch to the PK identifier.
+
+
 You might wonder what happened under the hood, e.g. where to find the actual input and output files of the calculation.
-You will learn more about this later -- until then, here are a few useful commands:
+You will learn more about this later -- until then, here are a few useful commands to try:
 
 .. code:: bash
 
@@ -186,65 +206,28 @@ From calculations to workflows
 ------------------------------
 
 AiiDA can help you run individual calculations but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
-As the final step, let's actually run a workflow.
+As the final step, you are going to run such a workflow.
+
+Let's have a look at the workflows that are currently installed:
 
 .. code:: bash
 
   verdi plugin list aiida.workflows
 
-This should show a list of workflows that are currently installed:
 
-.. code:: bash
+The ``quantumespresso.pw.band_structure`` workflow from the `aiida-quantumespresso <https://github.com/aiidateam/aiida-quantumespresso>`_ plugin computes the electronic band structure for a given atomic structure.
+Let AiiDA tell you which inputs it takes and which outputs it produces:
 
-  Registered entry points for aiida.workflows:
-  * quantumespresso.matdyn.base
-  * quantumespresso.ph.base
-  * quantumespresso.pw.band_structure
-  * quantumespresso.pw.bands
-  * quantumespresso.pw.base
-  * quantumespresso.pw.relax
-  * quantumespresso.q2r.base
-  * zeopp.blockpockets
-
-  Info: Pass the entry point as an argument to display detailed information
-
-Let's try to run the ``quantumespresso.pw.band_structure`` workflow.
-This is a workflow from the ``aiida-quantumespresso`` plugin that, for a given structure, will compute the electronic band structure.
-Let's see what inputs it takes and what outputs it will produce:
 
 .. code:: bash
 
   verdi plugin list aiida.workflows quantumespresso.pw.band_structure
 
-which should display:
-
-.. code:: bash
-
-  Inputs
-                   code:  required  Code           The `pw.x` code to use for the `PwCalculations`.
-              structure:  required  StructureData  The input structure.
-               metadata:  optional
-                options:  optional  Dict           Optional `options` to use for the `PwCalculations`.
-               protocol:  optional  Dict           The protocol to use for the workchain.
-  Outputs
-        band_parameters:  required  Dict
-         band_structure:  required  BandsData
-    primitive_structure:  required  StructureData
-         scf_parameters:  required  Dict
-    seekpath_parameters:  required  Dict
-  Exit codes
-                      1:  The process has failed with an unspecified error.
-                      2:  The process failed with legacy failure mode.
-                     10:  The process returned an invalid output.
-                     11:  The process did not register a required output.
-                    201:  Input `structuredata` contains an unsupported kind.
-                    401:  The `pwbandsworkchain` sub process failed.
-
-The following snippet shows how you can actually run this workflow.
+We have prepared a short python snippet that shows how to run this workflow.
 
 .. literalinclude:: include/snippets/demo_bands.py
 
-Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet and run it using
+Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet, replace the PK, and run it using
 
 .. code:: bash
 
