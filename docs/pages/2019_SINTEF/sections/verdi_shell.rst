@@ -100,12 +100,12 @@ Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
 From the graph you generated in  section :ref:`2019_sintef_aiidagraph`,
-find the ``PK`` of the pseudopotential file (LDA). Load it and
+find the ``UUID`` of the pseudopotential files (``UpfData``). Load one of them and
 show what elements it corresponds to by typing:
 
 .. code:: python
 
-    upf = load_node(PK)
+    upf = load_node("<UUID>")
     upf.element
 
 All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing ``TAB``.
