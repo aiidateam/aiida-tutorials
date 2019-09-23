@@ -25,8 +25,13 @@ dedicated to your ssh configuration, to do so:
 
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
+-  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub``
+   in the ``~/.ssh`` directory
+-  Set the correct permissions on the private key:
+   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
+   that the permissions of this file are now ``-rw-------``.
 
-Add the following block your
+After that ssh key is in place, you can add the following block your
 ``~/.ssh/config`` file:
 
    .. code:: bash
@@ -34,6 +39,7 @@ Add the following block your
      Host aiidatutorial
          Hostname IP_ADDRESS
          User max
+         IdentityFile ~/.ssh/aiida_tutorial_NUM
          ForwardX11 yes
          ForwardX11Trusted yes
          LocalForward 8888 localhost:8888
@@ -57,6 +63,7 @@ Afterwards you can connect to the server using this simple command:
    .. code:: console
 
       ssh \
+            -i ~/.ssh/aiida-tutorial-max.pem \
             -L 8888:localhost:8888 \
             -L 5000:localhost:5000 \
             -o ServerAliveInterval=120 \
@@ -74,6 +81,20 @@ Windows
 If you're running Windows 10, you may want to consider `installing the Windows Subsystem for Linux <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`_ (and then follow the instructions above). Alternatively:
 
 -  Install the `PuTTY SSH client <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`_.
+
+-  Run PuTTYGen
+
+   -  Load the ``aiida_tutorial_NN`` private key (button
+      "Load"). You may need to choose to show "All files (*.*)",
+      and select the file without any extension (Type: File).
+   -  In the same window, click on "Save private Key", and save the key
+      with the name ``aiida_tutorial_NN.ppk`` (don't specify a password).
+
+-  Run Pageant
+
+   -  It will add a new icon near the clock, in the bottom right of your screen.
+   -  Right click on this Pageant icon, and click on “View Keys”.
+   -  Click on "Add key" and select the ``aiida_tutorial_NN.ppk`` you saved a few steps above.
 
 -  Run PuTTY
 
