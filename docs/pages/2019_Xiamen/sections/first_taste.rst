@@ -295,4 +295,4 @@ Here are some options for how to continue:
  * Continue your work from other parts of the workshop, chat with participants and enjoy yourself :-)
 
 
- .. _Quantum Mobile: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.08.0
+ .. _Quantum Mobile: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.09.0
