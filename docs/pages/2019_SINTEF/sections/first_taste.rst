@@ -322,19 +322,7 @@ What next?
 ----------
 
 You now have a first taste of the type of problems AiiDA tries to solve.
-Here are some options for how to continue:
 
- * Continue with the in-depth tutorial and learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA.
-   There is more than enough material to keep you busy for a day.
- * Download `Quantum Mobile`_ virtual machine and try running the tutorial on your laptop instead. This will let you take the materials home and continue in your own time.
- * Try `setting up AiiDA directly on your laptop <https://aiida-core.readthedocs.io/en/latest/install/quick_installation.html>`_.
-
-   .. note:: **For advanced Linux & python users only**.
-     AiiDA depends on a number of services and software that require some skill to set up.
-     Unfortunately, we don't have the human resources to help you solve
-     issues related to your setup in a tutorial context.
-
- * Continue your work from other parts of the workshop, chat with participants and enjoy yourself :-)
-
+Continue with the in-depth tutorial to learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA.
 
  .. _Quantum Mobile: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.08.0
