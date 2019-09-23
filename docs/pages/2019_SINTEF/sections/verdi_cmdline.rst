@@ -71,7 +71,7 @@ From now on, all ``verdi`` commands will apply to the ``quicksetup`` profile.
 .. note::
 
     To quickly perform a single command on a profile that is not the default, use the ``-p/--profile`` option:
-    For example, ``verdi -p generic profile show`` will display the configuration of the ``generic`` profile, despite it not being the current default profile.
+    For example, ``verdi -p generic code list`` will display the codes for the ``generic`` profile, despite it not being the current default profile.
 
 
 Importing data
