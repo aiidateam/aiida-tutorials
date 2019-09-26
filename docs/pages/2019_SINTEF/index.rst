@@ -49,6 +49,11 @@ In-depth tutorial
    ./sections/querybuilder
    ./sections/workflows
 
+aiida-vasp tutorial
+-------------------
+
+The materials for the aiida-vasp tutorial held on September 26-27 can be found in the `aiida-vasp documentation <https://aiida-vasp.readthedocs.io/en/latest/tutorials/oslo.html>`_.
+
 Appendices
 ----------
 
