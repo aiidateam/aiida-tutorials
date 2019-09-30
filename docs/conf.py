@@ -28,6 +28,7 @@ extensions = [
     'sphinx.ext.todo',
     'sphinx.ext.imgmath',
     'sphinx.ext.ifconfig',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.viewcode',
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive',
@@ -343,3 +344,8 @@ def setup(app):
 # We are not installing a full aiida environment
 nbsphinx_execute = 'never'
 #nbsphinx_allow_errors = True
+
+# Intersphinx configuration
+intersphinx_mapping = {
+    'aiida': ('http://aiida-core.readthedocs.org/en/latest/', None)
+}
