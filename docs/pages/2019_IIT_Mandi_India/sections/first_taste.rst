@@ -267,7 +267,7 @@ Use this to produce a PDF of the band structure:
 
         %aiida
         %matplotlib inline
-     
+
         scf_params = load_node(<PK>)  # REPLACE with PK of "scf_parameters" output
         fermi_energy = scf_params.dict.fermi_energy
 
@@ -279,4 +279,6 @@ Use this to produce a PDF of the band structure:
 What next?
 ----------
 
-You now have a first taste of the type of problems AiiDA tries to solve. Now let's continue with the in-depth tutorial and learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA. Please follow the link to the :ref:`2019_mandi_verdi_cli` section.
+You now have a first taste of the type of problems AiiDA tries to solve.
+Now let's continue with the in-depth tutorial and learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA.
+Please follow the link to the :ref:`2019_mandi_verdi_cli` section.
