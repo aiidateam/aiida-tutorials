@@ -1,6 +1,8 @@
 Getting set up
 ==============
 
+.. note:: If you are using the Quantum Mobile virtual machine locally inside VirtualBox, you can skip this section.
+
 .. _2019_mandi_connect:
 
 Connect to your virtual machine
@@ -26,14 +28,20 @@ Linux and MacOS
 It's recommended for you to place the ssh key you received in a folder dedicated to your ssh configuration, to do so:
 
 -  If not already present, create a ``.ssh`` directory in your home (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
+-  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub``
+   in the ``~/.ssh`` directory
+-  Set the correct permissions on the private key:
+   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
+   that the permissions of this file are now ``-rw-------``.
 
-Add the following block your ``~/.ssh/config`` file:
+After that ssh key is in place, you can add the following block your ``~/.ssh/config`` file:
 
 .. code:: bash
 
    Host aiidatutorial
       Hostname IP_ADDRESS
       User max
+      IdentityFile ~/.ssh/aiida_tutorial_NUM
       ForwardX11 yes
       ForwardX11Trusted yes
       LocalForward 8888 localhost:8888
@@ -55,6 +63,7 @@ Afterwards you can connect to the server using this simple command:
    .. code:: console
 
       ssh \
+            -i ~/.ssh/aiida-tutorial-max.pem \
             -L 8888:localhost:8888 \
             -L 5000:localhost:5000 \
             -o ServerAliveInterval=120 \
@@ -72,6 +81,18 @@ If you're running Windows 10, you may want to consider `installing the Windows S
 Alternatively:
 
 -  Install the `PuTTY SSH client <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`_.
+
+-  Run PuTTYGen
+
+   -  Load the ``aiida_tutorial_NN`` private key (button "Load").
+      You may need to choose to show "All files (*.*)", and select the file without any extension (Type: File).
+   -  In the same window, click on "Save private Key", and save the key with the name ``aiida_tutorial_NN.ppk`` (don't specify a password).
+
+-  Run Pageant
+
+   -  It will add a new icon near the clock, in the bottom right of your screen.
+   -  Right click on this Pageant icon, and click on “View Keys”.
+   -  Click on "Add key" and select the ``aiida_tutorial_NN.ppk`` you saved a few steps above.
 
 -  Run PuTTY
 
@@ -151,15 +172,3 @@ Troubleshooting
    Keep in mind that you need to start the jupyter server from the terminal connected to the VM, while the web browser should be opened locally on your laptop.
 
 -  See the `jupyter notebook documentation <https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#browser-compatibility>`_ for compatibility of jupyter with various web browsers.
-
-Getting help
-------------
-
-There are a number of helpful resources available to you for getting more information about AiiDA.
-Please consider:
-
- * Consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_.
- * Asking in the `Slack channel of the tutorial <https://aiida-tutorial-india.slack.com>`_.
- * Opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_.
- * Asking your neighbor.
- * Asking a tutor.

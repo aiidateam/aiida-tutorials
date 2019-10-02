@@ -21,7 +21,7 @@
 
 These are the hands-on materials from the 3-day AiiDA tutorial |tutorial_name| from October 9-11, 2019.
 
-While participants of the tutorial used virtual machines on a cloud service, one can follow the tutorial just as well using the Quantum Mobile VirtualBox image linked above.
+While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial on your own computer using the Quantum Mobile VirtualBox image linked above.
 The image already contains all the required software.
 
 AiiDA hands-on materials
@@ -49,7 +49,6 @@ Sections
    ./sections/calculations
    ./sections/querybuilder
    ./sections/workflows
-   ./sections/bands
 
 Appendices
 ----------

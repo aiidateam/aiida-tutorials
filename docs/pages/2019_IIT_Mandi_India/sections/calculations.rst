@@ -89,12 +89,12 @@ Similar to the computers, you can list all the configured codes with:
 
     verdi code list
 
-Verify that it now contains a code named ``qe-6.3-pw`` that we just configured.
+Verify that it now contains a code named ``qe-6.4.1-pw`` that we just configured.
 You can always check the configuration details of an existing code using:
 
 .. code:: bash
 
-    verdi code show qe-6.3-pw
+    verdi code show qe-6.4.1-pw
 
 .. note::
 
@@ -172,7 +172,7 @@ There should be a number of them. Here, we're interested in the "PWscf" executab
     verdi code list -P quantumespresso.pw
 
 Pick the correct codename, that might look like, e.g.
-``qe-6.3-pw@localhost`` and load it in the verdi shell.
+``qe-6.4.1-pw@localhost`` and load it in the verdi shell.
 
 .. code:: python
 
@@ -279,7 +279,7 @@ we provide) and link it to the calculation using the command:
     from aiida.orm.nodes.data.upf import get_pseudos_from_structure
     builder.pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY_NAME>')
 
-Print the content of the `pseudos` namespace (`print(builder.pseudos)`) to see what the helper function created.
+Print the content of the `pseudos` namespace, e.g. ``print(builder.pseudos)`` to see what the helper function created.
 
 Preparing and debugging input parameters
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
