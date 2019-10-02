@@ -1,13 +1,14 @@
 AiiDA Tutorials
 ===============
 
-The official place to find materials from AiiDA tutorial events, interactive demos and videos.
+The official home of AiiDA tutorial materials and videos.
 
-Latest tutorials
+Where to start
 ---------------------
 
 - short demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>`.
-- full tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`.
+- in-depth tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`, including `lecture videos <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>`_ 
+- `AiiDA cheatsheet <https://github.com/aiidateam/aiida-tutorials/raw/master/docs/pages/2019_MARVEL_Psik_MaX/cheatsheet/cheatsheet.pdf>`_ with class hierarchy and common commands
 
 
 Videos
@@ -30,6 +31,7 @@ links inside the respective sections.
    :caption: Tutorial materials
 
    2019, IIT Mandi, Mandi, India (aiida-core 1.0.0b6)<./pages/2019_IIT_Mandi_India/index>
+   2019, SINTEF, Oslo, Norway (aiida-core 1.0.0b6)<./pages/2019_SINTEF/index>
    2019, Jožef Stefan Institute, Ljubljana, Slovenia (aiida-core 1.0.0b6)<./pages/2019_Ljubljana/index>
    2019, Xiamen University, Xiamen, China (aiida-core 1.0.0b6)<./pages/2019_Xiamen/index>
    2019, EPFL, Lausanne, Switzerland (aiida-core 1.0.0b3)<./pages/2019_MARVEL_Psik_MaX/index>

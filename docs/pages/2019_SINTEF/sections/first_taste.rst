@@ -3,16 +3,39 @@ A first taste
 
 Let's start with a quick demo of how AiiDA can make your life easier as a computational scientist.
 
+To get started, type ``workon aiida`` in your terminal to enter the *virtual environment* where AiiDA is installed.
+You have entered the the virtual environment when the prompt starts with ``(aiida)``, e.g.::
+
+  (aiida) username@hostname:~$
+
+.. note::
+
+    You need to retype ``workon aiida`` whenever you open a new terminal.
+
 We'll be using the ``verdi`` command-line interface,
 which lets you manage your AiiDA installation, inspect the contents of your database,  control running calculations and more.
 
+Here are some first tasks for you:
+
  * The ``verdi`` command supports **tab-completion**:
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
- * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag:
+ * For help on any ``verdi`` command, simply append the ``--help/-h`` flag:
 
    .. code:: bash
 
        verdi -h
+
+Getting help
+------------
+
+There are a number of helpful resources available to you for getting more information about AiiDA.
+Please consider:
+
+ * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
+ * asking in the `Slack channel of the tutorial <http://bit.ly/vasp-aiida-2019>`_
+ * asking your neighbor
+ * asking a tutor
+ * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
 
 Importing a structure and running a calculation
 -----------------------------------------------
@@ -24,16 +47,14 @@ Let's download a structure from the `Crystallography Open Database <http://cryst
     wget http://crystallography.net/cod/9008565.cif
     verdi data structure import ase 9008565.cif
 
-Each piece of data in AiiDA gets a PK number (and a UUID, more about this later).
-The PK allows you to easily reuse data anywhere in AiiDA.
-Remember the PK of the structure, which we will now use to run our first calculation.
+Each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
+The PK is printed to screen by the ``verdi data structure import`` command.
+**Mark down the PK for your structure and use it to replace the <PK> placeholders in what follows.**
 
 .. note::
 
    You can view the structure either `online <http://crystallography.net/cod/9008565.html>`_
    or use ``jmol 9008565.cif`` locally.
-
-.. Let jason/jianxing test speed of SSH forwarding - potentially mention jupyter
 
 The following short python script sets up a self-consistent field calculation for the Quantum ESPRESSO code:
 
@@ -87,8 +108,14 @@ You can generate such a provenance graph for any calculation or data in AiiDA by
 
 Try to reproduce the figure using the PK of your calculation.
 
+.. note:: 
+
+  By default, AiiDA uses UUIDs to label nodes in provenance graphs (more about UUIDs vs PKs later). 
+  Try using the ``-h`` option to figure out how to switch to the PK identifier.
+
+
 You might wonder what happened under the hood, e.g. where to find the actual input and output files of the calculation.
-You will learn more about this later -- until then, here are a few useful commands:
+You will learn more about this later -- until then, here are a few useful commands to try:
 
 .. code:: bash
 
@@ -151,7 +178,6 @@ AiiDA should now have access to your neighbor's computer. Let's quickly test thi
 Finally, let AiiDA know about the **code** we are going to use.
 We've again prepared a template that looks as follows:
 
-.. Add template for code
 .. literalinclude:: include/configuration/qe.yml
 
 Download the :download:`qe.yml <include/configuration/qe.yml>` code template and run:
@@ -170,8 +196,8 @@ To see what is going on, AiiDA provides a command that lets you jump to the fold
   verdi process list --all  # get PK of new calculation
   verdi calcjob gotocomputer <PK>
 
-Have a look around. 
- * Do you recognize the different files? 
+Have a look around.
+ * Do you recognize the different files?
  * Have a look at the submission script ``_aiidasubmit.sh``.
    Compare it to the submission script of your previous calculation.
    What are the differences?
@@ -180,12 +206,28 @@ From calculations to workflows
 ------------------------------
 
 AiiDA can help you run individual calculations but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
+As the final step, you are going to run such a workflow.
 
-As the final step, we are going to launch the ``PwBandStructure`` workflow of the ``aiida-quantumespresso`` plugin.
+Let's have a look at the workflows that are currently installed:
+
+.. code:: bash
+
+  verdi plugin list aiida.workflows
+
+
+The ``quantumespresso.pw.band_structure`` workflow from the `aiida-quantumespresso <https://github.com/aiidateam/aiida-quantumespresso>`_ plugin computes the electronic band structure for a given atomic structure.
+Let AiiDA tell you which inputs it takes and which outputs it produces:
+
+
+.. code:: bash
+
+  verdi plugin list aiida.workflows quantumespresso.pw.band_structure
+
+We have prepared a short python snippet that shows how to run this workflow.
 
 .. literalinclude:: include/snippets/demo_bands.py
 
-Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet and run it using
+Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet, replace the PK, and run it using
 
 .. code:: bash
 
@@ -229,7 +271,7 @@ and open the |provenance browser|.
 
 .. note::
 
-   In order for the provenance browser to work, you need to configure SSH to tunnel port 5000 from your VM to your local laptop (see here :ref:`2019_xmn_connect`).
+   In order for the provenance browser to work, you need to configure SSH to tunnel port 5000 from your VM to your local laptop (see here :ref:`2019_sintef_connect`).
 
 
 The provenance browser is a Javascript application that connects to the AiiDA REST API.
@@ -242,7 +284,7 @@ Browse your AiiDA database.
  * Start by finding your structure in Data => Structure
  * Use the provenance browser to explore the steps of the ``PwBandStructureWorkChain``
 
-.. note:: 
+.. note::
 
      When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
 
@@ -267,7 +309,7 @@ Use this to produce a PDF of the band structure:
 
         %aiida
         %matplotlib inline
-     
+
         scf_params = load_node(<PK>)  # REPLACE with PK of "scf_parameters" output
         fermi_energy = scf_params.dict.fermi_energy
 
@@ -280,19 +322,7 @@ What next?
 ----------
 
 You now have a first taste of the type of problems AiiDA tries to solve.
-Here are some options for how to continue:
 
- * Continue with the in-depth tutorial and learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA.
-   There is more than enough material to keep you busy for a day.
- * Download `Quantum Mobile`_ virtual machine and try running the tutorial on your laptop instead. This will let you take the materials home and continue in your own time.
- * Try `setting up AiiDA directly on your laptop <https://aiida-core.readthedocs.io/en/latest/install/quick_installation.html>`_.
+Continue with the in-depth tutorial to learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA.
 
-   .. note:: **For advanced Linux & python users only**.
-     AiiDA depends on a number of services and software that require some skill to set up. 
-     Unfortunately, we don't have the human resources to help you solve
-     issues related to your setup in a tutorial context.
-     
- * Continue your work from other parts of the workshop, chat with participants and enjoy yourself :-)
-
-
- .. _Quantum Mobile: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.09.0
+ .. _Quantum Mobile: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.08.0
