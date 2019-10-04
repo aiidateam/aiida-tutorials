@@ -2,7 +2,7 @@
 from aiida.orm.nodes.data.upf import get_pseudos_from_structure
 from aiida.engine import submit
 
-code = Code.get_from_string("<CODE LABEL>")  # REPLACE <CODE LABEL>
+code = Code.get_from_string('<CODE LABEL>')  # REPLACE <CODE LABEL>
 builder = code.get_builder()
 
 # Select structure
