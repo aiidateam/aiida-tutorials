@@ -486,8 +486,8 @@ This time you will need to use the identifier of the output ``ArrayData`` of the
 As you might have realized the difference now is that the whole series of values of the Fermi energy calculated after each relax/vc-relax step are stored.
 The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the parser of ``pw.x`` implemented in the ``aiida-quantumespresso`` plugin.
 
-(Optional section) Comments
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*(Optional section)* Comments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 AiiDA offers the possibility to attach comments to a any node, in order to be able to remember more easily its details.
 Node with UUID prefix ``ce81c420`` should have no comments, but you can add a very instructive one by typing in the terminal:
