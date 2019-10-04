@@ -8,7 +8,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
 
  * The ``verdi`` command supports **tab-completion**:
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
- * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag, e.g.:
+ * For help on ``verdi`` or any of its subcommands, simply append the ``-h/--help`` flag, e.g.:
 
    .. code:: bash
 
