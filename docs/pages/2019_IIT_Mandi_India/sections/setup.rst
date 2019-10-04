@@ -159,7 +159,7 @@ In particular, when running the tutorial on a Linux VM, copy the link address an
 
    wget <URL>
 
-where you replace ``<URL>`` with the actual HTTPS url copied from the tutorial text in your browser.
+where you replace ``<URL>`` with the actual HTTPS URL copied from the tutorial text in your browser.
 This will download the file to the current directory.
 
 
