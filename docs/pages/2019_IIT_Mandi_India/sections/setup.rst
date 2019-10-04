@@ -34,7 +34,7 @@ It's recommended for you to place the ssh key you received in a folder dedicated
    ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
    that the permissions of this file are now ``-rw-------``.
 
-After the ssh key file is in place, add the following block to your ``~/.ssh/config`` file:
+After the ssh key files are in place, add the following block to your ``~/.ssh/config`` file:
 
 .. code:: bash
 
