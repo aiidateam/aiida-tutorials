@@ -526,8 +526,8 @@ Choose the PK of the group named ``tutorial_pbesol`` and look at the calculation
 In this case, we have used the name of the group to organize calculations according to the pseudopotential that has been used to perform them.
 Among the rows printed by the last command you will be able to find the calculation we have been inspecting until now.
 
-If, instead, you want to know all the groups to which a specific node belongs, you can run:
+If instead you wanted to know all the groups to which a specific node belongs, use the ``-N/--node`` option:
 
 .. code:: bash
 
-    verdi group list -N/--node <IDENTIFIER>
+    verdi group list -N <IDENTIFIER>
