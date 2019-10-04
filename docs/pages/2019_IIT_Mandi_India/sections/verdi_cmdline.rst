@@ -476,9 +476,9 @@ and
 
 Use the latter to verify that the Fermi energy that you have found in the last step has been extracted correctly from the output file
 
-.. note::
+.. hint::
 
-    Hint: filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines
+    Filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines.
 
 The results of calculations are stored in two ways: ``Dict`` objects are stored in the database, which makes querying them very convenient, whereas ``ArrayData`` objects are stored on the disk.
 Once more, use the command ``verdi data array show <IDENTIFIER>`` to determine the Fermi energy obtained from calculation with the UUID ``ce81c420``.
