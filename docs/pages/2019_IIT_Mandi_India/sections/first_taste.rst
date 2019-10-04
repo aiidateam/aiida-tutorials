@@ -157,8 +157,8 @@ Then, download the :download:`neighbor.yml <include/configuration/neighbor.yml>`
 
 .. note::
 
-    If you're completing this tutorial at a later time and have no partner machine,
-    simply use "localhost" instead of the IP address.
+    If you do not have a partner machine available, for example because you are completing this
+    tutorial at a later time, simply use "localhost" instead of the IP address.
 
 AiiDA is now aware of the existence of the computer but you'll still need to let AiiDA
 know how to connect to it.
