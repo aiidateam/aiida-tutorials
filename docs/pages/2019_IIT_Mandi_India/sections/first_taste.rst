@@ -134,12 +134,16 @@ A few questions you could answer using these commands (optional)
  * How many SCF iterations were needed for convergence?
  * How long did Quantum ESPRESSO actually run (wall time)?
 
+.. tip::
+
+    Use the ``grep`` command to filter the terminal output by keywords, e.g., ``verdi calc job res 175 | grep wall_time``.
+
 Moving to a different computer
 ------------------------------
 
-Now, this Quantum ESPRESSO calculation ran on your (virtual) machine.
-This is fine for tests, but for production calculations you'll typically want to run on a remote compute cluster.
-In AiiDA, moving a calculation from one computer to another means changing one line of code.
+The Quantum ESPRESSO calculation we just ran, was directly executed on the virtual machine.
+This is fine for tests, but production calculations should typically be run on a remote compute cluster.
+With AiiDA, moving a calculation from one computer to another means changing one line of code.
 
 For the purposes of this tutorial, you'll run on your neighbor's computer.
 Ask your neighbor for the IP address of their VM.
