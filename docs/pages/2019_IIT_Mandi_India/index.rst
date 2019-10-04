@@ -24,14 +24,11 @@ These are the hands-on materials from the 3-day AiiDA tutorial |tutorial_name| f
 While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial on your own computer using the Quantum Mobile VirtualBox image linked above.
 The image already contains all the required software.
 
-AiiDA hands-on materials
-^^^^^^^^^^^^^^^^^^^^^^^^
-
 Getting started
 ---------------
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :numbered:
 
    ./sections/setup
@@ -41,7 +38,7 @@ Sections
 --------
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :numbered:
 
    ./sections/verdi_cmdline
@@ -54,7 +51,7 @@ Appendices
 ----------
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
    :numbered:
 
    ./sections/appendix_computer_code_setup
