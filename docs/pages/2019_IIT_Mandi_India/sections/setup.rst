@@ -152,16 +152,17 @@ In particular, when running the tutorial on a Linux VM, copy the link address an
 
 .. code:: bash
 
-   wget <LINK>
+   wget <URL>
 
-where you replace ``<LINK>`` with the actual HTTPS link copied from the tutorial text in your browser.
-This will download the file in your current directory.
+where you replace ``<URL>`` with the actual HTTPS url copied from the tutorial text in your browser.
+This will download the file to the current directory.
 
 
 Troubleshooting
 ---------------
 
--  If you get errors ``ImportError: No module named aiida`` or ``No command ’verdi’ found``, double check that you have loaded the virtual environment with ``workon aiida`` before launching ``python``, ``ipython`` or the ``jupyter`` notebook server.
+-  If you encouter errors such as ``ImportError: No module named aiida`` or ``No command ’verdi’ found``, double check that you have loaded the virtual environment with ``workon aiida`` before launching ``python``, ``ipython`` or the ``jupyter`` notebook server.
+   Your command line prompt should start with ``(aiida)``, e.g., ``(aiida) max@workhorse:~$``.
 
 -  If your browser cannot connect to the jupyter notebook server, check that you have correctly configured SSH tunneling/forwarding as described above.
    Keep in mind that you need to start the jupyter server from the terminal connected to the VM, while the web browser should be opened locally on your laptop.
