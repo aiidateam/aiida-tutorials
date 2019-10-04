@@ -381,7 +381,7 @@ Type in the terminal:
 
     verdi data structure show --format ase <IDENTIFIER>
 
-to show the selected structure, although it will take a few seconds to appear
+to show the selected structure, although it will take a few seconds to appear.
 You should be able to rotate the view with the right mouse button.
 
 .. note::
