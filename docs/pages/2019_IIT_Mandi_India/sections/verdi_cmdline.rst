@@ -60,7 +60,7 @@ The one marked with an asterisk is the "default" profile, meaning that any ``ver
 .. note::
 
     The output you get may differ.
-    The ``generic`` profile is pre-configured on the virtual machine built for the tutorial (but we are not going to use it here).
+    The ``generic`` profile is pre-configured on the virtual machine and built only for the first part of the tutorial.
 
 Let's change the default profile to the newly created ``quicksetup`` for the rest of the tutorial:
 
