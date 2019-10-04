@@ -52,10 +52,10 @@ Each piece of data in AiiDA gets a PK number (a "primary key") that identifies i
 The PK is printed to screen by the ``verdi data structure import`` command.
 **Mark down the PK for your structure and use it to replace the <PK> placeholders in what follows.**
 
-.. note::
+.. tip::
 
    You can view the structure either `online <http://crystallography.net/cod/9008565.html>`_
-   or use ``jmol 9008565.cif`` locally.
+   or by executing the ``jmol 9008565.cif`` command on the virtual machine.
 
 .. Let jason/jianxing test speed of SSH forwarding - potentially mention jupyter
 
