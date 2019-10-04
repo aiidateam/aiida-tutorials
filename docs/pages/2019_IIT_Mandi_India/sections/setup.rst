@@ -166,7 +166,7 @@ This will download the file to the current directory.
 Troubleshooting
 ---------------
 
--  If you encouter errors such as ``ImportError: No module named aiida`` or ``No command ’verdi’ found``, double check that you have loaded the virtual environment with ``workon aiida`` before launching ``python``, ``ipython`` or the ``jupyter`` notebook server.
+-  If you encounter errors such as ``ImportError: No module named aiida`` or ``No command ’verdi’ found``, double check that you have loaded the virtual environment with ``workon aiida`` before launching ``python``, ``ipython`` or the ``jupyter`` notebook server.
    Your command line prompt should start with ``(aiida)``, e.g., ``(aiida) max@workhorse:~$``.
 
 -  If your browser cannot connect to the jupyter notebook server, check that you have correctly configured SSH tunneling/forwarding as described above.
