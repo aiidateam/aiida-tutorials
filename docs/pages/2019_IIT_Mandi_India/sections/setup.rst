@@ -48,7 +48,7 @@ After that ssh key is in place, you can add the following block your ``~/.ssh/co
       LocalForward 5000 localhost:5000
       ServerAliveInterval 120
 
-replacing the IP address field (``IP_ADDRESS``) with the one you received earlier.
+replacing the IP address field (``IP_ADDRESS``) and the ``NUM`` with what you received earlier.
 
 Afterwards you can connect to the server using this simple command:
 
