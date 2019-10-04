@@ -389,7 +389,7 @@ You should be able to rotate the view with the right mouse button.
     If you receive some errors, make sure you started your SSH connection with the ``-X`` or ``-Y`` flag.
 
 Alternatively -- especially if viewing the structure over SSH is too slow -- you can export the content of a structure node in various formats, such as ``xyz`` or ``xsf``, and then view them on your local machine.
-For example, to view the file with the ``xcrysden`` application, first export the structure node in the *xsf* format:
+For example, to view the file with the ``xcrysden`` application, first export the structure node in the ``xsf`` format:
 
 .. code:: bash
 
