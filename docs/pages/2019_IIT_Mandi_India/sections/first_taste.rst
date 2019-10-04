@@ -19,7 +19,7 @@ Here are some first tasks for you:
 
  * The ``verdi`` command supports **tab-completion**:
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
- * For help on any ``verdi`` command, simply append the ``--help/-h`` flag:
+ * For help on any ``verdi`` command, simply append the ``-h`` or ``--help`` flag:
 
    .. code:: bash
 
