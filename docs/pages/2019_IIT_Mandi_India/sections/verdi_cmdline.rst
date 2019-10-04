@@ -114,7 +114,7 @@ Have a look to the figure and its caption before moving on.
    The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
    Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
 
-:numref:`2019_mandi_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi node graph generate <IDENTIFIER>``.
+:numref:`2019_mandi_fig_graph_input_only` was created manually but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi node graph generate <IDENTIFIER>``.
 Identifiers in AiiDA come in three forms:
 
  * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
