@@ -55,7 +55,7 @@ The PK is printed to screen by the ``verdi data structure import`` command.
 .. tip::
 
    You can view the structure either `online <http://crystallography.net/cod/9008565.html>`_
-   or by executing the ``jmol 9008565.cif`` command on the virtual machine.
+   or by executing the ``jmol 9008565.cif`` command on the virtual machine (or preferably on your local machine for better performance in case that ``jmol`` is installed).
 
 .. Let jason/jianxing test speed of SSH forwarding - potentially mention jupyter
 
