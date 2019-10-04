@@ -66,9 +66,10 @@ The following short python script sets up a self-consistent field calculation fo
 Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script using ``wget`` to your working directory.
 It contains a few placeholders for you to fill in:
 
- #. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the "PW" code and use it in the script.
- #. replace the PK of the structure with the one you obtained
- #. the VM already contains a number of pseudopotential families. Replace the PP family name with the one for the "SSSP efficiency" library found via ``verdi data upf listfamilies``.
+ #. The VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the "PW" code and use it in the script.
+ #. Replace the PK of the structure with the one you noted down earlier.
+ #. The VM already a number of pseudopotential families installed.
+    Replace the PP family name with the one for the "SSSP efficiency" library found via ``verdi data upf listfamilies``.
 
 Then submit the calculation using:
 
