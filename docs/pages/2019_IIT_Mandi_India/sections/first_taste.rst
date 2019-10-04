@@ -63,7 +63,7 @@ The following short python script sets up a self-consistent field calculation fo
 
 .. literalinclude:: include/snippets/demo_calcjob.py
 
-Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
+Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script using ``wget`` to your working directory.
 It contains a few placeholders for you to fill in:
 
  #. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the "PW" code and use it in the script.
