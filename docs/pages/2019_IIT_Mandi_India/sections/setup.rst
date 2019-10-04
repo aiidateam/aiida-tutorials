@@ -11,8 +11,7 @@ Connect to your virtual machine
 You should each have received from the instructors:
 
 - an IP address
-- a private SSH key ``aiida_tutorial_NUM``
-- a public SSH key ``aiida_tutorial_NUM.pub``
+- a private SSH key ``aiida-tutorial-compute.pem``
 
 The steps below explain how to use these in order to connect to your personal virtual machine (VM) on Amazon Elastic Cloud 2 using the `Secure Shell <http://en.wikipedia.org/wiki/Secure_Shell>`_ protocol.
 The software on this VM is based on `Quantum Mobile <https://materialscloud.org/work/quantum-mobile>`_ and already includes a pre-configured AiiDA installation as well as some test data for the tutorial.
@@ -28,11 +27,10 @@ Linux and MacOS
 It's recommended for you to place the ssh key you received in a folder dedicated to your ssh configuration, to do so:
 
 -  If not already present, create a ``.ssh`` directory in your home (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
--  Copy the two keys ``aiida_tutorial_NUM`` and ``aiida_tutorial_NUM.pub``
-   in the ``~/.ssh`` directory
+-  Copy the key ``aiida-tutorial-compute.pem`` into the ``~/.ssh`` directory (``cp aiida-tutorial-compute.pem ~/.ssh/``)
 -  Set the correct permissions on the private key:
-   ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
-   that the permissions of this file are now ``-rw-------``.
+   ``chmod 600 ~/.ssh/aiida-tutorial-compute.pem``. You can check with ``ls -l ~/.ssh/aiida-tutorial-compute.pem``
+   that the permissions of this file are correctly set to ``-rw-------``.
 
 After that ssh key is in place, you can add the following block your ``~/.ssh/config`` file:
 
@@ -41,7 +39,7 @@ After that ssh key is in place, you can add the following block your ``~/.ssh/co
    Host aiidatutorial
       Hostname IP_ADDRESS
       User max
-      IdentityFile ~/.ssh/aiida_tutorial_NUM
+      IdentityFile ~/.ssh/aiida-tutorial-compute.pem
       ForwardX11 yes
       ForwardX11Trusted yes
       LocalForward 8888 localhost:8888
