@@ -396,7 +396,7 @@ For example, to view the file with the ``xcrysden`` application, first export th
     # verdi data structure export --format xsf <IDENTIFIER> > <IDENTIFIER>.xsf
     verdi data structure export --format xsf 254e5a86 > 254e5a86.xsf
 
-Then **copy** the xsf-file to your local machine and open it with the ``xcrysden`` application:
+Then **copy** the ``xsf``-file to your local machine and open it with the ``xcrysden`` application:
 
 .. code:: bash
 
