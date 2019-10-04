@@ -137,13 +137,8 @@ In order to connect to the jupyter notebook server:
  - Open a web browser **on your laptop** and paste the URL.
  - You will see a list of folders on your personal VM.
 
-While keeping the first ``ssh`` connection running, open another ``ssh`` connection in a second terminal and type ``workon aiida`` here too.
-**This** terminal is the one we will actually use in this tutorial.
-
-.. note::
-
-   Our SSH configuration assumes that ``jupyter`` will serve the notebooks on port 8888.
-   If you want to serve notebooks on different ports, you'll also need to adjust the SSH configuration.
+While keeping the first ``ssh`` connection running, open a second ``ssh`` connection in a separate terminal and execute ``workon aiida`` there as well.
+We will use the second terminal to directly interact with the virtual machine on the command line, while we use the first one to only serve the jupyter notebook.
 
 
 .. _2019_mandi_setup_downloading_files:
