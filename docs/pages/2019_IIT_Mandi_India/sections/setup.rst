@@ -140,6 +140,11 @@ In order to connect to the jupyter notebook server:
 While keeping the first ``ssh`` connection running, open a second ``ssh`` connection in a separate terminal and execute ``workon aiida`` there as well.
 We will use the second terminal to directly interact with the virtual machine on the command line, while we use the first one to only serve the jupyter notebook.
 
+.. note::
+
+    You can safely ignore all warnings related to port forwarding when opening a second ssh connection.
+    Those are caused by the fact that the ports are now already in use which in this context is perfectly fine.
+
 
 .. _2019_mandi_setup_downloading_files:
 
