@@ -286,7 +286,7 @@ Your data never leaves your computer.
 .. a sentence on how to continue from here
 
 Browse your AiiDA database.
- * Start by finding your structure in Data => Structure
+ * Start by finding your structure in Data => StructureData
  * Use the provenance browser to explore the steps of the ``PwBandStructureWorkChain``
 
 .. note:: 
