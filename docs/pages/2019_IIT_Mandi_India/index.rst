@@ -55,6 +55,8 @@ Appendices
    :numbered:
 
    ./sections/appendix_computer_code_setup
+   ./sections/appendix_structure_data
+   ./sections/appendix_upf_data
    ./sections/appendix_input_validation
    ./sections/appendix_restarting_calculations
    ./sections/appendix_queries
