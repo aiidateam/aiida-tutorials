@@ -34,7 +34,7 @@ It's recommended for you to place the ssh key you received in a folder dedicated
    ``chmod 600 ~/.ssh/aiida_tutorial_NUM``. You can check check with ``ls -l``
    that the permissions of this file are now ``-rw-------``.
 
-After that ssh key is in place, you can add the following block your ``~/.ssh/config`` file:
+After the ssh key files are in place, add the following block to your ``~/.ssh/config`` file:
 
 .. code:: bash
 
@@ -137,13 +137,13 @@ In order to connect to the jupyter notebook server:
  - Open a web browser **on your laptop** and paste the URL.
  - You will see a list of folders on your personal VM.
 
-While keeping the first ``ssh`` connection running, open another ``ssh`` connection in a second terminal and type ``workon aiida`` here too.
-**This** terminal is the one we will actually use in this tutorial.
+While keeping the first ``ssh`` connection running, open a second ``ssh`` connection in a separate terminal and execute ``workon aiida`` there as well.
+We will use the second terminal to directly interact with the virtual machine on the command line, while we use the first one to only serve the jupyter notebook.
 
 .. note::
 
-   Our SSH configuration assumes that ``jupyter`` will serve the notebooks on port 8888.
-   If you want to serve notebooks on different ports, you'll also need to adjust the SSH configuration.
+    You can safely ignore all warnings related to port forwarding when opening a second ssh connection.
+    Those are caused by the fact that the ports are now already in use which in this context is perfectly fine.
 
 
 .. _2019_mandi_setup_downloading_files:
@@ -157,16 +157,17 @@ In particular, when running the tutorial on a Linux VM, copy the link address an
 
 .. code:: bash
 
-   wget <LINK>
+   wget <URL>
 
-where you replace ``<LINK>`` with the actual HTTPS link copied from the tutorial text in your browser.
-This will download the file in your current directory.
+where you replace ``<URL>`` with the actual HTTPS URL copied from the tutorial text in your browser.
+This will download the file to the current directory.
 
 
 Troubleshooting
 ---------------
 
--  If you get errors ``ImportError: No module named aiida`` or ``No command ’verdi’ found``, double check that you have loaded the virtual environment with ``workon aiida`` before launching ``python``, ``ipython`` or the ``jupyter`` notebook server.
+-  If you encounter errors such as ``ImportError: No module named aiida`` or ``No command ’verdi’ found``, double check that you have loaded the virtual environment with ``workon aiida`` before launching ``python``, ``ipython`` or the ``jupyter`` notebook server.
+   Your command line prompt should start with ``(aiida)``, e.g., ``(aiida) max@workhorse:~$``.
 
 -  If your browser cannot connect to the jupyter notebook server, check that you have correctly configured SSH tunneling/forwarding as described above.
    Keep in mind that you need to start the jupyter server from the terminal connected to the VM, while the web browser should be opened locally on your laptop.
