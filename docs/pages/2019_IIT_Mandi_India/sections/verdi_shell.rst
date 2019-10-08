@@ -53,6 +53,11 @@ Alternatively, to avoid changing terminal, you can execute ``bash`` commands wit
 
     !some bash command
 
+.. note::
+
+    The background colors of the code sections may be displayed differently by different browsers.
+    For the color scheme mentioned here, we recommend using Google Chrome.
+
 .. _2019_mandi_loadnode:
 
 Loading a node
