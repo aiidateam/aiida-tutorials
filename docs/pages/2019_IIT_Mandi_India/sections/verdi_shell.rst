@@ -271,7 +271,7 @@ Finally, we can also import the silicon structure from an external (online) repo
         print("Unit cell volume: ", structure.get_cell_volume())
 
 In that case two duplicate structures are found for 'Si'.
-A more in depth tutorial can be found in :ref:`this appendix<2019_mandi_appendix_structure_data>`.
+A more in-depth tutorial can be found in :ref:`this appendix<2019_mandi_appendix_structure_data>`.
 
 Accessing inputs and outputs
 ----------------------------
