@@ -65,7 +65,7 @@ Appendices
 Acknowledgements
 ----------------
 
-The |tutorial_name| was made possible by support from IIT Mandi, MARVEL, MaX, MarketPlace and EPFL, and kindly hosted by IIT Mandi.
+The |tutorial_name| was made possible by support from IIT Mandi and MARVEL, and kindly hosted by IIT Mandi.
 
 .. image:: sponsors/iit_mandi.jpg
    :target: http://iitmandi.ac.in/
@@ -74,14 +74,6 @@ The |tutorial_name| was made possible by support from IIT Mandi, MARVEL, MaX, Ma
 .. image:: sponsors/marvel.png
    :target: http://nccr-marvel.ch
    :width: 105px
-
-.. image:: sponsors/max.png
-   :target: http://www.max-centre.eu/
-   :width: 135px
-
-.. image:: sponsors/marketplace.png
-   :target: https://the-marketplace-project.eu
-   :width: 115px
 
 .. image:: sponsors/epfl.png
    :target: https://epfl.ch
