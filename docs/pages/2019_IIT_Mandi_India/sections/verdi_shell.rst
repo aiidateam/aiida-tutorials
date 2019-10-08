@@ -380,7 +380,7 @@ Finally, you can list all the pseudo families present in the database with
 
     verdi data upf listfamilies
 
-A more in depth tutorial about working with `UpfData` nodes and pseudo potenial families can be found in :ref:`this appendix<2019_mandi_appendix_upf_data>`.
+A more in-depth tutorial about working with ``UpfData`` nodes and pseudopotential families can be found in :ref:`this appendix<2019_mandi_appendix_upf_data>`.
 
 
 .. rubric:: Footnotes
