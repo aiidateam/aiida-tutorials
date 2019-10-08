@@ -1,63 +1,53 @@
 Verdi shell and AiiDA objects
 =============================
 
-In this section we will use an interactive IPython environment with all the
-basic AiiDA classes already loaded. We propose two realizations of such a
-tool. The first consists of a special IPython shell where all the AiiDA
-classes, methods and functions are accessible. Type in the terminal
+In this section we will use an interactive IPython environment with all the basic AiiDA classes already loaded.
+We propose two realizations of such a tool.
+The first consists of a special IPython shell where all the AiiDA classes, methods and functions are accessible.
+Type in the terminal
 
 .. code:: bash
 
     verdi shell
 
-For all the everyday AiiDA-based operations, i.e. creating, querying, and
-using AiiDA objects, the ``verdi shell`` is probably the best tool. In this
-case, we suggest that you use two terminals, one for the ``verdi shell`` and
-one to execute bash commands.
+For all the everyday AiiDA-based operations, i.e. creating, querying, and using AiiDA objects, the ``verdi shell`` is probably the best tool.
+In this case, we suggest that you use two terminals, one for the ``verdi shell`` and one to execute bash commands.
 
-The second option is based on Jupyter notebooks and is probably most suitable
-to the purposes of our tutorial. Go to the browser where you have opened
-``jupyter`` and click ``New`` → ``Python 3`` (top right corner). This will
-open an IPython-based Jupyter notebook, made of cells in which you can type
-portions of python code. The code will not be executed until you press
-``Shift+Enter`` from within a cell. Type in the first cell
+
+The second option is based on Jupyter notebooks and is probably most suitable to the purposes of our tutorial.
+Go to the browser where you have opened ``jupyter`` and click ``New`` → ``Python 3`` (top right corner).
+This will open an IPython-based Jupyter notebook, made of cells in which you can type portions of python code.
+The code will not be executed until you press ``Shift+Enter`` from within a cell.
+Type in the first cell
 
 .. code:: ipython
 
     %aiida
 
-and execute it. This will set exactly the same environment as the
-``verdi shell``. The notebook will be automatically saved upon any
-modification and when you think you are done, you can export your notebook in
-many formats by going to ``File`` → ``Download as``. We suggest you to have a
-look at the drop-down menus ``Insert`` and ``Cell`` where you will find the
-main commands to manage the cells of your notebook.
+and execute it.
+This will set exactly the same environment as the ``verdi shell``.
+The notebook will be automatically saved upon any modification and when you think you are done, you can export your notebook in many formats by going to ``File`` → ``Download as``.
+We suggest you to have a look at the drop-down menus ``Insert`` and ``Cell`` where you will find the main commands to manage the cells of your notebook.
 
 .. note::
 
-    The ``verdi shell`` and Jupyter
-    notebook are completely equivalent. Use either according to your
-    personal preference.
+    The ``verdi shell`` and Jupyter notebook are completely equivalent.
+    Use either according to your personal preference.
 
-You will still sometimes need to type command-line instructions in ``bash`` in
-the first terminal you opened. To differentiate these from the commands to be
-typed in the ``verdi shell``, the latter will be marked in this document by a
-green background, like:
+You will still sometimes need to type command-line instructions in ``bash`` in the first terminal you opened.
+To differentiate these from the commands to be typed in the ``verdi shell``, the latter will be marked in this document by a green background, like:
 
 .. code:: python
 
     some verdi shell command
 
-while command-line instructions in ``bash`` to be typed into a terminal will
-be written with a blue background:
+while command-line instructions in ``bash`` to be typed into a terminal will be written with a blue background:
 
 .. code:: bash
 
     some bash command
 
-Alternatively, to avoid changing terminal, you can execute ``bash`` commands
-within the ``verdi shell`` or the notebook by adding an exclamation mark before
-the command itself:
+Alternatively, to avoid changing terminal, you can execute ``bash`` commands within the ``verdi shell`` or the notebook by adding an exclamation mark before the command itself:
 
 .. code:: ipython
 
@@ -68,17 +58,15 @@ the command itself:
 Loading a node
 --------------
 
-Most AiiDA objects are represented by nodes, identified in the database by its
-``PK`` (an integer). You can access a node using the following command
-in the shell:
+Most AiiDA objects are represented by nodes, identified in the database by its ``PK`` (an integer).
+You can access a node using the following command in the shell:
 
 .. code:: python
 
     node = load_node(PK)
 
-Load a node using one of the calculation ``PK`` s visible in the graph you
-displayed in the previous section of the tutorial. Then get the energy of the
-calculation with the command
+Load a node using one of the calculation ``PK`` s visible in the graph you displayed in the previous section of the tutorial.
+Then get the energy of the calculation with the command
 
 .. code:: python
 
@@ -90,8 +78,7 @@ You can also type
 
     node.res.
 
-and then press ``TAB`` to see all the available output results of the
-calculation.
+and then press ``TAB`` to see all the available output results of the calculation.
 
 Loading specific kinds of nodes
 -------------------------------
@@ -112,10 +99,8 @@ All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing `
 k-points
 ~~~~~~~~
 
-A set of k-points in the Brillouin zone is represented by an instance of the
-``KpointsData`` class. Choose one from the graph of
-produced in section :ref:`2019_mandi_aiidagraph`,
-load it as ``kpoints`` and inspect its content:
+A set of k-points in the Brillouin zone is represented by an instance of the ``KpointsData`` class.
+Choose one from the graph of produced in section :ref:`2019_mandi_aiidagraph`, load it as ``kpoints`` and inspect its content:
 
 .. code:: python
 
@@ -142,9 +127,8 @@ If you prefer Cartesian (rather than crystal) coordinates, type
 
     kpoints.get_kpoints(cartesian=True)
 
-For later use in this tutorial, let us try now to create a kpoints instance,
-to describe a regular (2 x 2 x 2) mesh of k-points, centered at the Gamma
-point (i.e. without offset). This can be done with the following commands:
+For later use in this tutorial, let us try now to create a kpoints instance, to describe a regular (2 x 2 x 2) mesh of k-points, centered at the Gamma point (i.e. without offset).
+This can be done with the following commands:
 
 .. code:: python
 
@@ -154,14 +138,12 @@ point (i.e. without offset). This can be done with the following commands:
     kpoints.set_kpoints_mesh([kpoints_mesh] * 3)
     kpoints.store()
 
-This function loads the appropriate class defined in a string (here
-``array.kpoints``). Therefore, ``KpointsData`` is not a class instance, but
-the kpoints class itself!
+This function loads the appropriate class defined in a string (here ``array.kpoints``).
+Therefore, ``KpointsData`` is not a class instance, but the kpoints class itself!
 
-While it is also possible to import ``KpointsData`` directly, it is recommended
-to use the ``DataFactory`` function instead, as this is more future-proof:
-even if the import path of the class changes in the future, its entry point
-string (``array.kpoints``) will remain stable.
+While it is also possible to import ``KpointsData`` directly, it is recommended to use the ``DataFactory`` function instead, as this is more future-proof:
+even if the import path of the class changes in the future, its entry point string (``array.kpoints``) will remain stable.
+
 
 Parameters
 ~~~~~~~~~~
@@ -176,9 +158,9 @@ Then display its content by typing
     YOUR_DICT = params.get_dict()
     YOUR_DICT
 
-Modify the python dictionary ``YOUR_DICT`` so that the wave-function cutoff is now set to 20
-Ry. Note that you cannot modify an object already stored in the database. To
-write the modified dictionary to the database, create a new object of class ``Dict``:
+Modify the python dictionary ``YOUR_DICT`` so that the wave-function cutoff is now set to 20 Ry.
+Note that you cannot modify an object already stored in the database.
+To write the modified dictionary to the database, create a new object of class ``Dict``:
 
 .. code:: python
 
@@ -205,17 +187,16 @@ Display its chemical formula, atomic positions and species using
     structure.get_formula()
     structure.sites
 
-where ``structure`` is the structure you loaded. If you are familiar with ASE
-and PYMATGEN, you can convert this structure to those formats by typing
+where ``structure`` is the structure you loaded.
+If you are familiar with ASE and PYMATGEN, you can convert this structure to those formats by typing
 
 .. code:: python
 
     structure.get_ase()
     structure.get_pymatgen()
 
-Let’s try now to define a new structure to study, specifically a silicon
-crystal. In the ``verdi shell``, define a cubic unit cell as a 3 x 3 matrix,
-with lattice parameter `a`\ :sub:`lat`\ `= 5.4` Å:
+Let’s try now to define a new structure to study, specifically a silicon crystal.
+In the ``verdi shell``, define a cubic unit cell as a 3 x 3 matrix, with lattice parameter `a`\ :sub:`lat`\ `= 5.4` Å:
 
 .. code:: python
 
@@ -226,36 +207,35 @@ with lattice parameter `a`\ :sub:`lat`\ `= 5.4` Å:
 
     Default units for crystal structure cell and coordinates in AiiDA are Å (Ångström).
 
-Structures in AiiDA are instances of the class ``StructureData``: load it in the
-verdi shell
+Structures in AiiDA are instances of the class ``StructureData``: load it in the verdi shell
 
 .. code:: python
 
     StructureData = DataFactory('structure')
 
-Now, initialize the class instance (i.e. the actual structure we want to study) by
-the command
+Now, initialize the class instance (i.e. the actual structure we want to study) by the command
 
 .. code:: python
 
     structure = StructureData(cell=the_cell)
 
-which sets the cubic cell defined before. From now on, you can access the cell
-with the command
+which sets the cubic cell defined before.
+From now on, you can access the cell with the command
 
 .. code:: python
 
     structure.cell
 
-Finally, append each of the 2 atoms of the cell command. You can do it using
-commands like
+Finally, append each of the 2 atoms of the cell command.
+You can do it using commands like
 
 .. code:: python
 
     structure.append_atom(position=(alat/4., alat/4., alat/4.), symbols="Si")
 
-for the first ‘Si’ atom. Repeat it for the other atomic site (0, 0, 0). You
-can access and inspect the structure sites with the command
+for the first ‘Si’ atom.
+Repeat it for the other atomic site (0, 0, 0).
+You can access and inspect the structure sites with the command
 
 .. code:: python
 
@@ -264,8 +244,7 @@ can access and inspect the structure sites with the command
 If you make a mistake, start over from
 ``structure = StructureData(cell=the_cell)``, or equivalently use
 ``structure.clear_kinds()`` to remove all kinds (atomic species) and sites.
-Alternatively, AiiDA structures can also be converted directly from ASE
-structures [#f1]_ using
+Alternatively, AiiDA structures can also be converted directly from ASE structures [#f1]_ using
 
 .. code:: python
 
@@ -280,8 +259,7 @@ Now you can store the new structure object in the database with the command:
 
     structure.store()
 
-Finally, we can also import the silicon structure from an external (online)
-repository such as the Crystallography Open Database (COD):
+Finally, we can also import the silicon structure from an external (online) repository such as the Crystallography Open Database (COD):
 
 .. code:: python
 
@@ -309,9 +287,8 @@ Then type
 
     calc.inputs.
 
-and press ``TAB``: you will see all the link names between the calculation and
-its input nodes. You can use a specific linkname to access the corresponding
-input node, e.g.:
+and press ``TAB``: you will see all the link names between the calculation and its input nodes.
+You can use a specific linkname to access the corresponding input node, e.g.:
 
 .. code:: python
 
@@ -323,17 +300,14 @@ Similarly, if you type:
 
     calc.outputs.
 
-and then ``TAB``, you will list all output link names of the calculation. One
-of them leads to the structure that was the input of ``calc`` we loaded
-previously:
+and then ``TAB``, you will list all output link names of the calculation.
+One of them leads to the structure that was the input of ``calc`` we loaded previously:
 
 .. code:: python
 
     calc.outputs.output_structure
 
-Note that links have a single name, that was assigned by the calculation that
-used the corresponding input or produced the corresponding output, as
-illustrated in section :ref:`2019_mandi_aiidagraph`.
+Note that links have a single name, that was assigned by the calculation that used the corresponding input or produced the corresponding output, as illustrated in section :ref:`2019_mandi_aiidagraph`.
 
 For a more programmatic approach, you can get a represenation of the inputs and outputs of a node, say ``calc``, through the following methods:
 
@@ -383,27 +357,23 @@ For example, if you only want to get the outgoing links whose label starts with 
 Pseudopotential families
 ------------------------
 
-Pseudopotentials in AiiDA are grouped in 'families' that contain one single
-pseudo per element. We will see how to work with UPF pseudopotentials (the
-format used by Quantum ESPRESSO and some other codes). Download and untar the
-SSSP pseudopotentials via the commands:
+Pseudopotentials in AiiDA are grouped in 'families' that contain one single pseudo per element.
+We will see how to work with UPF pseudopotentials (the format used by Quantum ESPRESSO and some other codes).
+Download and untar the SSSP pseudopotentials via the commands:
 
 .. code:: bash
 
     wget https://archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.tar.gz
     tar -zxvf SSSP_efficiency_pseudos.tar.gz
 
-Then you can upload the whole set of pseudopotentials to AiiDA by using the
-following ``verdi`` command:
+Then you can upload the whole set of pseudopotentials to AiiDA by using the following ``verdi`` command:
 
 .. code:: bash
 
     verdi data upf uploadfamily SSSP_efficiency_pseudos 'SSSP' 'SSSP pseudopotential library'
 
-In the command above, ``SSSP_efficiency_pseudos`` is the folder containing the
-pseudopotentials, ``'SSSP'`` is the name given to the family, and the last argument
-is its description. Finally, you can list all the pseudo families present in
-the database with
+In the command above, ``SSSP_efficiency_pseudos`` is the folder containing the pseudopotentials, ``'SSSP'`` is the name given to the family, and the last argument is its description.
+Finally, you can list all the pseudo families present in the database with
 
 .. code:: bash
 

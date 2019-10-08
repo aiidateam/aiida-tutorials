@@ -294,6 +294,7 @@ repository such as the Crystallography Open Database (COD):
         print("Unit cell volume: ", structure.get_cell_volume())
 
 In that case two duplicate structures are found for 'Si'.
+A more in depth tutorial can be found in :ref:`this appendix<2019_sintef_appendix_structure_data>`.
 
 Accessing inputs and outputs
 ----------------------------
@@ -409,6 +410,8 @@ the database with
 .. code:: bash
 
     verdi data upf listfamilies
+
+A more in depth tutorial about working with `UpfData` nodes and pseudo potenial families can be found in :ref:`this appendix<2019_sintef_appendix_upf_data>`.
 
 
 .. rubric:: Footnotes
