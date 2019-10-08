@@ -8,7 +8,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
 
  * The ``verdi`` command supports **tab-completion**:
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
- * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag, e.g.:
+ * For help on ``verdi`` or any of its subcommands, simply append the ``-h/--help`` flag, e.g.:
 
    .. code:: bash
 
@@ -60,7 +60,7 @@ The one marked with an asterisk is the "default" profile, meaning that any ``ver
 .. note::
 
     The output you get may differ.
-    The ``generic`` profile is pre-configured on the virtual machine built for the tutorial (but we are not going to use it here).
+    The ``generic`` profile is pre-configured on the virtual machine and built only for the first part of the tutorial.
 
 Let's change the default profile to the newly created ``quicksetup`` for the rest of the tutorial:
 
@@ -114,7 +114,7 @@ Have a look to the figure and its caption before moving on.
    The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
    Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
 
-:numref:`2019_mandi_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi node graph generate <IDENTIFIER>``.
+:numref:`2019_mandi_fig_graph_input_only` was created manually but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi node graph generate <IDENTIFIER>``.
 Identifiers in AiiDA come in three forms:
 
  * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
@@ -388,20 +388,23 @@ You should be able to rotate the view with the right mouse button.
 
     If you receive some errors, make sure you started your SSH connection with the ``-X`` or ``-Y`` flag.
 
-Alternatively, especially if showing them interactively is too slow over SSH, you can export the content of a structure node in various popular formats such as ``xyz`` or ``xsf``.
-This is achieved by typing in the terminal:
+Alternatively -- especially if viewing the structure over SSH is too slow -- you can export the content of a structure node in various formats, such as ``xyz`` or ``xsf``, and then view them on your local machine.
+For example, to view the file with the ``xcrysden`` application, first export the structure node in the ``xsf`` format:
 
 .. code:: bash
 
     # verdi data structure export --format xsf <IDENTIFIER> > <IDENTIFIER>.xsf
     verdi data structure export --format xsf 254e5a86 > 254e5a86.xsf
 
-You can open the generated ``xsf`` file and observe the cell and the coordinates.
-Then, you can then copy ``<IDENTIFIER>.xsf`` from the Amazon machine to your local one and then visualize it, e.g. with ``xcrysden`` (if you have it installed):
+Then **copy** the ``xsf``-file to your local machine and open it with the ``xcrysden`` application:
 
 .. code:: bash
 
-    xcrysden --xsf <IDENTIFIER>.xsf
+    xcrysden --xsf 254e5a86.xsf
+
+.. note::
+
+    You will need to have the ``xcrysden`` application installed on your local machine for this to work.
 
 Codes and computers
 ~~~~~~~~~~~~~~~~~~~
@@ -473,9 +476,9 @@ and
 
 Use the latter to verify that the Fermi energy that you have found in the last step has been extracted correctly from the output file
 
-.. note::
+.. hint::
 
-    Hint: filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines
+    Filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines.
 
 The results of calculations are stored in two ways: ``Dict`` objects are stored in the database, which makes querying them very convenient, whereas ``ArrayData`` objects are stored on the disk.
 Once more, use the command ``verdi data array show <IDENTIFIER>`` to determine the Fermi energy obtained from calculation with the UUID ``ce81c420``.
@@ -483,8 +486,8 @@ This time you will need to use the identifier of the output ``ArrayData`` of the
 As you might have realized the difference now is that the whole series of values of the Fermi energy calculated after each relax/vc-relax step are stored.
 The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the parser of ``pw.x`` implemented in the ``aiida-quantumespresso`` plugin.
 
-(Optional section) Comments
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*(Optional section)* Comments
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 AiiDA offers the possibility to attach comments to a any node, in order to be able to remember more easily its details.
 Node with UUID prefix ``ce81c420`` should have no comments, but you can add a very instructive one by typing in the terminal:
@@ -523,8 +526,8 @@ Choose the PK of the group named ``tutorial_pbesol`` and look at the calculation
 In this case, we have used the name of the group to organize calculations according to the pseudopotential that has been used to perform them.
 Among the rows printed by the last command you will be able to find the calculation we have been inspecting until now.
 
-If, instead, you want to know all the groups to which a specific node belongs, you can run:
+If instead you wanted to know all the groups to which a specific node belongs, use the ``-N/--node`` option:
 
 .. code:: bash
 
-    verdi group list -N/--node <IDENTIFIER>
+    verdi group list -N <IDENTIFIER>

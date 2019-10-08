@@ -19,7 +19,7 @@ Here are some first tasks for you:
 
  * The ``verdi`` command supports **tab-completion**:
    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
- * For help on any ``verdi`` command, simply append the ``--help/-h`` flag:
+ * For help on any ``verdi`` command, simply append the ``-h`` or ``--help`` flag:
 
    .. code:: bash
 
@@ -52,10 +52,10 @@ Each piece of data in AiiDA gets a PK number (a "primary key") that identifies i
 The PK is printed to screen by the ``verdi data structure import`` command.
 **Mark down the PK for your structure and use it to replace the <PK> placeholders in what follows.**
 
-.. note::
+.. tip::
 
    You can view the structure either `online <http://crystallography.net/cod/9008565.html>`_
-   or use ``jmol 9008565.cif`` locally.
+   or by executing the ``jmol 9008565.cif`` command on the virtual machine (or preferably on your local machine for better performance in case that ``jmol`` is installed).
 
 .. Let jason/jianxing test speed of SSH forwarding - potentially mention jupyter
 
@@ -63,12 +63,13 @@ The following short python script sets up a self-consistent field calculation fo
 
 .. literalinclude:: include/snippets/demo_calcjob.py
 
-Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
+Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script using ``wget`` to your working directory.
 It contains a few placeholders for you to fill in:
 
- #. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the "PW" code and use it in the script.
- #. replace the PK of the structure with the one you obtained
- #. the VM already contains a number of pseudopotential families. Replace the PP family name with the one for the "SSSP efficiency" library found via ``verdi data upf listfamilies``.
+ #. The VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the "PW" code and use it in the script.
+ #. Replace the PK of the structure with the one you noted down earlier.
+ #. The VM already a number of pseudopotential families installed.
+    Replace the PP family name with the one for the "SSSP efficiency" library found via ``verdi data upf listfamilies``.
 
 Then submit the calculation using:
 
@@ -133,12 +134,16 @@ A few questions you could answer using these commands (optional)
  * How many SCF iterations were needed for convergence?
  * How long did Quantum ESPRESSO actually run (wall time)?
 
+.. tip::
+
+    Use the ``grep`` command to filter the terminal output by keywords, e.g., ``verdi calc job res 175 | grep wall_time``.
+
 Moving to a different computer
 ------------------------------
 
-Now, this Quantum ESPRESSO calculation ran on your (virtual) machine.
-This is fine for tests, but for production calculations you'll typically want to run on a remote compute cluster.
-In AiiDA, moving a calculation from one computer to another means changing one line of code.
+The Quantum ESPRESSO calculation we just ran, was directly executed on the virtual machine.
+This is fine for tests, but production calculations should typically be run on a remote compute cluster.
+With AiiDA, moving a calculation from one computer to another means changing one line of code.
 
 For the purposes of this tutorial, you'll run on your neighbor's computer.
 Ask your neighbor for the IP address of their VM.
@@ -152,8 +157,8 @@ Then, download the :download:`neighbor.yml <include/configuration/neighbor.yml>`
 
 .. note::
 
-    If you're completing this tutorial at a later time and have no partner machine,
-    simply use "localhost" instead of the IP address.
+    If you do not have a partner machine available, for example because you are completing this
+    tutorial at a later time, simply use "localhost" instead of the IP address.
 
 AiiDA is now aware of the existence of the computer but you'll still need to let AiiDA
 know how to connect to it.
