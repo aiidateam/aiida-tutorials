@@ -28,7 +28,7 @@ Getting started
 ---------------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :numbered:
 
    ./sections/setup
@@ -38,7 +38,7 @@ Sections
 --------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :numbered:
 
    ./sections/verdi_cmdline
@@ -51,7 +51,7 @@ Appendices
 ----------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :numbered:
 
    ./sections/appendix_computer_code_setup
