@@ -1,7 +1,7 @@
 .. _Chiba 2019 Homepage:
 
-2019, ISSP Univ. Tokyo, Chiba, Japan
-====================================
+2019, ISSP University of Tokyo, Chiba, Japan
+=============================================
 
 +-----------------+--------------------------------------------------------------------------------+
 | Related resources                                                                                |
@@ -19,11 +19,14 @@
 .. _aiidalab 19.08.0a1: https://pypi.org/project/aiidalab/19.8.0a1
 .. _Quantum Espresso 6.4.1: https://github.com/QEF/q-e/releases/tag/qe-6.4.1
 
-These are the hands-on materials from the 2-day AiiDA tutorial |tutorial_name| from December 19-20, 2019.
+These are the hands-on materials from the 2-day AiiDA tutorial
+|tutorial_name| from December 19-20, 2019.
 
 Participants of the tutorial use the Quantum Mobile VirtualBox image
-linked above on their own computer. The image already contains all the
-required software.
+linked above or from `this mirror
+<http://phonondb.mtl.kyoto-u.ac.jp/quantum_mobile_19.09.0.ova>`_ on
+their own computer. The image already contains all the required
+software.
 
 Getting started
 ---------------

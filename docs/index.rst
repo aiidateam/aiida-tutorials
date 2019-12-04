@@ -7,7 +7,7 @@ Where to start
 ---------------------
 
 - short demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>`.
-- in-depth tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`, including `lecture videos <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>`_ 
+- in-depth tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`, including `lecture videos <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>`_
 - `AiiDA cheatsheet <https://github.com/aiidateam/aiida-tutorials/raw/master/docs/pages/2019_MARVEL_Psik_MaX/cheatsheet/cheatsheet.pdf>`_ with class hierarchy and common commands
 
 
@@ -30,7 +30,7 @@ links inside the respective sections.
    :maxdepth: 1
    :caption: Tutorial materials
 
-   2019, ISSP Univ. Tokyo, Chiba, Japan (aiida-core 1.0.0b6)<./pages/2019_ISSP_Chiba_Japan/index>
+   2019, ISSP University of Tokyo, Chiba, Japan (aiida-core 1.0.0b6)<./pages/2019_ISSP_Chiba_Japan/index>
    2019, IIT Mandi, Mandi, India (aiida-core 1.0.0b6)<./pages/2019_IIT_Mandi_India/index>
    2019, SINTEF, Oslo, Norway (aiida-core 1.0.0b6)<./pages/2019_SINTEF/index>
    2019, Jožef Stefan Institute, Ljubljana, Slovenia (aiida-core 1.0.0b6)<./pages/2019_Ljubljana/index>
