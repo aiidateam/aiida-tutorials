@@ -137,7 +137,7 @@ With that in mind, let's generate a graph for the calculation node with UUID ``c
     verdi node graph generate <IDENTIFIER>
 
 This command will create a file with the naming scheme ``<PK>.dot.pdf`` that can be viewed with any PDF document viewer.
-You can open this file on the Amazon machine by using ``evince`` or, if the ssh connection is too slow, copy it via ``scp`` to your local machine.
+You can open this file on the Materials Cloud VM by using ``evince`` or, if the ssh connection is too slow, copy it via ``scp`` to your local machine.
 To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
 
 .. code:: bash
@@ -145,7 +145,6 @@ To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
     scp aiidatutorial:<path_with_the_graph_pdf> <local_folder>
 
 and then open the file.
-Alternatively, you can use graphical software to achieve the same, for instance: WinSCP on Windows, Cyberduck on the Mac, or the 'Connect to server' option in the main menu after clicking on the desktop for Ubuntu.
 
 
 The provenance browser
