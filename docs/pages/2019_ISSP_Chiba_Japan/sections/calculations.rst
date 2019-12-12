@@ -306,18 +306,11 @@ dictionary of the form:
         'SYSTEM': {
             'ecutwfc': 30.,
             'ecutrho': 200.,
-            'mickeymouse': 240.,
         },
         'ELECTRONS': {
             'conv_thr': 1.e-8,
         },
     }
-
-This dictionary is almost a valid input for the Quantum ESPRESSO plugin,
-except for an invalid key ``mickeymouse``. When Quantum ESPRESSO
-receives an unrecognized key, it will stop.
-By default, the AiiDA plugin will *not* validate your input and simply pass
-it on to the code.
 
 Let's wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node and see what happens.
 
