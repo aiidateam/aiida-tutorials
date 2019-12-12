@@ -8,7 +8,7 @@ Where to start
 
 - short demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>`.
 - in-depth tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`, including `lecture videos <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>`_
-- `AiiDA cheatsheet <https://github.com/aiidateam/aiida-tutorials/raw/master/docs/pages/2019_MARVEL_Psik_MaX/cheatsheet/cheatsheet.pdf>`_ with class hierarchy and common commands
+- `AiiDA cheatsheet <https://github.com/aiidateam/aiida-tutorials/raw/b5a8d54176153ce2b735e1fae8cae2c93c78a6bf/docs/pages/2019_IIT_Mandi_India/cheatsheet/cheatsheet.pdf>`_ with class hierarchy and common commands
 
 
 Videos
