@@ -481,20 +481,20 @@ Check the content of input files with
 Troubleshooting
 ---------------
 
-Your calculation should end up in a FAILED state
-(last column of ``verdi process list -a -p1``), and correspondingly the
-error code near the "Finished" status of the State should be non-zero,
+Your calculation should finish successfully, but if you made mistake
+in some setting above, your calculation ended up in a FAILED state
+(i.e., non zero value shown next to Process State ``Finished``) like below
+(this output is that at aiida-core v1.0.1),
 
 .. code:: bash
 
     $ verdi process list -a -p1
-      PK  Created    State             Process label    Process status
-    ----  ---------  ----------------  ---------------  ----------------
-      98  16h ago    Finished [115]    PwCalculation
+      PK  Created    Process label    Process State     Process status
+    ----  ---------  ---------------  ----------------  ----------------
+    2061  2h ago     PwCalculation    Finished [300]
     ...
     $ # Anything but [0] after the Finished state signals a failure
 
-This was expected, since we used an invalid key in the input parameters.
 Situations like this happen in real life, so AiiDA provides
 tools to trace back to the source of the problem and correct it.
 
@@ -547,39 +547,12 @@ For any calculation, both successful and failed, you can get a summary by:
     There are 2 log messages for this calculation
     Run 'verdi process report 98' to see them
 
-The last part of the output alerts you to the fact that there
-are some log messages waiting for you, if you run
-``verdi process report <pk>``.
-
-Let's now correct our input parameters dictionary by leaving out the invalid
-key and see if our calculation succeeds:
-
-.. code:: python
-
-    parameters_dict = {
-        "CONTROL": {
-            "calculation": "scf",
-        },
-        "SYSTEM": {
-            "ecutwfc": 30.,
-            "ecutrho": 200.,
-        },
-        "ELECTRONS": {
-            "conv_thr": 1.e-6,
-        }
-    }
-    builder.parameters = Dict(dict=parameters_dict)
-    calculation = submit(builder)
-
-If you have been using the separate script approach, modify
-the script to remove the faulty input and run it again with:
-
-.. code:: bash
-
-    verdi run test_pw.py
-
-Use ``verdi process list -a -p1`` to verify that
-the calculation reaches the finished status, with exit code zero.
+The last part of the output alerts you to the fact that there are some
+log messages waiting for you, if you run ``verdi process report
+<pk>``. Then correct our input setting, e.g., in ``parameters_dict``
+and see if our calculation will run successfully. Use ``verdi process
+list -a -p1`` to verify that the calculation reaches the finished
+status, with exit code zero.
 
 Using the calculation results
 -----------------------------
