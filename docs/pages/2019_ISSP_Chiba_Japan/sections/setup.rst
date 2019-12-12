@@ -3,6 +3,15 @@ Getting set up
 
 .. _2019_chiba_connect:
 
+
+Choice of web browser
+---------------------
+
+During the use of AiIDA infrastructure, we sometimes or often use web
+browser. The recommended browser is Chrome or Firefox. Safari on macOS
+is not recommended.
+
+
 Connect to your virtual machine
 -------------------------------
 
@@ -22,6 +31,7 @@ folder dedicated to your ssh configuration, to do so:
 -  Copy the public key to VM by ``ssh-copy-id -i
    ~/.ssh/aiida-tutorial.pub max@127.0.0.1 -p 2222`` and type the
    default password ``moritz``.
+
 
 Linux and MacOS
 ~~~~~~~~~~~~~~~
