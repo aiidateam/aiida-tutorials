@@ -1,9 +1,6 @@
 Getting set up
 ==============
 
-.. _2019_chiba_connect:
-
-
 Choice of web browser
 ---------------------
 
@@ -11,18 +8,18 @@ During the use of AiIDA infrastructure, we sometimes or often use web
 browser. The recommended browser is Chrome or Firefox. Safari on macOS
 is not recommended.
 
+.. _2019_chiba_connect:
 
 Connect to your virtual machine
 -------------------------------
 
-The steps below explain how to connect to your personal `Quantum
-Mobile <https://materialscloud.org/work/quantum-mobile>`_ virtual
-machine (VM) on virtualbox using the `Secure Shell
+The steps below explain how to connect to your personal Quantum Mobile
+virtual machine (VM) on Virtualbox using the `Secure Shell
 <http://en.wikipedia.org/wiki/Secure_Shell>`_ protocol. The software
 on this VM already includes a pre-configured AiiDA installation as
-well as some test data for the tutorial.
-It's recommended for you to place the ssh key you will create in a
-folder dedicated to your ssh configuration, to do so:
+well as some test data for the tutorial.  It's recommended for you to
+place the ssh key you will create in a folder dedicated to your ssh
+configuration, to do so:
 
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``

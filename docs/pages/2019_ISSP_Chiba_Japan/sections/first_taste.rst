@@ -32,7 +32,7 @@ There are a number of helpful resources available to you for getting more inform
 Please consider:
 
  * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
- * asking in the `Slack channel of the tutorial <https://aiida-tutorial-india.slack.com>`_
+ * asking in the `Slack channel of the tutorial <https://aiidatutorial-tck8243.slack.com>`_
  * asking your neighbor
  * asking a tutor
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
@@ -136,7 +136,7 @@ A few questions you could answer using these commands (optional)
 
 .. tip::
 
-    Use the ``grep`` command to filter the terminal output by keywords, e.g., ``verdi calc job res 175 | grep wall_time``.
+    Use the ``grep`` command to filter the terminal output by keywords, e.g., ``verdi calcjob res 175 | grep wall_time``.
 
 
 From calculations to workflows
@@ -197,11 +197,13 @@ Start the AiiDA REST API:
 
   verdi restapi
 
-and open the |provenance browser|.
+and open the |provenance browser|. If you can't see any useful
+information, please ask to tutors, because restapi v4 may have some
+issue on the day of this tutorial.
 
 .. |provenance browser| raw:: html
 
-   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3" target="_blank">Materials Cloud provenance browser</a>
+   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v4" target="_blank">Materials Cloud provenance browser</a>
 
 .. note::
 
