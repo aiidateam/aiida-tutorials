@@ -80,11 +80,18 @@ Importing data
 --------------
 
 Before we start running calculations ourselves, we are going to look at an AiiDA database already created by someone else.
-Let's import one from the web:
+Let's import one from the web (due to slow network from Japan to
+Europe, we temporarily put the aiida data on Kyoto university web server):
 
 .. code:: bash
 
-    verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2019_05_perovskites_v0.3.aiida
+    verdi import http://phonondb.mtl.kyoto-u.ac.jp/aiida_tutorial/aiida_tutorial_2019_05_perovskites_v0.3.aiida
+
+But the original data is found here:
+
+.. code:: bash
+
+    https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2019_05_perovskites_v0.3.aiida
 
 Contrary to most databases, AiiDA databases contain not only *results* of calculations but also their inputs and information on how a particular result was obtained.
 This information, the *data provenance*, is stored in the form of a *directed acyclic graph* (DAG).
@@ -167,13 +174,16 @@ In order to use it, we first need to start the `AiiDA REST API <https://aiida-co
 Now you can connect the provenance browser to your local REST API:
 
 -  Open the |provenance_browser| on your laptop
--  In the form, paste the (local) URL ``http://127.0.0.1:5000/api/v3``
+-  In the form, paste the (local) URL ``http://127.0.0.1:5000/api/v4``
    of our REST API
 -  Click "GO!"
 
 .. |provenance_browser| raw:: html
 
    <a href="https://www.materialscloud.org/explore/connect" target="_blank">provenance explorer</a>
+
+If you can't see any useful information, please ask to tutors, because
+restapi v4 may have some issue on the day of this tutorial.
 
 Once the provenance browser javascript application has been loaded by your browser, it is communicating directly with the REST API and your data never leaves your computer.
 
@@ -230,16 +240,17 @@ This command will list all the processes that have a process state ``Finished`` 
 
 .. code:: bash
 
-    PK    Created    Process label   Process State    Process status
-    ----  ---------  --------------  ---------------  ----------------
-    1178  1653D ago  PwCalculaton    ⏹ Finished [0]
-    1953  1653D ago  PwCalculaton    ⏹ Finished [0]
-    1734  1653D ago  PwCalculaton    ⏹ Finished [0]
-     336  1653D ago  PwCalculaton    ⏹ Finished [0]
-    1056  1653D ago  PwCalculaton    ⏹ Finished [0]
-    1369  1653D ago  PwCalculaton    ⏹ Finished [0]
+      PK  Created    Process label    Process State    Process status
+    ----  ---------  ---------------  ---------------  ----------------
+     648  1872D ago  PwCalculation    ⏹ Finished [0]
+    1333  1872D ago  PwCalculation    ⏹ Finished [0]
+    1273  1872D ago  PwCalculation    ⏹ Finished [0]
+     971  1872D ago  PwCalculation    ⏹ Finished [0]
+     488  1872D ago  PwCalculation    ⏹ Finished [0]
+    1869  1872D ago  PwCalculation    ⏹ Finished [0]
+    ...
 
-    Total results: 6
+    Total results: 171
 
     Info: last time an entry changed state: never
 
@@ -286,39 +297,38 @@ Producing the output:
 
 .. code:: bash
 
-    Property       Value
-    -------------  ------------------------------------
-    type           CalcJobNode
-    pk             828
-    uuid           ce81c420-7751-48f6-af8e-eb7c6a30cec3
+    Property     Value
+    -----------  ------------------------------------
+    type         PwCalculation
+    state        Finished [0]
+    pk           630
+    uuid         ce81c420-7751-48f6-af8e-eb7c6a30cec3
     label
     description
-    ctime          2014-10-27 17:51:21.781045+00:00
-    mtime          2019-05-09 14:10:09.307986+00:00
-    process state  Finished
-    exit status    0
-    computer       [1] daint
+    ctime        2014-10-27 17:51:21.781045+00:00
+    mtime        2019-05-09 14:10:09.307986+00:00
+    computer     [1] daint
 
     Inputs      PK    Type
     ----------  ----  -------------
     pseudos
-        Ba      611   UpfData
-        O       661   UpfData
-        Ti      989   UpfData
-    code        825   Code
-    kpoints     811   KpointsData
-    parameters  829   Dict
-    settings    813   Dict
-    structure   27    StructureData
+        Ba      1092  UpfData
+        O       1488  UpfData
+        Ti      1855  UpfData
+    code        631   Code
+    kpoints     498   KpointsData
+    parameters  629   Dict
+    settings    500   Dict
+    structure   1133  StructureData
 
     Outputs                    PK  Type
     -----------------------  ----  -------------
-    output_kpoints           1894  KpointsData
-    output_parameters          62  Dict
-    output_structure           61  StructureData
-    output_trajectory_array    63  ArrayData
-    remote_folder             357  RemoteData
-    retrieved                  60  FolderData
+    output_kpoints           1455  KpointsData
+    output_parameters         789  Dict
+    output_structure          788  StructureData
+    output_trajectory_array   790  ArrayData
+    remote_folder            1811  RemoteData
+    retrieved                 787  FolderData
 
 You can use the PKs shown for the inputs and outputs to get more information about those nodes.
 
