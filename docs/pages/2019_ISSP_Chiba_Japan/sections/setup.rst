@@ -1,23 +1,25 @@
 Getting set up
 ==============
 
+Choice of web browser
+---------------------
+
+During the use of AiIDA infrastructure, we sometimes or often use web
+browser. The recommended browser is Chrome or Firefox. Safari on macOS
+is not recommended.
+
 .. _2019_chiba_connect:
 
 Connect to your virtual machine
 -------------------------------
 
-The steps below explain how to connect to your personal `Quantum
-Mobile <https://materialscloud.org/work/quantum-mobile>`_ virtual
-machine (VM) on virtualbox using the `Secure Shell
+The steps below explain how to connect to your personal Quantum Mobile
+virtual machine (VM) on Virtualbox using the `Secure Shell
 <http://en.wikipedia.org/wiki/Secure_Shell>`_ protocol. The software
 on this VM already includes a pre-configured AiiDA installation as
-well as some test data for the tutorial.
-
-Linux and MacOS
-~~~~~~~~~~~~~~~
-
-It's recommended for you to place the ssh key you will create in a
-folder dedicated to your ssh configuration, to do so:
+well as some test data for the tutorial.  It's recommended for you to
+place the ssh key you will create in a folder dedicated to your ssh
+configuration, to do so:
 
 -  If not already present, create a ``.ssh`` directory in your home
    (``mkdir ~/.ssh``), and set its permissions: ``chmod 700 ~/.ssh``
@@ -26,6 +28,10 @@ folder dedicated to your ssh configuration, to do so:
 -  Copy the public key to VM by ``ssh-copy-id -i
    ~/.ssh/aiida-tutorial.pub max@127.0.0.1 -p 2222`` and type the
    default password ``moritz``.
+
+
+Linux and MacOS
+~~~~~~~~~~~~~~~
 
 After the ssh key files are in place, add the following block to your
 ``~/.ssh/config`` file:
@@ -70,57 +76,47 @@ Afterwards you can connect to VM using this simple command:
    <https://xquartz.macosforge.org/landing/>`_ in order to use
    X-forwarding.
 
-Windows
-~~~~~~~
+Windows 10
+~~~~~~~~~~
 
-If you're running Windows 10, you should consider `installing the
-Windows Subsystem for Linux
+If you're running Windows 10, it is recommended to consider
+`installing the Windows Subsystem for Linux (WSL)
 <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`_ (and
-then follow the instructions above for linux).
+then follow the instructions above for linux). `VcXsrv
+<https://sourceforge.net/projects/vcxsrv/>`_ is also installed with
+WSL in order to use X-forwarding. Some WSL setup (networking and
+X-forwarding) is written `here
+<https://atztogo.github.io/AiiDA-tutorial-ISSP/windows-WSL-setup.html>`_.
+Short summary of the configuration is as follows. After the ssh key
+files are in place, add the following block to your ``~/.ssh/config``
+file:
 
-Alternatively:
+.. code:: bash
 
--  Install the `PuTTY SSH client
-   <https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html>`_.
-   PuTTY, PuTTYGen, and Pageant are included in the package or
-   individually downloaded from this web page.
+   Host aiidatutorial
+      Hostname 127.0.0.1
+      Port 2222
+      User max
+      IdentityFile ~/.ssh/aiida_tutorial
+      ForwardX11 yes
+      ForwardX11Trusted yes
+      LocalForward 8888 localhost:8888
+      LocalForward 5000 localhost:5000
+      RemoteForward 6010 localhost:6000
+      ServerAliveInterval 120
 
--  Run PuTTYGen
+``RemoteForward`` is for X-forwarding with VcXsrv. In this
+configuration, in WSL
 
-   -  Generate private and public key pair ``aiida_tutorial``.
+.. code:: bash
 
--  Run Pageant
+   $ echo 'export DISPLAY=:0.0' >> ~/.bashrc
 
-   -  It will add a new icon near the clock, in the bottom right of your screen.
-   -  Right click on this Pageant icon, and click on “View Keys”.
-   -  Click on "Add key" and select the ``aiida_tutorial`` you
-      generated a few steps above.
+and in Quantum Mobile VM
 
--  Run PuTTY
+.. code:: bash
 
-   -  Put the given IP address as hostname, type ``aiidatutorial`` in
-      "Saved Sessions" and click "Save".
-   -  Go to Connection > Data and put ``max`` as autologin username.
-   -  Go to Connection > SSH > Tunnels, type ``8888`` in the "Source
-      Port" box, type ``localhost:8888`` in "Destination" and click
-      "Add".
-   -  Repeat the previous step for port ``5000`` instead of ``8888``.
-   -  Go back to the "Session" screen, select "aiidatutorial" and click
-      "Save".
-   -  Finally, click "Open" (and click "Yes" on the putty security
-      alert to add the VM to your known hosts).  You should be
-      redirected to a bash terminal on the virtual machine.
-
-.. note:: Next time you open PuTTY, select ``aiidatutorial`` and click
-          "Load" before clicking "Open".
-
-In order to enable X-forwarding:
-
--  Install the `Xming X Server for Windows
-   <http://sourceforge.net/projects/xming/>`_.
-
--  Configure PuTTy as described in the `Xming wiki
-   <https://wiki.centos.org/HowTos/Xming>`_.
+   $ echo 'export DISPLAY=:10.0' >> ~/.bashrc
 
 .. _2019_chiba_setup_jupyter:
 

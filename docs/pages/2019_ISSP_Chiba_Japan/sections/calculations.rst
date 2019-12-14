@@ -495,9 +495,9 @@ error code near the "Finished" status of the State should be non-zero,
 .. code:: bash
 
     $ verdi process list -a -p1
-      PK  Created    State             Process label    Process status
-    ----  ---------  ----------------  ---------------  ----------------
-      98  16h ago    Finished [115]    PwCalculation
+      PK  Created    Process label    Process State     Process status
+    ----  ---------  ---------------  ----------------  ----------------
+    2060  3m ago     PwCalculation    ⏹Finished [300]
     ...
     $ # Anything but [0] after the Finished state signals a failure
 
@@ -521,38 +521,38 @@ For any calculation, both successful and failed, you can get a summary by:
 .. code:: bash
 
     $ verdi process show <pk_number>
-    Property       Value
-    -------------  ---------------------------------------------------
-    type           CalcJobNode
-    pk             98
-    uuid           4c444afd-f6e2-4896-b9ae-8cb8a5ec75c5
-    label          PW test
-    description    My first AiiDA calc with Quantum ESPRESSO on Si
-    ctime          2019-05-01 15:59:39.180018+00:00
-    mtime          2019-05-01 16:01:44.870902+00:00
-    process state  Finished
-    exit status    115
-    computer       [1] localhost
+    Property     Value
+    -----------  --------------------------------------------------------------------------------
+    type         PwCalculation
+    state        Finished [300] Both the stdout and XML output files could not be read or parsed.
+    pk           2060
+    uuid         cd874e9d-94f7-4fc8-88c5-decdfc031491
+    label        PW test
+    description  My first AiiDA calc with Quantum ESPRESSO on Si
+    ctime        2019-12-13 06:14:07.374401+00:00
+    mtime        2019-12-13 06:14:19.775021+00:00
+    computer     [2] localhost
 
     Inputs      PK    Type
     ----------  ----  -------------
     pseudos
-        Si      50    UpfData
-    code        2     Code
-    kpoints     10    KpointsData
-    parameters  96    Dict
-    settings    97    Dict
-    structure   9     StructureData
+        Si      2003  UpfData
+    code        2056  Code
+    kpoints     2058  KpointsData
+    parameters  2059  Dict
+    structure   2057  StructureData
 
-    Outputs          PK  Type
-    -------------  ----  ----------
-    remote_folder    99  RemoteData
-    retrieved       100  FolderData
+    Outputs              PK  Type
+    -----------------  ----  --------------
+    output_parameters  2064  Dict
+    output_trajectory  2063  TrajectoryData
+    remote_folder      2061  RemoteData
+    retrieved          2062  FolderData
 
     Log messages
     ---------------------------------------------
-    There are 2 log messages for this calculation
-    Run 'verdi process report 98' to see them
+    There are 3 log messages for this calculation
+    Run 'verdi process report 2060' to see them
 
 The last part of the output alerts you to the fact that there
 are some log messages waiting for you, if you run
@@ -564,16 +564,18 @@ key and see if our calculation succeeds:
 .. code:: python
 
     parameters_dict = {
-        "CONTROL": {
-            "calculation": "scf",
+        'CONTROL': {
+            'calculation': 'scf',
+            'tstress': True,
+            'tprnfor': True,
         },
-        "SYSTEM": {
-            "ecutwfc": 30.,
-            "ecutrho": 200.,
+        'SYSTEM': {
+            'ecutwfc': 30.,
+            'ecutrho': 200.,
         },
-        "ELECTRONS": {
-            "conv_thr": 1.e-6,
-        }
+        'ELECTRONS': {
+            'conv_thr': 1.e-8,
+        },
     }
     builder.parameters = Dict(dict=parameters_dict)
     calculation = submit(builder)

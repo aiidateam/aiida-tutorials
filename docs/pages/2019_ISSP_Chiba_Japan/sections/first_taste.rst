@@ -32,7 +32,7 @@ There are a number of helpful resources available to you for getting more inform
 Please consider:
 
  * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
- * asking in the `Slack channel of the tutorial <https://aiida-tutorial-india.slack.com>`_
+ * asking in the `Slack channel of the tutorial <https://aiidatutorial-tck8243.slack.com>`_
  * asking your neighbor
  * asking a tutor
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
@@ -136,79 +136,8 @@ A few questions you could answer using these commands (optional)
 
 .. tip::
 
-    Use the ``grep`` command to filter the terminal output by keywords, e.g., ``verdi calc job res 175 | grep wall_time``.
+    Use the ``grep`` command to filter the terminal output by keywords, e.g., ``verdi calcjob res 175 | grep wall_time``.
 
-Moving to a different computer
-------------------------------
-
-The Quantum ESPRESSO calculation we just ran, was directly executed on the virtual machine.
-This is fine for tests, but production calculations should typically be run on a remote compute cluster.
-With AiiDA, moving a calculation from one computer to another means changing one line of code.
-
-For the purposes of this tutorial, you'll run on your neighbor's computer.
-Ask your neighbor for the IP address of their VM.
-Then, download the :download:`neighbor.yml <include/configuration/neighbor.yml>` setup template, replace the placeholder by the IP address and let AiiDA know about this computer by running:
-
-.. .. literalinclude:: include/configuration/neighbor.yml
-
-.. code:: bash
-
-  verdi computer setup --config neighbor.yml
-
-.. note::
-
-    If you do not have a partner machine available, for example because you are completing this
-    tutorial at a later time, simply use "localhost" instead of the IP address.
-
-AiiDA is now aware of the existence of the computer but you'll still need to let AiiDA
-know how to connect to it.
-AiiDA does this via `SSH <https://en.wikipedia.org/wiki/Secure_Shell>`_ keys.
-Your tutorial VM already contains a private SSH key for connecting to the ``compute`` user of your neighbor's machine,
-so all that is left is to configure it in AiiDA.
-
-Download the :download:`neighbor-config.yml <include/configuration/neighbor-config.yml>` configuration template and run:
-
-.. .. literalinclude:: include/configuration/neighbor-config.yml
-
-.. code:: bash
-
-  verdi computer configure ssh neighbor --config neighbor-config.yml --non-interactive
-
-.. note:: Both ``verdi computer setup`` and ``verdi computer configure`` can be used interactively without
-  configuration files, which are provided here just to avoid typing errors.
-
-AiiDA should now have access to your neighbor's computer. Let's quickly test this:
-
-.. code:: bash
-
-  verdi computer test neighbor
-
-Finally, let AiiDA know about the **code** we are going to use.
-We've again prepared a template that looks as follows:
-
-.. literalinclude:: include/configuration/qe.yml
-
-Download the :download:`qe.yml <include/configuration/qe.yml>` code template and run:
-
-.. code:: bash
-
-  verdi code setup --config qe.yml
-  verdi code list  # note the label of the new code you just set up!
-
-Now modify the code label in your ``demo_calcjob.py`` script to the label of your new code and simply run another calculation using ``verdi run demo_calcjob.py``.
-
-To see what is going on, AiiDA provides a command that lets you jump to the folder of the directory of the calculation on the remote computer:
-
-.. code:: bash
-
-  verdi process list --all  # get PK of new calculation
-  verdi calcjob gotocomputer <PK>
-
-Have a look around.
- * Do you recognize the different files?
- * Have a look at the submission script ``_aiidasubmit.sh``.
-   Compare it to the submission script of your previous calculation.
-   What are the differences?
 
 From calculations to workflows
 ------------------------------
@@ -268,11 +197,13 @@ Start the AiiDA REST API:
 
   verdi restapi
 
-and open the |provenance browser|.
+and open the |provenance browser|. If you can't see any useful
+information, please ask to tutors, because restapi v4 may have some
+issue on the day of this tutorial.
 
 .. |provenance browser| raw:: html
 
-   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3" target="_blank">Materials Cloud provenance browser</a>
+   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v4" target="_blank">Materials Cloud provenance browser</a>
 
 .. note::
 

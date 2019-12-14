@@ -365,12 +365,19 @@ Pseudopotential families
 
 Pseudopotentials in AiiDA are grouped in 'families' that contain one single pseudo per element.
 We will see how to work with UPF pseudopotentials (the format used by Quantum ESPRESSO and some other codes).
-Download and untar the SSSP pseudopotentials via the commands:
+Download and untar the SSSP pseudopotentials via the commands  (due to slow network from Japan to Europe, we temporarily put the aiida data on Kyoto university web server):
 
 .. code:: bash
 
-    wget https://archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.tar.gz
+    wget http://phonondb.mtl.kyoto-u.ac.jp/aiida_tutorial/SSSP_efficiency_pseudos.tar.gz
     tar -zxvf SSSP_efficiency_pseudos.tar.gz
+
+But the original data is found here:
+
+.. code:: bash
+
+    https://archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.tar.gz
+
 
 Then you can upload the whole set of pseudopotentials to AiiDA by using the following ``verdi`` command:
 
