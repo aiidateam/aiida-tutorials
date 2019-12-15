@@ -26,7 +26,7 @@ configuration, to do so:
 -  Generate private and pubilc ssh key pair by ``ssh-keygen -f
    aiida_tutorial``.
 -  Copy the public key to VM by ``ssh-copy-id -i
-   ~/.ssh/aiida-tutorial.pub max@127.0.0.1 -p 2222`` and type the
+   ~/.ssh/aiida_tutorial.pub max@127.0.0.1 -p 2222`` and type the
    default password ``moritz``.
 
 
@@ -63,7 +63,7 @@ Afterwards you can connect to VM using this simple command:
    .. code:: console
 
       ssh \
-            -i ~/.ssh/aiida-tutorial \
+            -i ~/.ssh/aiida_tutorial \
             -L 8888:localhost:8888 \
             -L 5000:localhost:5000 \
             -o ServerAliveInterval=120 \

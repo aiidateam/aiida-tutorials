@@ -236,6 +236,7 @@ You can do it using commands like
 
 .. code:: python
 
+    structure.append_atom(position=(0., 0., 0.), symbols="Si")
     structure.append_atom(position=(alat/4., alat/4., alat/4.), symbols="Si")
 
 for the first ‘Si’ atom.
