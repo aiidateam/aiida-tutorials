@@ -30,7 +30,7 @@ links inside the respective sections.
    :maxdepth: 1
    :caption: Tutorial materials
 
-   2019, ISSP University of Tokyo, Chiba, Japan (aiida-core 1.0.0b6)<./pages/2019_ISSP_Chiba_Japan/index>
+   2019, ISSP University of Tokyo, Chiba, Japan (aiida-core 1.0.1)<./pages/2019_ISSP_Chiba_Japan/index>
    2019, IIT Mandi, Mandi, India (aiida-core 1.0.0b6)<./pages/2019_IIT_Mandi_India/index>
    2019, SINTEF, Oslo, Norway (aiida-core 1.0.0b6)<./pages/2019_SINTEF/index>
    2019, Jožef Stefan Institute, Ljubljana, Slovenia (aiida-core 1.0.0b6)<./pages/2019_Ljubljana/index>
