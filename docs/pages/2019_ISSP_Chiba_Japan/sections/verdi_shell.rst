@@ -236,10 +236,10 @@ You can do it using commands like
 
 .. code:: python
 
+    structure.append_atom(position=(0., 0., 0.), symbols="Si")
     structure.append_atom(position=(alat/4., alat/4., alat/4.), symbols="Si")
 
 for the first ‘Si’ atom.
-Repeat it for the other atomic site (0, 0, 0).
 You can access and inspect the structure sites with the command
 
 .. code:: python
