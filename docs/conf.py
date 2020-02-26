@@ -35,6 +35,7 @@ extensions = [
     'recommonmark',
     'nbsphinx',
     'sphinx.ext.extlinks',
+    'sphinx.ext.mathjax',
 ]
 ipython_mplbackend = ""
 imgmath_image_format = 'svg'
@@ -216,9 +217,12 @@ latex_elements = {
 
     # Additional stuff for the LaTeX preamble.
     'preamble':
-    u'''
-\\usepackage{newunicodechar}
-\\newunicodechar{⏹}{\\ensuremath{\\square}}
+    r'''
+\usepackage[active]{preview}
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{braket}
+\usepackage{newunicodechar}
+\newunicodechar{⏹}{\ensuremath{\square}}
 ''',
 }
 

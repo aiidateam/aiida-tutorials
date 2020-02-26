@@ -31,19 +31,20 @@ These are the hands-on materials from the 1-day AiiDA tutorial, part of the
 held on March 25-27, 2020 in Oxford (UK).
 
 
-AiiDA hands-on materials
+AiiDA-Wannier90 hands-on 
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Demo
 ----
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 6
    :numbered:
 
    ./sections/setup
    ./sections/first_taste
-
+   ./sections/automated_wannierisation
+   
 In-depth tutorial
 -----------------
 In this tutorial, no in-depth tutorial has been presented.
