@@ -10,7 +10,7 @@ you can simply work within the VM.
    are the following: username: ``user``, password: ``qe2019``.
 
 
-.. _2019_lbj_connect:
+.. _2020_oxf_connect:
 
 Connect to your virtual machine
 -------------------------------

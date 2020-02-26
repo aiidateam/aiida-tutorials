@@ -6,17 +6,17 @@
 +-----------------+--------------------------------------------------------------------------------+
 | Related resources                                                                                |
 +=================+================================================================================+
-| Virtual Machine | `Custom VM used for the Oxford 2020 tutorial`_                              |
+| Virtual Machine | `Custom VM used for the Oxford 2020 tutorial`_                                 |
 |                 |                                                                                |
 |                 | or `Quantum Mobile 19.09.0`_                                                   |
 +-----------------+--------------------------------------------------------------------------------+
-| python packages | `aiida-core 1.1.0`_, `aiida-quantumespresso 3.0.0a5`_                        |
+| python packages | `aiida-core 1.1.0`_, `aiida-quantumespresso 3.0.0a5`_                          |
 +-----------------+--------------------------------------------------------------------------------+
 | codes           | `Quantum Espresso 6.3`_                                                        |
 +-----------------+--------------------------------------------------------------------------------+
 
 .. _Quantum Mobile 19.09.0: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.09.0
-.. _aiida-core 1.0.0b6: https://pypi.org/project/aiida-core/1.1.0
+.. _aiida-core 1.1.0: https://pypi.org/project/aiida-core/1.1.0
 .. _aiida-quantumespresso 3.0.0a5: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0a5
 .. _Quantum Espresso 6.3: https://github.com/QEF/q-e/releases/tag/qe-6.3
 .. _Custom VM used for the Oxford 2020 tutorial: https://object.cscs.UPDATEME
