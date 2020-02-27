@@ -86,12 +86,20 @@ def parse_arugments():
         help=
         "density of kpoints for the NSCF step (units: 1/angstrom, default=0.2)",
         default=0.2)
-
+    parser.add_argument(
+        '-p',
+        '--protocol',
+        type=str,
+        help=
+        "protocol for the DFT calculations (default='theos-ht-1.0')",
+        default='theos-ht-1.0')
+   
+     
     args = parser.parse_args()
 
     return args
 
-def submit_workchain(xsf_file, group_name, only_valence, do_disentanglement, do_mlwf):
+def submit_workchain(xsf_file, group_name, only_valence, do_disentanglement, do_mlwf, protocol):
 
     group_name = update_group_name(
        group_name, only_valence, do_disentanglement, do_mlwf)
@@ -121,7 +129,7 @@ def submit_workchain(xsf_file, group_name, only_valence, do_disentanglement, do_
             'projwfc': projwfc_code,
             'wannier90': wannier90_code
         },
-        protocol=orm.Dict(dict={'name': 'testing'}),
+        protocol=orm.Dict(dict={'name': protocol}),
         structure=structure,
         controls=controls
     )
@@ -138,6 +146,7 @@ if __name__ == "__main__":
     only_valence = args.only_valence
     kp_density_scf = args.kpoints_scf
     kp_density_nscf = args.kpoints_nscf
+    protocol = args.protocol
 
     #submit the workhain
     submit_workchain(
@@ -145,5 +154,6 @@ if __name__ == "__main__":
         group_name,
         only_valence,
         do_disentanglement,
-        do_mlwf
+        do_mlwf,
+        protocol
     )

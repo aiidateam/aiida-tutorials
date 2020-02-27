@@ -20,6 +20,23 @@ which leverages the SCDM method that was introduced in:
   *Disentanglement via entanglement: A unified method for wannier localization*,
   Multiscale Modeling & Simulation 16, 1392–1410 (2018).
 
+The initial workflow was written by Antimo Marrazzo (EPFL) and Giovanni Pizzi (EPFL), it was later \
+substantially improved and upgraded to AiiDA v1.1.0 by Junfeng Qiao (EFPL). The SCDM implementation in \
+QuantumESPRESSO was done by Valerio Vitale (Imperial College London and University of Cambridge).
+
+**Launch while you read!**
+
+The workflow should take a few minutes to run on the virtual machine, you can launch it now \
+in the background while you read the introduction. 
+You can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` \
+and execute it with the following command
+
+.. code:: bash
+    
+    verdi run launch_auto-wannier_workflow.py --protocol 'testing' --kpoints-scf 0.2 --kpoints-nscf 0.4 --xsf CaO.xsf
+
+You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf.
+
 
 Introduction
 ------------
@@ -98,7 +115,7 @@ The **number of Wannier functions** is set equal to the number of PAOs and the p
 set the **optimal smearing function (erfc) parameters** :math:`\mu` and :math:`\sigma` as explained in \
 `Automated high-throughput wannierisation  <https://arxiv.org/abs/1909.00433>`_.
 
-After the calculation of the projectability, the workflow proceeds with standard wannierisation: first \
+After the calculation of the projectability, the workflow proceeds with the standard wannierisation: first \
 it computes the overlap and projection matrices and then runs the Wannier90 code.
 
 Here we summarise the main steps of the Wannier90BandsWorkChain:
@@ -110,15 +127,18 @@ Here we summarise the main steps of the Wannier90BandsWorkChain:
 * Overlap matrices, :math:`A_{mn}` with SCDM (QuantumESPRESSO pw2wannier90.x)
 * Wannierisation (wannier90.x)
 
-The output of the workflow include several objects, including the interpolated band structure, \
-that we are going to inspect.
+The output of the workflow include several objects, including the projectabilities \
+and interpolated band structure, that we are going to inspect after the run.
 
 
 Running the workflow
 --------------------
 
-Let's finally run the workflow! Here we focus on how to run the Wannier90BandsWorkChain, the AiiDA workchain \
-that implements the automation workflow to obtain MLWFs, for the full code documentation please visit the `AiiDA-Wannier90 documentation <https://aiida-wannier90.readthedocs.io/en/latest/>`_.
+If you have not launch the script yet, let's finally run the workflow! \
+Here we focus on how to run the Wannier90BandsWorkChain, the AiiDA workchain \
+that implements the automation workflow to obtain MLWFs, for the full code documentation of the \
+AiiDA-Wannier90 plugin please visit the \
+`AiiDA-Wannier90 documentation <https://aiida-wannier90.readthedocs.io/en/latest/>`_.
 
 You can start by downloading the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to your work directory.
 The script is reported also here below and allows to initialise and launch the AiiDA workchain. 
@@ -131,7 +151,7 @@ Launch the script with the following command
 
 .. code:: bash
     
-    verdi run launch_auto-wannier_workflow.py --kpoints-scf 0.2 --kpoints-nscf 0.4 --xsf CaO.xsf
+    verdi run launch_auto-wannier_workflow.py --protocol 'testing' --kpoints-scf 0.2 --kpoints-nscf 0.4 --xsf CaO.xsf
 
 You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf
 
@@ -144,23 +164,77 @@ To get a list of all the AiiDA workchains that are running and their status you 
 Analyzing the outputs of the workflow
 -------------------------------------
 
-While the Wannier90BandsWorkChain is running you can inspect the progress of the workflow by \
-looking ad the report using the command
+Now we analyse the reports and outputs of the workflow using the command line.
+
+While the Wannier90BandsWorkChain is running you can monitor the progress of the workflow by \
+looking at the report using the command
 
 .. code:: bash
 
     verdi work report <PK>
 
-Now we analyse the outputs of the workflow.
+where PK corresponds to the workchain pk. You will see a log with messages printed by the workchain, \
+including the pks of all the sub-workchains and calculations launched by the Wannier90BandsWorkChain.
+
+Once the workchain has finished to run, you can look at all the inputs and outputs with
+
+.. code:: bash
+
+    verdi node show <PK>
+
 
 
 Analyzing and comparing the band structure
 ------------------------------------------
 
+First let's give a look at the interpolated band structure by exporting a pdf file with
+
 .. code:: bash
 
-    verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
+    verdi data bands export --format mpl_pdf --output band_structure.pdf <PK_bands>
 
+where PK_bands stands for the BandsData pk produced by the workflow.\ 
+You can find it :code:`verdi node show <PK>` with PK being the workchain pk.
+You should obtain a pdf like the following:
+
+INSERT BANDS PDF
+
+Now we compare the wannier-interpolated bands with the full DFT bands calculation.
+For convenience, we have already computed for you all the full DFT band structures for the \
+compounds you find the xsf folder. You can find the bands in the xmgrace (.agr) format in the the folder \
+`/dft_bands`.
+
+You can first export the bands in the xmgrace format with 
+
+.. code:: bash
+
+    verdi data bands export --format agr --output CaO_wannier_bands.agr <PK_bands>
+
+and compare it with the full DFT band structure using xmgrace
+
+.. code:: bash
+
+    xmgrace CaO_DFT_bands.agr CaO_wannier_bands.agr
+
+where you can replace CaO with any chemical formula of the other crystal structures we provide.
+
+You shoudl obtain something like this:
+
+INSERT BANDS
+
+Analyzing the projectabilities
+------------------------------
+
+Now you will see how to look at the projectabilities that were use in the automation protocol.
+You can download the following scritp XXX and run it
+
+.. code:: bash
+
+    verdi run XXX <PK_projectabilities> <PK_bands>
+
+
+.. figure:: include/images/CaO.png
+   :width: 100%
 
 Analyzing the provenance graph
 ------------------------------
@@ -182,15 +256,15 @@ You should obtain something like the following
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
 AiiDA's record of a calculation is best displayed in the form of a provenance graph
 
+(Optional) Browse your database with the REST API
+-------------------------------------------------
+
+Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`_ and browse your database! 
+Follow the instruction that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
+
 (Optional) Maximal localistion & SCDM
 -------------------------------------
 
 Try to modify the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to disable the MLWF \
 procedure in order to obtain Wannier functions with SCDM projections that are not localised.
 Run the code for 1-2 materials of the dataser, do you notice any difference?
-
-(Optional) Browse your database with the REST API
--------------------------------------------------
-
-Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`_ and browse your database! 
-Follow the instruction that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
