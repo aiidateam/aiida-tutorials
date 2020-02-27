@@ -72,7 +72,7 @@ the frozen and outer window, it does not provide a recipe to set the smearing fu
 a sensible value typically requires some consideration, such as counting the number of atomic orbitals \
 of a given orbital character (e.g. *s*, *p*, *d* or *sp3* like).
 
-The Wannier90BandsWorkChain AiiDA workchain implements a protocol that deals with the choice \
+The Wannier90BandsWorkChain is an AiiDA workchain that implements a protocol that deals with the choice \
 of the number of Wannier functions and sets the parameters :math:`\mu` and :math:`\sigma` defining \
 the smearing function. For a full explanation of protocol we refer to the article \
 `Automated high-throughput wannierisation  <https://arxiv.org/abs/1909.00433>`_, while here we \
@@ -118,30 +118,58 @@ Running the workflow
 --------------------
 
 Let's finally run the workflow! Here we focus on how to run the Wannier90BandsWorkChain, the AiiDA workchain \
-that implements the automation workflow to obtain MLWFs,for the full code documentation please visit the `AiiDA-Wannier90 documentation <https://aiida-wannier90.readthedocs.io/en/latest/>`_.
+that implements the automation workflow to obtain MLWFs, for the full code documentation please visit the `AiiDA-Wannier90 documentation <https://aiida-wannier90.readthedocs.io/en/latest/>`_.
 
+You can start by downloading the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to your work directory.
+The script is reported also here below and allows to initialise and launch the AiiDA workchain. 
 
-.. literalinclude:: include/snippets/scdm_workflow.py
+.. literalinclude:: include/snippets/launch_auto-wannier_workflow.py
 
-Download the :download:`scdm_workflow.py <include/snippets/scdm_workflow.py>` script to your working directory.
+The script can parse some input variables, like the density of k-points for the SCF and NSCF calculations \
+and the location of the crystal structure file in the xsf format.
+Launch the script with the following command
 
+.. code:: bash
+    
+    verdi run launch_auto-wannier_workflow.py --kpoints-scf 0.2 --kpoints-nscf 0.4 --xsf CaO.xsf
 
-Analyze and compare the band structure
---------------------------------------
+You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf
+
+To get a list of all the AiiDA workchains that are running and their status you can use
 
 .. code:: bash
 
-   verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
-
+    verdi work list
 
 Analyzing the outputs of the workflow
 -------------------------------------
 
-Now we analyse the outputs of the workflow. We begin by generating the provenance graph with
+While the Wannier90BandsWorkChain is running you can inspect the progress of the workflow by \
+looking ad the report using the command
 
 .. code:: bash
 
-  verdi node graph generate <PK>
+    verdi work report <PK>
+
+Now we analyse the outputs of the workflow.
+
+
+Analyzing and comparing the band structure
+------------------------------------------
+
+.. code:: bash
+
+    verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
+
+
+Analyzing the provenance graph
+------------------------------
+
+ We begin by generating the provenance graph with
+
+.. code:: bash
+
+    verdi node graph generate <PK>
 
 where the PK correspond to the workflow you have just run.
 You should obtain something like the following 
@@ -154,9 +182,15 @@ You should obtain something like the following
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
 AiiDA's record of a calculation is best displayed in the form of a provenance graph
 
-(Optional) maximal localistion & SCDM
+(Optional) Maximal localistion & SCDM
 -------------------------------------
 
-Try to modify the :download:`scdm_workflow.py <include/snippets/scdm_workflow.py>` script to disable the MLWF \
+Try to modify the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to disable the MLWF \
 procedure in order to obtain Wannier functions with SCDM projections that are not localised.
-Run the code for 1-2 materials of the dataser, do you notice any difference.
+Run the code for 1-2 materials of the dataser, do you notice any difference?
+
+(Optional) Browse your database with the REST API
+-------------------------------------------------
+
+Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`_ and browse your database! 
+Follow the instruction that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
