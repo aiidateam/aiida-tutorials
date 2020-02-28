@@ -153,7 +153,10 @@ Launch the script with the following command
     
     verdi run launch_auto-wannier_workflow.py --protocol 'testing' --kpoints-scf 0.2 --kpoints-nscf 0.4 --xsf CaO.xsf
 
-You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf
+You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf.
+
+**NB** Here for the tutorial we run the workflow in *testing* mode, where all the wavefunction cutoffs are halved to \
+speed up the calculations. For production please use the 'theos-ht-1.0' protocol or any other sensible choice.
 
 To get a list of all the AiiDA workchains that are running and their status you can use
 
@@ -174,7 +177,11 @@ looking at the report using the command
     verdi work report <PK>
 
 where PK corresponds to the workchain pk. You will see a log with messages printed by the workchain, \
-including the pks of all the sub-workchains and calculations launched by the Wannier90BandsWorkChain.
+including the pks of all the sub-workchains and calculations launched by the Wannier90BandsWorkChain, \
+similar to the following:
+
+.. literalinclude:: include/snippets/workchain_report.txt
+
 
 Once the workchain has finished to run, you can look at all the inputs and outputs with
 
@@ -182,6 +189,9 @@ Once the workchain has finished to run, you can look at all the inputs and outpu
 
     verdi node show <PK>
 
+You should obtain an output similar to what follows:
+
+.. literalinclude:: include/snippets/workchain_show.txt
 
 
 Analyzing and comparing the band structure

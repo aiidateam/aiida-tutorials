@@ -1,0 +1,50 @@
+Property     Value
+-----------  ------------------------------------
+type         Wannier90BandsWorkChain
+state        Finished [0]
+pk           10572
+uuid         9c699a26-c05e-41d2-b621-11fa964c02fc
+label
+description
+ctime        2020-02-20 10:03:48.625224+00:00
+mtime        2020-02-20 10:06:11.059616+00:00
+computer     [1] localhost
+
+Inputs                          PK     Type
+------------------------------  -----  -------------
+code
+    wannier90                   207    Code
+    projwfc                     206    Code
+    pw2wannier90                205    Code
+    pw                          1      Code
+controls
+    kpoints_distance_for_bands  8864   Float
+    do_mlwf                     8863   Bool
+    do_disentanglement          8862   Bool
+    plot_wannier_functions      8861   Bool
+    auto_projections            8860   Bool
+    only_valence                10571  Bool
+    retrieve_hamiltonian        10570  Bool
+protocol                        10569  Dict
+structure                       10568  StructureData
+
+Outputs                          PK  Type
+----------------------------  -----  -------------
+nscf_parameters               10617  Dict
+primitive_structure           10577  StructureData
+pw2wannier90_remote_folder    10640  RemoteData
+scf_parameters                10600  Dict
+seekpath_parameters           10575  Dict
+wannier90_interpolated_bands  10647  BandsData
+wannier90_parameters          10648  Dict
+wannier90_retrieved           10646  FolderData
+
+Called       PK  Type
+--------  -----  ----------------
+CALL      10587  WorkChainNode
+CALL      10574  CalcFunctionNode
+
+Log messages
+---------------------------------------------
+There are 5 log messages for this calculation
+Run 'verdi process report 10572' to see them

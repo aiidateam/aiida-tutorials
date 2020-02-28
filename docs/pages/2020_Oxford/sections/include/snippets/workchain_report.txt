@@ -1,0 +1,32 @@
+2020-02-20 10:03:49 [4067 | REPORT]: [10572|Wannier90BandsWorkChain|setup_protocol]: running the workchain with the "testing" protocol
+2020-02-20 10:03:49 [4068 | REPORT]: [10572|Wannier90BandsWorkChain|setup]: workchain controls found in inputs: valence + conduction bands
+2020-02-20 10:03:49 [4069 | REPORT]: [10572|Wannier90BandsWorkChain|run_seekpath]: running seekpath to get primitive structure for: Br2Ti
+2020-02-20 10:03:51 [4070 | REPORT]: [10572|Wannier90BandsWorkChain|run_wannier_workchain]: launching Wannier90WorkChain<10587>
+2020-02-20 10:03:52 [4071 | REPORT]:   [10587|Wannier90WorkChain|run_scf]: scf step - launching PwBaseWorkChain<10589> in scf mode
+2020-02-20 10:03:53 [4072 | REPORT]:     [10589|PwBaseWorkChain|run_calculation]: launching PwCalculation<10595> iteration #1
+2020-02-20 10:04:08 [4073 | REPORT]:     [10589|PwBaseWorkChain|inspect_calculation]: PwCalculation<10595> completed successfully
+2020-02-20 10:04:08 [4074 | REPORT]:     [10589|PwBaseWorkChain|results]: work chain completed after 1 iterations
+2020-02-20 10:04:08 [4075 | REPORT]:     [10589|PwBaseWorkChain|on_terminated]: remote folders will not be cleaned
+2020-02-20 10:04:08 [4076 | REPORT]:   [10587|Wannier90WorkChain|inspect_scf]: scf PwBaseWorkChain successfully finished
+2020-02-20 10:04:09 [4077 | REPORT]:   [10587|Wannier90WorkChain|run_nscf]: nscf number of bands set as 28
+2020-02-20 10:04:10 [4078 | REPORT]:   [10587|Wannier90WorkChain|run_nscf]: nscf step - launching PwBaseWorkChain<10609> in nscf mode
+2020-02-20 10:04:11 [4079 | REPORT]:     [10609|PwBaseWorkChain|run_calculation]: launching PwCalculation<10612> iteration #1
+2020-02-20 10:04:48 [4080 | REPORT]:     [10609|PwBaseWorkChain|inspect_calculation]: PwCalculation<10612> completed successfully
+2020-02-20 10:04:48 [4081 | REPORT]:     [10609|PwBaseWorkChain|results]: work chain completed after 1 iterations
+2020-02-20 10:04:48 [4082 | REPORT]:     [10609|PwBaseWorkChain|on_terminated]: remote folders will not be cleaned
+2020-02-20 10:04:49 [4083 | REPORT]:   [10587|Wannier90WorkChain|inspect_nscf]: nscf PwBaseWorkChain successfully finished
+2020-02-20 10:04:49 [4084 | REPORT]:   [10587|Wannier90WorkChain|should_do_projwfc]: SCDM mu is auto-set using projectability
+2020-02-20 10:04:49 [4085 | REPORT]:   [10587|Wannier90WorkChain|run_projwfc]: projwfc step - launching ProjwfcCalculation <10618>
+2020-02-20 10:04:58 [4086 | REPORT]:   [10587|Wannier90WorkChain|inspect_projwfc]: projwfc ProjwfcCalculation successfully finished
+2020-02-20 10:04:58 [4087 | REPORT]:   [10587|Wannier90WorkChain|run_wannier90_pp]: number of Wannier functions extracted from projections: 18
+2020-02-20 10:04:59 [4088 | REPORT]:   [10587|Wannier90WorkChain|run_wannier90_pp]: wannier90 postproc step - launching Wannier90Calculation <10631> in postproc mode
+2020-02-20 10:05:08 [4089 | REPORT]:   [10587|Wannier90WorkChain|inspect_wannier90_pp]: wannier90 postproc Wannier90Calculation successfully finished
+2020-02-20 10:05:10 [4090 | REPORT]:   [10587|Wannier90WorkChain|run_pw2wannier90]: pw2wannier90 step - launching Pw2Wannier90Calculation <10639>
+2020-02-20 10:05:28 [4091 | REPORT]:   [10587|Wannier90WorkChain|inspect_pw2wannier90]: Pw2wannier90Calculation successfully finished
+2020-02-20 10:05:29 [4092 | REPORT]:   [10587|Wannier90WorkChain|run_wannier90]: wannier90 step - launching Wannier90Calculation <10644>
+2020-02-20 10:06:09 [4093 | REPORT]:   [10587|Wannier90WorkChain|inspect_wannier90]: Wannier90Calculation successfully finished
+2020-02-20 10:06:10 [4094 | REPORT]:   [10587|Wannier90WorkChain|results]: final step - preparing outputs
+2020-02-20 10:06:10 [4095 | REPORT]:   [10587|Wannier90WorkChain|results]: wannier90 interpolated bands pk: 10647
+2020-02-20 10:06:10 [4096 | REPORT]:   [10587|Wannier90WorkChain|results]: Wannier90WorkChain successfully completed
+2020-02-20 10:06:10 [4097 | REPORT]: [10572|Wannier90BandsWorkChain|results]: workchain successfully completed
+
