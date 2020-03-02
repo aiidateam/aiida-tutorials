@@ -155,5 +155,5 @@ if __name__ == "__main__":
         only_valence,
         do_disentanglement,
         do_mlwf,
-        protocol
+        protocol,
     )

@@ -140,7 +140,8 @@ that implements the automation workflow to obtain MLWFs, for the full code docum
 AiiDA-Wannier90 plugin please visit the \
 `AiiDA-Wannier90 documentation <https://aiida-wannier90.readthedocs.io/en/latest/>`_.
 
-You can start by downloading the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to your work directory.
+You can start by downloading the \
+:download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to your work directory.
 The script is reported also here below and allows to initialise and launch the AiiDA workchain. 
 
 .. literalinclude:: include/snippets/launch_auto-wannier_workflow.py
@@ -203,13 +204,14 @@ First let's give a look at the interpolated band structure by exporting a pdf fi
 
     verdi data bands export --format mpl_pdf --output band_structure.pdf <PK_bands>
 
-where PK_bands stands for the BandsData pk produced by the workflow.\ 
+where PK_bands stands for the BandsData pk produced by the workflow. \ 
 You can find it :code:`verdi node show <PK>` with PK being the workchain pk.
 You should obtain a pdf like the following:
 
-INSERT BANDS PDF
+.. figure:: include/images/CaO_wan_band_structure.pdf
+   :width: 100%
 
-Now we compare the wannier-interpolated bands with the full DFT bands calculation.
+Now we compare the Wannier-interpolated bands with the full DFT bands calculation.
 For convenience, we have already computed for you all the full DFT band structures for the \
 compounds you find the xsf folder. You can find the bands in the xmgrace (.agr) format in the the folder \
 `/dft_bands`.
@@ -230,21 +232,34 @@ where you can replace CaO with any chemical formula of the other crystal structu
 
 You shoudl obtain something like this:
 
-INSERT BANDS
+
+.. figure:: include/images/Cao_bands_difference.pdf
+   :width: 100%
+
 
 Analyzing the projectabilities
 ------------------------------
 
 Now you will see how to look at the projectabilities that were use in the automation protocol.
-You can download the following scritp XXX and run it
+You can download the following script \
+:download:`plot_projectabilities.py <include/snippets/plot_projectabilities.py>` and run it
 
 .. code:: bash
 
-    verdi run XXX <PK_projectabilities> <PK_bands>
+    verdi run plot_projectabilities.py --w90bands <PK_bands> --scf <PK_scf>
 
+where PK_bands stands for the BandsData pk produced by the workflow and \
+PK_scf stands for the DFT SCF calculation performed with QuantumESPRESSO.  
+You can find the two PKs with :code:`verdi node show <PK>` with PK being the workchain pk.
+
+You should obtain a plot similar to the following:
 
 .. figure:: include/images/CaO.png
    :width: 100%
+
+As you can see the protocol to choose :math:`\mu` and :math:`\sigma` ensures that the \
+SCDM algorithm is applied to a density-matrix that is made only by Kohn-Sham states \
+that can be projected on the manifold spanned by the PAOs.
 
 Analyzing the provenance graph
 ------------------------------

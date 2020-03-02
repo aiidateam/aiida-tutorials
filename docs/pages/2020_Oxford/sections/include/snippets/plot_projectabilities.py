@@ -11,7 +11,6 @@ from aiida.orm.data.array.kpoints import KpointsData
 from aiida.orm.data.array.bands import BandsData
 from aiida.orm.utils import WorkflowFactory
 from aiida.work.run import run,submit
-from aiida_quantumespresso.workflows.pw.custom_band_structure_workchain import CustomPwBandStructureWorkChain
 from aiida.orm.calculation.work import WorkCalculation
 from aiida.common import links
 from collections import Counter
@@ -53,14 +52,41 @@ def get_mu_and_sigma_from_projections(bands, projections, thresholds):
     success = True
     return mu, sigma, sorted_bands, sorted_projwfc
 
+
+def parse_arugments():
+    import argparse
+    parser = argparse.ArgumentParser(
+        description=
+        "A script to plot the projectabilities distribution"
+    )
+    #parser.add_argument(
+    #    '--projectabilities',
+    #    '--p',
+    #    type=int,
+    #    help="Projectabilities PK"
+    #)
+    parser.add_argument(
+        '--w90bands',
+        '--wb',
+        type=int,
+        help="Bands PK"
+    )
+    parser.add_argument(
+        '--scf',
+        '--s',
+        type=int,
+        help="DFT SCF PK"
+    )
+   
+     
+    args = parser.parse_args()
+
+    return args
 if __name__ == "__main__":
 
-    pwbands_calc = load_node(dft_band).get_inputs(link_type=links.LinkType.CREATE)[0]
+    pwscf_calc = load_node(scf_pk)
+    w90_band = load_node(w90bands_pk)
 
-    pwscf_calc = pwbands_calc.inp.parent_calc_folder.get_inputs(link_type=links.LinkType.CREATE)[0]
-
-    # bands inherit fermi from scf
-    #assert pwscf_calc.inp.parameters.dict.CONTROL['calculation'] == 'scf' 
     fermi_energy = pwscf_calc.res.fermi_energy
 
     w90_calc = load_node(w90_band).get_inputs(link_type=links.LinkType.CREATE)[0]
@@ -92,6 +118,8 @@ if __name__ == "__main__":
     pl.axvline([mu_fit - 3. * sigma_fit], color='orange', label=r"$\mu-3\sigma$")
     pl.axvline([fermi_energy], color='green', label=r"$E_f$")
     pl.title(formula)
+    pl.xlabel('Energy [eV]')
+    pl.ylabel('Projectability')
     pl.legend(loc='auto')
     pl.savefig('{}/{}.png'.format(suffix, formula))
 

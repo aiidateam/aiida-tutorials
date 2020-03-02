@@ -12,13 +12,13 @@
 +-----------------+--------------------------------------------------------------------------------+
 | python packages | `aiida-core 1.1.0`_, `aiida-quantumespresso 3.0.0a5`_                          |
 +-----------------+--------------------------------------------------------------------------------+
-| codes           | `Quantum Espresso 6.3`_                                                        |
+| codes           | `Quantum Espresso 6.5`_                                                        |
 +-----------------+--------------------------------------------------------------------------------+
 
 .. _Quantum Mobile 19.09.0: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.09.0
 .. _aiida-core 1.1.0: https://pypi.org/project/aiida-core/1.1.0
 .. _aiida-quantumespresso 3.0.0a5: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0a5
-.. _Quantum Espresso 6.3: https://github.com/QEF/q-e/releases/tag/qe-6.3
+.. _Quantum Espresso 6.5: https://github.com/QEF/q-e/releases/tag/qe-6.5
 .. _Custom VM used for the Oxford 2020 tutorial: https://object.cscs.UPDATEME
 
 .. note:: The credentials of the custom VM are the following: username: ``user``, password: ``qe2019``.
