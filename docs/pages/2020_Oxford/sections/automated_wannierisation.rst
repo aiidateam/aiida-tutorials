@@ -287,7 +287,7 @@ AiiDA's record of a calculation is best displayed in the form of a provenance gr
 Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`_ and browse your database! 
 Follow the instruction that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
 
-(Optional) Maximal localistion & SCDM
+(Optional) Maximal localisation & SCDM
 -------------------------------------
 
 Try to modify the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to disable the MLWF \
