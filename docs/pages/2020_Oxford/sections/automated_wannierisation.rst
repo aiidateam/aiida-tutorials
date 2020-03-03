@@ -163,7 +163,7 @@ To get a list of all the AiiDA workchains that are running and their status you 
 
 .. code:: bash
 
-    verdi work list
+    verdi process list
 
 Analyzing the outputs of the workflow
 -------------------------------------
@@ -175,7 +175,7 @@ looking at the report using the command
 
 .. code:: bash
 
-    verdi work report <PK>
+    verdi process report <PK>
 
 where PK corresponds to the workchain pk. You will see a log with messages printed by the workchain, \
 including the pks of all the sub-workchains and calculations launched by the Wannier90BandsWorkChain, \
@@ -230,7 +230,7 @@ and compare it with the full DFT band structure using xmgrace
 
 where you can replace CaO with any chemical formula of the other crystal structures we provide.
 
-You shoudl obtain something like this:
+You should obtain something like this:
 
 
 .. figure:: include/images/Cao_bands_difference.pdf
@@ -288,7 +288,7 @@ Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`
 Follow the instruction that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
 
 (Optional) Maximal localisation & SCDM
--------------------------------------
+--------------------------------------
 
 Try to modify the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to disable the MLWF \
 procedure in order to obtain Wannier functions with SCDM projections that are not localised.
