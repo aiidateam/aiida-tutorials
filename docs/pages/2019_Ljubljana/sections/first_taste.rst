@@ -1,3 +1,5 @@
+.. _Ljubliana 2019 first taste:
+
 A first taste of AiiDA
 ======================
 

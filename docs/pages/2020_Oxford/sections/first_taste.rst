@@ -9,7 +9,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
 As the first thing, open a terminal and type ``workon aiida`` to enter the "virtual environment" where AiiDA is installed.
 You will know that you are in the virtual environment because each new line will start with ``(aiida)``, e.g.::
 
-  (aiida) user@qe2019:~$
+  (aiida) max@qmobile:~$
 
 Note that you will need to retype ``workon aiida`` every time you open a new terminal.
 
@@ -23,22 +23,40 @@ Here are some first tasks for you:
 
        verdi -h
 
+.. note:: This tutorial is a short crash course into AiiDA, focusing on
+   `Wannier90`_ as the code that AiiDA will run (via the `aiida-wannier90`_
+   plugin). 
+
+   Many more codes are supported by AiiDA (see full updated list of plugins on
+   the `AiiDA plugin registry`_).
+   If you want to see a similar first-taste tutorial, but focused on `Quantum ESPRESSO`_
+   instead (using the `aiida-quantumespresso`_ plugin), you can check the
+   :ref:`"first-taste" page of the tutorial held in Ljubiana (2019) <Ljubliana 2019 first taste>`.
+
+.. _Wannier90: http://www.wannier.org
+.. _aiida-wannier90: https://github.com/aiidateam/aiida-wannier90
+.. _AiiDA plugin registry: https://aiidateam.github.io/aiida-registry/
+.. _Quantum ESPRESSO: https://www.quantum-espresso.org
+.. _aiida-quantumespresso: https://github.com/aiidateam/aiida-quantumespresso
+
+
 Importing a structure and inspecting it
 ---------------------------------------
 
-Let's download a structure from the `Crystallography Open Database <http://crystallography.net/cod/>`_ and import it into AiiDA.
+Let's download a gallium arsenide (GaAs) structure from the
+`Crystallography Open Database <http://crystallography.net/cod/>`_ and import it into AiiDA.
 
 .. note::
 
-   You can view the structure `online <http://crystallography.net/cod/9008565.html>`_.
+   You can view the structure `online <http://crystallography.net/cod/9008845.html>`_.
 
 
 You can download the file and import it with the following two commands:
 
 .. code:: bash
 
-    wget http://crystallography.net/cod/9008565.cif
-    verdi data structure import ase 9008565.cif
+    wget http://crystallography.net/cod/9008845.cif
+    verdi data structure import ase 9008845.cif
 
 Each piece of data in AiiDA gets a PK number (a "primary key")
 that identifies it in your database.
@@ -122,9 +140,60 @@ the PK of the node and its UUID (universally unique identifier).
     verdi data structure export --format=xsf <PK> > exported.xsf
     xcrysden --xsf exported.xsf
 
-  You should be visualize to see the Si supercell (8 atoms) that we downloaded 
+  You should be visualize to see the GaAs supercell (8 atoms) that we downloaded 
   from the COD database (in CIF format), imported into AiiDA and exported back
   into a different format (XSF).
+
+Get the primitive structure (preserving the provenance)
+-------------------------------------------------------
+The structure that we imported (and converted from CIF to an explicit list of
+atoms) used the conventional cell with 8 atoms, rather than the primitive one
+(with 2 atoms only).
+
+We will now use `seekpath`_ (that internally uses `spglib`_), 
+to obtain the primitive cell from the conventional one.
+Actually, seekpath does more (it will also standardise the orientation of
+the structure, and suggest the path for a band-structure calculation).
+
+We will not use seekpath directly, but a wrapper for AiiDA, that converts
+to and from AiiDA data types automatically (in particular, it reads
+directly AiiDA data nodes, and returns AiiDA nodes). The full documentation 
+of these wrapper methods can be found `on this page <https://aiida.readthedocs.io/projects/aiida-core/en/latest/datatypes/kpoints.html#automatic-computation-of-k-point-paths>`_.
+
+As a first thing, in the terminal, open an ipython shell with the AiiDA
+environment pre-loaded. This can be achieved by running:
+
+.. code:: bash
+  
+   verdi shell
+
+.. note:: If you prefer working in jupyter, you can do so. 
+
+   Open your browser (the one with jupyter that you opened in the :ref:`setup <setup jupyter oxford 2020>`
+   chapter of this tutorial), then create a new Python 3 notebook (with the button "New"
+   in the top right of the jupyter page, and then select "Python 3").
+   
+   Give the notebook a name: click on the word "Untitled" at the top, then
+   type a file name (e.g. "create_supercell") and confirm.
+
+   The only additional thing you need to do is to load the AiiDA environment.
+   In the first code cell, type ``%aiida`` and confirm with Shift+ENTER.
+
+   You should get a confirmation message "Loaded AiiDA DB environment".
+   You can then work as usual in jupyter, adding the code in the following cells.
+
+Now, in this ipython shell (or in jupuyter), you can import the wrapper function (that internally use
+seekpath) as:
+
+.. code:: python
+   
+   from aiida.tools import get_kpoints_path
+
+We now want to use it. As you can see in the `documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/apidoc/aiida.tools.data.array.kpoints.html#aiida.tools.data.array.kpoints.get_kpoints_path>`_, 
+
+
+.. _spglib: https://atztogo.github.io/spglib/
+.. _seekpath: https://github.com/giovannipizzi/seekpath
 
 Running a calculation
 ---------------------
