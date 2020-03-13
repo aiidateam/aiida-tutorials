@@ -2,49 +2,53 @@ Property     Value
 -----------  ------------------------------------
 type         Wannier90BandsWorkChain
 state        Finished [0]
-pk           10572
-uuid         9c699a26-c05e-41d2-b621-11fa964c02fc
+pk           191
+uuid         d6a8ecb2-3e7a-45e1-9398-85c79d9b09f2
 label
 description
-ctime        2020-02-20 10:03:48.625224+00:00
-mtime        2020-02-20 10:06:11.059616+00:00
+ctime        2020-03-13 11:43:43.689616+00:00
+mtime        2020-03-13 11:52:13.853869+00:00
 computer     [1] localhost
 
-Inputs                          PK     Type
-------------------------------  -----  -------------
+Inputs                          PK    Type
+------------------------------  ----  -------------
 code
-    wannier90                   207    Code
-    projwfc                     206    Code
-    pw2wannier90                205    Code
-    pw                          1      Code
+    pw                          166   Code
+    pw2wannier90                181   Code
+    projwfc                     180   Code
+    wannier90                   179   Code
 controls
-    kpoints_distance_for_bands  8864   Float
-    do_mlwf                     8863   Bool
-    do_disentanglement          8862   Bool
-    plot_wannier_functions      8861   Bool
-    auto_projections            8860   Bool
-    only_valence                10571  Bool
-    retrieve_hamiltonian        10570  Bool
-protocol                        10569  Dict
-structure                       10568  StructureData
+    retrieve_hamiltonian        184   Bool
+    only_valence                185   Bool
+    do_disentanglement          186   Bool
+    do_mlwf                     187   Bool
+    auto_projections            188   Bool
+    plot_wannier_functions      189   Bool
+    kpoints_distance_for_bands  190   Float
+protocol                        183   Dict
+structure                       182   StructureData
 
-Outputs                          PK  Type
-----------------------------  -----  -------------
-nscf_parameters               10617  Dict
-primitive_structure           10577  StructureData
-pw2wannier90_remote_folder    10640  RemoteData
-scf_parameters                10600  Dict
-seekpath_parameters           10575  Dict
-wannier90_interpolated_bands  10647  BandsData
-wannier90_parameters          10648  Dict
-wannier90_retrieved           10646  FolderData
+Outputs                         PK  Type
+----------------------------  ----  --------------
+nscf_parameters                241  Dict
+primitive_structure            196  StructureData
+projwfc_bands                  247  BandsData
+projwfc_projections            246  ProjectionData
+pw2wannier90_remote_folder     267  RemoteData
+scf_parameters                 224  Dict
+seekpath_parameters            194  Dict
+wannier90_interpolated_bands   274  BandsData
+wannier90_parameters           275  Dict
+wannier90_remote_folder        272  RemoteData
+wannier90_retrieved            273  FolderData
 
-Called       PK  Type
---------  -----  ----------------
-CALL      10587  WorkChainNode
-CALL      10574  CalcFunctionNode
+Called      PK  Type
+--------  ----  ----------------
+CALL       193  CalcFunctionNode
+CALL       210  WorkChainNode
 
 Log messages
 ---------------------------------------------
-There are 5 log messages for this calculation
-Run 'verdi process report 10572' to see them
+There are 7 log messages for this calculation
+Run 'verdi process report 191' to see them
+

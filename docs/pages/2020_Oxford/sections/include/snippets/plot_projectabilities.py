@@ -1,22 +1,22 @@
 #!/usr/bin/env runaiida
 # -*- coding: utf-8 -*-
-import sys
 import argparse
-from aiida.common.exceptions import NotExistent
-from aiida.orm.data.base import Str
-from aiida.orm.data.upf import UpfData
-from aiida.orm.data.parameter import ParameterData
-from aiida.orm.data.structure import StructureData
-from aiida.orm.data.array.kpoints import KpointsData
-from aiida.orm.data.array.bands import BandsData
-from aiida.orm.utils import WorkflowFactory
-from aiida.work.run import run,submit
-from aiida.orm.calculation.work import WorkCalculation
-from aiida.common import links
-from collections import Counter
-import json
-import os, shutil
+from aiida import orm
 
+def parse_arguments():
+    import argparse
+    parser = argparse.ArgumentParser(
+        description=
+        "A script to plot the projectabilities distribution"
+    )
+    parser.add_argument(
+        'pk',
+        metavar='WORKCHAIN_PK',
+        type=int,
+        help="PK of Wannier90BandsWorkChain"
+    )
+    return parser.parse_args()
+    
 def erfc_scdm(x,mu,sigma):
     from scipy.special import erfc
     return 0.5*erfc((x-mu)/sigma)
@@ -30,7 +30,7 @@ def get_mu_and_sigma_from_projections(bands, projections, thresholds):
         for i,item in enumerate(bool_list):
             if item:
                 break
-        print i,proj_list[i]
+        print(i, proj_list[i])
 
     def fit_erfc(f,xdata,ydata):
         from scipy.optimize import curve_fit
@@ -52,63 +52,35 @@ def get_mu_and_sigma_from_projections(bands, projections, thresholds):
     success = True
     return mu, sigma, sorted_bands, sorted_projwfc
 
+def isNode(NodeType):
+    return lambda x: x.process_label == NodeType
 
-def parse_arugments():
-    import argparse
-    parser = argparse.ArgumentParser(
-        description=
-        "A script to plot the projectabilities distribution"
-    )
-    #parser.add_argument(
-    #    '--projectabilities',
-    #    '--p',
-    #    type=int,
-    #    help="Projectabilities PK"
-    #)
-    parser.add_argument(
-        '--w90bands',
-        '--wb',
-        type=int,
-        help="Bands PK"
-    )
-    parser.add_argument(
-        '--scf',
-        '--s',
-        type=int,
-        help="DFT SCF PK"
-    )
-   
-     
-    args = parser.parse_args()
+def findNode(NodeType, NodeList):
+    # return last one
+    nodes = list(filter(isNode(NodeType), NodeList))
+    nodes.sort(key=lambda x: x.pk)
+    return nodes[-1]
 
-    return args
 if __name__ == "__main__":
+    args = parse_arguments()
+    wannier90bandsworkchain = orm.load_node(args.pk)
+    formula = wannier90bandsworkchain.inputs.structure.get_formula()
+    wannier90workchain = findNode('Wannier90WorkChain', wannier90bandsworkchain.called)
 
-    pwscf_calc = load_node(scf_pk)
-    w90_band = load_node(w90bands_pk)
+    wannier90calculation = findNode('Wannier90Calculation', wannier90workchain.called)
+    fermi_energy = wannier90calculation.inputs.parameters['fermi_energy']
 
-    fermi_energy = pwscf_calc.res.fermi_energy
+    pw2wannier90calculation = findNode('Pw2wannier90Calculation', wannier90workchain.called)
+    sigma = pw2wannier90calculation.inputs.parameters['inputpp']['scdm_sigma']
+    mu = pw2wannier90calculation.inputs.parameters['inputpp']['scdm_mu']
 
-    w90_calc = load_node(w90_band).get_inputs(link_type=links.LinkType.CREATE)[0]
-    sigma = w90_calc.inp.parameters.dict.scdm_sigma
-    mu = w90_calc.inp.parameters.dict.scdm_mu
+    projwfccalculation = findNode('ProjwfcCalculation', wannier90workchain.called)
+    projections = projwfccalculation.outputs.projections
 
-    projections = w90_calc.inp.parameters.inp.output_parameters.inp.projections
-    orbital_count = Counter(orb.get_orbital_dict()['kind_name'] for orb in projections.get_orbitals())
-    # I actually use the kind names to get 0 when they are missing, otherwise I would not see them
-    num_orbitals_string = ", ".join("{}: {}".format(k, orbital_count[k]) for k in 
-    #    sorted(orbital_count.iterkeys()))
-        sorted(k.name for k in structures[formula].kinds))
+    print("{:6s}:".format(formula))
+    print("        mu = {}, e_fermi = {}, sigma = {}".format(mu, fermi_energy, sigma))
 
-    #print "{:6s}: {:13.10f} eV; mu: {:13.10f} eV; sigma: {:13.10f} eV".format(
-    #    formula, fermi_energy, mu, sigma)
-    #print "{:6s}: {}".format(formula, (mu - fermi_energy) / sigma)
-
-    print "{:6s}:".format(formula)
-    #print "{:6s}: mu-3sigma = {}; {}".format(formula, mu - 3 * sigma, num_orbitals_string)
-    print "        mu = {}, e_fermi = {}, sigma = {}".format(mu, fermi_energy, sigma)
-
-    proj_bands = projections.inp.projections.out.bands
+    proj_bands = projwfccalculation.outputs.bands
     mu_fit, sigma_fit, sorted_bands, sorted_projwfc = get_mu_and_sigma_from_projections(proj_bands, projections, {'sigma_factor_shift': 0.})
     import pylab as pl
     pl.figure()
@@ -120,6 +92,6 @@ if __name__ == "__main__":
     pl.title(formula)
     pl.xlabel('Energy [eV]')
     pl.ylabel('Projectability')
-    pl.legend(loc='auto')
-    pl.savefig('{}/{}.png'.format(suffix, formula))
+    pl.legend(loc='best')
+    pl.savefig('{}_proj.png'.format(formula))
 

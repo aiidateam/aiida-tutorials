@@ -21,7 +21,7 @@ which leverages the SCDM method that was introduced in:
   Multiscale Modeling & Simulation 16, 1392–1410 (2018).
 
 The initial workflow was written by Antimo Marrazzo (EPFL) and Giovanni Pizzi (EPFL), it was later \
-substantially improved and upgraded to AiiDA v1.1.0 by Junfeng Qiao (EFPL). The SCDM implementation in \
+substantially improved and upgraded to AiiDA v1.1.1 by Junfeng Qiao (EFPL). The SCDM implementation in \
 QuantumESPRESSO was done by Valerio Vitale (Imperial College London and University of Cambridge).
 
 **Launch while you read!**
@@ -33,7 +33,7 @@ and execute it with the following command
 
 .. code:: bash
     
-    verdi run launch_auto-wannier_workflow.py --protocol 'testing' --kpoints-scf 0.2 --kpoints-nscf 0.4 --xsf CaO.xsf
+    verdi run launch_auto-wannier_workflow.py CaO.xsf
 
 You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf.
 
@@ -146,15 +146,25 @@ The script is reported also here below and allows to initialise and launch the A
 
 .. literalinclude:: include/snippets/launch_auto-wannier_workflow.py
 
-The script can parse some input variables, like the density of k-points for the SCF and NSCF calculations \
+The script can parse some input variables, like the protocol for the calculation \
 and the location of the crystal structure file in the xsf format.
 Launch the script with the following command
 
 .. code:: bash
     
-    verdi run launch_auto-wannier_workflow.py --protocol 'testing' --kpoints-scf 0.2 --kpoints-nscf 0.4 --xsf CaO.xsf
+    verdi run launch_auto-wannier_workflow.py --protocol 'testing' --xsf CaO.xsf
 
 You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf.
+
+For a full list of the available input arguments, use 
+
+.. code:: bash
+
+    verdi run -- run_automated_wannier.py -h
+
+with the output as
+
+.. literalinclude:: include/snippets/launch_script_help.txt
 
 **NB** Here for the tutorial we run the workflow in *testing* mode, where all the wavefunction cutoffs are halved to \
 speed up the calculations. For production please use the 'theos-ht-1.0' protocol or any other sensible choice.
@@ -208,7 +218,7 @@ where PK_bands stands for the BandsData pk produced by the workflow. \
 You can find it :code:`verdi node show <PK>` with PK being the workchain pk.
 You should obtain a pdf like the following:
 
-.. figure:: include/images/CaO_wan_band_structure.pdf
+.. figure:: include/images/GaAs_wan_band.pdf
    :width: 100%
 
 Now we compare the Wannier-interpolated bands with the full DFT bands calculation.
@@ -216,24 +226,27 @@ For convenience, we have already computed for you all the full DFT band structur
 compounds you find the xsf folder. You can find the bands in the xmgrace (.agr) format in the the folder \
 `/dft_bands`.
 
+Take O2Sr as an example, :download:`O2Sr_wan_bands.agr <include/images/O2Sr_wan_bands.agr>`, \
+:download:`O2Sr_dft_bands.agr <include/images/O2Sr_dft_bands.agr>`
+
 You can first export the bands in the xmgrace format with 
 
 .. code:: bash
 
-    verdi data bands export --format agr --output CaO_wannier_bands.agr <PK_bands>
+    verdi data bands export --format agr --output O2Sr_wan_bands.agr <PK_bands>
 
 and compare it with the full DFT band structure using xmgrace
 
 .. code:: bash
 
-    xmgrace CaO_DFT_bands.agr CaO_wannier_bands.agr
+    xmgrace O2Sr_dft_bands.agr O2Sr_wan_bands.agr
 
-where you can replace CaO with any chemical formula of the other crystal structures we provide.
+where you can replace O2Sr with any chemical formula of the other crystal structures we provide.
 
 You should obtain something like this:
 
 
-.. figure:: include/images/Cao_bands_difference.pdf
+.. figure:: include/images/O2Sr_diff.pdf
    :width: 100%
 
 
@@ -246,11 +259,9 @@ You can download the following script \
 
 .. code:: bash
 
-    verdi run plot_projectabilities.py --w90bands <PK_bands> --scf <PK_scf>
+    verdi run plot_projectabilities.py <PK>
 
-where PK_bands stands for the BandsData pk produced by the workflow and \
-PK_scf stands for the DFT SCF calculation performed with QuantumESPRESSO.  
-You can find the two PKs with :code:`verdi node show <PK>` with PK being the workchain pk.
+where PK stands for the Wannier90BandsWorkChain pk.
 
 You should obtain a plot similar to the following:
 
@@ -273,10 +284,11 @@ Analyzing the provenance graph
 where the PK correspond to the workflow you have just run.
 You should obtain something like the following 
 
-.. figure:: include/images/2476.final.png
+.. figure:: include/images/O2Sr.dot.jpg
    :width: 100%
 
-   Provenance graph for a single Wannier90BandsWorkChain run.
+   Provenance graph for a single Wannier90BandsWorkChain run. (PDF version \
+   :download:`O2Sr.dot.pdf <include/images/O2Sr.dot.pdf>`)
 
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
 AiiDA's record of a calculation is best displayed in the form of a provenance graph

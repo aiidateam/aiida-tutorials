@@ -1,0 +1,23 @@
+usage: run_automated_wannier.py [-h] [-p PROTOCOL] [-m] [-d] [-v] [-r]
+                                XSF_FILENAME
+
+A script to run the AiiDA workflows to automatically compute the MLWF using
+the SCDM method and the automated protocol described in the Vitale et al.
+paper
+
+positional arguments:
+  XSF_FILENAME          path to an input XSF file
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p PROTOCOL, --protocol PROTOCOL
+                        available protocols are 'theos-ht-1.0' and 'testing'
+  -m, --do-mlwf         do maximal localization of Wannier functions
+  -d, --do-disentanglement
+                        do disentanglement in Wanner90 step (This should be
+                        False, otherwise band structure is not optimal!)
+  -v, --only-valence    Compute only for valence bands (you must be careful to
+                        apply this only for insulators!)
+  -r, --retrieve-hamiltonian
+                        Retrieve Wannier Hamiltonian after the workflow
+                        finished
