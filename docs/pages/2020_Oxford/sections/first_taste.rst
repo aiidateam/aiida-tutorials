@@ -182,38 +182,202 @@ environment pre-loaded. This can be achieved by running:
    You should get a confirmation message "Loaded AiiDA DB environment".
    You can then work as usual in jupyter, adding the code in the following cells.
 
-Now, in this ipython shell (or in jupuyter), you can import the wrapper function (that internally use
+Now, in this ipython shell (or in jupyter), you can import the wrapper function (that internally use
 seekpath) as:
 
 .. code:: python
    
    from aiida.tools import get_kpoints_path
 
-We now want to use it. As you can see in the `documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/apidoc/aiida.tools.data.array.kpoints.html#aiida.tools.data.array.kpoints.get_kpoints_path>`_, 
+We now want to use it. As you can see in the `documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/apidoc/aiida.tools.data.array.kpoints.html#aiida.tools.data.array.kpoints.get_kpoints_path>`_, you need to pass
+as a parameter a ``StructureData`` node (in our case, the node that you imported earlier from COD).
+To load a node in the ipython shell, use the following command:
 
+.. code:: python
+   
+   structure = load_node(<PK>)
+
+where ``<PK>`` is the of the StructureData node you imoprted earlier.
+At this point you are ready to get the primitive structure:
+
+.. code:: python
+   
+   seekpath_data = get_kpoints_path(structure)
+   primitive = seekpath_data['primitive_structure']
+
+**Exercise**: check that the ``primitive`` object is an AiiDA StructureData node, and that it is still 
+not stored in the database (you can just print it). Moreover, check that you indeed obtained a
+primitive structure by inspecting the unit cell using
+``print(primitive.cell)``, and the list and position of the atoms with ``print(primitive.sites)``.
+
+
+Preserving the provenance
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+AiiDA is focused on making it easy to track the provenance of your calculation, i.e., the history of how it
+has been generated, by which calculation, and with which inputs.
+If you were just to store the ``primitive`` StructureData node, you would lose its provenance.
+Instead, AiiDA provide simple tools to store it automatically in the form of a graph, where nodes are either
+data nodes (as the one we have just seen), or calculations (i.e., "black boxes" that get data as input, 
+and create new data as output). Links between nodes represent the logical relationship between calculations and
+their inputs and outputs.
+
+While we refer to the full `AiiDA documentation`_ for more in-depth explanations, here we show the simplest way to 
+run a python function while keeping the provenance at the same time.
+
+This can be achieved by using a ``calcfunction``: this is a wrapper around python functions
+(technically, a python function decorator) that take care of storing the execution of that function in the graph.
+To use it, you need first to create a simple function that gets one or more AiiDA nodes, and returns one AiiDA node
+(or a dictionary of AiiDA nodes). Moreover, you need to decorate it as a ``calcfunction``, so that when it will be run,
+it will be stored in the database.
+
+Here is the complete code:
+
+.. code:: python
+   
+   from aiida.engine import calcfunction
+
+   @calcfunction
+   def get_primitive(input_structure):
+       from aiida.tools import get_kpoints_path
+       seekpath_data = get_kpoints_path(input_structure)
+       return {
+           'primitive_structure': seekpath_data['primitive_structure'],
+           'seekpath_parameters': seekpath_data['parameters']
+       }
+
+Once you have defined the function, run it on the ``structure`` node you loaded earlier:
+
+.. code:: python
+   
+   results = get_primitive(structure)
+   primitive = results['primitive_structure']
+
+the first thing you can notice (by printing ``primitive``) is that now this node
+has been automatically stored.
+Additionally, you can check who created it simply as ``creator_function = primitive.creator``.
+You can for instance check the name of the function that was run using ``creator_function.attributes['function_name']``
+(this returns ``get_primitive``, the name of the function that we decorated as a calcfunction).
+Moreover, you can check the inputs of this function.
+
+**Exercise**: use ``creator_function.inputs.input_structure`` to get the input of the function called ``input_structure``
+(the name is take from the parameter name in the definition of the ``get_primitive`` function) and check that it
+is the exact same node that you started from.
+
+**Exercise**: go in a bash shell (e.g., open a new terminal -- remember to also enter the virtual environment using ``workon aiida``!). You can inspect graphically the full provenance of a given node using
+
+.. code:: bash
+
+   verdi node graph generate <PK>
+
+where we suggest here to use the PK of the ``creator_function``. The code will generate a PDF that you can
+open, and that should look like the following image:
+
+.. figure:: include/images/calcfunction_provenance.png
+   :width: 100%
+
+   Provenance graph for the calcfunction used to obtain the primitive structure of GaAs.
+
+.. note:: **TAKE HOME MESSAGE**
+
+   AiiDA makes it very easy to convert python functions into ``calcfunctions`` that, every time
+   they are executed, represent their execution in the AiiDA graph.
+   
+   The calc function itself is represented as a Calculation Node; all its function inputs
+   and its (labeled) function outputs are also stored as AiiDA data nodes and are linked
+   via INPUT and CREATE links, respectively.
+
+   It is possible to browse such graph, that tracks the *provenance* of the output data.
+   Moreover, having the exact inputs tracked makes each calculation *reproducible*.
+
+   Finally (as we will see with an example in the next section), outputs of a calculation
+   can become inputs to a new calculation. Therefore, the AiiDA data provenance graph is
+   a **directed acyclic graph**.
+
+.. note:: While you can run the ``get_kpoints_path`` function as many times you want (and the data it returns
+   are unstored nodes, so it will not clutter your AiiDA database, remember that every time you run the
+   ``get_primitive()`` calc function you will get a bunch of new nodes in the database automatically stored for you.
+   
 
 .. _spglib: https://atztogo.github.io/spglib/
 .. _seekpath: https://github.com/giovannipizzi/seekpath
+.. _AiiDA documentation: https://aiida.readthedocs.io/projects/aiida-core/en/v1.1.1/reference/index.html
 
-Running a calculation
----------------------
 
-The following short python script sets up a self-consistent field calculation for the Quantum ESPRESSO code:
+Running a job calculation
+-------------------------
 
-.. literalinclude:: include/snippets/demo_calcjob.py
+Introduction and importing existing simulations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
+We have seen in the previous section how to wrap a python function and convert it to a (calc)function.
+
+Another type of calculations in AiiDA are calculation jobs (or ``CalcJob``). These represent the execution
+of an external code (e.g. Quantum ESPRESSO, Wannier90, ...), possibly on a different computer.
+The execution is automatically tracked by AiiDA (input creation, submission, waiting for the job scheduler,
+file retrieval and parsing) and also in this case inputs and outputs are connected to the ``CalcJobNode`` via
+INPUT and CREATE links.
+
+In the following, we want to launch a ``CalcJob`` running a Wannier90 calculation.
+Typically, before running a Wannier90 calculation, you need to obtain the ``.amn``, ``.mmn``, ... files
+from the interface to a first-principles code. In order to keep this tutorial focused on Wannier90, we have
+already run that part with AiiDA (using Quantum ESPRESSO) and we will just import it into your database.
+
+To achieve so, download this AiiDA export file: 
+:download:`demo_calcjob.py <../../../assets/2020_Oxford/example-gaas-wannier.aiida>`
+and, once you have downloaded it in the current folder, run the following command in your bash shell:
+
+.. code:: bash
+
+   verdi import example-gaas-wannier.aiida
+
+This will import, in particular, the node with UUID ``71155a0b-6cb9-4712-a043-dc4798ccfaaf``,
+that contains the ``.amn``, ``.mmn``, ... files created by the ``pw2wannier90.x`` code of Quantum ESPRESSO.
+Its provenance looks like the following figure (with some output nodes of the calculations not shown for clarity):
+
+.. figure:: include/images/folderdata_provenance.png
+   :width: 100%
+
+   Provenance graph for the ``FolderData`` node (``71155a0b``) that we have already run. At the top, we see the execution
+   of the ``get_primitive()`` calc function. The darker red rectangles represent the various calc jobs that we have run
+   for you, in particular:
+
+   - the Quantum ESPRESSO SCF step (UUID ``dcd4c286``)
+   - the Quantum ESPRESSO NSCF step (UUID ``be52abbf``)
+   - the Wannier90 preprocess (``-pp``) step (UUID ``a95261e2``)
+   - the Quantum ESPRESSO pw2wannier90 step (UUID ``d34d62f9``)
+
+**Exercise**: To check that the import worked correctly, use ``verdi node show`` on the UUID mentioned above to check
+that you indeed have the ``FolderData`` node in your database.
+
+**Exercise**: ``FolderData`` is a type of node that stores an arbitrary set of files and folders in the AiiDA profile.
+Check the list of files included in it with the command ``verdi node repo ls 71155a0b``, and check the content of
+a given file (e.g. the ``aiida.amn`` file) with ``verdi node repo cat 71155a0b aiida.mmn``.
+
+**Exercise**: in the figure above, verify that all calculations are connected between them via provenance links (through
+some data node). Try to understand how, e.g., the NSCF calculation "restarts" from the SCF via a ``RemoteData`` node
+(that represents a reference to the folder where the SCF calculation run in the computational cluster), or how the 
+pw2wannier90 step uses as input both the ``RemoteData`` node of the NSCF and the ``.nnkp`` file generated by ``wannier90.x -pp``.
+
+Running Wannier90 with AiiDA
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following python script sets up all inputs to run the Wannier90 code:
+
+.. literalinclude:: include/snippets/demo_wannier_calcjob.py
+
+Download the :download:`demo_wannier_calcjob.py <include/snippets/demo_wannier_calcjob.py>` script to your working directory.
 It contains a few placeholders for you to fill in:
 
- #. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the "PW" code and use it in the script.
- #. replace the PK of the structure with the one you obtained
- #. the VM already contains a number of pseudopotential families. Replace the PP family name with the one for the "SSSP efficiency" library found via ``verdi data upf listfamilies``.
+#. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the Wannier90
+   code and use it in the script.
+#. replace the PK of the structure with the one you obtained earlier (*important*: use the PK of the *primitive* structure).
 
 Then submit the calculation using:
 
 .. code:: bash
 
-    verdi run demo_calcjob.py
+    verdi run demo_wannier_calcjob.py
 
 From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
 
@@ -250,10 +414,10 @@ Again, your calculation will get a PK, which you can use to get more information
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
 AiiDA's record of a calculation is best displayed in the form of a provenance graph
 
-.. figure:: include/images/demo_calc.png
+.. figure:: include/images/demo_wannier_calc.png
    :width: 100%
 
-   Provenance graph for a single Quantum ESPRESSO calculation.
+   Provenance graph for a single Wannier90 calculation.
 
 You can generate such a provenance graph for any calculation or data in AiiDA by running:
 
@@ -261,7 +425,9 @@ You can generate such a provenance graph for any calculation or data in AiiDA by
 
   verdi node graph generate <PK>
 
-Try to reproduce the figure using the PK of your calculation.
+Try to reproduce the figure using the PK of your calculation (note that in our figure, we have used the
+``--ancestor-depth=1`` option of ``verdi node graph generate`` to only show direct inputs; if you don't, you will see
+also the full provenance of the data, similar to the previous figure shown earlier).
 
 You might wonder what happened under the hood, e.g. where to find the actual input and output files of the calculation.
 You will learn more about this later -- until then, here are a few useful commands:
@@ -273,152 +439,59 @@ You will learn more about this later -- until then, here are a few useful comman
    verdi calcjob res <PK>  # shows the parsed output
 
 A few questions you could answer using these commands (optional)
- * How many atoms did the structure contain?
-   How many electrons?
- * How many k-points were specified? How many k-points were actually computed? Why?
- * How many SCF iterations were needed for convergence?
- * How long did Quantum ESPRESSO actually run (wall time)?
+ * What are the values of the various components of the spread :math:`\Omega_I`, :math:`\Omega_D`, :math:`\Omega_{OD}`?
+ * How many Wannier functions have been computed?
+ * Was there any warning?
 
-Moving to a different computer
-------------------------------
-
-Now, this Quantum ESPRESSO calculation ran on your (virtual) machine.
-This is fine for tests, but for production calculations you'll typically want to run on a remote compute cluster.
-In AiiDA, moving a calculation from one computer to another means changing one line of code.
-
-For the purposes of this tutorial, you'll run on the machine at the IJS 
-institute that you have already been using in the past days.
-
-.. note:: In case you don't have access to the IJS machine, you can instead use
-  a cloud machine that we have setup on an OpenStack cluster in Switzerland (in
-  the Swiss Supercomputing Centre CSCS), and that will be online (only) during
-  the tutorial.
-
-  In this case, you will need to use the following files instead of the ones
-  discussed below:
-
-  - Computer setup configuration file: :download:`openstack.yml <include/configuration/openstack.yml>`
-  - Computer configure configuration file: :download:`openstack-config.yml <include/configuration/openstack-config.yml>`
-  - Code setup configuration file: :download:`qe-openstack.yml <include/configuration/qe-openstack.yml>`
-
-  In order to know how to use them, continue reading through this
-  section, replacing ``ijs`` with ``openstack``. The code that you will create
-  will be called ``qe-6.3-pw@openstack``.
-
-Download the :download:`ijs.yml <include/configuration/ijs.yml>` setup
-template, that you can also see here:
-
-.. literalinclude:: include/configuration/ijs.yml
-
-Read it to understand what is needed by AiiDA to setup a new computer.
-Then, let AiiDA know about this computer (that will be called ``ijs``) by running:
-
-.. code:: bash
-
-  verdi computer setup --config ijs.yml
-
-.. note::
-
-    If you're completing this tutorial at a later time and have no access to the
-    ``percolator.ijs.si`` machine, simply use "localhost" instead as the hostname,
-    and adapt the other parameters.
-
-AiiDA is now aware of the existence of the computer but you'll still need to let AiiDA
-know how to connect to it.
-AiiDA does this via `SSH <https://en.wikipedia.org/wiki/Secure_Shell>`_ keys.
-Your tutorial VM already contains a private SSH key for connecting
-to the ``precolator.ijs.si`` machine that you set up on the first day of the tutorial,
-so all that is left is to configure it in AiiDA.
-
-Download the :download:`ijs-config.yml <include/configuration/ijs-config.yml>` configuration template, that
-looks like this:
-
-.. literalinclude:: include/configuration/ijs-config.yml
-
-Replace the ``<YOURUSERNAME>`` placeholder with the username on percolator
-that you have been given the first day of the turorial, save the file and then run:
-
-.. code:: bash
-
-  verdi computer configure ssh ijs --config ijs-config.yml --non-interactive
-
-.. note:: Both ``verdi computer setup`` and ``verdi computer configure`` can be used interactively without
-  configuration files, which are provided here just to avoid typing errors.
-
-AiiDA should now have access to the ``percolator.ijs.si`` computer. Let's quickly test this:
-
-.. code:: bash
-
-  verdi computer test ijs
-
-Finally, let AiiDA know about the **code** we are going to use.
-We've again prepared a template that looks as follows:
-
-.. Add template for code
-.. literalinclude:: include/configuration/qe.yml
-
-Download the :download:`qe.yml <include/configuration/qe.yml>` code template and run:
-
-.. code:: bash
-
-  verdi code setup --config qe.yml
-  verdi code list  # note the label of the new code you just set up!
-
-Now modify the code label in your ``demo_calcjob.py`` script to the label of your new code and simply run another calculation using ``verdi run demo_calcjob.py``.
-
-To see what is going on, AiiDA provides a command that lets you jump to the folder of the directory of the calculation on the remote computer:
-
-.. code:: bash
-
-  verdi process list --all  # get PK of new calculation
-  verdi calcjob gotocomputer <PK>
-
-Have a look around. 
- * Do you recognize the different files? 
- * Have a look at the submission script ``_aiidasubmit.sh``.
-   Compare it to the submission script of your previous calculation.
-   What are the differences?
+.. Moving to a different computer
+.. ------------------------------
 
 From calculations to workflows
 ------------------------------
 
 AiiDA can help you run individual calculations but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
 
-As the final step, we are going to launch the ``PwBandStructure`` workflow of the ``aiida-quantumespresso`` plugin.
+As the final step, we are going to launch the ``MinimalW90WorkChain`` workflow, a demo workflow
+shipped with the ``aiida-wannier90`` plugin, that also takes care of running the preliminary DFT
+steps using Quantum ESPRESSO.
 
-.. literalinclude:: include/snippets/demo_bands.py
+.. literalinclude:: include/snippets/demo_minimal_w90_workchain.py
 
-Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet and run it using
+Download the :download:`demo_bands.py <include/snippets/demo_minimal_w90_workchain.py>` snippet.
+You will need to edit the first lines, specifying the name of the AiiDA codes for Quantum ESPRESSO executables
+pw.x and pw2wannier90.x and for the Wannier90 code (that you can discover as usual with ``verdi code list``).
+
+Moreover, you need to specify which pseudopotentials you want to use. AiiDA comes with tools to manage
+pseudopotentials in UPF format (the format used by Quantum ESPRESSO and a few more codes), and to group them
+in "pseudopotential families". You can list all existing ones with ``verdi data upf listfamilies``. We want
+to use the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
+Find its name and specify it in the appropriate variable.
+
+**Exercise**: Inspect the rest of the script to see how we are specifying inputs. Note in particular an alternative
+way to specify the projections, using a more declarative formats rather than just a list of strings.
+
+Once you have saved your changes, you can run the workflow with:
 
 .. code:: bash
 
-  verdi run demo_bands.py
+  verdi run demo_minimal_w90_workchain.py
 
 This workflow will:
 
-  #. Determine the primitive cell of the input structure
-  #. Run a calculation on the primitive cell to relax both the cell and the atomic positions (``vc-relax``)
-  #. Refine the symmetry of the relaxed structure, and find a standardised primitive cell using SeeK-path_
-  #. Run a self-consistent field calculation on the refined structure
-  #. Run a band structure calculation at fixed Kohn-Sham potential along a standard path between high-symmetry k-points determined by SeeK-path_
+  #. Run a SCF simulation on GaAs
+  #. Run an NSCF calculation on a denser grid
+  #. Run a pre-process Wannier90 ``-pp`` calculation to get the ``.nnkp`` file
+  #. Run the interface code pw2wannier90.x
+  #. Run the Wannierisation step, returning the interpolated bands.
 
-The workflow uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
-
-
-.. _SeeK-path: https://www.materialscloud.org/work/tools/seekpath
-
-.. K-point mesh is selected to have a minimum k-point density of 0.2 Å-1
-   A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
-
-The workflow should take ~10 minutes on your virtual machine.
+The workflow should take ~5 minutes.
 You may notice that ``verdi process list`` now shows more than one entry.
-While you wait for the workflow to complete,
-let's start exploring its provenance.
+While you wait for the workflow to complete, let's start exploring its provenance.
 
 The full provenance graph obtained from ``verdi node graph generate`` will already be rather complex (you can try!),
 so let's try browsing the provenance interactively instead.
 
-Start the AiiDA REST API:
+In a new verdi shell, start the AiiDA REST API:
 
 .. code:: bash
 
@@ -428,65 +501,38 @@ and open the |provenance browser| (from the browser inside the virtual machine).
 
 .. |provenance browser| raw:: html
 
-   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3" target="_blank">Materials Cloud provenance browser</a>
-
-.. note::
-
-   As of September 2019, the Materials Cloud provenance browser is still being developed, so some features might still not be
-   available or work as expected.
+   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v4" target="_blank">Materials Cloud provenance browser</a>
 
 
 .. note::
    
-   The provenance browser is a Javascript application that connects to the AiiDA REST API.
-   Your data never leaves your computer.
-
-.. some general comment on importance of the graph?
-.. a sentence on how to continue from here
+   The provenance browser is a Javascript application provided by Materials Cloud that connects to your AiiDA REST API.
+   *Your data never leaves your computer*.
 
 Browse your AiiDA database.
- * Start by finding your Quantum ESPRESSO calculation (the type of node is called 
-   a ``CalcJobNode`` in AiiDA, since it is run as a job on a scheduler).
-   Select ``Calculations`` in the left menu to filter for calculations only.
- * Inspect the raw inputs and outputs of the calculation, and use the provenance
-   browser to explore the input and output nodes of the calculation and the whole
-   provenance of your simulations.
+
+ * Start by finding your workflow (in the left menu, filter the nodes by selecting
+   ``Process -> Workflow -> WorkChain``.
+   WorkChains are a specific type of workflows in AiiDA that allow to define multiple steps and can be paused
+   and restarted between steps).
+
+ * Inspect the inputs and returned outputs of the workflow in the provenance browser (outputs will appear once
+   the calculations are done). Moreover, you can inspect the calculations that the workflow launched, and check both
+   their input and output nodes (via the provenance browser), as well as the raw inputs and outputs of the calculation
+   (in the page of a specific CalcJobNode).
 
 .. note:: 
 
      When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
 
-Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandStructureWorkChain`` and find the PK of its ``band_structure`` output.
-Use this to produce a PDF of the band structure:
+Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``MinimalW90WorkChain`` and find the PK of its ``wannier_bands`` output.
+Use this to produce an xmgrace output of the interpolated band structure:
 
 .. code:: bash
 
-   verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
+   verdi data bands export --format xmgrace --output wannier_bands.agr <PK>
 
-
-.. figure:: include/images/si_bands.png
-   :width: 80%
-
-   Band structure computed by the `PwBandStructure` workchain.
-
-.. note::
-   The ``BandsData`` node does contain information about the Fermi energy, so the energy zero in your plot will be arbitrary.
-   You can produce a plot with the Fermi energy set to zero (as above) using the following code in a jupyter notebook:
-
-   .. code:: ipython
-
-        %matplotlib inline
-        import aiida
-        aiida.load_profile()
-
-        from aiida.orm import load_node
-
-        scf_params = load_node(<PK>)  # REPLACE with PK of "scf_parameters" output
-        fermi_energy = scf_params.dict.fermi_energy
-
-        bands = load_node(<PK>)  # REPLACE with PK of "band_structure" output
-        bands.show_mpl(y_origin=fermi_energy, plot_zero_axis=True)
-
+that you can visualize using ``xmgrace wannier_bands.agr``.
 
 
 What next?
@@ -497,15 +543,14 @@ Here are some options for how to continue:
 
  * Continue with the in-depth tutorial and learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA.
    There is more than enough material to keep you busy for a day.
- * Download `Quantum Mobile`_ virtual machine and try running the tutorial on your laptop instead. This will let you take the materials home and continue in your own time.
  * Try `setting up AiiDA directly on your laptop <https://aiida-core.readthedocs.io/en/latest/install/quick_installation.html>`_.
 
    .. note:: **For advanced Linux & python users only**.
      AiiDA depends on a number of services and software that require some skill to set up. 
      Unfortunately, we don't have the human resources to help you solve
      issues related to your setup in a tutorial context.
-     
+
  * Continue your work from other parts of the workshop, chat with participants and enjoy yourself :-)
 
-
- .. _Quantum Mobile: https://github.com/marvel-nccr/quantum-mobile/releases/tag/19.08.0
+ * Continue with the next section of the tutorial, showing how to run a fully-automated Wannierisation
+   without the need to specify the initial projections.

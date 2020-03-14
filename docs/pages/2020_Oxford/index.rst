@@ -1,7 +1,7 @@
 .. _Oxford 2020 Homepage:
 
-2020, University of Oxford, UK
-=================================================
+2020 Wannier tutorial "Virtual Edition"
+=======================================
 
 +-----------------+----------------------------------------------------------------------------------+
 | Related resources                                                                                  |
@@ -27,8 +27,9 @@
    graphics controller to VMSVGA.
 
 These are the hands-on materials from the 1-day AiiDA tutorial, part of the 
-`Wannier90 v3.0: new features and applications  <http://www.wannier.org/events/school-oxford-2020/>`_,
-that should have been held on March 25-27, 2020 in Oxford (UK) but was converted to a virtual online event (as discussed on the online page).
+`Wannier90 v3.0: new features and applications  <http://www.wannier.org/events/school-2020-virtual-edition/>`_,
+that should have been held on March 25-27, 2020 in Oxford (UK) but was converted to a "Virtual Edition"
+(as discussed on the online page).
 
 
 AiiDA-Wannier90 hands-on 
