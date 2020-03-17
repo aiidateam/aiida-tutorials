@@ -25,6 +25,9 @@ codes = dict(
         )
 
 def parse_arugments():
+    '''
+    Parser function for the protocol and xsf file.
+    '''
     parser = argparse.ArgumentParser(
         description=
         "A launch script to run the AiiDA Wannier90BandsWorkChain for automated high-throughput Wannier functions."
@@ -147,10 +150,10 @@ def submit_workchain(xsf_file, protocol):
 
     # Flags to control the workchain behaviour
     controls = {
-        'retrieve_hamiltonian': True,     # If True, retrieve Wannier Hamiltonian after the workflow has finished
-        'only_valence': False,            # If True, compute only valence bands (NB: use for insulators only!)
-        'do_disentanglement': False,      # If True, perform disentanglement procedure (minimise \Omega_I)
-        'do_mlwf': True,                  # If True, perform maximal-localisation (MLWF) procedure (minimise \tilde(\Omega))
+        'retrieve_hamiltonian': orm.Bool(True),     # If True, retrieve Wannier Hamiltonian after the workflow has finished
+        'only_valence': orm.Bool(False),            # If True, compute only valence bands (NB: use for insulators only!)
+        'do_disentanglement': orm.Bool(False),      # If True, perform disentanglement procedure (minimise \Omega_I)
+        'do_mlwf': orm.Bool(True),                  # If True, perform maximal-localisation (MLWF) procedure (minimise \tilde(\Omega))
     }
 
     # Prints informations
