@@ -1,5 +1,5 @@
 #!/usr/bin/env runaiida
-from aiida.engine import run_get_node
+from aiida.engine import submit
 from aiida.orm import load_node, Code, Dict
 
 code = Code.get_from_string("<CODE LABEL>")  # REPLACE <CODE LABEL>
@@ -24,7 +24,7 @@ parent_folder = load_node('71155a0b-6cb9-4712-a043-dc4798ccfaaf')
 
 
 
-parameter = Dict(
+parameters = Dict(
     dict={
         'bands_plot': True,
         'num_iter': 300,
@@ -63,7 +63,7 @@ builder.metadata.options.resources = {"num_machines": 1}
 
 builder.structure = structure
 builder.projections = projections
-builder.parameters = parameter
+builder.parameters = parameters
 builder.kpoints = kpoints
 builder.kpoint_path = kpoint_path
 if not do_preprocess:
@@ -71,11 +71,8 @@ if not do_preprocess:
 builder.settings = Dict(dict=settings_dict)
 
 # Run the calculation and get both the results and the node
-results, calcjob = run_get_node(builder)
+calcjob = submit(builder)
 
 print("CALCJOB: {}".format(calcjob))
-print("OUTPUTS:")
-for link_name in sorted(results):
-    print('- {}: {}'.format(link_name, results[link_name]))
-
+print("Use `verdi process list` or `verdi process show {}` to check the progress".format(calcjob.pk))
 
