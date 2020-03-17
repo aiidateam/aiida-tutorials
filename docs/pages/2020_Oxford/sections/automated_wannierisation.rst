@@ -281,7 +281,7 @@ where PK_bands stands for the BandsData pk produced by the workflow. \
 You can find it :code:`verdi node show <PK>` with PK being the workchain pk.
 You should obtain a pdf like the following:
 
-.. figure:: `include/images/GaAs_wan_band.png`
+.. figure:: include/images/GaAs_wan_band.png
    :width: 100%
 
 Now we compare the Wannier-interpolated bands with the full DFT bands calculation.
