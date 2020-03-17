@@ -221,7 +221,7 @@ For a full list of the available input arguments, use
 
 .. code:: bash
 
-    verdi run -- run_automated_wannier.py -h
+    verdi run -- launch_auto-wannier_workflow.py -h
 
 with the output as
 
@@ -279,7 +279,7 @@ where PK_bands stands for the BandsData pk produced by the workflow. \
 You can find it :code:`verdi node show <PK>` with PK being the workchain pk.
 You should obtain a pdf like the following:
 
-.. figure:: include/images/GaAs_wan_band.pdf
+.. figure:: `include/images/GaAs_wan_band.png`
    :width: 100%
 
 Now we compare the Wannier-interpolated bands with the full DFT bands calculation.
@@ -307,7 +307,7 @@ where you can replace O2Sr with any chemical formula of the other crystal struct
 You should obtain something like this:
 
 
-.. figure:: include/images/O2Sr_diff.pdf
+.. figure:: include/images/O2Sr_diff.png
    :width: 100%
 
 
