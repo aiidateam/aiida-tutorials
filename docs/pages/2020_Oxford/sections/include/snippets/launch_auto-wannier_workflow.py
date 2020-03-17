@@ -25,6 +25,9 @@ codes = dict(
         )
 
 def parse_arugments():
+    '''
+    Parser function for the protocol and xsf file.
+    '''
     parser = argparse.ArgumentParser(
         description=
         "A launch script to run the AiiDA Wannier90BandsWorkChain for automated high-throughput Wannier functions."

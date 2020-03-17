@@ -110,7 +110,7 @@ The SCDM algorithm is based on a QR factorization with column pivoting (QRCP) an
 currently implemented in the pw2wannier90 code.
 
 It is worth to stress that the occupation function does not necessarily correspond to \
-a physical smearing, but it used as window function that restrics the manifold to the region of interest.
+a physical smearing, but it used as a window function that restrics the manifold to the region of interest.
 For example, the isolated-band case can be recovered by setting :math:`f(\epsilon_{n\mathbf{k}})=1` for energy values \
 :math:`\epsilon_{n\mathbf{k}}` within the energy range of the isolated bands, and zero elsewhere. 
 The occupation function can also be the so-called *error function* (erfc) 
