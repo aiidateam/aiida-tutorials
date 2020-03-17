@@ -8,93 +8,55 @@ from aiida.common.exceptions import NotExistent
 from ase.io import read as aseread
 from aiida_wannier90_theosworkflows.workflows import Wannier90BandsWorkChain
 
+# Codenames for pw.x, pw2wannier90.x, projwfc.x and wannier90.x
 # Please modify these according to your machine
 str_pw = 'qe-6.5-pw@localhost'
 str_pw2wan = 'qe-6.5-pw2wannier90@localhost'
 str_projwfc = 'qe-6.5-projwfc@localhost'
 str_wan = 'wannier90-3.1.0-wannier@localhost'
 
-group_name = 'scdm_workflow'
 
-def check_codes():
-    # will raise NotExistent error
-    try:
-        codes = dict(
+# Input dictionary for all the codes
+codes = dict(
             pw_code = orm.Code.get_from_string(str_pw),
             pw2wannier90_code = orm.Code.get_from_string(str_pw2wan),
             projwfc_code = orm.Code.get_from_string(str_projwfc),
             wannier90_code = orm.Code.get_from_string(str_wan),
         )
-    except NotExistent as e:
-        print(e)
-        print('Please modify the code labels in this script according to your machine')
-        exit(1)
-    return codes
 
 def parse_arugments():
     parser = argparse.ArgumentParser(
         description=
-        "A script to run the AiiDA workflows to automatically compute the MLWF using the SCDM method and the automated protocol described in the Vitale et al. paper"
+        "A launch script to run the AiiDA Wannier90BandsWorkChain for automated high-throughput Wannier functions."
     )
     parser.add_argument(
-        "xsf",
-        metavar="XSF_FILENAME",
-        help="path to an input XSF file"
+        "--xsf",
+        "-x",
+        help="Path to the input XSF structure file"
     )
     parser.add_argument(
         '-p',
         "--protocol",
         help=
-        "available protocols are 'theos-ht-1.0' and 'testing'",
+        "Available protocols are 'theos-ht-1.0' and 'testing'",
         default="testing")
-    parser.add_argument(
-        '-m',
-        "--do-mlwf",
-        help=
-        "do maximal localization of Wannier functions",
-        action="store_false")
-    parser.add_argument(
-        '-d',
-        "--do-disentanglement",
-        help=
-        "do disentanglement in Wanner90 step (This should be False, otherwise band structure is not optimal!)",
-        action="store_true")
-    parser.add_argument(
-        '-v',
-        "--only-valence",
-        help=
-        "Compute only for valence bands (you must be careful to apply this only for insulators!)",
-        action="store_true")
-    parser.add_argument(
-        '-r',
-        "--retrieve-hamiltonian",
-        help=
-        "Retrieve Wannier Hamiltonian after the workflow finished",
-        action="store_true")
     args = parser.parse_args()
     return args
 
 def read_structure(xsf_file):
+    '''
+    Read xsf file and convert into a stored StructureData
+    '''
     structure = orm.StructureData(ase=aseread(xsf_file))
     structure.store()
     print('Structure {} read and stored with pk {}.'.format(
         structure.get_formula(), structure.pk))
     return structure
 
-def update_group_name(group_name, only_valence, do_disen, do_mlwf, exclude_bands=None):
-    if only_valence:
-        group_name += "_onlyvalence"
-    else:
-        group_name += "_withconduction"
-    if do_disen:
-        group_name += '_disentangle'
-    if do_mlwf:
-        group_name += '_mlwf'
-    if exclude_bands is not None:
-        group_name += '_excluded{}'.format(len(exclude_bands))
-    return group_name
-
 def add_to_group(node, group_name):
+    '''
+    Add node to a group, creates the group if necessary.
+    '''
     if group_name is not None:
         try:
             g = orm.Group.get(label=group_name)
@@ -108,6 +70,9 @@ def add_to_group(node, group_name):
             node.pk, group_name, group_statistics))
 
 def print_help(workchain, structure):
+    '''
+    Print function to display useful information for the tutorial
+    '''
     print('launched {} pk {} for structure {}'.format(
             workchain.process_type, workchain.pk, structure.get_formula()))
     print('')
@@ -165,30 +130,36 @@ def print_help(workchain, structure):
     #     print('would launch {}'.format(structure.get_formula()))
     #print('Output will be added to group: {}'.format(g_name))
 
-def submit_workchain(xsf_file, protocol, only_valence, do_disentanglement, do_mlwf, retrieve_hamiltonian, group_name):
-    codes = check_codes()
+def submit_workchain(xsf_file, protocol):
+    '''
+    Wrapper to submit the Wannier90BandsWorkChain
+    '''
 
-    group_name = update_group_name(
-       group_name, only_valence, do_disentanglement, do_mlwf)
-
+    # Workchains can be grouped together into "groups"
+    # Name of the group where the workchain will be added to
+    group_name = 'scdm_workflow'
+    
+    # Check on the structure data type
     if isinstance(xsf_file, orm.StructureData):
         structure = xsf_file
     else:
         structure = read_structure(xsf_file)
 
+    # Flags to control the workchain behaviour
     controls = {
-        'retrieve_hamiltonian': orm.Bool(retrieve_hamiltonian),
-        'only_valence': orm.Bool(only_valence),
-        'do_disentanglement': orm.Bool(do_disentanglement),
-        'do_mlwf': orm.Bool(do_mlwf)
+        'retrieve_hamiltonian': True,     # If True, retrieve Wannier Hamiltonian after the workflow has finished
+        'only_valence': False,            # If True, compute only valence bands (NB: use for insulators only!)
+        'do_disentanglement': False,      # If True, perform disentanglement procedure (minimise \Omega_I)
+        'do_mlwf': True,                  # If True, perform maximal-localisation (MLWF) procedure (minimise \tilde(\Omega))
     }
 
-    if only_valence:
+    # Prints informations
+    if controls['only_valence']:
         print("Running only_valence/insulating, do_mlwf={} for {}".format(
-            do_mlwf, structure.get_formula()))
+            controls['do_mlwf'], structure.get_formula()))
     else:
         print("Running with conduction bands, do_disentanglement={}, do_mlwf={} for {}".
-                format(do_disentanglement, do_mlwf, structure.get_formula()))
+                format(controls['do_disentanglement'], controls['do_mlwf'], structure.get_formula()))
 
     wannier90_workchain_parameters = {
         "code": {
@@ -201,27 +172,20 @@ def submit_workchain(xsf_file, protocol, only_valence, do_disentanglement, do_ml
         "structure": structure,
         "controls": controls
     }
-    # print(wannier90_workchain_parameters)
-
+    
+    # Submits the workchain
     workchain = submit(Wannier90BandsWorkChain,
-        **wannier90_workchain_parameters
-    )
-    # workchain = orm.load_node(13996)
-
+        **wannier90_workchain_parameters)
+    
+    # Adds workchain to a group
     add_to_group(workchain, group_name)
+
+    # Prints help
     print_help(workchain, structure)
     return workchain.pk
    
 if __name__ == "__main__":
+    # Parsing input flags
     args = parse_arugments()
-    # print(args)
-
-    submit_workchain(
-        args.xsf,
-        args.protocol,
-        args.only_valence,
-        args.do_disentanglement,
-        args.do_mlwf,
-        args.retrieve_hamiltonian,
-        group_name
-    )
+    # Submitting the Wannier90BandsWorkChain
+    submit_workchain(args.xsf,args.protocol)
