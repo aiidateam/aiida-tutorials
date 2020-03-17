@@ -44,7 +44,7 @@ First, let's download the Wannier90BandsWorkChain from GitHub and install it
 Now you can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>`.
 The script can parse some input variables, like the protocol for the calculation \
 and the location of the crystal structure file in the xsf format.
-You can download some simple crystal structures from these list:
+You can download some simple crystal structures from this list:
 
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
     * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf>`
@@ -186,7 +186,7 @@ The script is reported also here below and allows to initialise and launch the A
 
 The script can parse some input variables, like the protocol for the calculation \
 and the location of the crystal structure file in the xsf format.
-You can again download some simple crystal structures from these list:
+You can again download some simple crystal structures from this list
 
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
     * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf>`

@@ -30,9 +30,9 @@ def parse_arugments():
         "A launch script to run the AiiDA Wannier90BandsWorkChain for automated high-throughput Wannier functions."
     )
     parser.add_argument(
-        "xsf",
-        metavar="XSF_FILENAME",
-        help="path to an input XSF file"
+        "--xsf",
+        "-x",
+        help="Path to the input XSF structure file"
     )
     parser.add_argument(
         '-p',
