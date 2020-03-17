@@ -28,7 +28,20 @@ QuantumESPRESSO was done by Valerio Vitale (Imperial College London and Universi
 
 The workflow should take a few minutes to run on the virtual machine, you can launch it now \
 in the background while you read the introduction. 
-You can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` \
+
+Download the Wannier90BandsWorkChain
+------------------------------------
+
+First, let's downlaod the Wannier90BandsWorkChain from GitHub and install it
+
+.. code:: bash
+
+    git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
+    cd aiida-wannier90-theosworkflows/
+    pip install -e .
+
+
+Now can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` \
 and execute it with the following command
 
 .. code:: bash
@@ -293,11 +306,6 @@ You should obtain something like the following
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
 AiiDA's record of a calculation is best displayed in the form of a provenance graph
 
-(Optional) Browse your database with the REST API
--------------------------------------------------
-
-Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`_ and browse your database! 
-Follow the instruction that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
 
 (Optional) Maximal localisation & SCDM
 --------------------------------------
@@ -305,3 +313,24 @@ Follow the instruction that you find on the `Materials Cloud website <https://ww
 Try to modify the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to disable the MLWF \
 procedure in order to obtain Wannier functions with SCDM projections that are not localised.
 Run the code for 1-2 materials of the dataser, do you notice any difference?
+
+(Optional) Browse your database with the REST API
+-------------------------------------------------
+
+Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`_ and browse your database! 
+Follow the instruction that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
+
+(Optional) More on AiiDA
+------------------------
+
+You now have a first taste of the type of problems AiiDA tries to solve.
+Here are some options for how to continue:
+
+ * Continue with the in-depth tutorial and learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA.
+   There is more than enough material to keep you busy for a day.
+ * Try `setting up AiiDA directly on your laptop <https://aiida-core.readthedocs.io/en/latest/install/quick_installation.html>`_.
+
+   .. note:: **For advanced Linux & python users only**.
+     AiiDA depends on a number of services and software that require some skill to set up. 
+     Unfortunately, we don't have the human resources to help you solve
+     issues related to your setup in a tutorial context.
