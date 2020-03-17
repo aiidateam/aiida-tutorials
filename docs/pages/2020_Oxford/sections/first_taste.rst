@@ -140,7 +140,7 @@ the PK of the node and its UUID (universally unique identifier).
     verdi data structure export --format=xsf <PK> > exported.xsf
     xcrysden --xsf exported.xsf
 
-  You should be visualize to see the GaAs supercell (8 atoms) that we downloaded 
+  You should see the GaAs supercell (8 atoms) that we downloaded 
   from the COD database (in CIF format), imported into AiiDA and exported back
   into a different format (XSF).
 
