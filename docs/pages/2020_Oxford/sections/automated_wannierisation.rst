@@ -41,8 +41,33 @@ First, let's download the Wannier90BandsWorkChain from GitHub and install it
     pip install -e .
 
 
-Now you can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` \
-and execute it with the following command
+Now you can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>`.
+The script can parse some input variables, like the protocol for the calculation \
+and the location of the crystal structure file in the xsf format.
+You can download some simple crystal structures from these list:
+
+    * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
+    * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf.xsf>`
+    * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
+    * :download:`Cl2Ti.xsf <include/xsf/Cl2Ti.xsf>`
+    * :download:`F4Ni2.xsf <include/xsf/F4Ni2.xsf>`
+    * :download:`O2Rb2.xsf <include/xsf/O2Rb2.xsf>`
+    * :download:`BaS.xsf <include/xsf/BaS.xsf>`
+    * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
+    * :download:`Cl2V.xsf <include/xsf/Cl2V.xsf>`
+    * :download:`FNa.xsf <include/xsf/FNa.xsf>`
+    * :download:`O2Sr.xsf <include/xsf/O2Sr.xsf>`
+    * :download:`BeO4S.xsf <include/xsf/BeO4S.xsf>`
+    * :download:`CaO.xsf <include/xsf/CaO.xsf>`
+    * :download:`Cr2F4.xsf <include/xsf/Cr2F4.xsf>`
+    * :download:`O2Pb2.xsf <include/xsf/O2Pb2.xsf>` 
+    * :download:`PtS2.xsf <include/xsf/PtS2.xsf>`
+    * :download:`Br2Ti.xsf <include/xsf/Br2Ti.xsf>`
+    * :download:`Cl2O2Ti2.xsf <include/xsf/Cl2O2Ti2.xsf>`
+    * :download:`CsH.xsf <include/xsf/CsH.xsf>`
+    * :download:`O2Pd2.xsf <include/xsf/O2Pd2.xsf>`
+
+Launch the script with the following command
 
 .. code:: bash
     
@@ -153,7 +178,7 @@ that implements the automation workflow to obtain MLWFs, for the full code docum
 AiiDA-Wannier90 plugin please visit the \
 `AiiDA-Wannier90 documentation <https://aiida-wannier90.readthedocs.io/en/latest/>`_.
 
-You can start by downloading the \
+If you have not done it yet, you can start by downloading the \
 :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to your work directory.
 The script is reported also here below and allows to initialise and launch the AiiDA workchain. 
 
@@ -161,13 +186,36 @@ The script is reported also here below and allows to initialise and launch the A
 
 The script can parse some input variables, like the protocol for the calculation \
 and the location of the crystal structure file in the xsf format.
+You can again download some simple crystal structures from these list:
+
+    * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
+    * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf.xsf>`
+    * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
+    * :download:`Cl2Ti.xsf <include/xsf/Cl2Ti.xsf>`
+    * :download:`F4Ni2.xsf <include/xsf/F4Ni2.xsf>`
+    * :download:`O2Rb2.xsf <include/xsf/O2Rb2.xsf>`
+    * :download:`BaS.xsf <include/xsf/BaS.xsf>`
+    * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
+    * :download:`Cl2V.xsf <include/xsf/Cl2V.xsf>`
+    * :download:`FNa.xsf <include/xsf/FNa.xsf>`
+    * :download:`O2Sr.xsf <include/xsf/O2Sr.xsf>`
+    * :download:`BeO4S.xsf <include/xsf/BeO4S.xsf>`
+    * :download:`CaO.xsf <include/xsf/CaO.xsf>`
+    * :download:`Cr2F4.xsf <include/xsf/Cr2F4.xsf>`
+    * :download:`O2Pb2.xsf <include/xsf/O2Pb2.xsf>` 
+    * :download:`PtS2.xsf <include/xsf/PtS2.xsf>`
+    * :download:`Br2Ti.xsf <include/xsf/Br2Ti.xsf>`
+    * :download:`Cl2O2Ti2.xsf <include/xsf/Cl2O2Ti2.xsf>`
+    * :download:`CsH.xsf <include/xsf/CsH.xsf>`
+    * :download:`O2Pd2.xsf <include/xsf/O2Pd2.xsf>`
+
 Launch the script with the following command
 
 .. code:: bash
     
     verdi run launch_auto-wannier_workflow.py --protocol 'testing' --xsf CaO.xsf
 
-You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf.
+You can use a different structure now, so replace CaO.xsf with any other structure that you saw above folder, e.g. Cl2V.xsf or CsH.xsf.
 
 For a full list of the available input arguments, use 
 
