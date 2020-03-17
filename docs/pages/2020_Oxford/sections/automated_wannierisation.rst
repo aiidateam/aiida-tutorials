@@ -1,3 +1,5 @@
+.. _Oxford 2020 autowannier:
+
 Automated high-throughput wannierisation
 ========================================
 

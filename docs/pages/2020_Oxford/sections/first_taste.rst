@@ -40,23 +40,26 @@ Here are some first tasks for you:
 .. _aiida-quantumespresso: https://github.com/aiidateam/aiida-quantumespresso
 
 
-Importing a structure and inspecting it
----------------------------------------
+Importing a crystal structure from a file
+-----------------------------------------
 
-Let's download a gallium arsenide (GaAs) structure from the
-`Crystallography Open Database <http://crystallography.net/cod/>`_ and import it into AiiDA.
+We will use a gallium arsenide (GaAs) primitive cell with 2 atoms in this
+first part of the tutorial.
 
-.. note::
+We provide the crystal structure, in `XSF format`_, here: 
+:download:`GaAs.xsf<include/xsf/GaAs.xsf>`.
 
-   You can view the structure `online <http://crystallography.net/cod/9008845.html>`_.
+.. _XSF format: http://www.xcrysden.org/doc/XSF.html
 
+You can download the file in the virtual machine in the current folder,
+and then import it into AiiDA (using `ASE`_ as the library to import
+the structure) using the following ``verdi`` command:
 
-You can download the file and import it with the following two commands:
+.. _ASE: https://wiki.fysik.dtu.dk/ase/
 
 .. code:: bash
 
-    wget http://crystallography.net/cod/9008845.cif
-    verdi data structure import ase 9008845.cif
+    verdi data structure import ase GaAs.xsf
 
 Each piece of data in AiiDA gets a PK number (a "primary key")
 that identifies it in your database.
@@ -131,24 +134,441 @@ the PK of the node and its UUID (universally unique identifier).
   just with the first part of the UUID (that you got from the first call to
   ``verdi node show`` above).
 
-- ``StructureData`` can be exported to file in various formats.
-  As an example, let's export the structure in XSF format and visualize it
-  with XCrySDen:
+
+Running a job calculation
+-------------------------
+
+Introduction and importing existing simulations
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In AiiDA, one very import type of calculation in called calculation job (or ``CalcJob``).
+These calculations represent the execution
+of an external code (e.g. Quantum ESPRESSO, Wannier90, ...), very often on a different computer
+than the one where AiiDA is installed.
+The execution is automatically tracked by AiiDA (input creation, submission, waiting for the job scheduler,
+file retrieval and parsing) and also in this case inputs and outputs are connected to the ``CalcJobNode`` via
+INPUT and CREATE links.
+
+In the following, we want to launch a ``CalcJob`` running a Wannier90 calculation.
+Typically, before running a Wannier90 calculation, you need to obtain the ``.amn``, ``.mmn``, ... files
+from the interface to a first-principles code. In order to keep this tutorial focused on Wannier90, we have
+already run that part with AiiDA (using Quantum ESPRESSO) and we will just import it into your database.
+
+To achieve so, download this AiiDA export file: 
+:download:`example-gaas-wannier.aiida <../../../assets/2020_Oxford/example-gaas-wannier.aiida>`
+and, once you have downloaded it in the current folder, run the following command in your bash shell:
+
+.. code:: bash
+
+   verdi import example-gaas-wannier.aiida
+
+This will import, in particular, the node with UUID ``71155a0b-6cb9-4712-a043-dc4798ccfaaf``,
+that contains the ``.amn``, ``.mmn``, ... files created by the ``pw2wannier90.x`` code of Quantum ESPRESSO.
+Its provenance looks like the following figure (with some output nodes of the calculations not shown for clarity):
+
+.. figure:: include/images/folderdata_provenance.png
+   :width: 100%
+
+   Provenance graph for the ``FolderData`` node (``71155a0b``) that we have already run. At the top, we see the execution
+   of the ``get_primitive()`` calc function. The darker red rectangles represent the various calc jobs that we have run
+   for you, in particular:
+
+   - the Quantum ESPRESSO SCF step (UUID ``dcd4c286``)
+   - the Quantum ESPRESSO NSCF step (UUID ``be52abbf``)
+   - the Wannier90 preprocess (``-pp``) step (UUID ``a95261e2``)
+   - the Quantum ESPRESSO pw2wannier90 step (UUID ``d34d62f9``)
+
+**Exercise**: To check that the import worked correctly, use ``verdi node show`` on the UUID mentioned above to check
+that you indeed have the ``FolderData`` node in your database.
+
+**Exercise**: ``FolderData`` is a type of node that stores an arbitrary set of files and folders in the AiiDA profile.
+Check the list of files included in it with the command ``verdi node repo ls 71155a0b``, and check the content of
+a given file (e.g. the ``aiida.amn`` file) with ``verdi node repo cat 71155a0b aiida.mmn``.
+
+**Exercise**: in the figure above, verify that all calculations are connected between them via provenance links (through
+some data node). Try to understand how, e.g., the NSCF calculation "restarts" from the SCF via a ``RemoteData`` node
+(that represents a reference to the folder where the SCF calculation run in the computational cluster), or how the 
+pw2wannier90 step uses as input both the ``RemoteData`` node of the NSCF and the ``.nnkp`` file generated by ``wannier90.x -pp``.
+
+Running Wannier90 with AiiDA
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The following python script sets up all inputs to run the Wannier90 code. We will discuss relevant parts below; we will
+first launch it so that we can analyze it output while it runs.
+
+.. literalinclude:: include/snippets/demo_wannier_calcjob.py
+
+Download the :download:`demo_wannier_calcjob.py <include/snippets/demo_wannier_calcjob.py>` script to your working directory.
+It contains a few placeholders for you to fill in:
+
+#. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the Wannier90
+   code and use it in the script.
+#. replace the PK of the structure with the one you obtained earlier (*important*: use the PK of the *primitive* structure).
+
+Then submit the calculation using:
+
+.. code:: bash
+
+    verdi run demo_wannier_calcjob.py
+
+From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
+
+In order to be able to do this, the AiiDA daemon must be running: to check this, you can run the command:
+
+.. code:: bash
+
+    verdi daemon status
+
+and, if the daemon is not running, you can start it with
+
+.. code:: bash
+
+    verdi daemon start
+
+It should take less than one minute to complete.
+
+Analyzing the outputs of a calculation
+--------------------------------------
+
+Let's have a look how your calculation is doing:
+
+.. code:: bash
+
+   verdi process list  # shows only running processes
+   verdi process list --all  # shows all processes
+
+Again, your calculation will get a PK, which you can use to get more information on it:
+
+.. code:: bash
+
+   verdi process show <PK>
+
+As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
+AiiDA's record of a calculation is best displayed in the form of a provenance graph
+
+.. figure:: include/images/demo_wannier_calc.png
+   :width: 100%
+
+   Provenance graph for a single Wannier90 calculation.
+
+You can generate such a provenance graph for any calculation or data in AiiDA by running:
+
+.. code:: bash
+
+  verdi node graph generate <PK>
+
+Try to reproduce the figure using the PK of your calculation (note that in our figure, we have used the
+``--ancestor-depth=1`` option of ``verdi node graph generate`` to only show direct inputs; if you don't, you will see
+also the full provenance of the data, similar to the previous figure shown earlier).
+
+You might wonder what happened under the hood, e.g. where to find the actual input and output files of the calculation.
+You will learn more about this later -- until then, here are a few useful commands:
+
+.. code:: bash
+
+   verdi calcjob inputcat <PK>  # shows the input file of the calculation
+   verdi calcjob outputcat <PK>  # shows the output file of the calculation
+   verdi calcjob res <PK>  # shows the parsed output
+
+**Exercise**: Here are a few questions you can now answer using these commands:
+ * What are the values of the various components of the spread :math:`\Omega_I`, :math:`\Omega_D`, :math:`\Omega_{OD}`?
+ * How many Wannier functions have been computed?
+ * Was there any warning?
+
+Understanding the launcher script
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Above, we have just provided you a script that submits a calculation. 
+Let us know check in detail some relevant sections, and how the input information
+got converted into the Wannier90 raw input file.
+
+Choosing a structure
+********************
+In this simple example, we load a structure already stored in the AiiDA database
+(it is the one we imported from a file earlier).
+We do this using the ``load_node`` command (that accepts
+either an integer PK or a string UUID).
+
+Choosing the kpoints
+********************
+Also for ``kpoints``, we are loading these from file. The reason is that we
+already run the Quantum ESPRESSO run, and we need to be sure that the order
+of the k-points is the same. Otherwise, one can create an AiiDA ``KpointsData``
+and use the ``set_kpoints`` method to pass a :math:`N\times 3` numpy array, 
+where :math:`N` is the number of k-points.
+
+Setting up input parameters
+***************************
+One of the input nodes is the ``parameters`` node, that contains the input
+flags for the code.
+
+.. code:: python
+
+   parameters = Dict(
+      dict={
+         'bands_plot': True,
+         ...
+      })
+
+In particular, ``parameters`` is a ``Dict`` node, i.e.,
+an AiiDA node containing a dictionary of key-value pairs (stored in the AiiDA
+DB and that can be easily queried - we will not see how to run queries in this
+tutorial, but you can check the AiiDA documentation or the full tutorial for this).
+
+**Exercise**: use ``verdi calcjob inputcat <PK>`` (using the ``PK`` of the calc job)
+and check how the information in the ``parameters`` has been converted
+into the Wannier90 input file.
+
+Setting up the projections
+**************************
+In ``aiida-wannier90``, there are two ways to set up ``projections``.
+Here, we are using the simplest approach (a list of strings, that are simply
+inserted in the corresponding section of the raw input file). As for ``Dict``,
+this is wrapped in a ``List`` AiiDA node, so that it gets stored.
+
+We will see a second (more easily queryable) way in the next section.
+
+Setting up an (optional) list of k-points
+*****************************************
+The path to compute an (interpolated) band structure needs to be specified
+as a ``Dict`` node, contianing with two keys: ``point_coords``, a dictionary
+with high-symmetry point labels, and a ``path`` (a list of pairs of labels, 
+to indicate band-path segments):
+
+.. code:: python
+
+   kpoint_path = Dict(
+      dict={
+         'point_coords': {
+               'GAMMA': [0.0, 0.0, 0.0],
+               'L': [0.5, 0.5, 0.5],
+               'X': [0.5, 0.0, 0.5]
+         },
+         'path': [('L', 'GAMMA'), ('GAMMA', 'X')]
+      }
+   )
+
+**Exercise**: Check how this has been converted into the input file.
+
+Setting up the (optional) calculation settings
+**********************************************
+While often you don't need to specify additional control parameters, there
+are cases in which you want to specify additional options to tune 
+the way AiiDA will run the code.
+
+You can find the full documentation of accepted keys for the ``settings``
+in the `aiida-wannier90 documentation`_ (e.g. to specify random projections,
+or to retrieve (or not retrieve) specific files at the end of the run.
+
+.. _aiida-wannier90 documentation: https://aiida-wannier90.readthedocs.io/en/v2.0.0/inputexample.html#settings
+
+One important option that you will use very often is the flag ``postproc_setup``:
+if set to ``True``, it will run a Wannier90 post-processing run (i.e., ``wannier90.x -pp``).
+
+In our cas, ``do_preprocess`` is ``False`` so this is not set, but you need
+to run it in a full calculation including a DFT code.
+
+.. code:: python
+
+   # Settings node, with additional configuration
+   settings_dict = {}
+   if do_preprocess:
+      settings_dict.update(
+         {'postproc_setup': True}
+      )  
+
+
+Setting up all inputs in a builder
+**********************************
+Once you have created the nodes or loaded them from 
+the database you need to prepare a calculation, connect all inputs and then run
+(or submit it).
+
+This is done creating a new calculation ``builder`` from a code: ``builder = code.get_builder()``.
+Then, all inputs are attached to the builder as follows:
+
+.. code:: python
+
+   builder.structure = structure
+   builder.projections = projections
+   builder.parameters = parameters
+   ...
+
+Finally, you can either:
+
+- ``run`` the calculation (this blocks the interpreter, until the simulation
+  is done):
+  
+    .. code:: python
+
+    from aiida.engine import run
+    results = run(builder)
+
+  At the end, you will get a dictionary of ``results``, one for every output node.
+
+- If you want to run the calculation, but also get a reference to the
+  ``CalcJobNode`` at the end, you can use instead:
+  
+    .. code:: python
+
+    from aiida.engine import run_get_node
+    results, calcjob = run_get_node(builder)
+
+- If you want to submit to the daemon (what we are doing here), we can instead use:
+
+    .. code:: python
+
+    from aiida.engine import submit
+    calcjob = submit(builder)
+
+
+From calculations to workflows
+------------------------------
+
+AiiDA can help you run individual calculations but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
+
+As the final step, we are going to launch the ``MinimalW90WorkChain`` workflow, a demo workflow
+shipped with the ``aiida-wannier90`` plugin, that also takes care of running the preliminary DFT
+steps using Quantum ESPRESSO.
+
+.. literalinclude:: include/snippets/demo_minimal_w90_workchain.py
+
+Download the :download:`demo_bands.py <include/snippets/demo_minimal_w90_workchain.py>` snippet.
+You will need to edit the first lines, specifying the name of the AiiDA codes for Quantum ESPRESSO executables
+pw.x and pw2wannier90.x and for the Wannier90 code (that you can discover as usual with ``verdi code list``).
+
+Moreover, you need to specify which pseudopotentials you want to use. AiiDA comes with tools to manage
+pseudopotentials in UPF format (the format used by Quantum ESPRESSO and a few more codes), and to group them
+in "pseudopotential families". You can list all existing ones with ``verdi data upf listfamilies``. We want
+to use the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
+Find its name and specify it in the appropriate variable.
+
+**Exercise**: Inspect the rest of the script to see how we are specifying inputs. Note in particular an alternative
+way to specify the projections, using a more declarative formats rather than just a list of strings.
+
+Once you have saved your changes, you can run the workflow with:
+
+.. code:: bash
+
+  verdi run demo_minimal_w90_workchain.py
+
+This workflow will:
+
+  #. Run a SCF simulation on GaAs
+  #. Run an NSCF calculation on a denser grid
+  #. Run a pre-process Wannier90 ``-pp`` calculation to get the ``.nnkp`` file
+  #. Run the interface code pw2wannier90.x
+  #. Run the Wannierisation step, returning the interpolated bands.
+
+The workflow should take ~5 minutes.
+You may notice that ``verdi process list`` now shows more than one entry.
+While you wait for the workflow to complete, let's start exploring its provenance.
+
+The full provenance graph obtained from ``verdi node graph generate`` will already be rather complex (you can try!),
+so let's try browsing the provenance interactively instead.
+
+In a new verdi shell, start the AiiDA REST API:
+
+.. code:: bash
+
+  verdi restapi
+
+and open the |provenance browser| (from the browser inside the virtual machine).
+
+.. |provenance browser| raw:: html
+
+   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v4" target="_blank">Materials Cloud provenance browser</a>
+
+
+.. note::
    
-  .. code:: bash
+   The provenance browser is a Javascript application provided by Materials Cloud that connects to your AiiDA REST API.
+   *Your data never leaves your computer*.
 
-    verdi data structure export --format=xsf <PK> > exported.xsf
-    xcrysden --xsf exported.xsf
+Browse your AiiDA database.
 
-  You should see the GaAs supercell (8 atoms) that we downloaded 
-  from the COD database (in CIF format), imported into AiiDA and exported back
-  into a different format (XSF).
+ * Start by finding your workflow (in the left menu, filter the nodes by selecting
+   ``Process -> Workflow -> WorkChain``.
+   WorkChains are a specific type of workflows in AiiDA that allow to define multiple steps and can be paused
+   and restarted between steps).
 
-Get the primitive structure (preserving the provenance)
--------------------------------------------------------
-The structure that we imported (and converted from CIF to an explicit list of
-atoms) used the conventional cell with 8 atoms, rather than the primitive one
-(with 2 atoms only).
+ * Inspect the inputs and returned outputs of the workflow in the provenance browser (outputs will appear once
+   the calculations are done). Moreover, you can inspect the calculations that the workflow launched, and check both
+   their input and output nodes (via the provenance browser), as well as the raw inputs and outputs of the calculation
+   (in the page of a specific CalcJobNode).
+
+.. note:: 
+
+     When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
+
+Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``MinimalW90WorkChain`` and find the PK of its ``wannier_bands`` output.
+Use this to produce an xmgrace output of the interpolated band structure:
+
+.. code:: bash
+
+   verdi data bands export --format xmgrace --output wannier_bands.agr <PK>
+
+that you can visualize using ``xmgrace wannier_bands.agr``.
+
+
+How to continue from here
+-------------------------
+
+The following appendix to this chapter discusses a bit more in detail
+how to import and export crystal structures from an AiiDA database and which
+tools exist to obtain the primitive structure from a conventional structure
+or more generally from a supercell.
+
+Importantly, the conversion of a crystal structure (conventional cell)
+to a primitive cell means the creation of a Data node from another Data node
+using a python function. The appendix shows how easy it is with AiiDA to
+wrap python functions into AiiDA's ``calcfunctions`` that automatically 
+preserve the proevance of the data transformation in the provenance graph.
+
+If you do not have time right now, you can
+:ref:`jump directly to the next tutorial section <Oxford 2020 autowannier>`,
+where we will see how to use fully automated AiiDA workflows that can obtain
+Wannier functions of a material with minimal input, without the need
+to specifying input parameters apart from the crystal structure and the
+code to run (and where even the choice of initial projections is automated).
+
+
+Appendix: Get the primitive structure while preserving the provenance
+---------------------------------------------------------------------
+
+Let us begin by downloading a gallium arsenide (GaAs) structure from the
+`Crystallography Open Database <http://crystallography.net/cod/>`_ and importing
+it into AiiDA.
+
+.. note::
+
+   You can view the structure `online <http://crystallography.net/cod/9008845.html>`_.
+
+
+.. code:: bash
+
+    wget http://crystallography.net/cod/9008845.cif
+    verdi data structure import ase 9008845.cif
+
+As before, you will get the ``PK`` of the structure.
+We note that a ``StructureData`` can also be exported to file to various formats.
+As an example, let's export the structure in XSF format and visualize it
+with XCrySDen:
+   
+.. code:: bash
+
+   verdi data structure export --format=xsf <PK> > exported.xsf
+   xcrysden --xsf exported.xsf
+
+You should see the GaAs supercell (8 atoms) that we downloaded 
+from the COD database (in CIF format), imported into AiiDA and exported back
+into a different format (XSF).
+
+In particular, the structure that we imported (and converted from CIF
+to an explicit list of atoms) used the conventional cell with 8 atoms,
+rather than the primitive one (with 2 atoms only).
+
+Getting the primitive structure
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 We will now use `seekpath`_ (that internally uses `spglib`_), 
 to obtain the primitive cell from the conventional one.
@@ -290,9 +710,9 @@ open, and that should look like the following image:
    It is possible to browse such graph, that tracks the *provenance* of the output data.
    Moreover, having the exact inputs tracked makes each calculation *reproducible*.
 
-   Finally (as we will see with an example in the next section), outputs of a calculation
-   can become inputs to a new calculation. Therefore, the AiiDA data provenance graph is
-   a **directed acyclic graph**.
+   Finally (as we have already seen as an example in the previous sections for
+   calculation jobs), outputs of a calculation can become inputs to a new calculation.
+   Therefore, the AiiDA data provenance graph is a **directed acyclic graph**.
 
 .. note:: While you can run the ``get_kpoints_path`` function as many times you want (and the data it returns
    are unstored nodes, so it will not clutter your AiiDA database, remember that every time you run the
@@ -302,236 +722,3 @@ open, and that should look like the following image:
 .. _spglib: https://atztogo.github.io/spglib/
 .. _seekpath: https://github.com/giovannipizzi/seekpath
 .. _AiiDA documentation: https://aiida.readthedocs.io/projects/aiida-core/en/v1.1.1/reference/index.html
-
-
-Running a job calculation
--------------------------
-
-Introduction and importing existing simulations
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-We have seen in the previous section how to wrap a python function and convert it to a (calc)function.
-
-Another type of calculations in AiiDA are calculation jobs (or ``CalcJob``). These represent the execution
-of an external code (e.g. Quantum ESPRESSO, Wannier90, ...), possibly on a different computer.
-The execution is automatically tracked by AiiDA (input creation, submission, waiting for the job scheduler,
-file retrieval and parsing) and also in this case inputs and outputs are connected to the ``CalcJobNode`` via
-INPUT and CREATE links.
-
-In the following, we want to launch a ``CalcJob`` running a Wannier90 calculation.
-Typically, before running a Wannier90 calculation, you need to obtain the ``.amn``, ``.mmn``, ... files
-from the interface to a first-principles code. In order to keep this tutorial focused on Wannier90, we have
-already run that part with AiiDA (using Quantum ESPRESSO) and we will just import it into your database.
-
-To achieve so, download this AiiDA export file: 
-:download:`demo_calcjob.py <../../../assets/2020_Oxford/example-gaas-wannier.aiida>`
-and, once you have downloaded it in the current folder, run the following command in your bash shell:
-
-.. code:: bash
-
-   verdi import example-gaas-wannier.aiida
-
-This will import, in particular, the node with UUID ``71155a0b-6cb9-4712-a043-dc4798ccfaaf``,
-that contains the ``.amn``, ``.mmn``, ... files created by the ``pw2wannier90.x`` code of Quantum ESPRESSO.
-Its provenance looks like the following figure (with some output nodes of the calculations not shown for clarity):
-
-.. figure:: include/images/folderdata_provenance.png
-   :width: 100%
-
-   Provenance graph for the ``FolderData`` node (``71155a0b``) that we have already run. At the top, we see the execution
-   of the ``get_primitive()`` calc function. The darker red rectangles represent the various calc jobs that we have run
-   for you, in particular:
-
-   - the Quantum ESPRESSO SCF step (UUID ``dcd4c286``)
-   - the Quantum ESPRESSO NSCF step (UUID ``be52abbf``)
-   - the Wannier90 preprocess (``-pp``) step (UUID ``a95261e2``)
-   - the Quantum ESPRESSO pw2wannier90 step (UUID ``d34d62f9``)
-
-**Exercise**: To check that the import worked correctly, use ``verdi node show`` on the UUID mentioned above to check
-that you indeed have the ``FolderData`` node in your database.
-
-**Exercise**: ``FolderData`` is a type of node that stores an arbitrary set of files and folders in the AiiDA profile.
-Check the list of files included in it with the command ``verdi node repo ls 71155a0b``, and check the content of
-a given file (e.g. the ``aiida.amn`` file) with ``verdi node repo cat 71155a0b aiida.mmn``.
-
-**Exercise**: in the figure above, verify that all calculations are connected between them via provenance links (through
-some data node). Try to understand how, e.g., the NSCF calculation "restarts" from the SCF via a ``RemoteData`` node
-(that represents a reference to the folder where the SCF calculation run in the computational cluster), or how the 
-pw2wannier90 step uses as input both the ``RemoteData`` node of the NSCF and the ``.nnkp`` file generated by ``wannier90.x -pp``.
-
-Running Wannier90 with AiiDA
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The following python script sets up all inputs to run the Wannier90 code:
-
-.. literalinclude:: include/snippets/demo_wannier_calcjob.py
-
-Download the :download:`demo_wannier_calcjob.py <include/snippets/demo_wannier_calcjob.py>` script to your working directory.
-It contains a few placeholders for you to fill in:
-
-#. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the Wannier90
-   code and use it in the script.
-#. replace the PK of the structure with the one you obtained earlier (*important*: use the PK of the *primitive* structure).
-
-Then submit the calculation using:
-
-.. code:: bash
-
-    verdi run demo_wannier_calcjob.py
-
-From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
-
-In order to be able to do this, the AiiDA daemon must be running: to check this, you can run the command:
-
-.. code:: bash
-
-    verdi daemon status
-
-and, if the daemon is not running, you can start it with
-
-.. code:: bash
-
-    verdi daemon start
-
-It should take less than one minute to complete.
-
-Analyzing the outputs of a calculation
---------------------------------------
-
-Let's have a look how your calculation is doing:
-
-.. code:: bash
-
-   verdi process list  # shows only running processes
-   verdi process list --all  # shows all processes
-
-Again, your calculation will get a PK, which you can use to get more information on it:
-
-.. code:: bash
-
-   verdi process show <PK>
-
-As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
-AiiDA's record of a calculation is best displayed in the form of a provenance graph
-
-.. figure:: include/images/demo_wannier_calc.png
-   :width: 100%
-
-   Provenance graph for a single Wannier90 calculation.
-
-You can generate such a provenance graph for any calculation or data in AiiDA by running:
-
-.. code:: bash
-
-  verdi node graph generate <PK>
-
-Try to reproduce the figure using the PK of your calculation (note that in our figure, we have used the
-``--ancestor-depth=1`` option of ``verdi node graph generate`` to only show direct inputs; if you don't, you will see
-also the full provenance of the data, similar to the previous figure shown earlier).
-
-You might wonder what happened under the hood, e.g. where to find the actual input and output files of the calculation.
-You will learn more about this later -- until then, here are a few useful commands:
-
-.. code:: bash
-
-   verdi calcjob inputcat <PK>  # shows the input file of the calculation
-   verdi calcjob outputcat <PK>  # shows the output file of the calculation
-   verdi calcjob res <PK>  # shows the parsed output
-
-A few questions you could answer using these commands (optional)
- * What are the values of the various components of the spread :math:`\Omega_I`, :math:`\Omega_D`, :math:`\Omega_{OD}`?
- * How many Wannier functions have been computed?
- * Was there any warning?
-
-.. Moving to a different computer
-.. ------------------------------
-
-From calculations to workflows
-------------------------------
-
-AiiDA can help you run individual calculations but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
-
-As the final step, we are going to launch the ``MinimalW90WorkChain`` workflow, a demo workflow
-shipped with the ``aiida-wannier90`` plugin, that also takes care of running the preliminary DFT
-steps using Quantum ESPRESSO.
-
-.. literalinclude:: include/snippets/demo_minimal_w90_workchain.py
-
-Download the :download:`demo_bands.py <include/snippets/demo_minimal_w90_workchain.py>` snippet.
-You will need to edit the first lines, specifying the name of the AiiDA codes for Quantum ESPRESSO executables
-pw.x and pw2wannier90.x and for the Wannier90 code (that you can discover as usual with ``verdi code list``).
-
-Moreover, you need to specify which pseudopotentials you want to use. AiiDA comes with tools to manage
-pseudopotentials in UPF format (the format used by Quantum ESPRESSO and a few more codes), and to group them
-in "pseudopotential families". You can list all existing ones with ``verdi data upf listfamilies``. We want
-to use the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
-Find its name and specify it in the appropriate variable.
-
-**Exercise**: Inspect the rest of the script to see how we are specifying inputs. Note in particular an alternative
-way to specify the projections, using a more declarative formats rather than just a list of strings.
-
-Once you have saved your changes, you can run the workflow with:
-
-.. code:: bash
-
-  verdi run demo_minimal_w90_workchain.py
-
-This workflow will:
-
-  #. Run a SCF simulation on GaAs
-  #. Run an NSCF calculation on a denser grid
-  #. Run a pre-process Wannier90 ``-pp`` calculation to get the ``.nnkp`` file
-  #. Run the interface code pw2wannier90.x
-  #. Run the Wannierisation step, returning the interpolated bands.
-
-The workflow should take ~5 minutes.
-You may notice that ``verdi process list`` now shows more than one entry.
-While you wait for the workflow to complete, let's start exploring its provenance.
-
-The full provenance graph obtained from ``verdi node graph generate`` will already be rather complex (you can try!),
-so let's try browsing the provenance interactively instead.
-
-In a new verdi shell, start the AiiDA REST API:
-
-.. code:: bash
-
-  verdi restapi
-
-and open the |provenance browser| (from the browser inside the virtual machine).
-
-.. |provenance browser| raw:: html
-
-   <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v4" target="_blank">Materials Cloud provenance browser</a>
-
-
-.. note::
-   
-   The provenance browser is a Javascript application provided by Materials Cloud that connects to your AiiDA REST API.
-   *Your data never leaves your computer*.
-
-Browse your AiiDA database.
-
- * Start by finding your workflow (in the left menu, filter the nodes by selecting
-   ``Process -> Workflow -> WorkChain``.
-   WorkChains are a specific type of workflows in AiiDA that allow to define multiple steps and can be paused
-   and restarted between steps).
-
- * Inspect the inputs and returned outputs of the workflow in the provenance browser (outputs will appear once
-   the calculations are done). Moreover, you can inspect the calculations that the workflow launched, and check both
-   their input and output nodes (via the provenance browser), as well as the raw inputs and outputs of the calculation
-   (in the page of a specific CalcJobNode).
-
-.. note:: 
-
-     When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
-
-Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``MinimalW90WorkChain`` and find the PK of its ``wannier_bands`` output.
-Use this to produce an xmgrace output of the interpolated band structure:
-
-.. code:: bash
-
-   verdi data bands export --format xmgrace --output wannier_bands.agr <PK>
-
-that you can visualize using ``xmgrace wannier_bands.agr``.
-
-
