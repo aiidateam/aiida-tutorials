@@ -400,8 +400,8 @@ Finally, you can either:
   
     .. code:: python
 
-    from aiida.engine import run
-    results = run(builder)
+      from aiida.engine import run
+      results = run(builder)
 
   At the end, you will get a dictionary of ``results``, one for every output node.
 
@@ -410,15 +410,15 @@ Finally, you can either:
   
     .. code:: python
 
-    from aiida.engine import run_get_node
-    results, calcjob = run_get_node(builder)
+      from aiida.engine import run_get_node
+      results, calcjob = run_get_node(builder)
 
 - If you want to submit to the daemon (what we are doing here), we can instead use:
 
     .. code:: python
 
-    from aiida.engine import submit
-    calcjob = submit(builder)
+      from aiida.engine import submit
+      calcjob = submit(builder)
 
 
 From calculations to workflows
