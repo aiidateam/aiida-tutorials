@@ -47,7 +47,7 @@ and the location of the crystal structure file in the xsf format.
 You can download some simple crystal structures from these list:
 
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
-    * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf.xsf>`
+    * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf>`
     * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
     * :download:`Cl2Ti.xsf <include/xsf/Cl2Ti.xsf>`
     * :download:`F4Ni2.xsf <include/xsf/F4Ni2.xsf>`
@@ -189,7 +189,7 @@ and the location of the crystal structure file in the xsf format.
 You can again download some simple crystal structures from these list:
 
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
-    * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf.xsf>`
+    * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf>`
     * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
     * :download:`Cl2Ti.xsf <include/xsf/Cl2Ti.xsf>`
     * :download:`F4Ni2.xsf <include/xsf/F4Ni2.xsf>`
