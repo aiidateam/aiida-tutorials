@@ -32,7 +32,7 @@ in the background while you read the introduction.
 Download the Wannier90BandsWorkChain
 ------------------------------------
 
-First, let's downlaod the Wannier90BandsWorkChain from GitHub and install it
+First, let's download the Wannier90BandsWorkChain from GitHub and install it
 
 .. code:: bash
 
@@ -41,7 +41,7 @@ First, let's downlaod the Wannier90BandsWorkChain from GitHub and install it
     pip install -e .
 
 
-Now can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` \
+Now you can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` \
 and execute it with the following command
 
 .. code:: bash
