@@ -542,7 +542,7 @@ Use this to produce an ``xmgrace`` output of the interpolated band structure:
 
 .. code:: bash
 
-   verdi data bands export --format xmgrace --output wannier_bands.agr <PK>
+   verdi data bands export --format agr --output wannier_bands.agr <PK>
 
 that you can then visualize using ``xmgrace wannier_bands.agr``.
 
