@@ -51,9 +51,9 @@ We provide the crystal structure, in `XSF format`_, here:
 
 .. _XSF format: http://www.xcrysden.org/doc/XSF.html
 
-You can download the file in the virtual machine in the current folder,
-and then import it into AiiDA (using `ASE`_ as the library to import
-the structure) using the following ``verdi`` command:
+You can download the file in a folder in the virtual machine,
+and then import it into AiiDA (via the `ASE`_ library)
+using the following ``verdi`` command, run from a bash shell:
 
 .. _ASE: https://wiki.fysik.dtu.dk/ase/
 
@@ -111,20 +111,20 @@ the PK of the node and its UUID (universally unique identifier).
   - AiiDA does not require the full UUID, but just the first part of it,
     as long as only one node starts with the string you provide. E.g., in the example above,
     you could also say ``verdi node show d11a4829-3e19``. Most probably, instead,
-    ``verdi node show d1`` will return an error, since most probably
-    you have more than one node starting with the string ``d1``.
+    ``verdi node show d1`` will return an error, since you might
+    have more than one node starting with the string ``d1``.
 
-  - By default, if what you pass is a valid integer, AiiDA will assume it is a PK;
+  - By default, if you pass a valid integer, AiiDA will assume it is a PK;
     if at least one of the characters is not a digit, then AiiDA will assume
     it is (the first part of) a UUID.
 
   - How to solve the issue, then, when the first part of the UUID is composed only by
-    digits (e.g. in ``2495301c-dd00-42d6-92e4-1a8c171bbb4a``)? Indeed, using
+    digits (e.g. in ``2495301c-dd00-42d6-92e4-1a8c171bbb4a``)? As described above, using
     ``verdi node show 24953`` would look for a node with ``PK=24953``. As a solution,
     just add a dash, e.g. ``verdi node show 24953-`` so that AiiDA will consider
     this as the beginning of the UUID.
 
-  - Note that you can put the dash in any part of the string, and you don't need
+    Note that you can put the dash in any part of the string, and you don't need
     to respect the typical UUID pattern with 8-4-4-4-12 characters per section:
     AiiDA will anyway first strip all dashes, and then put them back in the right
     place, so e.g. ``verdi node show 24-95-3`` will give you the same result as 
@@ -141,13 +141,14 @@ Running a job calculation
 Introduction and importing existing simulations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In AiiDA, one very import type of calculation in called calculation job (or ``CalcJob``).
+In AiiDA, one very important type of calculation in called "calculation job" (whose logic is 
+implenented in a ``CalcJob`` python class, and that are stored upon execution using a ``CalcJobNode`` python class).
 These calculations represent the execution
 of an external code (e.g. Quantum ESPRESSO, Wannier90, ...), very often on a different computer
 than the one where AiiDA is installed.
 The execution is automatically tracked by AiiDA (input creation, submission, waiting for the job scheduler,
-file retrieval and parsing) and also in this case inputs and outputs are connected to the ``CalcJobNode`` via
-INPUT and CREATE links.
+file retrieval and parsing) and its inputs and outputs are connected to the ``CalcJobNode`` (representing
+the execution) via INPUT and CREATE links.
 
 In the following, we want to launch a ``CalcJob`` running a Wannier90 calculation.
 Typically, before running a Wannier90 calculation, you need to obtain the ``.amn``, ``.mmn``, ... files
@@ -166,11 +167,15 @@ This will import, in particular, the node with UUID ``71155a0b-6cb9-4712-a043-dc
 that contains the ``.amn``, ``.mmn``, ... files created by the ``pw2wannier90.x`` code of Quantum ESPRESSO.
 Its provenance looks like the following figure (with some output nodes of the calculations not shown for clarity):
 
+.. _fig oxford2020 folderdata_provenance:
+
 .. figure:: include/images/folderdata_provenance.png
    :width: 100%
 
    Provenance graph for the ``FolderData`` node (``71155a0b``) that we have already run. At the top, we see the execution
-   of the ``get_primitive()`` calc function. The darker red rectangles represent the various calc jobs that we have run
+   of a ``get_primitive()`` calc function (described later in :ref:`the appendix<Oxford 2020 appendix get_primitive>`)
+   to obtain a primitive cell from a conventional cell.
+   The darker red rectangles represent the various calc jobs that we have run
    for you, in particular:
 
    - the Quantum ESPRESSO SCF step (UUID ``dcd4c286``)
@@ -178,16 +183,16 @@ Its provenance looks like the following figure (with some output nodes of the ca
    - the Wannier90 preprocess (``-pp``) step (UUID ``a95261e2``)
    - the Quantum ESPRESSO pw2wannier90 step (UUID ``d34d62f9``)
 
-**Exercise**: To check that the import worked correctly, use ``verdi node show`` on the UUID mentioned above to check
-that you indeed have the ``FolderData`` node in your database.
+**Exercise**: To check that the import worked correctly, use ``verdi node show`` on the UUID of the ``FolderData``
+mentioned above to check that you indeed have the node in your database.
 
-**Exercise**: ``FolderData`` is a type of node that stores an arbitrary set of files and folders in the AiiDA profile.
+**Exercise**: ``FolderData`` is a type of node that stores an arbitrary set of files and folders in AiiDA.
 Check the list of files included in it with the command ``verdi node repo ls 71155a0b``, and check the content of
-a given file (e.g. the ``aiida.amn`` file) with ``verdi node repo cat 71155a0b aiida.mmn``.
+a given file (e.g. the ``aiida.mmn`` file) with ``verdi node repo cat 71155a0b aiida.mmn``.
 
 **Exercise**: in the figure above, verify that all calculations are connected between them via provenance links (through
 some data node). Try to understand how, e.g., the NSCF calculation "restarts" from the SCF via a ``RemoteData`` node
-(that represents a reference to the folder where the SCF calculation run in the computational cluster), or how the 
+(that represents a reference to the folder in the computational cluster where the SCF calculation was run), or how the 
 pw2wannier90 step uses as input both the ``RemoteData`` node of the NSCF and the ``.nnkp`` file generated by ``wannier90.x -pp``.
 
 Running Wannier90 with AiiDA
@@ -202,7 +207,8 @@ Download the :download:`demo_wannier_calcjob.py <include/snippets/demo_wannier_c
 It contains a few placeholders for you to fill in:
 
 #. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the Wannier90
-   code and use it in the script.
+   code and use it in the script. Note: *do not use the imported code*, as the computer on which it runs will not
+   be configured by default.
 #. replace the PK of the structure with the one you obtained earlier (*important*: use the PK of the *primitive* structure).
 
 Then submit the calculation using:
@@ -244,7 +250,7 @@ Again, your calculation will get a PK, which you can use to get more information
    verdi process show <PK>
 
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
-AiiDA's record of a calculation is best displayed in the form of a provenance graph
+AiiDA's record of a calculation is best displayed in the form of a provenance graph:
 
 .. figure:: include/images/demo_wannier_calc.png
    :width: 100%
@@ -262,7 +268,7 @@ Try to reproduce the figure using the PK of your calculation (note that in our f
 also the full provenance of the data, similar to the previous figure shown earlier).
 
 You might wonder what happened under the hood, e.g. where to find the actual input and output files of the calculation.
-You will learn more about this later -- until then, here are a few useful commands:
+You will learn more about this in some of the advanced tutorials on AiiDA -- for now, here are a few useful commands:
 
 .. code:: bash
 
@@ -270,7 +276,7 @@ You will learn more about this later -- until then, here are a few useful comman
    verdi calcjob outputcat <PK>  # shows the output file of the calculation
    verdi calcjob res <PK>  # shows the parsed output
 
-**Exercise**: Here are a few questions you can now answer using these commands:
+**Exercise**: Here are a few questions you can now answer using these commands (try to check both the raw output and the parsed output)
  * What are the values of the various components of the spread :math:`\Omega_I`, :math:`\Omega_D`, :math:`\Omega_{OD}`?
  * How many Wannier functions have been computed?
  * Was there any warning?
@@ -291,14 +297,16 @@ either an integer PK or a string UUID).
 Choosing the kpoints
 ********************
 Also for ``kpoints``, we are loading these from file. The reason is that we
-already run the Quantum ESPRESSO run, and we need to be sure that the order
-of the k-points is the same. Otherwise, one can create an AiiDA ``KpointsData``
+already executed the Quantum ESPRESSO NSCF run, and we need to be sure that the order
+of the k-points is the same (exercise: check in :numref:`fig oxford2020 folderdata_provenance` that the 
+``KpointsData`` node that we are using is indeed the input ``KpointsData``
+of the NSCF calculation). Otherwise, one can create an AiiDA ``KpointsData``
 and use the ``set_kpoints`` method to pass a :math:`N\times 3` numpy array, 
 where :math:`N` is the number of k-points.
 
 Setting up input parameters
 ***************************
-One of the input nodes is the ``parameters`` node, that contains the input
+One very important input node is the ``parameters`` node, containing the input
 flags for the code.
 
 .. code:: python
@@ -312,7 +320,10 @@ flags for the code.
 In particular, ``parameters`` is a ``Dict`` node, i.e.,
 an AiiDA node containing a dictionary of key-value pairs (stored in the AiiDA
 DB and that can be easily queried - we will not see how to run queries in this
-tutorial, but you can check the AiiDA documentation or the full tutorial for this).
+tutorial, but you can check the `AiiDA documentation on querying`_ or the :ref:`full tutorial <querybuilder>`
+for more information on this).
+
+.. _AiiDA documentation on querying: https://aiida.readthedocs.io/projects/aiida-core/en/v1.1.1/working_with_aiida/index.html#querying-data
 
 **Exercise**: use ``verdi calcjob inputcat <PK>`` (using the ``PK`` of the calc job)
 and check how the information in the ``parameters`` has been converted
@@ -320,19 +331,21 @@ into the Wannier90 input file.
 
 Setting up the projections
 **************************
+
 In ``aiida-wannier90``, there are two ways to set up ``projections``.
 Here, we are using the simplest approach (a list of strings, that are simply
-inserted in the corresponding section of the raw input file). As for ``Dict``,
-this is wrapped in a ``List`` AiiDA node, so that it gets stored.
+inserted in the corresponding section of the raw input file). Similarly to a ``Dict`` node,
+these strings are wrapped in a ``List`` AiiDA node, so that it gets stored and are queryable.
 
-We will see a second (more easily queryable) way in the next section.
+We will see a second (more easily queryable) way later on during this tutorial.
 
-Setting up an (optional) list of k-points
-*****************************************
+Setting up an (optional) list of k-points for the band plot
+***********************************************************
+
 The path to compute an (interpolated) band structure needs to be specified
-as a ``Dict`` node, contianing with two keys: ``point_coords``, a dictionary
-with high-symmetry point labels, and a ``path`` (a list of pairs of labels, 
-to indicate band-path segments):
+as a ``Dict`` node, contianing two keys: ``point_coords``, a dictionary
+with high-symmetry point labels and coordinates, and a ``path``
+(a list of pairs of labels, to indicate band-path segments):
 
 .. code:: python
 
@@ -347,7 +360,7 @@ to indicate band-path segments):
       }
    )
 
-**Exercise**: Check how this has been converted into the input file.
+**Exercise**: Check how this has been converted into the raw input file.
 
 Setting up the (optional) calculation settings
 **********************************************
@@ -393,10 +406,10 @@ Then, all inputs are attached to the builder as follows:
    builder.parameters = parameters
    ...
 
-Finally, you can either:
+Finally, you can:
 
-- ``run`` the calculation (this blocks the interpreter, until the simulation
-  is done):
+- ``run`` the calculation (this stops the interpreter at that line, until the simulation
+  is done, and then the execution of the python script continues):
   
     .. code:: python
 
@@ -406,19 +419,25 @@ Finally, you can either:
   At the end, you will get a dictionary of ``results``, one for every output node.
 
 - If you want to run the calculation, but also get a reference to the
-  ``CalcJobNode`` at the end, you can use instead:
+  ``CalcJobNode`` that represents the execution, you can use instead:
   
     .. code:: python
 
       from aiida.engine import run_get_node
-      results, calcjob = run_get_node(builder)
+      results, calcjobnode = run_get_node(builder)
 
-- If you want to submit to the daemon (what we are doing here), we can instead use:
+- If you want to submit to the daemon (what is done in the example above),
+  you can use instead:
 
     .. code:: python
 
       from aiida.engine import submit
-      calcjob = submit(builder)
+      calcjobnode = submit(builder)
+
+  In this case, you just get immediately a reference to the ``CalcJobNode`` 
+  (not yet completed) and you can continue with the execution of the python script.
+  This is useful e.g. if you want to submit many independent calculations at once
+  in a ``for`` loop, and then let them run in parallel.
 
 
 From calculations to workflows
@@ -430,11 +449,14 @@ As the final step, we are going to launch the ``MinimalW90WorkChain`` workflow, 
 shipped with the ``aiida-wannier90`` plugin, that also takes care of running the preliminary DFT
 steps using Quantum ESPRESSO.
 
+Here is a submission script that we are going to use:
+
 .. literalinclude:: include/snippets/demo_minimal_w90_workchain.py
 
 Download the :download:`demo_bands.py <include/snippets/demo_minimal_w90_workchain.py>` snippet.
 You will need to edit the first lines, specifying the name of the AiiDA codes for Quantum ESPRESSO executables
-pw.x and pw2wannier90.x and for the Wannier90 code (that you can discover as usual with ``verdi code list``).
+``pw.x`` and ``pw2wannier90.x``, and for the Wannier90 code (that you can discover the names
+as usual with ``verdi code list``).
 
 Moreover, you need to specify which pseudopotentials you want to use. AiiDA comes with tools to manage
 pseudopotentials in UPF format (the format used by Quantum ESPRESSO and a few more codes), and to group them
@@ -442,8 +464,23 @@ in "pseudopotential families". You can list all existing ones with ``verdi data 
 to use the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
 Find its name and specify it in the appropriate variable.
 
-**Exercise**: Inspect the rest of the script to see how we are specifying inputs. Note in particular an alternative
-way to specify the projections, using a more declarative formats rather than just a list of strings.
+**Exercise**: Inspect the rest of the script to see how we are specifying inputs. 
+In particular:
+
+- Note how you can define a crystal structure directly in AiiDA, without using any external
+  library, if you know the cell vectors and the atoms coordinates.
+
+- Note how you can define a ``KpointsData`` node (``kpoints_scf``) that does not
+  include an explicit list of k-points, but rather represents a regular grid (:math:`4\times4\times4`
+  in this example, and similarly :math:`10\times10\times10` for ``kpoints_nscf``).
+  (The workflow, internally, knows that for the NSCF step one needs to unfold this k-points
+  grid in an explicit grid of all k-points).
+
+- Note a different way to specify the projections, using a more declarative format as a list of
+  projection declarations (that gets internally converted in a queryable ``OrbitalData``,
+  rather than just a list of strings).
+  The documentation of the ``get_projections`` function and its parameters
+  `can be found here <https://aiida-wannier90.readthedocs.io/en/v2.0.0/reference.html#aiida_wannier90.orbitals.generate_projections>`_.
 
 Once you have saved your changes, you can run the workflow with:
 
@@ -454,12 +491,12 @@ Once you have saved your changes, you can run the workflow with:
 This workflow will:
 
   #. Run a SCF simulation on GaAs
-  #. Run an NSCF calculation on a denser grid
-  #. Run a pre-process Wannier90 ``-pp`` calculation to get the ``.nnkp`` file
-  #. Run the interface code pw2wannier90.x
-  #. Run the Wannierisation step, returning the interpolated bands.
+  #. Run an NSCF calculation on a denser grid (with an explicit list of k-points)
+  #. Run a post-process Wannier90 ``-pp`` calculation to get the ``.nnkp`` file
+  #. Run the interface code ``pw2wannier90.x``
+  #. Run the Wannierisation step, returning the interpolated bands
 
-The workflow should take ~5 minutes.
+The workflow should take ~5 minutes on a typical laptop.
 You may notice that ``verdi process list`` now shows more than one entry.
 While you wait for the workflow to complete, let's start exploring its provenance.
 
@@ -498,16 +535,16 @@ Browse your AiiDA database.
 
 .. note:: 
 
-     When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
+     When perfoming calculations for a research project, at the end upon publication you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations.
 
 Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``MinimalW90WorkChain`` and find the PK of its ``wannier_bands`` output.
-Use this to produce an xmgrace output of the interpolated band structure:
+Use this to produce an ``xmgrace`` output of the interpolated band structure:
 
 .. code:: bash
 
    verdi data bands export --format xmgrace --output wannier_bands.agr <PK>
 
-that you can visualize using ``xmgrace wannier_bands.agr``.
+that you can then visualize using ``xmgrace wannier_bands.agr``.
 
 
 How to continue from here
@@ -515,14 +552,14 @@ How to continue from here
 
 The following appendix to this chapter discusses a bit more in detail
 how to import and export crystal structures from an AiiDA database and which
-tools exist to obtain the primitive structure from a conventional structure
+tools exist to obtain the primitive structure from a conventional structure,
 or more generally from a supercell.
 
 Importantly, the conversion of a crystal structure (conventional cell)
 to a primitive cell means the creation of a Data node from another Data node
 using a python function. The appendix shows how easy it is with AiiDA to
 wrap python functions into AiiDA's ``calcfunctions`` that automatically 
-preserve the proevance of the data transformation in the provenance graph.
+preserve the provenance of the data transformation in the AiiDA graph.
 
 If you do not have time right now, you can
 :ref:`jump directly to the next tutorial section <Oxford 2020 autowannier>`,
@@ -531,6 +568,7 @@ Wannier functions of a material with minimal input, without the need
 to specifying input parameters apart from the crystal structure and the
 code to run (and where even the choice of initial projections is automated).
 
+.. _Oxford 2020 appendix get_primitive:
 
 Appendix: Get the primitive structure while preserving the provenance
 ---------------------------------------------------------------------
@@ -549,7 +587,7 @@ it into AiiDA.
     wget http://crystallography.net/cod/9008845.cif
     verdi data structure import ase 9008845.cif
 
-As before, you will get the ``PK`` of the structure.
+As before, you will get the ``PK`` of the imported structure.
 We note that a ``StructureData`` can also be exported to file to various formats.
 As an example, let's export the structure in XSF format and visualize it
 with XCrySDen:
@@ -646,7 +684,7 @@ While we refer to the full `AiiDA documentation`_ for more in-depth explanations
 run a python function while keeping the provenance at the same time.
 
 This can be achieved by using a ``calcfunction``: this is a wrapper around python functions
-(technically, a python function decorator) that take care of storing the execution of that function in the graph.
+(technically, a python function decorator) that takes care of storing the execution of that function in the graph.
 To use it, you need first to create a simple function that gets one or more AiiDA nodes, and returns one AiiDA node
 (or a dictionary of AiiDA nodes). Moreover, you need to decorate it as a ``calcfunction``, so that when it will be run,
 it will be stored in the database.
@@ -673,11 +711,11 @@ Once you have defined the function, run it on the ``structure`` node you loaded 
    results = get_primitive(structure)
    primitive = results['primitive_structure']
 
-the first thing you can notice (by printing ``primitive``) is that now this node
+The first thing you can notice (by printing ``primitive``) is that now this node
 has been automatically stored.
 Additionally, you can check who created it simply as ``creator_function = primitive.creator``.
-You can for instance check the name of the function that was run using ``creator_function.attributes['function_name']``
-(this returns ``get_primitive``, the name of the function that we decorated as a calcfunction).
+You can for instance check the name of the function that was run, using ``creator_function.attributes['function_name']``
+(this returns ``get_primitive``, the name of the function that we decorated as a calc function).
 Moreover, you can check the inputs of this function.
 
 **Exercise**: use ``creator_function.inputs.input_structure`` to get the input of the function called ``input_structure``
@@ -714,9 +752,9 @@ open, and that should look like the following image:
    calculation jobs), outputs of a calculation can become inputs to a new calculation.
    Therefore, the AiiDA data provenance graph is a **directed acyclic graph**.
 
-.. note:: While you can run the ``get_kpoints_path`` function as many times you want (and the data it returns
-   are unstored nodes, so it will not clutter your AiiDA database, remember that every time you run the
-   ``get_primitive()`` calc function you will get a bunch of new nodes in the database automatically stored for you.
+.. note:: While you can run the ``get_kpoints_path`` function as many times you want (and it will return
+   unstored nodes, so it will not clutter your AiiDA database), remember that *every time* you run the
+   ``get_primitive()`` calc function, you will get a bunch of new nodes in the database automatically stored for you.
    
 
 .. _spglib: https://atztogo.github.io/spglib/
