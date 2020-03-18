@@ -24,28 +24,18 @@ which leverages the SCDM method that was introduced in:
 
 The initial workflow was written by Antimo Marrazzo (EPFL) and Giovanni Pizzi (EPFL), it was later \
 substantially improved and upgraded to AiiDA v1.1.1 by Junfeng Qiao (EFPL). The SCDM implementation in \
-QuantumESPRESSO was done by Valerio Vitale (Imperial College London and University of Cambridge).
+Quantum ESPRESSO was done by Valerio Vitale (Imperial College London and University of Cambridge).
 
 **Launch while you read!**
 
 The workflow should take a few minutes to run on the virtual machine, you can launch it now \
 in the background while you read the introduction. 
 
-Download the Wannier90BandsWorkChain
-------------------------------------
-
-First, let's download the ``Wannier90BandsWorkChain`` from GitHub and install it
-
-.. code:: bash
-
-    git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
-    cd aiida-wannier90-workflows/
-    pip install -e .
-
+Preparation
+-----------
 
 Now you can download the launch script here :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>`.
-The script can parse some input variables, like the protocol for the calculation \
-and the location of the crystal structure file in the xsf format.
+The script accepts one argument which is the location of the crystal structure file in the xsf format.
 You can download some simple crystal structures from this list:
 
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
@@ -71,9 +61,9 @@ Launch the script with the following command
 
 .. code:: bash
     
-    verdi run launch_auto-wannier_workflow.py CaO.xsf
+    verdi run launch_auto-wannier_workflow.py CsH.xsf
 
-You can replace CaO.xsf with any other structure that you find in the list, e.g. CsH.xsf or Br2Ti.xsf.
+You can replace CsH.xsf with any other structure that you find in the list, e.g. PtS2.xsf or Br2Ti.xsf.
 
 
 Introduction
@@ -184,8 +174,8 @@ The script is reported also here below and allows to initialise and launch the A
 
 .. literalinclude:: include/snippets/launch_auto-wannier_workflow.py
 
-The script can parse some input variables, like the protocol for the calculation \
-and the location of the crystal structure file in the xsf format.
+The script can accept one commandline argument for specifying \
+the location of the crystal structure file in the xsf format.
 You can again download some simple crystal structures from this list
 
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
@@ -211,19 +201,9 @@ Launch the script with the following command
 
 .. code:: bash
     
-    verdi run launch_auto-wannier_workflow.py --protocol 'testing' --xsf CaO.xsf
+    verdi run launch_auto-wannier_workflow.py CsH.xsf
 
-You can use a different structure now, so replace CaO.xsf with any other structure that you saw above folder, e.g. O2Sr.xsf or CsH.xsf.
-
-For a full list of the available input arguments, use 
-
-.. code:: bash
-
-    verdi run -- launch_auto-wannier_workflow.py -h
-
-with the output as
-
-.. literalinclude:: include/snippets/launch_script_help.txt
+You can use a different structure now, so replace CsH.xsf with any other structure that you saw above folder, e.g. O2Sr.xsf or PtS2.xsf.
 
 **NB** Here for the tutorial we run the workflow in *testing* mode, where all the wavefunction cutoffs are halved to \
 speed up the calculations. For production please use the 'theos-ht-1.0' protocol or any other sensible choice.
@@ -273,11 +253,11 @@ First let's give a look at the interpolated band structure by exporting a pdf fi
 
     verdi data bands export --format mpl_pdf --output band_structure.pdf <PK_bands>
 
-where PK_bands stands for the BandsData pk produced by the workflow. \ 
+where PK_bands stands for the ``BandsData`` pk produced by the workflow. \ 
 You can find it :code:`verdi node show <PK>` with PK being the workchain pk.
 You should obtain a pdf like the following:
 
-.. figure:: include/images/GaAs_wan_band.png
+.. figure:: include/images/CsH_wan_band.png
    :width: 100%
 
 Now we compare the Wannier-interpolated bands with the full DFT bands calculation.
@@ -303,27 +283,24 @@ compounds you find the xsf folder. You can download the full DFT bands in the xm
     * :download:`CsH_dft_bands.agr <include/dft_bands/CsH_dft_bands.agr>`
     * :download:`O2Pd2_dft_bands.agr <include/dft_bands/O2Pd2_dft_bands.agr>`
 
-Take O2Sr as an example, :download:`O2Sr_wan_bands.agr <include/images/O2Sr_wan_bands.agr>`, \
-:download:`O2Sr_dft_bands.agr <include/images/O2Sr_dft_bands.agr>`
-
-You can first export the bands in the xmgrace format with 
+Take CsH as an example, you can first export the bands in the xmgrace format with 
 
 .. code:: bash
 
-    verdi data bands export --format agr --output O2Sr_wan_bands.agr <PK_bands>
+    verdi data bands export --format agr --output CsH_wan_bands.agr <PK_bands>
 
 and compare it with the full DFT band structure using xmgrace
 
 .. code:: bash
 
-    xmgrace O2Sr_dft_bands.agr O2Sr_wan_bands.agr
+    xmgrace CsH_dft_bands.agr CsH_wan_bands.agr
 
-where you can replace O2Sr with any chemical formula of the other crystal structures we provide.
+where you can replace CsH with any chemical formula of the other crystal structures we provide.
 
 You should obtain something like this:
 
 
-.. figure:: include/images/O2Sr_diff.png
+.. figure:: include/images/CsH_diff_bands.png
    :width: 100%
 
 
@@ -342,7 +319,7 @@ where PK stands for the ``Wannier90BandsWorkChain`` pk.
 
 You should obtain a plot similar to the following:
 
-.. figure:: include/images/CaO.png
+.. figure:: include/images/CsH_proj.png
    :width: 100%
 
 As you can see the protocol to choose :math:`\mu` and :math:`\sigma` ensures that the \
@@ -352,7 +329,7 @@ that can be projected on the manifold spanned by the PAOs.
 Analyzing the provenance graph
 ------------------------------
 
- We begin by generating the provenance graph with
+We begin by generating the provenance graph with
 
 .. code:: bash
 
@@ -361,11 +338,11 @@ Analyzing the provenance graph
 where the PK correspond to the workflow you have just run.
 You should obtain something like the following 
 
-.. figure:: include/images/O2Sr.dot.jpg
+.. figure:: include/images/CsH.dot.jpg
    :width: 100%
 
    Provenance graph for a single ``Wannier90BandsWorkChain`` run. (PDF version \
-   :download:`O2Sr.dot.pdf <include/images/O2Sr.dot.pdf>`)
+   :download:`CsH.dot.pdf <include/images/CsH.dot.pdf>`)
 
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
 AiiDA's record of a calculation is best displayed in the form of a provenance graph

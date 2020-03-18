@@ -1,35 +1,32 @@
-2020-03-13 11:43:45 [1  | REPORT]: [191|Wannier90BandsWorkChain|setup_protocol]: running the workchain with the "testing" protocol
-2020-03-13 11:43:45 [2  | REPORT]: [191|Wannier90BandsWorkChain|setup]: workchain controls found in inputs: valence + conduction bands
-2020-03-13 11:43:45 [3  | REPORT]: [191|Wannier90BandsWorkChain|run_seekpath]: running seekpath to get primitive structure for: AsGa
-2020-03-13 11:43:46 [4  | REPORT]: [191|Wannier90BandsWorkChain|setup_parameters]: number of machines 1 auto-set according to number of atoms
-2020-03-13 11:43:47 [5  | REPORT]: [191|Wannier90BandsWorkChain|run_wannier_workchain]: launching Wannier90WorkChain<210>
-2020-03-13 11:43:48 [6  | REPORT]:   [210|Wannier90WorkChain|run_scf]: scf step - launching PwBaseWorkChain<213> in scf mode
-2020-03-13 11:43:49 [7  | REPORT]:     [213|PwBaseWorkChain|run_calculation]: launching PwCalculation<219> iteration #1
-2020-03-13 11:44:02 [8  | REPORT]:     [213|PwBaseWorkChain|inspect_calculation]: PwCalculation<219> completed successfully
-2020-03-13 11:44:02 [9  | REPORT]:     [213|PwBaseWorkChain|results]: work chain completed after 1 iterations
-2020-03-13 11:44:02 [10 | REPORT]:     [213|PwBaseWorkChain|on_terminated]: remote folders will not be cleaned
-2020-03-13 11:44:03 [11 | REPORT]:   [210|Wannier90WorkChain|inspect_scf]: scf PwBaseWorkChain successfully finished
-2020-03-13 11:44:03 [12 | REPORT]:   [210|Wannier90WorkChain|run_nscf]: nscf number of bands set as 23
-2020-03-13 11:44:04 [13 | REPORT]:   [210|Wannier90WorkChain|run_nscf]: nscf step - launching PwBaseWorkChain<233> in nscf mode
-2020-03-13 11:44:05 [14 | REPORT]:     [233|PwBaseWorkChain|run_calculation]: launching PwCalculation<236> iteration #1
-2020-03-13 11:46:32 [15 | REPORT]:     [233|PwBaseWorkChain|inspect_calculation]: PwCalculation<236> completed successfully
-2020-03-13 11:46:33 [16 | REPORT]:     [233|PwBaseWorkChain|results]: work chain completed after 1 iterations
-2020-03-13 11:46:33 [17 | REPORT]:     [233|PwBaseWorkChain|on_terminated]: remote folders will not be cleaned
-2020-03-13 11:46:34 [18 | REPORT]:   [210|Wannier90WorkChain|inspect_nscf]: nscf PwBaseWorkChain successfully finished
-2020-03-13 11:46:34 [19 | REPORT]:   [210|Wannier90WorkChain|should_do_projwfc]: SCDM mu & sigma are auto-set using projectability
-2020-03-13 11:46:34 [20 | REPORT]:   [210|Wannier90WorkChain|run_projwfc]: projwfc step - launching ProjwfcCalculation<242>
-2020-03-13 11:47:05 [21 | REPORT]:   [210|Wannier90WorkChain|inspect_projwfc]: projwfc ProjwfcCalculation successfully finished
-2020-03-13 11:47:05 [22 | REPORT]:   [210|Wannier90WorkChain|run_wannier90_pp]: number of Wannier functions extracted from projections: 13
-2020-03-13 11:47:06 [23 | REPORT]:   [210|Wannier90WorkChain|run_wannier90_pp]: wannier90 postproc step - launching Wannier90BaseWorkChain<257> in postproc mode
-2020-03-13 11:47:07 [24 | REPORT]:     [257|Wannier90BaseWorkChain|run_process]: launching Wannier90Calculation<258> iteration #1
-2020-03-13 11:47:15 [25 | REPORT]:     [257|Wannier90BaseWorkChain|results]: work chain completed after 1 iterations
-2020-03-13 11:47:15 [26 | REPORT]:     [257|Wannier90BaseWorkChain|on_terminated]: remote folders will not be cleaned
-2020-03-13 11:47:16 [27 | REPORT]:   [210|Wannier90WorkChain|inspect_wannier90_pp]: wannier90 postproc Wannier90Calculation successfully finished
-2020-03-13 11:47:18 [28 | REPORT]:   [210|Wannier90WorkChain|run_pw2wannier90]: pw2wannier90 step - launching Pw2Wannier90Calculation<266>
-2020-03-13 11:48:02 [29 | REPORT]:   [210|Wannier90WorkChain|inspect_pw2wannier90]: Pw2wannier90Calculation successfully finished
-2020-03-13 11:48:03 [30 | REPORT]:   [210|Wannier90WorkChain|run_wannier90]: wannier90 step - launching Wannier90Calculation<271>
-2020-03-13 11:52:12 [31 | REPORT]:   [210|Wannier90WorkChain|inspect_wannier90]: Wannier90Calculation successfully finished
-2020-03-13 11:52:12 [32 | REPORT]:   [210|Wannier90WorkChain|results]: final step - preparing outputs
-2020-03-13 11:52:13 [33 | REPORT]:   [210|Wannier90WorkChain|results]: Wannier90WorkChain successfully completed
-2020-03-13 11:52:13 [34 | REPORT]: [191|Wannier90BandsWorkChain|results]: wannier90 interpolated bands pk: 274
-2020-03-13 11:52:13 [35 | REPORT]: [191|Wannier90BandsWorkChain|results]: Wannier90BandsWorkChain successfully completed
+2020-03-18 18:38:37 [56 | REPORT]: [404|Wannier90BandsWorkChain|setup_protocol]: running the workchain with the "testing" protocol
+2020-03-18 18:38:37 [57 | REPORT]: [404|Wannier90BandsWorkChain|setup]: workchain controls found in inputs: valence + conduction bands
+2020-03-18 18:38:37 [58 | REPORT]: [404|Wannier90BandsWorkChain|run_seekpath]: running seekpath to get primitive structure for: CsH
+2020-03-18 18:38:38 [59 | REPORT]: [404|Wannier90BandsWorkChain|setup_parameters]: number of machines 1 auto-set according to number of atoms
+2020-03-18 18:38:39 [60 | REPORT]: [404|Wannier90BandsWorkChain|run_wannier_workchain]: launching Wannier90WorkChain<423>
+2020-03-18 18:38:40 [61 | REPORT]:   [423|Wannier90WorkChain|run_scf]: scf step - launching PwBaseWorkChain<426> in scf mode
+2020-03-18 18:38:42 [62 | REPORT]:     [426|PwBaseWorkChain|run_calculation]: launching PwCalculation<432> iteration #1
+2020-03-18 18:38:54 [63 | REPORT]:     [426|PwBaseWorkChain|inspect_calculation]: PwCalculation<432> completed successfully
+2020-03-18 18:38:54 [64 | REPORT]:     [426|PwBaseWorkChain|results]: work chain completed after 1 iterations
+2020-03-18 18:38:54 [65 | REPORT]:     [426|PwBaseWorkChain|on_terminated]: remote folders will not be cleaned
+2020-03-18 18:38:55 [66 | REPORT]:   [423|Wannier90WorkChain|inspect_scf]: scf PwBaseWorkChain successfully finished
+2020-03-18 18:38:55 [67 | REPORT]:   [423|Wannier90WorkChain|run_nscf]: nscf number of bands set as 24
+2020-03-18 18:38:56 [68 | REPORT]:   [423|Wannier90WorkChain|run_nscf]: nscf step - launching PwBaseWorkChain<446> in nscf mode
+2020-03-18 18:38:57 [69 | REPORT]:     [446|PwBaseWorkChain|run_calculation]: launching PwCalculation<449> iteration #1
+2020-03-18 18:41:14 [70 | REPORT]:     [446|PwBaseWorkChain|inspect_calculation]: PwCalculation<449> completed successfully
+2020-03-18 18:41:14 [71 | REPORT]:     [446|PwBaseWorkChain|results]: work chain completed after 1 iterations
+2020-03-18 18:41:14 [72 | REPORT]:     [446|PwBaseWorkChain|on_terminated]: remote folders will not be cleaned
+2020-03-18 18:41:15 [73 | REPORT]:   [423|Wannier90WorkChain|inspect_nscf]: nscf PwBaseWorkChain successfully finished
+2020-03-18 18:41:15 [74 | REPORT]:   [423|Wannier90WorkChain|should_do_projwfc]: SCDM mu & sigma are auto-set using projectability
+2020-03-18 18:41:15 [75 | REPORT]:   [423|Wannier90WorkChain|run_projwfc]: projwfc step - launching ProjwfcCalculation<455>
+2020-03-18 18:41:24 [76 | REPORT]:   [423|Wannier90WorkChain|inspect_projwfc]: projwfc ProjwfcCalculation successfully finished
+2020-03-18 18:41:25 [77 | REPORT]:   [423|Wannier90WorkChain|run_wannier90_pp]: number of Wannier functions extracted from projections: 14
+2020-03-18 18:41:26 [78 | REPORT]:   [423|Wannier90WorkChain|run_wannier90_pp]: wannier90 postproc step - launching Wannier90Calculation<468> in postproc mode
+2020-03-18 18:41:34 [79 | REPORT]:   [423|Wannier90WorkChain|inspect_wannier90_pp]: wannier90 postproc Wannier90Calculation successfully finished
+2020-03-18 18:41:38 [80 | REPORT]:   [423|Wannier90WorkChain|run_pw2wannier90]: pw2wannier90 step - launching Pw2Wannier90Calculation<476>
+2020-03-18 18:42:15 [81 | REPORT]:   [423|Wannier90WorkChain|inspect_pw2wannier90]: Pw2wannier90Calculation successfully finished
+2020-03-18 18:42:15 [82 | REPORT]:   [423|Wannier90WorkChain|run_wannier90]: wannier90 step - launching Wannier90Calculation<481>
+2020-03-18 18:50:57 [83 | REPORT]:   [423|Wannier90WorkChain|inspect_wannier90]: Wannier90Calculation successfully finished
+2020-03-18 18:50:57 [84 | REPORT]:   [423|Wannier90WorkChain|results]: final step - preparing outputs
+2020-03-18 18:50:58 [85 | REPORT]:   [423|Wannier90WorkChain|results]: Wannier90WorkChain successfully completed
+2020-03-18 18:50:59 [86 | REPORT]: [404|Wannier90BandsWorkChain|results]: wannier90 interpolated bands pk: 484
+2020-03-18 18:50:59 [87 | REPORT]: [404|Wannier90BandsWorkChain|results]: Wannier90BandsWorkChain successfully completed
