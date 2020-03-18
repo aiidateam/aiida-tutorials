@@ -71,8 +71,8 @@ if not do_preprocess:
 builder.settings = Dict(dict=settings_dict)
 
 # Run the calculation and get both the results and the node
-calcjob = submit(builder)
+calcjobnode = submit(builder)
 
-print("CALCJOB: {}".format(calcjob))
-print("Use `verdi process list` or `verdi process show {}` to check the progress".format(calcjob.pk))
+print("CalcJobNode: {}".format(calcjobnode))
+print("Use `verdi process list` or `verdi process show {}` to check the progress".format(calcjobnode.pk))
 
