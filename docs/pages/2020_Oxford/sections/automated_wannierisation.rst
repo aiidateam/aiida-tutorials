@@ -73,7 +73,7 @@ Launch the script with the following command
     
     verdi run launch_auto-wannier_workflow.py CaO.xsf
 
-You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf.
+You can replace CaO.xsf with any other structure that you find in the list, e.g. CsH.xsf or Br2Ti.xsf.
 
 
 Introduction
@@ -282,8 +282,7 @@ You should obtain a pdf like the following:
 
 Now we compare the Wannier-interpolated bands with the full DFT bands calculation.
 For convenience, we have already computed for you all the full DFT band structures for the \
-compounds you find the xsf folder. You can find the bands in the xmgrace (.agr) format in the the folder \
-`/dft_bands`.
+compounds you find the xsf folder. You can download the full DFT bands in the xmgrace (.agr) format form this list:
 
     * :download:`Ar2_dft_bands.agr <include/dft_bands/Ar2_dft_bands.agr>`
     * :download:`BrNa_dft_bands.agr <include/dft_bands/BrNa_dft_bands.agr>`
@@ -377,7 +376,7 @@ AiiDA's record of a calculation is best displayed in the form of a provenance gr
 
 Try to modify the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to disable the MLWF \
 procedure in order to obtain Wannier functions with SCDM projections that are not localised.
-Run the code for 1-2 materials of the dataser, do you notice any difference?
+Run the code for 1-2 materials of the dataset, do you notice any difference?
 
 (Optional) Browse your database with the REST API
 -------------------------------------------------
