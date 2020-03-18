@@ -377,7 +377,7 @@ or to retrieve (or not retrieve) specific files at the end of the run.
 One important option that you will use very often is the flag ``postproc_setup``:
 if set to ``True``, it will run a Wannier90 post-processing run (i.e., ``wannier90.x -pp``).
 
-In our cas, ``do_preprocess`` is ``False`` so this is not set, but you need
+In our case, ``do_preprocess`` is ``False`` so this is not set, but you need
 to run it in a full calculation including a DFT code.
 
 .. code:: python
