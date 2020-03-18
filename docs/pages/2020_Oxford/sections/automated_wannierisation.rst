@@ -51,12 +51,10 @@ You can download some simple crystal structures from this list:
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
     * :download:`BrNa.xsf <include/xsf/BrNa.xsf>`
     * :download:`GaAs.xsf <include/xsf/GaAs.xsf>`
-    * :download:`Cl2Ti.xsf <include/xsf/Cl2Ti.xsf>`
     * :download:`F4Ni2.xsf <include/xsf/F4Ni2.xsf>`
     * :download:`O2Rb2.xsf <include/xsf/O2Rb2.xsf>`
     * :download:`BaS.xsf <include/xsf/BaS.xsf>`
     * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
-    * :download:`Cl2V.xsf <include/xsf/Cl2V.xsf>`
     * :download:`FNa.xsf <include/xsf/FNa.xsf>`
     * :download:`O2Sr.xsf <include/xsf/O2Sr.xsf>`
     * :download:`BeO4S.xsf <include/xsf/BeO4S.xsf>`
@@ -193,12 +191,10 @@ You can again download some simple crystal structures from this list
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
     * :download:`BrNa.xsf <include/xsf/BrNa.xsf>`
     * :download:`GaAs.xsf <include/xsf/GaAs.xsf>`
-    * :download:`Cl2Ti.xsf <include/xsf/Cl2Ti.xsf>`
     * :download:`F4Ni2.xsf <include/xsf/F4Ni2.xsf>`
     * :download:`O2Rb2.xsf <include/xsf/O2Rb2.xsf>`
     * :download:`BaS.xsf <include/xsf/BaS.xsf>`
     * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
-    * :download:`Cl2V.xsf <include/xsf/Cl2V.xsf>`
     * :download:`FNa.xsf <include/xsf/FNa.xsf>`
     * :download:`O2Sr.xsf <include/xsf/O2Sr.xsf>`
     * :download:`BeO4S.xsf <include/xsf/BeO4S.xsf>`
@@ -217,7 +213,7 @@ Launch the script with the following command
     
     verdi run launch_auto-wannier_workflow.py --protocol 'testing' --xsf CaO.xsf
 
-You can use a different structure now, so replace CaO.xsf with any other structure that you saw above folder, e.g. Cl2V.xsf or CsH.xsf.
+You can use a different structure now, so replace CaO.xsf with any other structure that you saw above folder, e.g. O2Sr.xsf or CsH.xsf.
 
 For a full list of the available input arguments, use 
 
@@ -292,12 +288,10 @@ compounds you find the xsf folder. You can find the bands in the xmgrace (.agr) 
     * :download:`Ar2_dft_bands.agr <include/dft_bands/Ar2_dft_bands.agr>`
     * :download:`BrNa_dft_bands.agr <include/dft_bands/BrNa_dft_bands.agr>`
     * :download:`AsGa_dft_bands.agr <include/dft_bands/AsGa_dft_bands.agr>`
-    * :download:`Cl2Ti_dft_bands.agr <include/dft_bands/Cl2Ti_dft_bands.agr>`
     * :download:`F4Ni2_dft_bands.agr <include/dft_bands/F4Ni2_dft_bands.agr>`
     * :download:`O2Rb2_dft_bands.agr <include/dft_bands/O2Rb2_dft_bands.agr>`
     * :download:`BaS_dft_bands.agr <include/dft_bands/BaS_dft_bands.agr>`
     * :download:`C6Mg4_dft_bands.agr <include/dft_bands/C6Mg4_dft_bands.agr>`
-    * :download:`Cl2V_dft_bands.agr <include/dft_bands/Cl2V_dft_bands.agr>`
     * :download:`FNa_dft_bands.agr <include/dft_bands/FNa_dft_bands.agr>`
     * :download:`O2Sr_dft_bands.agr <include/dft_bands/O2Sr_dft_bands.agr>`
     * :download:`BeO4S_dft_bands.agr <include/dft_bands/BeO4S_dft_bands.agr>`
