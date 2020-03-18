@@ -34,12 +34,12 @@ in the background while you read the introduction.
 Download the Wannier90BandsWorkChain
 ------------------------------------
 
-First, let's download the Wannier90BandsWorkChain from GitHub and install it
+First, let's download the ``Wannier90BandsWorkChain`` from GitHub and install it
 
 .. code:: bash
 
     git clone https://github.com/aiidateam/aiida-wannier90-workflows.git
-    cd aiida-wannier90-theosworkflows/
+    cd aiida-wannier90-workflows/
     pip install -e .
 
 
@@ -127,7 +127,7 @@ the frozen and outer window, it does not provide a recipe to set the smearing fu
 a sensible value typically requires some consideration, such as counting the number of atomic orbitals \
 of a given orbital character (e.g. *s*, *p*, *d* or *sp3* like).
 
-The Wannier90BandsWorkChain is an AiiDA workchain that implements a protocol that deals with the choice \
+The ``Wannier90BandsWorkChain`` is an AiiDA workchain that implements a protocol that deals with the choice \
 of the number of Wannier functions and sets the parameters :math:`\mu` and :math:`\sigma` defining \
 the smearing function. For a full explanation of protocol we refer to the article \
 `Automated high-throughput wannierisation  <https://arxiv.org/abs/1909.00433>`_, while here we \
@@ -156,7 +156,7 @@ set the **optimal smearing function (erfc) parameters** :math:`\mu` and :math:`\
 After the calculation of the projectability, the workflow proceeds with the standard wannierisation: first \
 it computes the overlap and projection matrices and then runs the Wannier90 code.
 
-Here we summarise the main steps of the Wannier90BandsWorkChain:
+Here we summarise the main steps of the ``Wannier90BandsWorkChain``:
 
 * SCF (QuantumESPRESSO pw.x)
 * NSCF (QuantumESPRESSO pw.x)
@@ -173,7 +173,7 @@ Running the workflow
 --------------------
 
 If you have not launch the script yet, let's finally run the workflow! \
-Here we focus on how to run the Wannier90BandsWorkChain, the AiiDA workchain \
+Here we focus on how to run the ``Wannier90BandsWorkChain``, the AiiDA workchain \
 that implements the automation workflow to obtain MLWFs, for the full code documentation of the \
 AiiDA-Wannier90 plugin please visit the \
 `AiiDA-Wannier90 documentation <https://aiida-wannier90.readthedocs.io/en/latest/>`_.
@@ -239,7 +239,7 @@ Analyzing the outputs of the workflow
 
 Now we analyse the reports and outputs of the workflow using the command line.
 
-While the Wannier90BandsWorkChain is running you can monitor the progress of the workflow by \
+While the ``Wannier90BandsWorkChain`` is running you can monitor the progress of the workflow by \
 looking at the report using the command
 
 .. code:: bash
@@ -247,7 +247,7 @@ looking at the report using the command
     verdi process report <PK>
 
 where PK corresponds to the workchain pk. You will see a log with messages printed by the workchain, \
-including the pks of all the sub-workchains and calculations launched by the Wannier90BandsWorkChain, \
+including the pks of all the sub-workchains and calculations launched by the ``Wannier90BandsWorkChain``, \
 similar to the following:
 
 .. literalinclude:: include/snippets/workchain_report.txt
@@ -338,7 +338,7 @@ You can download the following script \
 
     verdi run plot_projectabilities.py <PK>
 
-where PK stands for the Wannier90BandsWorkChain pk.
+where PK stands for the ``Wannier90BandsWorkChain`` pk.
 
 You should obtain a plot similar to the following:
 
@@ -364,7 +364,7 @@ You should obtain something like the following
 .. figure:: include/images/O2Sr.dot.jpg
    :width: 100%
 
-   Provenance graph for a single Wannier90BandsWorkChain run. (PDF version \
+   Provenance graph for a single ``Wannier90BandsWorkChain`` run. (PDF version \
    :download:`O2Sr.dot.pdf <include/images/O2Sr.dot.pdf>`)
 
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
