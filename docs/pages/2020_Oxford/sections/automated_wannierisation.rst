@@ -49,14 +49,12 @@ and the location of the crystal structure file in the xsf format.
 You can download some simple crystal structures from this list:
 
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
-    * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf>`
-    * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
-    * :download:`Cl2Ti.xsf <include/xsf/Cl2Ti.xsf>`
+    * :download:`BrNa.xsf <include/xsf/BrNa.xsf>`
+    * :download:`GaAs.xsf <include/xsf/GaAs.xsf>`
     * :download:`F4Ni2.xsf <include/xsf/F4Ni2.xsf>`
     * :download:`O2Rb2.xsf <include/xsf/O2Rb2.xsf>`
     * :download:`BaS.xsf <include/xsf/BaS.xsf>`
     * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
-    * :download:`Cl2V.xsf <include/xsf/Cl2V.xsf>`
     * :download:`FNa.xsf <include/xsf/FNa.xsf>`
     * :download:`O2Sr.xsf <include/xsf/O2Sr.xsf>`
     * :download:`BeO4S.xsf <include/xsf/BeO4S.xsf>`
@@ -75,7 +73,7 @@ Launch the script with the following command
     
     verdi run launch_auto-wannier_workflow.py CaO.xsf
 
-You can replace CaO.xsf with any other structure that you find in the xsf folder, e.g. CsH.xsf or Br2Ti.xsf.
+You can replace CaO.xsf with any other structure that you find in the list, e.g. CsH.xsf or Br2Ti.xsf.
 
 
 Introduction
@@ -191,14 +189,12 @@ and the location of the crystal structure file in the xsf format.
 You can again download some simple crystal structures from this list
 
     * :download:`Ar2.xsf <include/xsf/Ar2.xsf>`
-    * :download:`BrNa.xsf.xsf <include/xsf/BrNa.xsf>`
-    * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
-    * :download:`Cl2Ti.xsf <include/xsf/Cl2Ti.xsf>`
+    * :download:`BrNa.xsf <include/xsf/BrNa.xsf>`
+    * :download:`GaAs.xsf <include/xsf/GaAs.xsf>`
     * :download:`F4Ni2.xsf <include/xsf/F4Ni2.xsf>`
     * :download:`O2Rb2.xsf <include/xsf/O2Rb2.xsf>`
     * :download:`BaS.xsf <include/xsf/BaS.xsf>`
     * :download:`C6Mg4.xsf <include/xsf/C6Mg4.xsf>`
-    * :download:`Cl2V.xsf <include/xsf/Cl2V.xsf>`
     * :download:`FNa.xsf <include/xsf/FNa.xsf>`
     * :download:`O2Sr.xsf <include/xsf/O2Sr.xsf>`
     * :download:`BeO4S.xsf <include/xsf/BeO4S.xsf>`
@@ -286,8 +282,26 @@ You should obtain a pdf like the following:
 
 Now we compare the Wannier-interpolated bands with the full DFT bands calculation.
 For convenience, we have already computed for you all the full DFT band structures for the \
-compounds you find the xsf folder. You can find the bands in the xmgrace (.agr) format in the the folder \
-`/dft_bands`.
+compounds you find the xsf folder. You can download the full DFT bands in the xmgrace (.agr) format form this list:
+
+    * :download:`Ar2_dft_bands.agr <include/dft_bands/Ar2_dft_bands.agr>`
+    * :download:`BrNa_dft_bands.agr <include/dft_bands/BrNa_dft_bands.agr>`
+    * :download:`AsGa_dft_bands.agr <include/dft_bands/AsGa_dft_bands.agr>`
+    * :download:`F4Ni2_dft_bands.agr <include/dft_bands/F4Ni2_dft_bands.agr>`
+    * :download:`O2Rb2_dft_bands.agr <include/dft_bands/O2Rb2_dft_bands.agr>`
+    * :download:`BaS_dft_bands.agr <include/dft_bands/BaS_dft_bands.agr>`
+    * :download:`C6Mg4_dft_bands.agr <include/dft_bands/C6Mg4_dft_bands.agr>`
+    * :download:`FNa_dft_bands.agr <include/dft_bands/FNa_dft_bands.agr>`
+    * :download:`O2Sr_dft_bands.agr <include/dft_bands/O2Sr_dft_bands.agr>`
+    * :download:`BeO4S_dft_bands.agr <include/dft_bands/BeO4S_dft_bands.agr>`
+    * :download:`CaO_dft_bands.agr <include/dft_bands/CaO_dft_bands.agr>`
+    * :download:`Cr2F4_dft_bands.agr <include/dft_bands/Cr2F4_dft_bands.agr>`
+    * :download:`O2Pb2_dft_bands.agr <include/dft_bands/O2Pb2_dft_bands.agr>` 
+    * :download:`PtS2_dft_bands.agr <include/dft_bands/PtS2_dft_bands.agr>`
+    * :download:`Br2Ti_dft_bands.agr <include/dft_bands/Br2Ti_dft_bands.agr>`
+    * :download:`Cl2O2Ti2_dft_bands.agr <include/dft_bands/Cl2O2Ti2_dft_bands.agr>`
+    * :download:`CsH_dft_bands.agr <include/dft_bands/CsH_dft_bands.agr>`
+    * :download:`O2Pd2_dft_bands.agr <include/dft_bands/O2Pd2_dft_bands.agr>`
 
 Take O2Sr as an example, :download:`O2Sr_wan_bands.agr <include/images/O2Sr_wan_bands.agr>`, \
 :download:`O2Sr_dft_bands.agr <include/images/O2Sr_dft_bands.agr>`
@@ -362,7 +376,7 @@ AiiDA's record of a calculation is best displayed in the form of a provenance gr
 
 Try to modify the :download:`launch_auto-wannier_workflow.py <include/snippets/launch_auto-wannier_workflow.py>` script to disable the MLWF \
 procedure in order to obtain Wannier functions with SCDM projections that are not localised.
-Run the code for 1-2 materials of the dataser, do you notice any difference?
+Run the code for 1-2 materials of the dataset, do you notice any difference?
 
 (Optional) Browse your database with the REST API
 -------------------------------------------------
