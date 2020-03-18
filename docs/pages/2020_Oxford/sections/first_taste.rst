@@ -370,7 +370,7 @@ the way AiiDA will run the code.
 
 You can find the full documentation of accepted keys for the ``settings``
 in the `aiida-wannier90 documentation`_ (e.g. to specify random projections,
-or to retrieve (or not retrieve) specific files at the end of the run.
+or to retrieve/not retrieve specific files at the end of the run).
 
 .. _aiida-wannier90 documentation: https://aiida-wannier90.readthedocs.io/en/v2.0.0/inputexample.html#settings
 
