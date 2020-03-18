@@ -218,7 +218,6 @@ latex_elements = {
     # Additional stuff for the LaTeX preamble.
     'preamble':
     r'''
-\usepackage[active]{preview}
 \usepackage{amsmath,amsfonts,amssymb,amsthm}
 \usepackage{braket}
 \usepackage{newunicodechar}
