@@ -290,7 +290,7 @@ got converted into the Wannier90 raw input file.
 Choosing a structure
 ********************
 In this simple example, we load a structure already stored in the AiiDA database
-(it is the one we imported from a file earlier).
+(it is the one we imported from a file earlier on).
 We do this using the ``load_node`` command (that accepts
 either an integer PK or a string UUID).
 

@@ -23,7 +23,7 @@ The protocol leverages the SCDM method introduced in:
   `Compressed representation of kohn–sham orbitals via selected columns of the density matrix <https://doi.org/10.1021/ct500985f>`_
   Journal of Chemical Theory and Computation 11, 1463–1469 (2015).
 
-* Anil Damle and L. Lin,
+* Anil Damle and Lin Lin,
   `Disentanglement via entanglement: A unified method for wannier localization <https://doi.org/10.1137/17M1129696>`_,
   Multiscale Modeling & Simulation 16, 1392–1410 (2018).
 
@@ -142,7 +142,7 @@ where the :math:`\phi_{Ilm}(\mathbf{k})` are the pseudo-atomic orbitals (PAO) em
 the generation of the pseudopotentials, :math:`I` is an index running over the atoms in the cell
 and :math:`lm` define the usual angular momentum quantum numbers.
 
-The workflow is designed for the specific use case where we are interested in Wannierise the occupied bands (plus, optionally, some unoccupied
+The workflow is designed for the specific use case where we are interested in wannierising the occupied bands (plus, optionally, some unoccupied
 or partially occupied bands) in insulators and in metals.
 
 The **number of Wannier functions** is automatically set equal to the number of PAOs defined in the pseudopotentials (and the pseudopotentials are automatically taken from the `SSSP efficiency library <https://www.materialscloud.org/discover/sssp/table/efficiency>`_).
