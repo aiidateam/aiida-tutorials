@@ -295,7 +295,10 @@ and compare it with the full DFT band structure using xmgrace
 
     xmgrace CsH_dft_bands.agr CsH_wan_bands.agr
 
-where you can replace CsH with any chemical formula of the other crystal structures we provide.
+where you can replace CsH with any chemical formula of the other crystal structures we provide. \
+For a reference, here are the two agr files \
+:download:`CsH_dft_bands.agr <include/dft_bands/CsH_dft_bands.agr>` \
+:download:`CsH_wan_bands.agr <include/dft_bands/CsH_wan_bands.agr>`
 
 You should obtain something like this:
 
