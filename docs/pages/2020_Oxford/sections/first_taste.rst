@@ -142,7 +142,7 @@ Introduction and importing existing simulations
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In AiiDA, one very important type of calculation in called "calculation job" (whose logic is 
-implenented in a ``CalcJob`` python class, and that are stored upon execution using a ``CalcJobNode`` python class).
+implemented in a ``CalcJob`` python class, and that are stored upon execution using a ``CalcJobNode`` python class).
 These calculations represent the execution
 of an external code (e.g. Quantum ESPRESSO, Wannier90, ...), very often on a different computer
 than the one where AiiDA is installed.
@@ -284,7 +284,7 @@ You will learn more about this in some of the advanced tutorials on AiiDA -- for
 Understanding the launcher script
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Above, we have just provided you a script that submits a calculation. 
-Let us know check in detail some relevant sections, and how the input information
+Let us now check in detail some relevant sections, and how the input information
 got converted into the Wannier90 raw input file.
 
 Choosing a structure

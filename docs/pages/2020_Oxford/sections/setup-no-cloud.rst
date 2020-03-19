@@ -1,7 +1,7 @@
 Getting set up
 ==============
 
-Donwload the correct Quantum Mobile version listed 
+Download the correct Quantum Mobile version listed 
 :ref:`in the homepage of this event<Oxford 2020 Homepage>`.
 
 .. note:: The credentials of the Quantum Mobile VM that you can download
