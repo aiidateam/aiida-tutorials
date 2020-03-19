@@ -27,12 +27,14 @@ builder.code = {
     'projwfc': projwfc_code,
     'wannier90': wan_code
 }
+# For this tutorial, we are using the 'testing' protocol,
+# with all cutoffs halved, to speed up the simulations
 builder.protocol = Dict(dict={'name': 'testing'})
 # Flags to control the workchain behaviour
 builder.controls = {
     # If True, compute only valence bands (NB: use for insulators only!)
     'only_valence': Bool(False),
-    # If True, perform maximal-localisation (MLWF) procedure (minimise \tilde(\Omega))
+    # If True, perform maximal-localisation (MLWF) procedure, i.e., minimise the spread Omega
     'do_mlwf': Bool(True),
 }
 
