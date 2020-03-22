@@ -337,7 +337,7 @@ We begin by generating the provenance graph with
 
     verdi node graph generate <PK>
 
-where the PK correspondS to the workflow you have just run.
+where the PK corresponds to the workflow you have just run.
 You should obtain something like the following:
 
 .. figure:: include/images/CsH.dot.jpg
@@ -364,7 +364,7 @@ the `Automated high-throughput wannierisation  <https://arxiv.org/abs/1909.00433
 -------------------------------------------------
 
 Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`_ and browse your database!
-Follow the instructionS that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
+Follow the instructions that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
 
 (Optional) More on AiiDA
 ------------------------
