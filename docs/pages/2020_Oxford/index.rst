@@ -23,7 +23,7 @@
 .. _Custom VM used for the Oxford 2020 tutorial: https://object.cscs.UPDATEME
 
 .. note:: The credentials of the Quantum Mobile VM are the following: username: ``max``, password: ``moritz``.
-   Also, when you start it, to make it more performant you might want to set 2 CPUs, and 2GB of RAM or more.
+   Also, when you start the VM, to make it more performant you might want to set 2 CPUs, and 2GB of RAM or more.
    If the machine becomes slow after a few hours of use, in VirtualBox 6 you can change the settings of the
    graphics controller to VMSVGA.
 

@@ -84,7 +84,7 @@ such as
 
 * the type of projections to build the :math:`A_{mn}({\mathbf{k}})` matrix
 
-and, in the case entangled bands, many other parameters like
+and, in the case of entangled bands, many other parameters like
 
 * the number of Wannier functions,
 * the frozen energy window,
@@ -103,7 +103,7 @@ The SCDM algorithm is based on a QR factorization with column pivoting (QRCP) an
 currently implemented in the ``pw2wannier90.x`` code of Quantum Espresso.
 
 It is worth to stress that the occupation function does not necessarily correspond to
-a physical smearing, but it used as a "window function" that restricts the manifold to the energy region of interest.
+a physical smearing, but it is used as a "window function" that restricts the manifold to the energy region of interest.
 For example, the isolated-band case can be recovered by setting :math:`f(\epsilon_{n\mathbf{k}})=1` for energy values
 :math:`\epsilon_{n\mathbf{k}}` within the energy range of the isolated bands, and zero elsewhere.
 
@@ -119,13 +119,13 @@ entangled manifold.
 
 While the SCDM method allows to avoid the disentanglement procedure, and so the need to specify
 the frozen and outer window, it does not provide a recipe to set the smearing function parameters
-:math:`\mu` and :math:`\sigma`. In addition, the number of Wannier function remains to be set and
+:math:`\mu` and :math:`\sigma`. In addition, the number of Wannier functions remains to be set and
 a sensible value typically requires some chemical consideration, such as counting the number of atomic orbitals
 of a given orbital character (e.g. :math:`s`, :math:`p`, :math:`d`, :math:`sp^3`, ...).
 
 The ``Wannier90BandsWorkChain`` (distributed in the `aiida-wannier90-workflows package <https://github.com/aiidateam/aiida-wannier90-workflows>`_) is an AiiDA workchain that implements a protocol that deals with the choice
 of the number of Wannier functions and sets the parameters :math:`\mu` and :math:`\sigma` defining
-the smearing function. For a full explanation of protocol we refer to the article
+the smearing function. For a full explanation of the protocol we refer to the article
 `Automated high-throughput wannierisation  <https://arxiv.org/abs/1909.00433>`_, while here we
 just outline the main features.
 
@@ -147,7 +147,7 @@ or partially occupied bands) in insulators and in metals.
 
 The **number of Wannier functions** is automatically set equal to the number of PAOs defined in the pseudopotentials (and the pseudopotentials are automatically taken from the `SSSP efficiency library <https://www.materialscloud.org/discover/sssp/table/efficiency>`_).
 The projectabilities on these PAO orbitals are then computed and used to
-set the **optimal smearing function (erfc) parameters** :math:`\mu` and :math:`\sigma` as explained in the paper
+set the **optimal smearing function (erfc) parameters** :math:`\mu` and :math:`\sigma`, as explained in the paper
 `Automated high-throughput wannierisation  <https://arxiv.org/abs/1909.00433>`_.
 After the calculation of the projectabilities, the workflow proceeds with the usual Wannierisation step: first
 it computes the overlap and projection matrices using ``pw2wannier90``, and then it runs the Wannier90 code.
@@ -161,7 +161,7 @@ Here we summarise the main steps of the ``Wannier90BandsWorkChain``:
 * Overlap matrices :math:`M_{mn}`, initial projections with SCDM :math:`A_{mn}` (QuantumESPRESSO ``pw2wannier90.x``)
 * Wannierisation (``wannier90.x``)
 
-The output of the workflow includes several nodes, including the projectabilities
+The output of the workflow includes several nodes, among which the projectabilities
 and interpolated band structure, that we are going to inspect after the run.
 
 
@@ -197,7 +197,7 @@ Here is the script that you have run:
 
 .. literalinclude:: include/snippets/launch_auto-wannier_workflow.py
 
-Inspect the script in detail now, and make sure that you undestand all its parts.
+Inspect the script in detail now, and make sure that you understand all its parts.
 The comments should guide you through it.
 As you will notice, the amount of information to provide
 to the workflow is really minimal: just the codes to use, the crystal structure, and some flags to control the behavior (which protocol to use, if you want to compute
@@ -282,7 +282,7 @@ just computed earlier in xmgrace format with
 
     verdi data bands export --format agr --output CsH_wan_bands.agr <PK_bands>
 
-and then you can compare the with the full DFT band structure using xmgrace using:
+and then you can compare them with the full DFT band structure using xmgrace typing:
 
 .. code:: bash
 
@@ -322,9 +322,9 @@ You should obtain a plot similar to the following:
 .. figure:: include/images/CsH_proj.png
    :width: 100%
 
-**Exercise**: open the script and try to understand what it is doing.
+**Exercise**: Open the script and try to understand what it is doing.
 
-As you can see the protocol to choose :math:`\mu` and :math:`\sigma` ensures that the
+As you can see, the protocol to choose :math:`\mu` and :math:`\sigma` ensures that the
 SCDM algorithm is applied to a density-matrix that includes (with a large weight) only those Kohn-Sham states
 that have a large projection on the manifold spanned by the PAOs.
 
@@ -337,8 +337,8 @@ We begin by generating the provenance graph with
 
     verdi node graph generate <PK>
 
-where the PK correspond to the workflow you have just run.
-You should obtain something like the following
+where the PK correspondS to the workflow you have just run.
+You should obtain something like the following:
 
 .. figure:: include/images/CsH.dot.jpg
    :width: 100%
@@ -364,7 +364,7 @@ the `Automated high-throughput wannierisation  <https://arxiv.org/abs/1909.00433
 -------------------------------------------------
 
 Connect to the `AiiDA REST API <https://www.materialscloud.org/explore/connect>`_ and browse your database!
-Follow the instruction that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
+Follow the instructionS that you find on the `Materials Cloud website <https://www.materialscloud.org/explore/connect>`_.
 
 (Optional) More on AiiDA
 ------------------------

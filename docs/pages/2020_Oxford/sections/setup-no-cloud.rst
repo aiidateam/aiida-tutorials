@@ -79,6 +79,6 @@ Please consider:
  * consulting the extensive `AiiDA documentation <https://aiida-core.readthedocs.io/en/latest/>`_
  * opening a new issue on the `tutorial issue tracker <https://github.com/aiidateam/aiida-tutorials/issues>`_
  * asking your neighbor
- * asking a tutor
+ * asking a tutor.
 
 .. Add here a link if you are creating a slack channel for the tutorial
