@@ -1,0 +1,10 @@
+usage: launch_auto-wannier_workflow.py [-h] [--xsf XSF] [-p PROTOCOL]
+
+A launch script to run the AiiDA Wannier90BandsWorkChain for automated high-
+throughput Wannier functions.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --xsf XSF             path to an input XSF file
+  -p PROTOCOL, --protocol PROTOCOL
+                        Available protocols are 'theos-ht-1.0' and 'testing'

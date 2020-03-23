@@ -1,0 +1,12 @@
+---
+label: openstack
+description: Machine on the OpenStack cluster of the Swiss Supercomputing Center (CSCS)
+hostname: 148.187.96.53
+transport: ssh  # connects via SSH
+scheduler: slurm  # use SLURM scheduler
+work_dir: "/home/{username}/aiida_run"
+mpirun_command: "mpirun -np {tot_num_mpiprocs}"
+mpiprocs_per_machine: "8"
+shebang: "#!/bin/bash"
+prepend_text: " "
+append_text: " "

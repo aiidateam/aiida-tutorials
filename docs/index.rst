@@ -6,7 +6,8 @@ The official home of AiiDA tutorial materials and videos.
 Where to start
 ---------------------
 
-- short demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>`.
+- short demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>` (using Quantum ESPRESSO), or 
+  the :ref:`Wannier90 "Virtual Edition" 2020 tutorial <Oxford 2020 Homepage>` (using Wannier90).
 - in-depth tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`, including `lecture videos <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>`_
 - `AiiDA cheatsheet <https://github.com/aiidateam/aiida-tutorials/raw/b5a8d54176153ce2b735e1fae8cae2c93c78a6bf/docs/pages/2019_IIT_Mandi_India/cheatsheet/cheatsheet.pdf>`_ with class hierarchy and common commands
 
@@ -30,6 +31,7 @@ links inside the respective sections.
    :maxdepth: 1
    :caption: Tutorial materials
 
+   2020, Wannier workshop Virtual Edition (aiida-core 1.1.1)<./pages/2020_Oxford/index>
    2019, ISSP University of Tokyo, Chiba, Japan (aiida-core 1.0.1)<./pages/2019_ISSP_Chiba_Japan/index>
    2019, IIT Mandi, Mandi, India (aiida-core 1.0.0b6)<./pages/2019_IIT_Mandi_India/index>
    2019, SINTEF, Oslo, Norway (aiida-core 1.0.0b6)<./pages/2019_SINTEF/index>
