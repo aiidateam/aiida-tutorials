@@ -23,7 +23,7 @@ env:
   matrix:
     - BUILD: docs
       TARGET: html
-      SPHINXOPTS: -W
+      SPHINXOPTS: -nW
     - BUILD: docs
       TARGET: latexpdf
     - BUILD: pre-commit
@@ -35,8 +35,6 @@ install:
 script: 
   - >
     if [ "$BUILD" == "docs" ]; then 
-     # -C docs: switch to docs/ directory
-      make -C docs pre-docs
       make -C docs $TARGET
     else
       pre-commit install

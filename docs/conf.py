@@ -15,6 +15,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+import os
+import subprocess
+
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -355,9 +358,9 @@ intersphinx_mapping = {
 
 # Compile all things needed before building the docs
 # For instance, convert the notebook templates to actual tutorial and solution versions
-import os
-import subprocess
-print(subprocess.check_output(
-        ['make', '-C', os.path.dirname(os.path.realpath(__file__)), 'pre-docs'],
-        universal_newlines=True)
-)
+print(
+    subprocess.check_output([
+        'make', '-C',
+        os.path.dirname(os.path.realpath(__file__)), 'pre-docs'
+    ],
+                            universal_newlines=True))
