@@ -352,3 +352,12 @@ nbsphinx_execute = 'never'
 intersphinx_mapping = {
     'aiida': ('http://aiida-core.readthedocs.org/en/latest/', None)
 }
+
+# Compile all things needed before building the docs
+# For instance, convert the notebook templates to actual tutorial and solution versions
+import os
+import subprocess
+print(subprocess.check_output(
+        ['make', '-C', os.path.dirname(os.path.realpath(__file__)), 'pre-docs'],
+        universal_newlines=True)
+)
