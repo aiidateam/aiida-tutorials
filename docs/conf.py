@@ -15,6 +15,9 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import absolute_import
 
+import os
+import subprocess
+
 # -- General configuration -----------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -352,3 +355,12 @@ nbsphinx_execute = 'never'
 intersphinx_mapping = {
     'aiida': ('http://aiida-core.readthedocs.org/en/latest/', None)
 }
+
+# Compile all things needed before building the docs
+# For instance, convert the notebook templates to actual tutorial and solution versions
+print(
+    subprocess.check_output([
+        'make', '-C',
+        os.path.dirname(os.path.realpath(__file__)), 'pre-docs'
+    ],
+                            universal_newlines=True))
