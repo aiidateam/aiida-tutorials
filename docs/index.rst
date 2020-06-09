@@ -31,6 +31,7 @@ links inside the respective sections.
    :maxdepth: 1
    :caption: Tutorial materials
 
+   2020, Introductory workshop Virtual Edition (aiida-core 1.2.1)<./pages/2020_Intro_Week/index>
    2020, Wannier workshop Virtual Edition (aiida-core 1.1.1)<./pages/2020_Oxford/index>
    2019, ISSP University of Tokyo, Chiba, Japan (aiida-core 1.0.1)<./pages/2019_ISSP_Chiba_Japan/index>
    2019, IIT Mandi, Mandi, India (aiida-core 1.0.0b6)<./pages/2019_IIT_Mandi_India/index>
