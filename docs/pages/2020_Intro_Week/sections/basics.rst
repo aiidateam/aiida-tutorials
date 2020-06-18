@@ -567,7 +567,7 @@ portions of python code. The code will not be executed until you press
 
 and execute it. This will set exactly the same environment as the
 ``verdi shell``. The notebook will be automatically saved upon any
-modification and when you think you are done, you can export your notebook in
+modification. When you think you are done, you can export your notebook in
 many formats by going to ``File`` → ``Download as``. We suggest you to have a
 look at the drop-down menus ``Insert`` and ``Cell`` where you will find the
 main commands to manage the cells of your notebook.
@@ -575,8 +575,7 @@ main commands to manage the cells of your notebook.
 .. note::
 
     The ``verdi shell`` and Jupyter
-    notebook are completely equivalent. Use either according to your
-    personal preference.
+    notebook are completely equivalent. Use the one you prefer.
 
 You will still sometimes need to type command-line instructions in ``bash`` in
 the first terminal you opened. To differentiate these from the commands to be
@@ -585,14 +584,14 @@ green background, like:
 
 .. code:: python
 
-    some verdi shell command
+    load_node(100) # A python verdi shell command
 
 while command-line instructions in ``bash`` to be typed into a terminal will
 be written with a blue background:
 
 .. code:: bash
 
-    some bash command
+    verdi process list
 
 Alternatively, to avoid changing terminal, you can execute ``bash`` commands
 within the ``verdi shell`` or the notebook by adding an exclamation mark before
@@ -600,7 +599,7 @@ the command itself:
 
 .. code:: ipython
 
-    !some bash command
+    !verdi process list
 
 .. _loadnode:
 
@@ -615,7 +614,7 @@ in the shell:
 
     node = load_node(PK)
 
-Load a node using one of the calculation ``PK`` s visible in the graph you
+Load a node using the ``PK`` of one of the calculations visible in the graph you
 displayed in the previous section of the tutorial. Then get the energy of the
 calculation with the command
 
@@ -820,8 +819,8 @@ Now you can store the new structure object in the database with the command:
 
     structure.store()
 
-Finally, we can also import the silicon structure from an external (online)
-repository such as the Crystallography Open Database (COD):
+Finally, a different way of creating the silicon structure is to import it from an external (online)
+repository such as the `Crystallography Open Database (COD) <http://www.crystallography.net/cod/>`__:
 
 .. code:: python
 
@@ -829,10 +828,12 @@ repository such as the Crystallography Open Database (COD):
     importer = CodDbImporter()
     for entry in importer.query(formula='Si', spacegroup='F d -3 m'):
         structure = entry.get_aiida_structure()
-        print("Formula", structure.get_formula())
-        print("Unit cell volume: ", structure.get_cell_volume())
+        print("Formula:", structure.get_formula())
+        print("Unit cell volume:", structure.get_cell_volume())
+        print()
 
-In that case two duplicate structures are found for 'Si'.
+This will connect to the COD database on the web, perform the query for all entries with formula ``Si`` and spacegroup ``Fd-3m``, fetch the results and convert them to AiiDA StructureData objects.
+In this case two structures exist for 'Si' in COD and both are shown.
 
 Accessing inputs and outputs
 ----------------------------
@@ -875,7 +876,7 @@ Note that links have a single name, that was assigned by the calculation that
 used the corresponding input or produced the corresponding output, as
 illustrated in section :ref:`2020_virtual_aiidagraph`.
 
-For a more programmatic approach, you can get a represenation of the inputs and outputs of a node, say ``calc``, through the following methods:
+For a more programmatic approach, you can get a representation of the inputs and outputs of a node, say ``calc``, through the following methods:
 
 .. code:: python
 
@@ -883,14 +884,20 @@ For a more programmatic approach, you can get a represenation of the inputs and 
     calc_outgoing = calc.get_outgoing()
 
 These methods will return an instance of the ``LinkManager`` class.
-You can iterate over the neighboring nodes by calling the ``.all()`` method:
+You can print all nodes calling the ``.all()`` method:
+
+.. code:: python
+
+    print(calc_incoming.all())
+
+or you can just iterate over the neighboring nodes and check the link properties as follows:
 
 .. code:: python
 
     for entry in calc.get_outgoing():
         print(entry.link_label, entry.link_type, entry.node)
 
-each entry returned by ``.all()`` is a ``LinkTriple``, a named tuple, from which you can get the link label and type and the neighboring node itself.
+each entry is a named tuple (called ``LinkTriple``), from which you can get the link label and type and the neighboring node itself.
 If you print one, you will see something like:
 
 .. code:: python
@@ -917,7 +924,7 @@ For example, if you only want to get the outgoing links whose label starts with 
 
 .. code:: python
 
-    calc.get_outgoing(link_label_filter='output%').all_nodes()
+    calc.get_outgoing(link_label_filter='output%').all()
 
 
 Pseudopotential families
@@ -930,17 +937,18 @@ SSSP pseudopotentials via the commands:
 
 .. code:: bash
 
-    wget https://archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.tar.gz
-    tar -zxvf SSSP_efficiency_pseudos.tar.gz
+    mkdir sssp_pseudos
+    wget 'https://archive.materialscloud.org/record/file?filename=SSSP_1.1_PBE_efficiency.tar.gz&record_id=23&file_id=d2ce4186-bf76-4e05-8b39-444b4da30273' -O SSSP_1.1_PBE_efficiency.tar.gz
+    tar -C sssp_pseudos -zxvf SSSP_1.1_PBE_efficiency.tar.gz
 
 Then you can upload the whole set of pseudopotentials to AiiDA by using the
 following ``verdi`` command:
 
 .. code:: bash
 
-    verdi data upf uploadfamily SSSP_efficiency_pseudos 'SSSP' 'SSSP pseudopotential library'
+    verdi data upf uploadfamily sssp_pseudos 'SSSP' 'SSSP pseudopotential library'
 
-In the command above, ``SSSP_efficiency_pseudos`` is the folder containing the
+In the command above, ``sssp_pseudos`` is the folder containing the
 pseudopotentials, ``'SSSP'`` is the name given to the family, and the last argument
 is its description. Finally, you can list all the pseudo families present in
 the database with
