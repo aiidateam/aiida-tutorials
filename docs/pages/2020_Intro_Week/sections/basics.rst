@@ -7,18 +7,21 @@ AiiDA basics
 Verdi command line
 ==================
 
-This part of the tutorial will familiarize you with the ``verdi`` command-line interface (CLI),
+This part of the tutorial will help you familiarize with the ``verdi`` command-line interface (CLI),
 which lets you manage your AiiDA installation, inspect the contents of your database,  control running calculations and more.
 
- * The ``verdi`` command supports **tab-completion**:
-   In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
- * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag, e.g.:
+.. note:: Remember to run ``workon aiida`` in any new shell, in order to enter the correct virtual environment,
+   otherwise the ``verdi`` command will not be available.
 
-   .. code:: bash
+* The ``verdi`` command supports **tab-completion**:
+  In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
+* For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag, e.g.:
 
-       verdi quicksetup -h
+  .. code:: bash
 
-More details on ``verdi`` can be found in the `online documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html>`_.
+    verdi quicksetup -h
+
+More details on ``verdi`` can be found in the `online documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html>`_.
 
 
 Setting up a profile
@@ -36,17 +39,17 @@ Let's set up a new profile that we will use throughout this tutorial:
 
 This will prompt you for some information, such as the name of the profile, your name, etc.
 The information about you as a user will be associated with all the data that you create in AiiDA
-and is important for attribution, when you start sharing your data with others.
+and it is important for attribution when you will later share your data with others.
 After you have answered all the questions, a new profile will be created, along
 with the required database and repository.
 
 .. note::
 
     ``verdi quicksetup`` is a user-friendly wrapper around the ``verdi setup`` command that provides more control over the profile setup.
-    As explained in `the documentation <https://aiida-core.readthedocs.io/en/latest/install/installation.html#database-setup>`_, ``verdi setup`` expects certain external resources, such as the database to already have been pre-configured.
+    As explained in `the documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/intro/installation.html#aiida-profile-custom-setup>`_, ``verdi setup`` expects certain external resources (such as the database and RabbitMQ) to already have been pre-configured.
     ``verdi quicksetup`` will try to do this for you, but may not be successful in certain environments.
 
-To see this profile, and any others that may have been configured, run:
+To check that a new profile has been generated (in our case, called ``quicksetup``), alomng with any other that may have been already configured, run:
 
 .. code:: bash
 
@@ -61,7 +64,7 @@ The one marked with an asterisk is the "default" profile, meaning that any ``ver
 
 .. note::
 
-    The output you get may differ.
+    The output you will get may differ.
     The ``generic`` profile is pre-configured on the virtual machine built for the tutorial (but we are not going to use it here).
 
 Let's change the default profile to the newly created ``quicksetup`` for the rest of the tutorial:
@@ -75,7 +78,7 @@ From now on, all ``verdi`` commands will apply to the ``quicksetup`` profile.
 .. note::
 
     To quickly perform a single command on a profile that is not the default, use the ``-p/--profile`` option:
-    For example, ``verdi -p generic profile show`` will display the configuration of the ``generic`` profile, despite it not being the current default profile.
+    For example, ``verdi -p generic code list`` will display the codes for the ``generic`` profile, despite it not being the current default profile.
 
 
 Importing data
@@ -97,14 +100,14 @@ In the following, we are going to introduce you to different ways of browsing th
 Your first AiiDA graph
 ----------------------
 
-:numref:`2020_virtual_fig_graph_input_only` shows a typcial example of a calculation represented in an AiiDA graph.
+:numref:`2020_virtual_fig_graph_input_only` shows a typical example of a calculation represented in an AiiDA graph.
 Have a look to the figure and its caption before moving on.
 
 .. _2020_virtual_fig_graph_input_only:
 .. figure:: include/images/verdi_graph/batio3/graph-input.png
    :width: 100%
 
-   Graph with all inputs (data, circles; and code, diamond) to the Quantum ESPRESSO calculation (square) that you will create in the :ref:`calculations` section of this tutorial.
+   Graph with all inputs (data, circles; and code, diamond) to the Quantum ESPRESSO calculation (square) that you will create in the :ref:`2020_virtual_intro:running` section of this tutorial.
 
 .. figure:: include/images/verdi_graph/batio3/graph-full.png
    :width: 100%
@@ -112,10 +115,10 @@ Have a look to the figure and its caption before moving on.
    Same as :numref:`2020_virtual_fig_graph_input_only`, but also with the outputs that the engine will create and connect automatically.
    The ``RemoteData`` node is created during submission and can be thought as a symbolic link to the remote folder in which the calculation runs on the cluster.
    The other nodes are created when the calculation has finished, after retrieval and parsing.
-   The node with linkname 'retrieved' contains the raw output files stored in the AiiDA repository; all other nodes are added by the parser.
-   Additional nodes (symbolized in gray) can be added by the parser (e.g. an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics etc.).
+   The node with linkname ``retrieved`` contains the relevant raw output files stored in the AiiDA repository; all other nodes are added by the parser.
+   Additional nodes (symbolized in gray) can be added by the parser: e.g., an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics, etc.
 
-:numref:`2020_virtual_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi graph generate <IDENTIFIER>``.
+:numref:`2020_virtual_fig_graph_input_only` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi node graph generate <IDENTIFIER>``.
 Identifiers in AiiDA come in three forms:
 
  * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
@@ -128,23 +131,16 @@ While PKs are often shorter than UUIDs and can be easier to remember, they are o
 
 .. note::
     For UUIDs, it is sufficient to specify a subset (starting at the beginning) as long as it can already be uniquely resolved.
-    For more information on identifiers in ``verdi`` and AiiDA in general, see the `documentation <https://aiida-core.readthedocs.io/en/latest/verdi/verdi_user_guide.html#cli-identifiers>`_.
+    For more information on identifiers in ``verdi`` and AiiDA in general, see the `documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html#topics-cli-identifiers>`_.
 
-For the remainder of this section, fields enclosed in angular brackets, such as ``<IDENTIFIER>``, are placeholders that you should replace before executing the command.
+For the remainder of this section, fields enclosed in angular brackets (such as ``<IDENTIFIER>``) are placeholders that you should replace before executing the command.
 With that in mind, let's generate a graph for the calculation node with UUID ``ce81c420-7751-48f6-af8e-eb7c6a30cec3``:
 
 .. code:: bash
 
-    verdi graph generate <IDENTIFIER>
+    verdi node graph generate <IDENTIFIER>
 
-This command will create the file ``<PK>.dot`` that can be rendered by means of the utility ``dot`` as follows:
-
-.. code:: bash
-
-    dot -Tpdf -o <PK>.pdf <PK>.dot
-
-which will create a pdf file ``<PK>.pdf``.
-
+This command will create the file ``<PK>.dot.pdf`` that can be viewed with any PDF document viewer.
 
 You can open this file on the Amazon machine by using ``evince`` or, if the ssh connection is too slow, copy it via ``scp`` to your local machine.
 To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
@@ -154,13 +150,13 @@ To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
     scp aiidatutorial:<path_with_the_graph_pdf> <local_folder>
 
 and then open the file.
-Alternatively, you can use graphical software to achieve the same, for instance: WinSCP on Windows, Cyberduck on the Mac, or the 'Connect to server' option in the main menu after clicking on the desktop for Ubuntu.
+Alternatively, you can use graphical software to achieve the same, for instance: on Windows: WinSCP; on a Mac: Cyberduck; on Linux Ubuntu: using the 'Connect to server' option in the main menu after clicking on the desktop.
 
 
 The provenance browser
 ----------------------
 
-While the ``verdi`` CLI provides full access to the data underlying the provenance graph (and we will return to it in :numref:`2020_virtual_inspecting_nodes`),
+While the ``verdi`` CLI provides full access to the data underlying the provenance graph,
 a more intuitive tool for browsing AiiDA graphs is the interactive
 provenance browser available on `Materials
 Cloud <https://www.materialscloud.org>`__.
@@ -170,9 +166,10 @@ In order to use it, we first need to start the `AiiDA REST API <https://aiida-co
 .. code:: bash
 
     verdi restapi
+     * REST API running on http://127.0.0.1:5000/api/v4
      * Serving Flask app "aiida.restapi.run_api" (lazy loading)
      * Environment: production
-       WARNING: Do not use the development server in a production environment.
+       WARNING: This is a development server. Do not use it in a production deployment.
        Use a production WSGI server instead.
      * Debug mode: off
      * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
@@ -180,7 +177,7 @@ In order to use it, we first need to start the `AiiDA REST API <https://aiida-co
 Now you can connect the provenance browser to your local REST API:
 
 -  Open the |provenance_browser| on your laptop
--  In the form, paste the (local) URL ``http://127.0.0.1:5000/api/v3``
+-  In the form, paste the (local) URL ``http://127.0.0.1:5000/api/v4``
    of our REST API
 -  Click "GO!"
 
@@ -191,9 +188,9 @@ Now you can connect the provenance browser to your local REST API:
 Once the provenance browser javascript application has been loaded by your browser, it is communicating directly with the REST API and your data never leaves your computer.
 
 .. note::
-    In order for this to work on your laptop, while the REST API is running on the virtual machine, we've enabled SSH tunneling for port ``5000`` in :ref:`2019_epfl_connect`.
+    In order for this to work on your laptop, while the REST API is running on the virtual machine, we've enabled SSH tunneling for port ``5000`` in :ref:`2020_virtual_intro:setup`.
 
-Start by clicking on the Details of a ``CalcJobNode`` and use the graph explorer to complete the exercise below.
+Start by clicking on the details of a calculation job and use the graph explorer to complete the exercise below (you can filter by calculation jobs using the menu on the left, under ``Process -> Calculation -> Calculation job``).
 If you ever get lost, just go to the "Details" tab, enter ``ce81c420-7751-48f6-af8e-eb7c6a30cec3`` and click on the "GO" button.
 
 .. admonition:: Exercise
@@ -205,13 +202,6 @@ If you ever get lost, just go to the "Details" tab, enter ``ce81c420-7751-48f6-a
    -  What inputs did the calculation take?
    -  What code was used and what was the name of the executable?
    -  How many calculations were performed using this code?
-
-
-.. _2020_virtual_inspecting_nodes:
-
-Inspecting the nodes of a graph
--------------------------------
-
 
 Processes
 ---------
@@ -273,7 +263,7 @@ Processes can be in any of the following states:
 
 The first three states are 'active' states, meaning the process is not done yet, and the last three are 'terminal' states.
 Once a process is in a terminal state, it will never become active again.
-The `official documentation <https://aiida-core.readthedocs.io/en/latest/concepts/processes.html#process-state>`_ contains more details on process states.
+The `official documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/processes/concepts.html#process-state>`_ contains more details on process states.
 
 In order to list processes of *all* states, use the ``-a/--all`` flag:
 
@@ -379,7 +369,7 @@ To see a list of all the files used to run a calculation (input file, submission
     verdi calcjob inputls <IDENTIFIER>
 
 Adding a ``--color`` flag allows you to easily distinguish files from folders by a different coloring.
-Once you know the name of the file you want to visualize, you can call the ``verdi calcjob inputcat [PATH]`` command specifying the path.
+Once you know the name of the file you want to visualize, you can call the ``verdi calcjob inputcat [PATH]`` command specifying the path of the file to show.
 For instance, to see the submission script, you can do:
 
 .. code:: bash
@@ -399,7 +389,7 @@ Type in the terminal:
 
     verdi data structure show --format ase <IDENTIFIER>
 
-to show the selected structure, although it will take a few seconds to appear
+to show the selected structure, although it will take a few seconds to appear (it has to go over a tunnel on your SSH connection).
 You should be able to rotate the view with the right mouse button.
 
 .. note::
@@ -426,7 +416,7 @@ Codes and computers
 
 Let us focus now on the nodes of type ``Code``.
 A code represents (in the database) the actual executable used to run the calculation.
-Find the identifier of such a node in the graph and type:
+Find the identifier of such a node in the graph (e.g. the input code of the calculation you were inspecting earlier) and type:
 
 .. code:: bash
 
@@ -489,17 +479,17 @@ and
 
     verdi calcjob outputcat <IDENTIFIER>
 
-Use the latter to verify that the Fermi energy that you have found in the last step has been extracted correctly from the output file
+Use the latter to verify that the Fermi energy that you have found in the last step has been extracted correctly from the output file.
 
 .. note::
 
-    Hint: filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines
+    Hint: filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines.
 
 The results of calculations are stored in two ways: ``Dict`` objects are stored in the database, which makes querying them very convenient, whereas ``ArrayData`` objects are stored on the disk.
 Once more, use the command ``verdi data array show <IDENTIFIER>`` to determine the Fermi energy obtained from calculation with the UUID ``ce81c420``.
 This time you will need to use the identifier of the output ``ArrayData`` of the calculation, with link name ``output_trajectory_array``.
-As you might have realized the difference now is that the whole series of values of the Fermi energy calculated after each relax/vc-relax step are stored.
-The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the parser of ``pw.x`` implemented in the ``aiida-quantumespresso`` plugin.
+As you might have realized, the difference now is that the whole series of values of the Fermi energy calculated after each relax/vc-relax step are stored.
+The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the parser of ``pw.x`` implemented in the `aiida-quantumespresso <https://github.com/aiidateam/aiida-quantumespresso>`__ plugin.
 
 (Optional section) Comments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -509,21 +499,21 @@ Node with UUID prefix ``ce81c420`` should have no comments, but you can add a ve
 
 .. code:: bash
 
-    verdi comment add "vc-relax of a BaTiO3 done with QE pw.x" -N <IDENTIFIER>
+    verdi node comment add "vc-relax of a BaTiO3 done with QE pw.x" -N <IDENTIFIER>
 
 Now, if you ask for a list of all comments associated to that calculation by typing:
 
 .. code:: bash
 
-    verdi comment show <IDENTIFIER>
+    verdi node comment show <IDENTIFIER>
 
 the comment that you just added will appear together with some useful information such as its creator and creation date.
-We let you play with the other options of ``verdi comment`` command to learn how to update or remove comments.
+We let you play with the other options of ``verdi node comment`` command to learn how to update or remove comments.
 
-AiiDA groups of calculations
-----------------------------
+AiiDA groups of nodes
+---------------------
 
-In AiiDA, calculations (and more generally nodes) can be organized in groups, which are particularly useful to assign a set of calculations or data to a common project.
+In AiiDA, calculations (and more generally nodes) can be organized in groups, which are particularly useful to organise your data, and assign a set of calculations or data to a common subproject.
 This allows you to have quick access to a whole set of calculations with no need for tedious browsing of the database or writing complex scripts for retrieving the desired nodes.
 Type in the terminal:
 
@@ -531,7 +521,7 @@ Type in the terminal:
 
     verdi group list -a -A
 
-to show a list of **all** groups that exist in the database.
+to show a list of all groups that exist in the database.
 Choose the PK of the group named ``tutorial_pbesol`` and look at the calculations that it contains by typing:
 
 .. code:: bash
