@@ -104,6 +104,11 @@ It is important to reiterate here that the :class:`~aiida.engine.processes.funct
 The ``add()`` and ``multiply()`` calculation functions create the ``Int`` data nodes, all the work function does is *return* the results of the ``multiply()`` calculation function.
 Moreover, both calculation and workflow functions can only accept and return data nodes, i.e. instances of classes that subclass the :class:`~aiida.orm.nodes.data.data.Data` class.
 
+Copy the code snippet above and execute it in the ``verdi shell``, or put it into a Python script (e.g. :download:`add_multiply.py <include/snippets/workflows_add_multiply.py>`) and load it in the ``verdi shell``:
+
+.. code-block:: ipython
+    blah
+
 Once again, running a work function is as simple as calling a typical Python function: simply call it with the required input arguments:
 
 .. code-block:: ipython
@@ -317,9 +322,14 @@ Once the *required* inputs of the workflow have been provided to the builder, yo
 
     For more detail on the process builder, see the :ref:`corresponding topics section<topics:processes:usage:builder>`.
 
-
 OLD
 ===
+
+COD importer
+
+from aiida.plugins import DbImporterFactorycod = DbImporterFactory('cod')()results = cod.query(id='1526655')cif = results[0].get_cif_node().store()cifcif.get_attribute('source')
+
+cif.get_structure()
 
 Imagine having a function that takes as input a string of the name of a chemical element and generates the corresponding bulk structure as a ``StructureData`` object.
 The function might look like the following snippet:
