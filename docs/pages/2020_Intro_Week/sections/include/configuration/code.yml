@@ -1,0 +1,9 @@
+---
+label: "qe-6.5-pw"
+description: "quantum_espresso v6.5"
+input_plugin: "quantumespresso.pw"
+on_computer: true
+remote_abs_path: "/usr/local/bin/pw.x"
+computer: "localhost"
+prepend_text: "ulimit -s unlimited"
+append_text: " "
