@@ -8,7 +8,7 @@ Verdi command line
 ==================
 
 This part of the tutorial will help you familiarize with the ``verdi`` command-line interface (CLI),
-which lets you manage your AiiDA installation, inspect the contents of your database,  control running calculations and more.
+which lets you manage your AiiDA installation, inspect the contents of your database, control running calculations and more.
 
 .. note:: Remember to run ``workon aiida`` in any new shell, in order to enter the correct virtual environment,
    otherwise the ``verdi`` command will not be available.
@@ -49,7 +49,7 @@ with the required database and repository.
     As explained in `the documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/intro/installation.html#aiida-profile-custom-setup>`_, ``verdi setup`` expects certain external resources (such as the database and RabbitMQ) to already have been pre-configured.
     ``verdi quicksetup`` will try to do this for you, but may not be successful in certain environments.
 
-To check that a new profile has been generated (in our case, called ``quicksetup``), alomng with any other that may have been already configured, run:
+To check that a new profile has been generated (in our case, called ``quicksetup``), along with any other that may have been already configured, run:
 
 .. code:: bash
 
@@ -156,10 +156,7 @@ Alternatively, you can use graphical software to achieve the same, for instance:
 The provenance browser
 ----------------------
 
-While the ``verdi`` CLI provides full access to the data underlying the provenance graph,
-a more intuitive tool for browsing AiiDA graphs is the interactive
-provenance browser available on `Materials
-Cloud <https://www.materialscloud.org>`__.
+While the ``verdi`` CLI provides full access to the data underlying the provenance graph, a more intuitive tool for browsing AiiDA graphs is the interactive provenance browser available on `Materials Cloud <https://www.materialscloud.org>`__.
 
 In order to use it, we first need to start the `AiiDA REST API <https://aiida-core.readthedocs.io/en/latest/restapi/index.html>`_:
 
@@ -177,8 +174,7 @@ In order to use it, we first need to start the `AiiDA REST API <https://aiida-co
 Now you can connect the provenance browser to your local REST API:
 
 -  Open the |provenance_browser| on your laptop
--  In the form, paste the (local) URL ``http://127.0.0.1:5000/api/v4``
-   of our REST API
+-  In the form, paste the (local) URL ``http://127.0.0.1:5000/api/v4`` of our REST API
 -  Click "GO!"
 
 .. |provenance_browser| raw:: html
@@ -614,9 +610,8 @@ in the shell:
 
     node = load_node(PK)
 
-Load a node using the ``PK`` of one of the calculations visible in the graph you
-displayed in the previous section of the tutorial. Then get the energy of the
-calculation with the command
+Load a node using the ``PK`` of one of the calculations visible in the graph you displayed in the previous section of the tutorial.
+Then get the energy of the calculation with the command:
 
 .. code:: python
 
@@ -628,8 +623,7 @@ You can also type
 
     node.res.
 
-and then press ``TAB`` to see all the available output results of the
-calculation.
+and then press ``TAB`` to see all the available output results of the calculation.
 
 Loading specific kinds of nodes
 -------------------------------
@@ -637,9 +631,8 @@ Loading specific kinds of nodes
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
-From the graph you generated in  section :ref:`2020_virtual_aiidagraph`,
-find the ``PK`` of the pseudopotential file (LDA). Load it and
-show what elements it corresponds to by typing:
+From the graph you generated in  section :ref:`2020_virtual_aiidagraph`, find the ``PK`` of the pseudopotential file (LDA).
+Load it and show what elements it corresponds to by typing:
 
 .. code:: python
 
@@ -651,10 +644,8 @@ All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing `
 k-points
 ~~~~~~~~
 
-A set of k-points in the Brillouin zone is represented by an instance of the
-``KpointsData`` class. Choose one from the graph of
-produced in section :ref:`2020_virtual_aiidagraph`,
-load it as ``kpoints`` and inspect its content:
+A set of k-points in the Brillouin zone is represented by an instance of the ``KpointsData`` class.
+Choose one from the graph of produced in section :ref:`2020_virtual_aiidagraph`, load it as ``kpoints`` and inspect its content:
 
 .. code:: python
 
@@ -673,7 +664,7 @@ In this case, get the list of k-points coordinates using
 
     kpoints.get_kpoints()
 
-Conversely, if the `KpointsData` node `does` actually represent a mesh, this method is the one, that when called, will throw an ``AttributeError``.
+Conversely, if the ``KpointsData`` node `does` actually represent a mesh, this method is the one, that when called, will throw an ``AttributeError``.
 
 If you prefer Cartesian (rather than crystal) coordinates, type
 
@@ -681,9 +672,8 @@ If you prefer Cartesian (rather than crystal) coordinates, type
 
     kpoints.get_kpoints(cartesian=True)
 
-For later use in this tutorial, let us try now to create a kpoints instance,
-to describe a regular (2 x 2 x 2) mesh of k-points, centered at the Gamma
-point (i.e. without offset). This can be done with the following commands:
+For later use in this tutorial, let us try now to create a kpoints instance, to describe a regular (2 x 2 x 2) mesh of k-points, centered at the Gamma point (i.e. without offset).
+This can be done with the following commands:
 
 .. code:: python
 
@@ -693,20 +683,17 @@ point (i.e. without offset). This can be done with the following commands:
     kpoints.set_kpoints_mesh([kpoints_mesh] * 3)
     kpoints.store()
 
-This function loads the appropriate class defined in a string (here
-``array.kpoints``). Therefore, ``KpointsData`` is not a class instance, but
-the kpoints class itself!
+This function loads the appropriate class defined in a string (here ``array.kpoints``).
+Therefore, ``KpointsData`` is not a class instance, but the kpoints class itself!
 
-While it is also possible to import ``KpointsData`` directly, it is recommended
-to use the ``DataFactory`` function instead, as this is more future-proof:
-even if the import path of the class changes in the future, its entry point
-string (``array.kpoints``) will remain stable.
+While it is also possible to import ``KpointsData`` directly, it is recommended to use the ``DataFactory`` function instead, as this is more future-proof:
+even if the import path of the class changes in the future, its entry point string (``array.kpoints``) will remain stable.
 
 Parameters
 ~~~~~~~~~~
 
 Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
-Get the PK and load the input parameters of a calculation in the graph produced in  section :ref:`2020_virtual_aiidagraph`.
+Get the PK and load the input parameters of a calculation in the graph produced in section :ref:`2020_virtual_aiidagraph`.
 Then display its content by typing
 
 .. code:: python
@@ -715,9 +702,9 @@ Then display its content by typing
     YOUR_DICT = params.get_dict()
     YOUR_DICT
 
-Modify the python dictionary ``YOUR_DICT`` so that the wave-function cutoff is now set to 20
-Ry. Note that you cannot modify an object already stored in the database. To
-write the modified dictionary to the database, create a new object of class ``Dict``:
+Modify the python dictionary ``YOUR_DICT`` so that the wave-function cutoff is now set to 20 Ry.
+Note that you cannot modify an object already stored in the database.
+To write the modified dictionary to the database, create a new object of class ``Dict``:
 
 .. code:: python
 
@@ -744,17 +731,16 @@ Display its chemical formula, atomic positions and species using
     structure.get_formula()
     structure.sites
 
-where ``structure`` is the structure you loaded. If you are familiar with ASE
-and PYMATGEN, you can convert this structure to those formats by typing
+where ``structure`` is the structure you loaded.
+If you are familiar with `ASE <https://wiki.fysik.dtu.dk/ase/>`__ and `Pymatgen <https://pymatgen.org/>`__, you can convert this structure to those formats by typing
 
 .. code:: python
 
     structure.get_ase()
     structure.get_pymatgen()
 
-Let’s try now to define a new structure to study, specifically a silicon
-crystal. In the ``verdi shell``, define a cubic unit cell as a 3 x 3 matrix,
-with lattice parameter `a`\ :sub:`lat`\ `= 5.4` Å:
+Let’s try now to define a new structure to study, specifically a silicon crystal.
+In the ``verdi shell``, define a cubic unit cell as a 3 x 3 matrix, with lattice parameter `a`\ :sub:`lat`\ `= 5.4` Å:
 
 .. code:: python
 
@@ -765,46 +751,43 @@ with lattice parameter `a`\ :sub:`lat`\ `= 5.4` Å:
 
     Default units for crystal structure cell and coordinates in AiiDA are Å (Ångström).
 
-Structures in AiiDA are instances of the class ``StructureData``: load it in the
-verdi shell
+Structures in AiiDA are instances of the class ``StructureData``: load it in the verdi shell
 
 .. code:: python
 
     StructureData = DataFactory('structure')
 
-Now, initialize the class instance (i.e. the actual structure we want to study) by
-the command
+Now, initialize the class instance (i.e. the actual structure we want to study) by the command
 
 .. code:: python
 
     structure = StructureData(cell=the_cell)
 
-which sets the cubic cell defined before. From now on, you can access the cell
-with the command
+which sets the cubic cell defined before.
+From now on, you can access the cell with the command
 
 .. code:: python
 
     structure.cell
 
-Finally, append each of the 2 atoms of the cell command. You can do it using
-commands like
+Finally, append each of the 2 atoms of the cell command.
+You can do it using commands like
 
 .. code:: python
 
     structure.append_atom(position=(alat/4., alat/4., alat/4.), symbols="Si")
 
-for the first ‘Si’ atom. Repeat it for the other atomic site (0, 0, 0). You
-can access and inspect the structure sites with the command
+for the first ‘Si’ atom.
+Repeat it for the other atomic site (0, 0, 0).
+You can access and inspect the structure sites with the command
 
 .. code:: python
 
     structure.sites
 
 If you make a mistake, start over from
-``structure = StructureData(cell=the_cell)``, or equivalently use
-``structure.clear_kinds()`` to remove all kinds (atomic species) and sites.
-Alternatively, AiiDA structures can also be converted directly from ASE
-structures [#f1]_ using
+``structure = StructureData(cell=the_cell)``, or equivalently use ``structure.clear_kinds()`` to remove all kinds (atomic species) and sites.
+Alternatively, AiiDA structures can also be converted directly from ASE structures [#f1]_ using
 
 .. code:: python
 
@@ -838,7 +821,7 @@ In this case two structures exist for 'Si' in COD and both are shown.
 Accessing inputs and outputs
 ----------------------------
 
-Load again the calculation node used in Section :ref:`loadnode`:
+Load again the calculation node used in the :ref:`2020_virtual_loadnode` section:
 
 .. code:: python
 
@@ -850,9 +833,9 @@ Then type
 
     calc.inputs.
 
-and press ``TAB``: you will see all the link names between the calculation and
-its input nodes. You can use a specific linkname to access the corresponding
-input node, e.g.:
+and press ``TAB``:
+you will see all the link names between the calculation and its input nodes.
+You can use a specific linkname to access the corresponding input node, e.g.:
 
 .. code:: python
 
@@ -864,17 +847,14 @@ Similarly, if you type:
 
     calc.outputs.
 
-and then ``TAB``, you will list all output link names of the calculation. One
-of them leads to the structure that was the input of ``calc`` we loaded
-previously:
+and then ``TAB``, you will list all output link names of the calculation.
+One of them leads to the structure that was the input of ``calc`` we loaded previously:
 
 .. code:: python
 
     calc.outputs.output_structure
 
-Note that links have a single name, that was assigned by the calculation that
-used the corresponding input or produced the corresponding output, as
-illustrated in section :ref:`2020_virtual_aiidagraph`.
+Note that links have a single name, that was assigned by the calculation which used the corresponding input or produced the corresponding output, as illustrated in section :ref:`2020_virtual_aiidagraph`.
 
 For a more programmatic approach, you can get a representation of the inputs and outputs of a node, say ``calc``, through the following methods:
 
@@ -930,10 +910,9 @@ For example, if you only want to get the outgoing links whose label starts with 
 Pseudopotential families
 ------------------------
 
-Pseudopotentials in AiiDA are grouped in 'families' that contain one single
-pseudo per element. We will see how to work with UPF pseudopotentials (the
-format used by Quantum ESPRESSO and some other codes). Download and untar the
-SSSP pseudopotentials via the commands:
+Pseudopotentials in AiiDA are grouped in 'families' that contain one single pseudo per element.
+We will see how to work with UPF pseudopotentials (the format used by Quantum ESPRESSO and some other codes).
+Download and untar the SSSP pseudopotentials via the commands:
 
 .. code:: bash
 
@@ -941,17 +920,14 @@ SSSP pseudopotentials via the commands:
     wget 'https://archive.materialscloud.org/record/file?filename=SSSP_1.1_PBE_efficiency.tar.gz&record_id=23&file_id=d2ce4186-bf76-4e05-8b39-444b4da30273' -O SSSP_1.1_PBE_efficiency.tar.gz
     tar -C sssp_pseudos -zxvf SSSP_1.1_PBE_efficiency.tar.gz
 
-Then you can upload the whole set of pseudopotentials to AiiDA by using the
-following ``verdi`` command:
+Then you can upload the whole set of pseudopotentials to AiiDA by using the following ``verdi`` command:
 
 .. code:: bash
 
     verdi data upf uploadfamily sssp_pseudos 'SSSP' 'SSSP pseudopotential library'
 
-In the command above, ``sssp_pseudos`` is the folder containing the
-pseudopotentials, ``'SSSP'`` is the name given to the family, and the last argument
-is its description. Finally, you can list all the pseudo families present in
-the database with
+In the command above, ``sssp_pseudos`` is the folder containing the pseudopotentials, ``'SSSP'`` is the name given to the family, and the last argument is its description.
+Finally, you can list all the pseudo families present in the database with
 
 .. code:: bash
 
