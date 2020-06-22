@@ -30,8 +30,8 @@ where ``computer.yml`` is a configuration file in the `YAML format <https://en.w
     :language: yaml
 
 .. note::
-    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<setup_verdi_quicksetup>`.
-    The configuration file should work for the virtual machine that comes with this tutorial but may need to be adapted when you are running AiiDA in a different environment, as explained in :ref:`this appendix<appendix_computer_code_setup>`.
+    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<2020:setup_verdi_quicksetup>`.
+    The configuration file should work for the virtual machine that comes with this tutorial but may need to be adapted when you are running AiiDA in a different environment, as explained in :ref:`this appendix<2020:appendix_computer_code_setup>`.
 
 Finally, you need to provide AiiDA with information on how to access the ``Computer``.
 For remote computers with ``ssh`` transport, this would involve e.g. an SSH key.
@@ -77,7 +77,7 @@ Once you have the configuration file in your local working environment, set up t
 .. warning::
 
     The configuration should work for the virtual machine that comes with this tutorial.
-    If you are following this tutorial in a different environment, you will need to install Quantum ESPRESSO and adapt the configuration to your needs, as explained in :ref:`this appendix<appendix_computer_code_setup>`.
+    If you are following this tutorial in a different environment, you will need to install Quantum ESPRESSO and adapt the configuration to your needs, as explained in :ref:`this appendix<2020:appendix_computer_code_setup>`.
 
 Similar to the computers, you can list all the configured codes with:
 
@@ -224,7 +224,7 @@ We'll start with the structure, k-points, and pseudopotentials and leave the inp
 
     Note: If you just copy and paste code that you executed previously, this may result in duplication of information on your database.
     In fact, you can re-use an existing structure stored in your database [#f1]_.
-    Use a combination of the bash command ``verdi data structure list`` and of the shell command ``load_node()`` to get an object representing the structure created earlier.
+    Use a combination of the bash command ``verdi data structure list`` and the python function ``load_node()`` to get an object representing the structure created earlier.
 
 Attaching the input information to the calculation
 --------------------------------------------------
@@ -289,7 +289,7 @@ Define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of
 This dictionary is almost a valid input for the Quantum ESPRESSO plugin, except for an invalid key ``mickeymouse``. When Quantum ESPRESSO receives an unrecognized key, it will stop.
 By default, the AiiDA plugin will *not* validate your input and simply pass it on to the code.
 
-We have also introduce a combination of a very high accuracy (``'conv_thr': 1.e-14``) coupled with a very low maximum number of self consistent iterations (``'electron_maxstep': 3``).
+We have also introduced a combination of a very high accuracy (``'conv_thr': 1.e-14``) coupled with a very low maximum number of self consistent iterations (``'electron_maxstep': 3``).
 This means that even if we eliminate the invalid key, the calculation will not converge and will not be successful, despite there not being any other mistake in the parameters dictionary.
 
 Let's wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node and see what happens.
@@ -385,6 +385,9 @@ As soon as you have executed these lines, the ``calculation`` variable contains 
 
 The calculation is now stored in the database and was assigned a "database primary key" or ``pk`` (``calculation.pk``) as well as a UUID (``calculation.uuid``).
 See the :ref:`previous section <2019-aiida-identifiers>` for more details on these identifiers.
+
+To preserve the integrity of the data provenance, AiiDA will prevent you from changing the core content ("attributes") of a stored node.
+There is an "extras" section though, which is writable after storage, to allow you to set additional information, e.g. as a way of labelling nodes and providing information for querying. 
 
 Note that while AiiDA will prevent you from changing the content of stored nodes, the concept of "extras" allows you to set extra attributes, e.g. as a way of labelling nodes and providing information for querying.
 
