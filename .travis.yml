@@ -32,9 +32,9 @@ install:
   - pip install --upgrade pip
   - pip install -r requirements.txt
 
-script: 
+script:
   - >
-    if [ "$BUILD" == "docs" ]; then 
+    if [ "$BUILD" == "docs" ]; then
       make -C docs $TARGET
     else
       pre-commit install
