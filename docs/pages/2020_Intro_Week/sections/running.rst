@@ -7,7 +7,8 @@ Running computations
 In this section we'll be learning how to run external codes with AiiDA through calculation plugins.
 
 We will use the `Quantum Espresso <https://www.quantum-espresso.org/>`_ package to launch a simple `density functional theory <https://en.wikipedia.org/wiki/Density_functional_theory>`_ calculation of a silicon crystal using the :doi:`PBE exchange-correlation functional <10.1103/PhysRevB.54.16533>` and check its results.
-While we're going to debug these issues 'manually' here, workflows (which you'll encounter later in this tutorial) can help you avoid these issues systematically.
+In doing so, we will introduce some problem-causing parameters in order to show how to 'manually' debug problems and errors in the runs.
+Workflows, which you'll encounter later in this tutorial, can help you avoid these issues systematically.
 
 Note that besides the ``aiida-quantumespresso`` plugin, AiiDA comes with plugins for a range of other codes, all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
 
@@ -380,7 +381,7 @@ As soon as you have executed these lines, the ``calculation`` variable contains 
     * run_get_pk
     * submit
 
-   which are explained in more detail in the `online documentation <https://aiida-core.readthedocs.io/en/latest/working/processes.html#launching-processes>`_.
+   which are explained in more detail in the `online documentation <https://aiida.readthedocs.io/projects/aiida-core/en/v1.3.0/topics/processes/usage.html?highlight=run_get_pk#launching-processes>`_.
 
 
 The calculation is now stored in the database and was assigned a "database primary key" or ``pk`` (``calculation.pk``) as well as a UUID (``calculation.uuid``).
@@ -457,16 +458,7 @@ Your calculation should end up in a FAILED state (last column of ``verdi process
 This was expected, since we used an invalid key in the input parameters.
 Situations like this happen in real life, so AiiDA provides tools to trace back to the source of the problem and correct it.
 
-A first way to proceed is to inspect the output file of PWscf.
-
-.. code:: bash
-
-    verdi calcjob outputcat <pk_number> | less
-
-This might be enough to understand the reason why the calculation failed.
-
-AiiDA provides further tools for troubleshooting in a more compact way.
-For any calculation, both successful and failed, you can get a summary by:
+In general for any calculation (both successful and failed) you can get a more detailed summary by running:
 
 .. code:: bash
 
@@ -505,6 +497,13 @@ For any calculation, both successful and failed, you can get a summary by:
     Run 'verdi process report 98' to see them
 
 The last part of the output alerts you to the fact that there are some log messages waiting for you, if you run ``verdi process report <pk>``.
+
+In this case you can also try inspecting the output file of PWscf.
+Not all calculations will have a default file for ``outputcat``, so it is usually better to use ``verdi process report`` whenever possible.
+
+.. code:: bash
+
+    verdi calcjob outputcat <pk_number> | less
 
 Let's now correct our input parameters dictionary by leaving out the invalid key and see if our calculation succeeds:
 
