@@ -1,11 +1,10 @@
-# # Install pre-commit hooks via
-# pre-commit install
-
-# modernizer: make sure our code-base is Python 3 ready
-- repo: https://github.com/python-modernize/python-modernize.git
-  sha: 5650894e684250b8dd7a7d552adeea98eb8663ba
+- repo: local
   hooks:
-  - id: python-modernize
+  - id: yapf
+    name: yapf
+    entry: yapf
+    language: system
+    types: [python]
     exclude: &exclude_files >
       (?x)^(
         docs/pages/.*/snippets/.*|
@@ -13,22 +12,8 @@
         docs/pages/2019_molsim_school_Amsterdam/assets/multiply_unitcell.py|
         docs/assets/2018_PRACE_MaX/latex/de-macro.py
       )$
-    args:
-      - --write
-      - --nobackups
-
-- repo: local
-  hooks:
-  # yapf = yet another python formatter
-  - id: yapf
-    name: yapf
-    entry: yapf
-    language: system
-    types: [python]
     args: ["-i"]
-    exclude: *exclude_files
 
-  # prospector: collection of linters
   - id: prospector
     language: system
     types: [file, python]
