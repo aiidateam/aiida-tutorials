@@ -358,7 +358,8 @@ nbsphinx_execute = 'never'
 
 # Intersphinx configuration
 intersphinx_mapping = {
-    'aiida': ('http://aiida-core.readthedocs.io/en/latest/', None)
+    'aiida': ('http://aiida-core.readthedocs.io/en/latest/', None),
+    'plumpy': ('https://plumpy.readthedocs.io/en/latest/', None)
 }
 
 # Compile all things needed before building the docs
