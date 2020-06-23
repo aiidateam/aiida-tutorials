@@ -4,26 +4,48 @@
 Workflows: Advanced
 *******************
 
-In this hands-on we'll be looking at some more advanced concepts related to workflows.
+In this hands-on, we'll be looking at some more advanced concepts related to workflows.
 
 Exit Codes
 **********
+Exit codes are used to clearly communicate *how* a process terminated.
+They consist of two parts: a positive integer, called the exit status, and a message giving more detail, also called the exit message.
+If the exit status is zero, which is the default, the process is said to have terminated nominally and *finished successfully*.
+A non-zero exit status is often used to communicate that there was some kind of a problem during the execution of the process and in that case it is said to be *failed*.
+However, the severity of the problem can vary and a non-zero exit status can also be used to just give a warning and does not necessarily mean the process suffered a critical error.
+Still, in AiiDA, a non-zero exit status technically marks a process as failed and the :meth:`~aiida.orm.nodes.process.ProcessNode.is_failed` property will return `True`.
 
-Exit codes are used to clearly communicate known failure modes of the work chain to the user.
-The first and second arguments define the ``exit_status`` of the work chain in case of failure (``400``) and the string that the developer can use to reference the exit code (``ERROR_NEGATIVE_NUMBER``).
-A descriptive exit message can be provided using the ``message`` keyword argument.
-For the ``MultiplyAddWorkChain``, we demand that the final result is not a negative number, which is checked in the ``validate_result`` step of the outline.
+Exit codes can be defined using the :meth:`~aiida.engine.processes.process_spec.ProcessSpec.exit_code` method during the process specification in the :meth:`~aiida.engine.processes.process_spec.ProcessSpec.define` method.
+It takes three arguments: the exit status, an exit label for easy reference and the exit message.
+Take the ``MultiplyAddWorkChain`` as an example:
+
+.. literalinclude:: include/snippets/workflows_multiply_add.py
+    :language: python
+    :pyobject: MultiplyAddWorkChain.define
+    :dedent: 4
+
+It defines the ``ERROR_NEGATIVE_NUMBER`` exit code with status ``400`` and message `'The result is a negative number.'`.
+This exit code is used in the ``validate_result`` step, where the sum produced by the ``ArithmeticAddCalculation`` is validated.
 
 .. literalinclude:: include/snippets/workflows_multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.validate_result
     :dedent: 4
 
-Once the ``ArithmeticAddCalculation`` calculation job is finished, the next step in the work chain is to validate the result, i.e. verify that the result is not a negative number.
-After the ``addition`` node has been extracted from the context, we take the ``sum`` node from the ``ArithmeticAddCalculation`` outputs and store it in the ``result`` variable.
-In case the value of this ``Int`` node is negative, the ``ERROR_NEGATIVE_NUMBER`` exit code - defined in the ``define()`` method - is returned.
-Note that once an exit code is returned during any step in the outline, the work chain will be terminated and no further steps will be executed.
+If the sum is negative, which is unacceptable in this fictitious example, the work chain return the exit code that corresponds to the label ``ERROR_NEGATIVE_NUMBER``.
+Note that you can use the ``self.exit_codes`` property of the ``WorkChain`` to quickly retrieve the exit code using the corresponding label.
+Returning an exit code instructs the engine to abort the work chain, and set the corresponding exit status and message on the node in the provenance graph.
 
+In principle, you can use any positive integer when you define an exit code, however, there are some naming conventions that are generally respected by plugin developers.
+Note that these are not enforced and so you can decide to ignore them, however, they might complicate interoperability with other plugins.
+The following integer ranges are reserved or suggested:
+
+    *   0 -  99: Reserved for internal use by ``aiida-core``
+    * 100 - 199: Reserved for errors parsed from scheduler output of calculation jobs
+    * 200 - 299: Suggested to be used for process input validation errors
+    * 300 - 399: Suggested for critical process errors
+
+For any other exit codes, one can use the integers from 400 and up.
 
 The base restart work chain
 ***************************
