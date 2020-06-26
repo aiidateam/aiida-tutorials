@@ -42,7 +42,6 @@ jobs:
           texlive-latex-recommended \
           texlive-latex-extra \
           latexmk \
-          latex-xcolor \
           dvipng \
           dvidvi
     - name: Install python dependencies
