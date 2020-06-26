@@ -30,6 +30,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install system dependencies
+      run: |
+        sudo apt update
+        sudo apt install \
+          pandoc
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
@@ -43,7 +48,6 @@ jobs:
         make -C docs html
       env:
         SPHINXOPTS: -nW
-
 
   build-latex:
 
