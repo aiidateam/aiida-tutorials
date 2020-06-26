@@ -41,6 +41,7 @@ jobs:
           texlive-latex-base \
           texlive-latex-recommended \
           texlive-latex-extra \
+          texlive-xetex \
           latexmk \
           dvipng \
           dvidvi
