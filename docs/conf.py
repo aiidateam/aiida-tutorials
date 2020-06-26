@@ -41,7 +41,6 @@ extensions = [
     'sphinx_copybutton',
 ]
 ipython_mplbackend = ""
-imgmath_image_format = 'svg'
 
 copybutton_selector = 'div:not(.no-copy)>div.highlight pre'
 copybutton_prompt_text = '>>> |\\\\$ |In \\\\[\\\\d\\\\]: |\\\\s+\\.\\.\\.: '
