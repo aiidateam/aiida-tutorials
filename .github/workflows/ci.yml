@@ -87,3 +87,8 @@ jobs:
       env:
         SPHINXOPTS: -nW --keep-going
         TRANSIFEX_PROJECT_NAME: aiida-tutorials
+    - name: "publish transifex"
+      if: ${{ matrix.format == 'transifex' && github.ref == 'master' }}
+      run: |
+          sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"${{ secrets.TRANSIFEX_USER }}"$'\npassword = '"${{ secrets.TRANSIFEX_PASSWORD }}"$'\n' > ~/.transifexrc
+          tx push -s
