@@ -68,4 +68,4 @@ jobs:
       run: |
         make -C docs ${{ matrix.format }}
       env:
-        SPHINXOPTS: -nW --keep-going
+        SPHINXOPTS: ${{ '-nW --keep-going' if matrix.format != 'latexpdf' else '-n' }}
