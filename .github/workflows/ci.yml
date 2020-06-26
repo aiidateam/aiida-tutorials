@@ -44,6 +44,10 @@ jobs:
           latexmk \
           dvipng \
           dvidvi
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
     - name: Install python dependencies
       run: |
         pip install --upgrade pip
