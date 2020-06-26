@@ -50,4 +50,5 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
     - name: build docs
+      run: |
         make -C docs latexpdf
