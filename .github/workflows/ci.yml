@@ -33,7 +33,7 @@ jobs:
     - name: Install system dependencies
       run: |
         sudo apt update
-        sudo apt-get install \
+        sudo apt install \
           pandoc \
           texlive-base \
           texlive-generic-recommended \
