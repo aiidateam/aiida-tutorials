@@ -38,10 +38,10 @@ jobs:
           texlive-base \
           texlive-generic-recommended \
           texlive-fonts-recommended \
+          fonts-freefont-otf \
           texlive-latex-base \
           texlive-latex-recommended \
           texlive-latex-extra \
-          texlive-gnu-freefont \
           texlive-xetex \
           latexmk \
           dvipng \
