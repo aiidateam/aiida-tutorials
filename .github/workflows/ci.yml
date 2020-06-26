@@ -47,7 +47,7 @@ jobs:
       run: |
         make -C docs html
       env:
-        SPHINXOPTS: -nW
+        SPHINXOPTS: -nW --keep-going
 
   build-latex:
 
