@@ -23,6 +23,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
 
 More details on ``verdi`` can be found in the `online documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html>`_.
 
+.. _2020_virtual_intro:setup_profile:
 
 Setting up a profile
 --------------------

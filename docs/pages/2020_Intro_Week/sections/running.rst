@@ -31,7 +31,7 @@ where ``computer.yml`` is a configuration file in the `YAML format <https://en.w
     :language: yaml
 
 .. note::
-    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<2020:setup_verdi_quicksetup>`.
+    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<2020_virtual_intro:setup_profile>`.
     The configuration file should work for the virtual machine that comes with this tutorial but may need to be adapted when you are running AiiDA in a different environment, as explained in :ref:`this appendix<2020:appendix_computer_code_setup>`.
 
 Finally, you need to provide AiiDA with information on how to access the ``Computer``.
