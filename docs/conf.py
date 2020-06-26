@@ -356,7 +356,8 @@ nbsphinx_execute = 'never'
 
 # Intersphinx configuration
 intersphinx_mapping = {
-    'aiida': ('http://aiida-core.readthedocs.io/en/fix-4200-read-the-docs/', None),
+    'aiida':
+    ('http://aiida-core.readthedocs.io/en/fix-4200-read-the-docs/', None),
     'plumpy': ('https://plumpy.readthedocs.io/en/latest/', None)
 }
 

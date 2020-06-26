@@ -65,7 +65,14 @@ jobs:
         pip install --upgrade pip
         pip install -r requirements.txt
     - name: build docs
+      if: ${{ matrix.format != 'latexpdf' }}
       run: |
         make -C docs ${{ matrix.format }}
       env:
-        SPHINXOPTS: ${{ '-nW --keep-going' if matrix.format != 'latexpdf' else '-n' }}
+        SPHINXOPTS: -nW --keep-going
+    # TODO there are reference issues for latexpdf in e.g. docs/pages/2019_molsim_school_Amsterdam/screening/export.md
+    # I believe due to relative document references which don't work in latexpdf, since all documents are merged into one doctree
+    - name: build docs
+      if: ${{ matrix.format == 'latexpdf' }}
+      run: |
+        make -C docs ${{ matrix.format }}
