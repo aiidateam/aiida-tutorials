@@ -23,44 +23,27 @@ jobs:
       run:
         pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
 
-  build-html:
+  build:
 
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
+    strategy:
+      matrix:
+        format: ["html", "latexpdf"]
+      fail-fast: false
+
     steps:
     - uses: actions/checkout@v2
-    - name: Install system dependencies
-      run: |
+    - name: Install pandoc
         sudo apt update
         sudo apt install \
           pandoc
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Install python dependencies
-      run: |
-        pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: build docs
-      run: |
-        make -C docs html
-      env:
-        SPHINXOPTS: -nW --keep-going
-
-  build-latex:
-
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Install system dependencies
+    - name: Install latexpdf dependencies
+      if: ${{ matrix.format == 'latexpdf' }}
       run: |
         sudo apt update
         sudo apt install \
-          pandoc \
           texlive-base \
           texlive-generic-recommended \
           texlive-fonts-recommended \
@@ -82,4 +65,6 @@ jobs:
         pip install -r requirements.txt
     - name: build docs
       run: |
-        make -C docs latexpdf
+        make -C docs ${{ matrix.format }}
+      env:
+        SPHINXOPTS: -nW --keep-going
