@@ -13,3 +13,4 @@ yapf==0.27.0
 # transifex
 sphinx-intl==2.0.0
 transifex-client==0.13.6
+six==1.11.0

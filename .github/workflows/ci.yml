@@ -64,13 +64,13 @@ jobs:
       run: |
         pip install --upgrade pip
         pip install -r requirements.txt
-    - name: build docs
+    - name: "build docs: html"
       if: ${{ matrix.format == 'html' }}
       run: |
         make -C docs ${{ matrix.format }}
       env:
         SPHINXOPTS: -nW --keep-going
-    - name: build docs
+    - name: "build docs: latexpdf"
       if: ${{ matrix.format == 'latexpdf' }}
       run: |
         make -C docs ${{ matrix.format }}
@@ -78,7 +78,7 @@ jobs:
       # I believe due to relative document references which don't work in latexpdf, since all documents are merged into one doctree
       env:
         SPHINXOPTS: -n
-    - name: build docs
+    - name: "build docs: transifex"
       if: ${{ matrix.format == 'transifex' }}
       run: |
         sphinx-build -b gettext -D gettext_compact=0 docs locale
