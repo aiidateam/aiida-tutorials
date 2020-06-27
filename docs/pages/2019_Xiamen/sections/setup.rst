@@ -9,7 +9,7 @@ Start your virtual machine
 On your Huawei cloud account:
 
  * Add a new security group ``aiida-tutorial``, open ports 22, 5000, 8888
- * Start a new server: 
+ * Start a new server:
     * Flavor ``s6.large.2`` (2 vCPUs, 4 GB RAM) should be sufficient
     * Use shared image ``aiida-tutorial``
     * Use security group ``aiida-tutorial``
@@ -19,7 +19,7 @@ On your Huawei cloud account:
 
 Please ask your tutors for the password for the ``max`` user,
 and read the instructions below on how to connect using your operating system.
-  
+
 Linux and MacOS
 ~~~~~~~~~~~~~~~
 

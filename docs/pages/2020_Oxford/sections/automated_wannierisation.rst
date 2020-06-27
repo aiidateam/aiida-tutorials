@@ -244,7 +244,7 @@ First let's give a look at the interpolated band structure by exporting it to a 
     verdi data bands export --format mpl_pdf --output band_structure.pdf <PK_bands>
 
 where ``<PK_bands>`` stands for the ``BandsData`` PK produced by the workflow.
-You can find it from the output of the :code:`verdi node show <PK>` command 
+You can find it from the output of the :code:`verdi node show <PK>` command
 that you run before.
 You should obtain a PDF like the following:
 
@@ -275,7 +275,7 @@ the plugins and workflows included in the ``aiida-quantumespresso`` package). Yo
     * :download:`CsH_dft_bands.agr <include/dft_bands/CsH_dft_bands.agr>`
     * :download:`O2Pd2_dft_bands.agr <include/dft_bands/O2Pd2_dft_bands.agr>`
 
-In particular, taking CsH as an example, you can first export the Wannier-interpolated bands that you 
+In particular, taking CsH as an example, you can first export the Wannier-interpolated bands that you
 just computed earlier in xmgrace format with
 
 .. code:: bash
@@ -306,7 +306,7 @@ Analyzing the projectabilities
 ------------------------------
 
 Now you will see how to look at the projectabilities that have been computed by the
-workchain and then used to obtain :math:`\mu` and :math:`\sigma` 
+workchain and then used to obtain :math:`\mu` and :math:`\sigma`
 in the automation protocol.
 You can download the following script
 :download:`plot_projectabilities.py <include/snippets/plot_projectabilities.py>` and run it
@@ -369,20 +369,20 @@ Follow the instructions that you find on the `Materials Cloud website <https://w
 (Optional) More on AiiDA
 ------------------------
 
-You now have a first taste of the type of problems AiiDA tries to solve, 
+You now have a first taste of the type of problems AiiDA tries to solve,
 and you have seen how it is possible, thanks to the tools provided by AiiDA,
-to develop plugins and workflows to automate your research tasks, while preserving the 
+to develop plugins and workflows to automate your research tasks, while preserving the
 full provenance and guaranteeing reproducibility of your results.
 
 Here are some options for how to continue:
 
  * Continue with the in-depth tutorial and learn more about the ``verdi``, ``verdi shell`` and ``python`` interfaces to AiiDA.
    There is more than enough material to keep you busy for a day.
-   You can check for instance the :ref:`tutorial held in EPFL in May 2019 <EPFL 2019 Homepage>` (note that this 
+   You can check for instance the :ref:`tutorial held in EPFL in May 2019 <EPFL 2019 Homepage>` (note that this
    has been tested on a beta version of AiiDA 1.0 and we didn't check yet if anything needs to be
    adapted for AiiDA 1.1, that you have in your VM).
  * **For advanced Linux & python users**: try `setting up AiiDA directly on your laptop <https://aiida-core.readthedocs.io/en/latest/install/quick_installation.html>`_.
    Note that AiiDA depends on a number of services and software that require some time to set up.
    Unfortunately, we will not have the time to help you solve
    issues related to your setup in a tutorial context, but you can refer to the AiiDA documentation
-   and to the AiiDA mailing list. 
+   and to the AiiDA mailing list.

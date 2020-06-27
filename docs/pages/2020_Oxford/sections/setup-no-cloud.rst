@@ -1,7 +1,7 @@
 Getting set up
 ==============
 
-Download the correct Quantum Mobile version listed 
+Download the correct Quantum Mobile version listed
 :ref:`in the homepage of this event<Oxford 2020 Homepage>`.
 
 .. note:: The credentials of the Quantum Mobile VM that you can download
@@ -18,7 +18,7 @@ You can find some troubleshooting, in case you have problems, on the
 Start jupyter
 -------------
 
-Once connected to your virtual machine, to use AiiDA open a terminal and type 
+Once connected to your virtual machine, to use AiiDA open a terminal and type
 
 .. code:: bash
 

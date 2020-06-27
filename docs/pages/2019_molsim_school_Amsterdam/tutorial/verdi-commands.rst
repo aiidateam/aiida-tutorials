@@ -59,7 +59,7 @@ don't have any calculations running.
    Use the ``-h`` flag to figure out how to list calculations of any state
    (both running and finished ones) and from all users (both your current
    AiiDA profile and others).
-   
+
    How do you list all calculations that ran in the past week?
 
 Let's have a closer look at a zeo++ calculation node. Pick a primary key
@@ -103,9 +103,9 @@ Another way to produce a visual representation of the provenance is
 
    Pick a PK number from the list of calculations and generate a provenance
    graph for a ``NetworkCalculation``:
-   
+
    .. code:: console
-   
+
        $ verdi graph generate <pk>
        $ dot -Tpdf -o <pk>.pdf <pk>.dot   # convert .dot to .pdf
        $ evince <pk>.pdf                  # open pdf
@@ -124,18 +124,18 @@ this functionality later.
 
    Famliarize yourself with the other options of the ``calculation`` and
    ``data`` subcommands, such as:
-   
+
    .. code:: console
-   
+
        verdi data parameter show <pk>   # for ParameterData PKs
        verdi data cif show --format jmol <pk>  # for CifData PKs
        verdi calculation res <pk>   # for Calculation PKs
        verdi calculation show <pk>   # for Calculation PKs, shows code & computer labels
-       verdi code show <label>      # for Code labels (see output of 
+       verdi code show <label>      # for Code labels (see output of
        verdi computer show <label>  # for Computer labels
-   
+
    and use them to answer the questions below:
-   
+
    -  What are the density and unit cell volume of the structure used in
       the calculation you picked?
    -  Which version of zeo++ was used to compute the geometric properties?
@@ -147,4 +147,3 @@ this functionality later.
     ``verdi calculation res <pk>`` simply is a shortcut for
     ``verdi data parameter show <pk2>`` where ``pk2`` refers to the
     ``ParameterData`` with link name ``output_parameters``.
-

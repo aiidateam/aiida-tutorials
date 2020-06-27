@@ -1,8 +1,6 @@
-Preliminaries
-=============
+# Preliminaries
 
-Instructions to SSH to the Amazon EC2 instance
-----------------------------------------------
+## Instructions to SSH to the Amazon EC2 instance
 
 You should have received an IP address from the instructors, and two files with a private and a public SSH key (`aiida_tutorial_NUM` and `aiida_tutorial_NUM.pub`), where `NUM` is an integer. These allow you to connect to an Amazon EC2 instance (different for each participant of the tutorial). To connect via `ssh` to this machine follow the steps below, depending on the computer you have.
 
@@ -10,16 +8,10 @@ You should have received an IP address from the instructors, and two files with 
 
 ### Linux and Mac
 
--   If needed, create a `.ssh` directory in your home (`mkdir ~/.ssh`), and set its permissions:
-    `chmod 700 ~/.ssh`
-
--   Copy in this `.ssh` directory the two files `aiida_tutorial_NUM` and
-    `aiida_tutorial_NUM.pub`
-
--   Set the correct permissions on the private key:
-    `chmod 600 ~/.ssh/aiida_tutorial_NUM` (then check with `ls -l` that the permissions of this file are now `-rw-------`).
-
--   Create (or modify if it already exists) the `config` file in your `.ssh` directory, adding the following lines:
+- If needed, create a `.ssh` directory in your home (`mkdir ~/.ssh`), and set its permissions: `chmod 700 ~/.ssh`
+- Copy in this `.ssh` directory the two files `aiida_tutorial_NUM` and `aiida_tutorial_NUM.pub`
+- Set the correct permissions on the private key: `chmod 600 ~/.ssh/aiida_tutorial_NUM` (then check with `ls -l` that the permissions of this file are now `-rw-------`).
+- Create (or modify if it already exists) the `config` file in your `.ssh` directory, adding the following lines:
 
     ```console
     Host aiidatutorial
@@ -31,41 +23,38 @@ You should have received an IP address from the instructors, and two files with 
 
     where you have to replace `IP_ADDRESS` with the IP address provided to you.
 
--   You can then `ssh` to the Amazon EC2 instance from the terminal, using simply
+- You can then `ssh` to the Amazon EC2 instance from the terminal, using simply
 
-    ```console
+  ```console
       ssh -X -C aiidatutorial
-     
-    ```
 
-    (connecting with `-X` — note that sometimes `-Y` is needed instead — will allow you to run graphical programs such as xmgrace or gnuplot interactively, even if they might not be very responsive as the Amazon virtual machines are in Ireland).
+  ```
+
+  (connecting with `-X` — note that sometimes `-Y` is needed instead — will allow you to run graphical programs such as xmgrace or gnuplot interactively, even if they might not be very responsive as the Amazon virtual machines are in Ireland).
 
 ### Windows
 
--   Install PuTTY.
+- Install PuTTY.
 
--   Run PuTTYGen, load the `aiida_tutorial_NN` private key (button `"Load"`). remember to choose to show “All files (\*.\*)” in the window, and select the file without any extension (Type: File).
+- Run PuTTYGen, load the `aiida_tutorial_NN` private key (button `"Load"`). remember to choose to show “All files (\*.\*)” in the window, and select the file without any extension (Type: File).
 
--   In the same window, click on “Save private Key”, and save the key with the name
-    `aiida_tutorial_NN.ppk`.
+- In the same window, click on “Save private Key”, and save the key with the name `aiida_tutorial_NN.ppk`.
 
--   Run Pageant: it will add a new icon near the clock, in the bottom right of your screen.
+- Run Pageant: it will add a new icon near the clock, in the bottom right of your screen.
 
--   Right click on this Pageant icon, and click on “View Keys”.
+- Right click on this Pageant icon, and click on “View Keys”.
 
--   Click on `"Add key"` and select the `aiida_tutorial_NN.ppk` you saved a few steps above.
+- Click on `"Add key"` and select the `aiida_tutorial_NN.ppk` you saved a few steps above.
 
--   Run PuTTY, put the given IP address as hostname. Write `aiidatutorial` in Saved Sessions and click `Save`. Go to Connection \(\to\) Data and put `aiida` as autologin username. Under Connection, go to SSH \(\to\) Tunnels, type `8888` in the `Source Port` box and `localhost:8888` in `Destination` and click `Add`. Click on `Save` again on the Session screen.
+- Run PuTTY, put the given IP address as hostname. Write `aiidatutorial` in Saved Sessions and click `Save`. Go to Connection \(\to\) Data and put `aiida` as autologin username. Under Connection, go to SSH \(\to\) Tunnels, type `8888` in the `Source Port` box and `localhost:8888` in `Destination` and click `Add`. Click on `Save` again on the Session screen.
 
--   Now select `aiidatutorial` from the session list, click `Load` and, finally, `open`.
+- Now select `aiidatutorial` from the session list, click `Load` and, finally, `open`.
 
-Everybody: connect to the machine and start jupyter
----------------------------------------------------
+## Everybody: connect to the machine and start jupyter
 
 Before starting the tutorial, connect via SSH to the Amazon machine as explained above (the Amazon machine already contains a pre-configured AiiDA installation and some test data for this tutorial).
 
-Before starting
----------------
+## Before starting
 
 Once connected to your machine, type in the remote terminal
 
@@ -87,11 +76,10 @@ Note: Since the port listening is set to a specific port (8888) in the section [
 
 A final note: for details on AiiDA that may not be fully explained here, you can refer to the full AiiDA documentation, available online at <http://aiida-core.readthedocs.io/en/latest/>.
 
-Troubleshooting tips (in case you have issues later)
-----------------------------------------------------
+## Troubleshooting tips (in case you have issues later)
 
--   If you get an error like `ImportError: No module named aiida` or `No command ’verdi’ found` double check that you have loaded the virtual environment with `workon aiida` before launching python, ipython or the jupyter server.
+- If you get an error like `ImportError: No module named aiida` or `No command ’verdi’ found` double check that you have loaded the virtual environment with `workon aiida` before launching python, ipython or the jupyter server.
 
--   If your browser cannot connect to the jupyter instance, check that you have correctly configured SSH tunneling/forwarding as described above. Also note that you should run the jupyter server from the terminal connected to the Amazon machine, while the web browser should be opened locally on your laptop or worstation.
+- If your browser cannot connect to the jupyter instance, check that you have correctly configured SSH tunneling/forwarding as described above. Also note that you should run the jupyter server from the terminal connected to the Amazon machine, while the web browser should be opened locally on your laptop or worstation.
 
--   The Jupyter Notebook officially supports the latest stable versions of Chrome, Safari and Firefox. See <http://jupyter-notebook.readthedocs.io/en/4.x/notebook.html#browser-compatibility> for more information on broswer compatibility (and update your browser if it is too old).
+- The Jupyter Notebook officially supports the latest stable versions of Chrome, Safari and Firefox. See <http://jupyter-notebook.readthedocs.io/en/4.x/notebook.html#browser-compatibility> for more information on broswer compatibility (and update your browser if it is too old).

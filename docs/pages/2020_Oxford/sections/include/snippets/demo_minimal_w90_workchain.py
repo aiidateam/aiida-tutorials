@@ -8,7 +8,7 @@ from aiida_wannier90.orbitals import generate_projections
 pw_code=load_code("<CODE LABEL>")  # Replace with the QE pw.x code label
 wannier_code=load_code("<CODE LABEL>")  # Replace with the Wannier90 wannier.x code label
 pw2wannier90_code=load_code("<CODE LABEL>")  # Replace with the QE pw2wannier90.x code label
-pseudo_family_name="<UPF FAMILY NAME>" # Replace with the name of the pseudopotential family for SSSP efficiency 
+pseudo_family_name="<UPF FAMILY NAME>" # Replace with the name of the pseudopotential family for SSSP efficiency
 
 
 # GaAs structure

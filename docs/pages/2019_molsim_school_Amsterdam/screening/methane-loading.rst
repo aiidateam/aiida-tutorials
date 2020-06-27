@@ -11,7 +11,7 @@ pressure.
 
 In principle, we could continue to use the ``verdi shell`` or
 ``jupyter notebooks`` but in order to speed things up, we've already
-prepared a template python script that you can 
+prepared a template python script that you can
 :download:`download here <../assets/raspa_loading.py>`.
 
 In the following, you will adapt it to your needs.
@@ -98,7 +98,7 @@ that we set up before:
 
 .. code:: python
 
-    from aiida.common.example_helpers import test_and_get_code 
+    from aiida.common.example_helpers import test_and_get_code
     raspa_code = test_and_get_code("raspa@bazis", expected_code_type='raspa')
 
 Now we'll specify a few pieces of information to pass on to the

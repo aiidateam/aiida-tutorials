@@ -396,7 +396,7 @@ Exercises
           time.sleep(40)
 
 
-.. note:: 
+.. note::
 
     The function ``multiply_unit_cell`` is automatically
     computing the number of ``UnitCells`` needed, ``nx ny nz``. This

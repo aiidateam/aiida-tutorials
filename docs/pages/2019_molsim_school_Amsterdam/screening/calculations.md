@@ -14,22 +14,24 @@ Let's set up passwordless access using the secure shell (SSH) protocol.
 
 First, generate a new public/private SSH key pair.
 
-> **Note**  
+> **Note**
 > When running this outside Quantum Mobile, be careful not to overwrite your
 > own key pair. In this case, just change the proposed file name.
+
 ```console
 $ ssh-keygen -t rsa
-Generating public/private rsa key pair. 
-Enter file in which to save the key (/home/max/.ssh/id_rsa): <Enter> 
-Enter passphrase (empty for no passphrase): <Enter> 
-Enter same passphrase again: <Enter> 
-Your identification has been savedin /home/max/.ssh/id_rsa. 
-Your public key has been saved in /home/max/.ssh/id_rsa.pub. 
-The key fingerprint is: ... 
-The key's randomart image is: ... 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/max/.ssh/id_rsa): <Enter>
+Enter passphrase (empty for no passphrase): <Enter>
+Enter same passphrase again: <Enter>
+Your identification has been savedin /home/max/.ssh/id_rsa.
+Your public key has been saved in /home/max/.ssh/id_rsa.pub.
+The key fingerprint is: ...
+The key's randomart image is: ...
 ```
 
 Then, copy the public key to the compute cluster:
+
 ```console
 $ ssh-copy-id molsim<n>@bazis-h1.science.uva.nl
 
@@ -61,40 +63,42 @@ which should work without password.
 Once it does, let's set up the `bazis` computer in AiiDA as follows:
 
 ```console
-$ verdi computer setup 
+$ verdi computer setup
 At any prompt, type ? to get some help.
-————————————— 
+—————————————
 => Computer name: bazis
 Creating new computer with name 'bazis'
 => Fully-qualified hostname: bazis-h1.science.uva.nl
 => Description: bazis computer for the molsim course
-=> Enabled: True 
-=> Transport type: ssh 
+=> Enabled: True
+=> Transport type: ssh
 => Scheduler type: slurm
 => shebang line at the beginning of the submission script: #!/bin/bash
 => AiiDA work directory: /home/{username}/aiida_run/
 => mpirun command: srun -n {tot_num_mpiprocs}
-=> Default number of CPUs per machine: 1 
-=> Text to prepend to each command execution: 
-# This is a multiline input, press CTRL+D on a 
-# empty line when you finish 
+=> Default number of CPUs per machine: 1
+=> Text to prepend to each command execution:
+# This is a multiline input, press CTRL+D on a
+# empty line when you finish
 # ——————————————
-# End of old input. You can keep adding 
-# lines, or press CTRL+D to store this value 
-# —————————————— 
-=> Text to append to each command execution: 
-# This is a multiline input, press CTRL+D on a 
-# empty line when you finish 
-# —————————————— 
-# End of old input. You can keep adding 
-# lines, or press CTRL+D to store this value 
+# End of old input. You can keep adding
+# lines, or press CTRL+D to store this value
+# ——————————————
+=> Text to append to each command execution:
+# This is a multiline input, press CTRL+D on a
+# empty line when you finish
+# ——————————————
+# End of old input. You can keep adding
+# lines, or press CTRL+D to store this value
 # ——————————————
 Computer 'bazis' successfully stored in DB.
 ```
-> **Note**  
+
+> **Note**
 > Please be careful to enter the data as shown, in particular:
->  * AiiDA work directory: /**home**/{username}/aiida_run/
->  *  mpirun command: **srun -n** {tot_num_mpiprocs}
+>
+> * AiiDA work directory: /**home**/{username}/aiida_run/
+> * mpirun command: **srun -n** {tot_num_mpiprocs}
 
 At this point, the computer node has been created in the database
 
@@ -172,24 +176,27 @@ At any prompt, type ? to get some help.
 FOR INSTANCE, MODULES TO BE LOADED FOR THIS CODE:
 # This is a multiline input, press CTRL+D on a
 # empty line when you finish
-# —————————————— 
-# End of old input. You can keep adding 
-# lines, or press CTRL+D to store this value 
-# —————————————— 
+# ——————————————
+# End of old input. You can keep adding
+# lines, or press CTRL+D to store this value
+# ——————————————
 export RASPA_DIR=/home/molsim20/raspa/
-=> Text to append to each command execution: 
-# This is a multiline input, press CTRL+D on a 
-# empty line when you finish 
-# —————————————— 
-# End of old input. You can keep adding 
-# lines, or press CTRL+D to store this value 
-# —————————————— 
+=> Text to append to each command execution:
+# This is a multiline input, press CTRL+D on a
+# empty line when you finish
+# ——————————————
+# End of old input. You can keep adding
+# lines, or press CTRL+D to store this value
+# ——————————————
 Code 'raspa' successfully stored in DB.
 ```
-> **Note**  
-> Rember to include:
->  * => Remote absolute path: /home/molsim20/raspa/bin/simulate
->  * export RASPA_DIR=/home/molsim20/raspa/  
+
+> **Note**
+> Remember to include:
+>
+> * => Remote absolute path: /home/molsim20/raspa/bin/simulate
+> * export RASPA_DIR=/home/molsim20/raspa/
+>
 >    as "Text to prepend to each command execution"
 >
 > otherwise RASPA won't run and you might get a parsing error.
@@ -209,9 +216,9 @@ $ verdi code list
 The AiiDA daemon is a program running all the time in the background, checking
 for new calculations that need to be submitted. The daemon also takes care of
 all the necessary operations before the calculation submission, and after the
-calculation has completed on the cluster. 
+calculation has completed on the cluster.
 
-Let's check whether the AiiDA daemon is already running. 
+Let's check whether the AiiDA daemon is already running.
 
 ```console
 $ verdi daemon status
@@ -226,10 +233,11 @@ If the daemon is not running, please start it
 $ verdi daemon start
 ```
 
-> **Note**  
+> **Note**
 > AiiDA supports multiple profiles but for reasons of consistency
 > only one profile can communicate with the daemon at a time.
 > When starting the daemon, you may therefore see an error message like
+>
 > ```console
 > You are not the daemon user! I will not start the daemon.
 > (The daemon user is 'aiida@localhost', you are 'some.body@xyz.com')
@@ -237,11 +245,15 @@ $ verdi daemon start
 > ** FOR ADVANCED USERS ONLY: **
 > To change the current default user, use 'verdi install --only-config'
 > To change the daemon user, use 'verdi daemon configureuser'
+>
 > ```
+>
 > Just follow the instructions by running
+>
 > ```console
 > $ verdi daemon configureuser
 > ```
+>
 > and provide the email address of your profile in order to allow your user to run the daemon
 >
 > ```console
@@ -258,5 +270,5 @@ $ verdi daemon start
 > New daemon user: some.body@xyz.com
 > The new user that can run the daemon is now Some Body.
 > ```
+>
 > Now start the daemon!
-

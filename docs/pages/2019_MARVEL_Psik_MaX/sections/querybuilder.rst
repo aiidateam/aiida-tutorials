@@ -26,4 +26,3 @@ See below for a rendered version of the notebook:
 .. toctree::
 
    QueryBuilder Notebook <../notebooks/querybuilder-tutorial.ipynb>
-

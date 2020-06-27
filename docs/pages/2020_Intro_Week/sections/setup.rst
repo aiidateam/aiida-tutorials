@@ -4,7 +4,7 @@
 Getting set up
 **************
 
-.. note:: 
+.. note::
 
     If you are using the Quantum Mobile virtual machine locally inside VirtualBox, you can skip this section.
 
@@ -184,4 +184,3 @@ Troubleshooting
    on your laptop.
 
 -  See the `jupyter notebook documentation <https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#browser-compatibility>`_ for compatibility of jupyter with various web browsers.
-

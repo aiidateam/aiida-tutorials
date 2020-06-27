@@ -106,10 +106,10 @@ If you're running Windows 10, you may want to consider `installing the Windows S
 -  Run PuTTY
 
    -  Put the given IP address as hostname, type ``aiidatutorial`` in "Saved Sessions"
-      and click "Save". 
-   -  Go to Connection > Data and put ``max`` as autologin username. 
+      and click "Save".
+   -  Go to Connection > Data and put ``max`` as autologin username.
    -  Go to Connection > SSH > Tunnels, type ``8888`` in the
-      "Source Port" box, type ``localhost:8888`` in "Destination" and click "Add". 
+      "Source Port" box, type ``localhost:8888`` in "Destination" and click "Add".
    -  Repeat the previous step for port ``5000`` instead of ``8888``.
    -  Go back to the "Session" screen, select "aiidatutorial" and click "Save"
    -  Finally, click "Open" (and click "Yes" on the putty security alert

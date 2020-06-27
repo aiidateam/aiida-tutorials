@@ -80,4 +80,3 @@ The `AiiDA virtual tutorial <http://www.aiida.net/tutorial-reproducible-workflow
 .. image:: sponsors/pasc.png
    :target: https://www.pasc-ch.org/
    :width: 155px
-

@@ -40,7 +40,7 @@ To do so, simply load the node of a terminated calculation job in a ``verdi shel
 
 .. code:: python
 
-    failed_calculation = load_node(<pk>)
+    failed_calculation = load_node('<pk>')
     restart_builder = failed_calculation.get_builder_restart()
 
 If you simply type ``restart_builder``, you can see that all the inputs have already been set to those that were used for the original calculation.

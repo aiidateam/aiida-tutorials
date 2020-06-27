@@ -34,13 +34,13 @@ $ verdi restapi
  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
 ```
 
-Now 
+Now
 
- * Open a browser **inside** Quantum Mobile
- * Inside this browser, open the [link to the provenance browser](http://34.244.178.26:5001/explore/connect){:target="_blank"} 
- * In the form, paste the (local) URL `http://127.0.0.1:5000/api/v2` of our REST API and click "GO!"
+* Open a browser **inside** Quantum Mobile
+* Inside this browser, open the [link to the provenance browser](http://34.244.178.26:5001/explore/connect){:target="_blank"}
+* In the form, paste the (local) URL `http://127.0.0.1:5000/api/v2` of our REST API and click "GO!"
 
-> **Note**  
+> **Note**
 > The provenance browser is also [available on Materials Cloud](https://www.materialscloud.org/explore/connect) but we are using a more recent development version.
 
 Once the provenance explorer has been loaded by your browser, it is communicating directly with the
@@ -54,9 +54,8 @@ Start by clicking on the Details of a `NetworkCalculation` node
 
 Use the graph explorer in order to figure out:
 
- * What code was used and what was the name of the executable?
- * When was the calculation run and who run it?
- * How much memory was requested for the calculation?
- * What inputs did the calculation take?
- * What other types of calculation was the `Cif` input structure used in?
-
+* What code was used and what was the name of the executable?
+* When was the calculation run and who run it?
+* How much memory was requested for the calculation?
+* What inputs did the calculation take?
+* What other types of calculation was the `Cif` input structure used in?

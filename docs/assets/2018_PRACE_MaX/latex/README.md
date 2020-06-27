@@ -17,13 +17,13 @@ The LaTeX source can be converted as follows:
 
 ### Prerequisites
 
- * pandoc
- * python3
+* pandoc
+* python3
 
 ### Conversion
 
-```
-pip install -r requirements.txt
-make markdown
-make rst
+```console
+$ pip install -r requirements.txt
+$ make markdown
+$ make rst
 ```
