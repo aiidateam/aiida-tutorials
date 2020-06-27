@@ -31,9 +31,8 @@ def remove_lines_from_cell(cell, remove_from_string, remove_to_string,
         if last_line_solution is None:
             raise Exception(
                 "I found a start for the block but no end of the block")
-        else:
-            indices_to_remove |= set(
-                range(first_line_solution, last_line_solution + 1))
+        indices_to_remove |= set(
+            range(first_line_solution, last_line_solution + 1))
 
     for idx in sorted(indices_to_remove, reverse=True):
         cell['source'].pop(idx)
