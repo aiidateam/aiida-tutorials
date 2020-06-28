@@ -35,11 +35,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install pandoc
-      run: |
-        sudo apt update
-        sudo apt install \
-          pandoc
     - name: Install latexpdf dependencies
       if: ${{ matrix.format == 'latexpdf' }}
       run: |
