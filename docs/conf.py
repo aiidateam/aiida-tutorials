@@ -29,9 +29,11 @@ extensions = [
     'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo',
     'sphinx.ext.ifconfig', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode',
     'IPython.sphinxext.ipython_console_highlighting',
-    'IPython.sphinxext.ipython_directive', 'recommonmark', 'nbsphinx',
-    'sphinx.ext.extlinks', 'sphinx.ext.mathjax', 'sphinx_copybutton',
-    "sphinx_panels"
+    'IPython.sphinxext.ipython_directive',
+    'myst_nb',
+    'sphinx.ext.extlinks',
+    'sphinx.ext.mathjax',
+    'sphinx_copybutton',
 ]
 ipython_mplbackend = ""
 
@@ -47,12 +49,6 @@ extlinks = {
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-
-# The suffix of source filenames.
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
-}
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -344,8 +340,7 @@ def setup(app):
 
 
 # We are not installing a full aiida environment
-nbsphinx_execute = 'never'
-#nbsphinx_allow_errors = True
+jupyter_execute_notebooks = "off"
 
 # Intersphinx configuration
 intersphinx_mapping = {
