@@ -137,4 +137,3 @@ A few hints for the settings:
 -  With ``CreateNumberOfMolecules`` you can specify the number of
    particles that will be inserted (randomly) in your system at the
    start of your simulation.
-

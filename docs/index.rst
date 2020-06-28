@@ -7,7 +7,7 @@ Where to start
 ---------------------
 
 - in-depth tutorial: the :ref:`2020 Introductory Virtual tutorial <2020_Intro_Week_Homepage>`
-- short demos: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>` (using Quantum ESPRESSO), or 
+- short demos: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>` (using Quantum ESPRESSO), or
   the :ref:`Wannier90 "Virtual Edition" 2020 tutorial <Oxford 2020 Homepage>` (using Wannier90).
 - `AiiDA cheatsheet <https://github.com/aiidateam/aiida-tutorials/raw/b5a8d54176153ce2b735e1fae8cae2c93c78a6bf/docs/pages/2019_IIT_Mandi_India/cheatsheet/cheatsheet.pdf>`_ with class hierarchy and common commands
 

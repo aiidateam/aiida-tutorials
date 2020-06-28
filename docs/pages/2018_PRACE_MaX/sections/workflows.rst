@@ -1,3 +1,5 @@
+.. rstcheck: ignore-language=python
+
 AiiDA Workflows
 ===============
 
@@ -160,7 +162,7 @@ the following commands in the ``verdi shell`` from the
     from create_rescale import create_diamond_fcc, rescale
 
     s0 = create_diamond_fcc("Si")
-    rescaled_structures = [rescale(s0, factor) for factor 
+    rescaled_structures = [rescale(s0, factor) for factor
                           in (0.98, 0.99, 1.0, 1.1, 1.2)]
 
 and store them in the database:
@@ -194,13 +196,13 @@ but this is not required). You can do it in the file
 
     # Add this import
     from aiida.work import workfunction as wf
-     
+
     # Add decorators
     @wf
     def create_diamond_fcc(element):
         ...
         ...
-     
+
     @wf
     def rescale(structure, scale):
         ...
@@ -297,7 +299,7 @@ Now inspect the input links of ``s1``:
 .. code:: python
 
     In [6]: s1.get_inputs()
-    Out[6]: 
+    Out[6]:
     [<FunctionCalculation: uuid: a672317b-3091-4135-9d84-12c2fff34bfe (pk: 5005)>,
      <FunctionCalculation: uuid: a672317b-3091-4135-9d84-12c2fff34bfe (pk: 5005)>,
      <FunctionCalculation: uuid: f64f4a70-70ff-4551-ba4d-c186328d8bd6 (pk: 5002)>]
@@ -447,7 +449,7 @@ function with a static choice of parameters:
         return run_eos_wf(Str(codename), Str(pseudo_family), Str(element))
 
     if __name__ == '__main__':
-        run_eos() 
+        run_eos()
 
 Run the workflow by running the following command from the
 ``tutorial_scripts`` directory:
@@ -609,8 +611,8 @@ code we will refer to the line number appearing in Table [Tab:wf2frag].
                 # ...
                 future = self.submit(PwCalculation, **inputs)
                 calcs[label] = future
-              
-            # Ask the workflow to continue when the results are ready 
+
+            # Ask the workflow to continue when the results are ready
             # and store them in the context
             return ToContext(**calcs)
 

@@ -64,24 +64,27 @@ the pseudopotential family will be ready for use.
 Getting the list of existing families
 +++++++++++++++++++++++++++++++++++++
 To see wich pseudopotential families already exist in the database, type
-::
 
-   verdi data upf listfamilies
+.. code-block:: console
+
+   $ verdi data upf listfamilies
 
 Add a ``-d`` (or ``--with-description``) flag if you also want to read the description of each family.
 
 You can also filter the groups to get only a list of those containing a given set of elements
 using the ``-e`` option. For instance, if you want to get only the families containing the
 elements ``Ba``, ``Ti`` and ``O``, use
-::
 
-   verdi data upf listfamilies -e Ba Ti O
+.. code-block:: console
+
+   $ verdi data upf listfamilies -e Ba Ti O
 
 
 For more information on the command line options, type
-::
 
-   verdi data upf listfamilies -h
+.. code-block:: console
+
+   $ verdi data upf listfamilies -h
 
 
 Manually adding pseudopotentials

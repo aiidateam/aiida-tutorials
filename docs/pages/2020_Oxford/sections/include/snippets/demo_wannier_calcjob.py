@@ -54,7 +54,7 @@ settings_dict = {}
 if do_preprocess:
     settings_dict.update(
         {'postproc_setup': True}
-    )  
+    )
 
 # Prepare the builder to launch the calculation
 builder = code.get_builder()
@@ -75,4 +75,3 @@ calcjobnode = submit(builder)
 
 print("CalcJobNode: {}".format(calcjobnode))
 print("Use `verdi process list` or `verdi process show {}` to check the progress".format(calcjobnode.pk))
-

@@ -26,7 +26,7 @@ If all went well, you should now be able to open up a browser on your
 local machine and point it to the following address
 ``http://localhost:8888/?token=2a3ba3...`` (replace the token with the
 one printed on output by the previous command). This should now show you
-a directory navigator. 
+a directory navigator.
 
 To open the notebook, click on ``querybuilder`` and then select the file
 ``tutorial.ipynb``. Note that there is also a ``solution.ipynb``, which is a
@@ -37,10 +37,10 @@ some point (but we suggest that you try not to look at it at first).
 See below for a rendered version of the notebook, that can also be downloaded
 from :download:`here <../notebooks/querybuilder-tutorial.ipynb>`.
 
-.. toctree:: 
+.. toctree::
 
    QueryBuilder Notebook <../notebooks/querybuilder-tutorial.ipynb>
 
-The solutions can also be downloaded from 
-:download:`here <../notebooks/querybuilder-solutions.ipynb>`: but again, 
+The solutions can also be downloaded from
+:download:`here <../notebooks/querybuilder-solutions.ipynb>`: but again,
 try not to use them at first!

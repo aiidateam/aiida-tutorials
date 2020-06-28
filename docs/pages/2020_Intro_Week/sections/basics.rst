@@ -23,6 +23,7 @@ which lets you manage your AiiDA installation, inspect the contents of your data
 
 More details on ``verdi`` can be found in the `online documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html>`_.
 
+.. _2020_virtual_intro:setup_profile:
 
 Setting up a profile
 --------------------
@@ -711,9 +712,9 @@ To write the modified dictionary to the database, create a new object of class `
     Dict = DataFactory('dict')
     new_params = Dict(dict=YOUR_DICT)
 
-where ``YOUR_DICT`` is the modified python dictionary. 
-Note that ``new_params`` is not yet stored in the database. 
-In fact, typing ``new_params`` in the verdi shell will print a string notifying you of its 'unstored' status. 
+where ``YOUR_DICT`` is the modified python dictionary.
+Note that ``new_params`` is not yet stored in the database.
+In fact, typing ``new_params`` in the verdi shell will print a string notifying you of its 'unstored' status.
 Let's finish by storing the ``new_params`` dictionary node in the datbase:
 
 .. code:: python

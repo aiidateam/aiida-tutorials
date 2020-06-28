@@ -31,7 +31,7 @@ where ``computer.yml`` is a configuration file in the `YAML format <https://en.w
     :language: yaml
 
 .. note::
-    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<2020:setup_verdi_quicksetup>`.
+    When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<2020_virtual_intro:setup_profile>`.
     The configuration file should work for the virtual machine that comes with this tutorial but may need to be adapted when you are running AiiDA in a different environment, as explained in :ref:`this appendix<2020:appendix_computer_code_setup>`.
 
 Finally, you need to provide AiiDA with information on how to access the ``Computer``.
@@ -388,7 +388,7 @@ The calculation is now stored in the database and was assigned a "database prima
 See the :ref:`previous section <2019-aiida-identifiers>` for more details on these identifiers.
 
 To preserve the integrity of the data provenance, AiiDA will prevent you from changing the core content ("attributes") of a stored node.
-There is an "extras" section though, which is writable after storage, to allow you to set additional information, e.g. as a way of labelling nodes and providing information for querying. 
+There is an "extras" section though, which is writable after storage, to allow you to set additional information, e.g. as a way of labelling nodes and providing information for querying.
 
 Note that while AiiDA will prevent you from changing the content of stored nodes, the concept of "extras" allows you to set extra attributes, e.g. as a way of labelling nodes and providing information for querying.
 
@@ -562,7 +562,7 @@ Simply giving the calculation some more steps in the convergence cycle will prob
     parameters = restart_builder.parameters.get_dict()
     parameters['ELECTRONS']['electron_maxstep'] = 80
 
-We could now just store these modified ``parameters`` in a new ``Dict`` node (as the original input is immutable, in order to preserve the provenance) and use it to run a new calculation. 
+We could now just store these modified ``parameters`` in a new ``Dict`` node (as the original input is immutable, in order to preserve the provenance) and use it to run a new calculation.
 However, in this Quantum ESPRESSO example even more can be done, by using the results of the previous calculation to speed up the restart.
 To do so, we simply have to set the input ``parent_folder`` to the remote working directory of the old calculation, i.e.:
 

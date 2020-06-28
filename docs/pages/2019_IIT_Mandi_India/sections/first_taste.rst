@@ -114,7 +114,7 @@ Try to reproduce the figure using the PK of your calculation.
 
 .. note::
 
-  By default, AiiDA uses UUIDs to label nodes in provenance graphs (more about UUIDs vs PKs later). 
+  By default, AiiDA uses UUIDs to label nodes in provenance graphs (more about UUIDs vs PKs later).
   Try using the ``-h`` option to figure out how to switch to the PK identifier.
 
 
@@ -204,8 +204,8 @@ To see what is going on, AiiDA provides a command that lets you jump to the fold
   verdi process list --all  # get PK of new calculation
   verdi calcjob gotocomputer <PK>
 
-Have a look around. 
- * Do you recognize the different files? 
+Have a look around.
+ * Do you recognize the different files?
  * Have a look at the submission script ``_aiidasubmit.sh``.
    Compare it to the submission script of your previous calculation.
    What are the differences?
@@ -289,7 +289,7 @@ Browse your AiiDA database.
  * Start by finding your structure in Data => StructureData
  * Use the provenance browser to explore the steps of the ``PwBandStructureWorkChain``
 
-.. note:: 
+.. note::
 
      When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
 

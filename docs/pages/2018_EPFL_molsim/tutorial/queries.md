@@ -66,18 +66,18 @@ If you are interested to retrieve a subclass of a node, append that
 specific subclass instead of Node:
 
 ```python
-CifData = DataFactory('cif') 
-qb = QueryBuilder() # Creating a new QueryBuilder instance 
-qb.append(CifData) # Telling the QueryBuilder instance that I want a cif data type 
+CifData = DataFactory('cif')
+qb = QueryBuilder() # Creating a new QueryBuilder instance
+qb.append(CifData) # Telling the QueryBuilder instance that I want a cif data type
 qb.all() # Asking for all the results!
 ```
 
 **Exercise:**
 
--   Try now to find the number of instances for some subclasses of Node
-    (e.g. StructureData, ParameterData, etc.) that are stored in your
-    database. The result should look like . Of course, the numbers can
-    be different!
+- Try now to find the number of instances for some subclasses of Node
+  (e.g. StructureData, ParameterData, etc.) that are stored in your
+  database. The result should look like . Of course, the numbers can
+  be different!
 
 **Comment:** If you are familiar with the SQL (Structured Query
 Language) syntax then you may wonder what the issued SQL command is.
@@ -153,11 +153,11 @@ keyword with a dictionary. Suppose you want to know the creation date of
 a structure of which you know the uuid:
 
 ```python
-qb = QueryBuilder() # Instantiating a new QueryBuilder 
-qb.append(CifData, # I want structures! 
-  project=["ctime"], # I'm interested in creation time! 
+qb = QueryBuilder() # Instantiating a new QueryBuilder
+qb.append(CifData, # I want structures!
+  project=["ctime"], # I'm interested in creation time!
   filters={"uuid": {"==":"b84e8d4c-908b-45b4-8015-3ace540f7dd6"}}
-)  # I want the structure with this UUID 
+)  # I want the structure with this UUID
 qb.all()
 ```
 
@@ -166,15 +166,15 @@ the same object using the "and" or the "or" keyword in the filter
 section. Let's see an example.
 
 ```python
-from datetime import datetime, timedelta 
-qb = QueryBuilder() 
-qb.append(CifData, 
+from datetime import datetime, timedelta
+qb = QueryBuilder()
+qb.append(CifData,
   project=["uuid"],   # I want to see only the UUID
-  filters={ "or":[    # First filter is an or statement 
+  filters={ "or":[    # First filter is an or statement
             { "ctime": {">":datetime.now() - timedelta(days=12) }},
-            { "label": "Raspa test" } 
+            { "label": "Raspa test" }
            ]}
-) 
+)
 qb.all()
 ```
 
@@ -184,22 +184,17 @@ last 12 days or is named "graphene".
 
 **Hints for the exercises:**
 
--   The operator '>', '<' works with date-type properties with the
-    expected behavior.
+- The operator '>', '<' works with date-type properties with the expected behavior.
 
--   For your date comparisons you will need to create a `datetime`
-    object to which you can assign a date of your preference. You will
-    have to do the necessary import (`from datetime import datetime`)
-    and create an object by giving a specific date. E.g. 
-    `datetime(2015, 12, 26)`. For further information, you can consult the Python's
-    online documentation.
+- For your date comparisons you will need to create a `datetime`
+  object to which you can assign a date of your preference. You will
+  have to do the necessary import (`from datetime import datetime`)
+  and create an object by giving a specific date. E.g.
+  `datetime(2015, 12, 26)`. For further information, you can consult the Python's
+  online documentation.
 
 **Exercises:**
 
--   Write a query that returns all instances of StructureData that have
-    been created after the 1st of January 2016.
+- Write a query that returns all instances of StructureData that have been created after the 1st of January 2016.
 
--   Write a query that returns all instances of Group whose name starts
-    with "tutorial".
-
-
+- Write a query that returns all instances of Group whose name starts with "tutorial".

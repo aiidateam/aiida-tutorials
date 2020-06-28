@@ -170,8 +170,8 @@ To see what is going on, AiiDA provides a command that lets you jump to the fold
   verdi process list --all  # get PK of new calculation
   verdi calcjob gotocomputer <PK>
 
-Have a look around. 
- * Do you recognize the different files? 
+Have a look around.
+ * Do you recognize the different files?
  * Have a look at the submission script ``_aiidasubmit.sh``.
    Compare it to the submission script of your previous calculation.
    What are the differences?
@@ -242,7 +242,7 @@ Browse your AiiDA database.
  * Start by finding your structure in Data => Structure
  * Use the provenance browser to explore the steps of the ``PwBandStructureWorkChain``
 
-.. note:: 
+.. note::
 
      When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
 
@@ -267,7 +267,7 @@ Use this to produce a PDF of the band structure:
 
         %aiida
         %matplotlib inline
-     
+
         scf_params = load_node(<PK>)  # REPLACE with PK of "scf_parameters" output
         fermi_energy = scf_params.dict.fermi_energy
 
@@ -288,10 +288,10 @@ Here are some options for how to continue:
  * Try `setting up AiiDA directly on your laptop <https://aiida-core.readthedocs.io/en/latest/install/quick_installation.html>`_.
 
    .. note:: **For advanced Linux & python users only**.
-     AiiDA depends on a number of services and software that require some skill to set up. 
+     AiiDA depends on a number of services and software that require some skill to set up.
      Unfortunately, we don't have the human resources to help you solve
      issues related to your setup in a tutorial context.
-     
+
  * Continue your work from other parts of the workshop, chat with participants and enjoy yourself :-)
 
 

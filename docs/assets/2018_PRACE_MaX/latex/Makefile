@@ -8,13 +8,13 @@ pdflatex: $(patsubst %.tex, %.pdf, $(wildcard *.tex))
 	pdflatex ${LATEX_INTERACTION_MODE} $< && pdflatex $< && pdflatex $<
 
 
-.PHONY: all clean distclean 
+.PHONY: all clean distclean
 
 clean:
 	rm -f ${temp_files}
 
 distclean: clean
-	rm -f AiiDA_tutorial.pdf AiiDA_tutorial_online.pdf 
+	rm -f AiiDA_tutorial.pdf AiiDA_tutorial_online.pdf
 
 markdown: $(deps)
 	./de-macro.py AiiDA_tutorial.tex
@@ -23,5 +23,3 @@ markdown: $(deps)
 rst: $(deps)
 	./de-macro.py AiiDA_tutorial.tex
 	pandoc -s --filter pandocfilter.py AiiDA_tutorial-clean.tex -t rst -o AiiDA_tutorial-clean.rst
-
-

@@ -1,5 +1,4 @@
-Verdi shell and AiiDA objects
-=============================
+# Verdi shell and AiiDA objects
 
 In this section we will use an interactive ipython environment with all the basic AiiDA classes already loaded. We propose two realizations of such a tool. The first consist of a special ipython shell where all the AiiDA classes, methods and functions are accessible. Type in the terminal
 
@@ -35,8 +34,7 @@ Alternatively, to avoid changing terminal, you can execute `bash` commands withi
  !some bash command
 ```
 
-Loading a node[load<sub>n</sub>ode]
------------------------------------
+## Loading a node
 
 Most AiiDA objects are represented by nodes, identified in the database by its pk number (an integer). You can access a node using the following command in the shell:
 
@@ -58,12 +56,11 @@ You can also type
 
 and then press `TAB` to see all the possible output results of the calculation.
 
-Loading different kinds of nodes
---------------------------------
+## Loading different kinds of nodes
 
 ### Pseudopotentials
 
-From the graph displayed in Section [sec:aiida<sub>g</sub>raph], find the pk of the barium pseudopotential file (LDA). Load it and verify that it describes barium. Type
+From the graph displayed in Section [sec:aiida_graph], find the pk of the barium pseudopotential file (LDA). Load it and verify that it describes barium. Type
 
 ``` python
  upf = load_node(PK)
@@ -74,7 +71,7 @@ All methods of `UpfData` are accessible by typing `upf.` and then pressing `TAB`
 
 ### k-points
 
-A set of k-points in the Brillouin zone is represented by an instance of the `KpointsData` class. Choose one from the graph of Section [sec:aiida<sub>g</sub>raph], load it as `kpoints` and inspect its content:
+A set of k-points in the Brillouin zone is represented by an instance of the `KpointsData` class. Choose one from the graph of Section [sec:aiida_graph], load it as `kpoints` and inspect its content:
 
 ``` python
  kpoints.get_kpoints_mesh()
@@ -118,7 +115,7 @@ This function loads the appropriate class defined in a string (here `array.kpoin
 
 ### Parameters
 
-Nested dictionaries with individual parameters, as well as lists and arrays, are represented in AiiDA with `ParameterData` objects. Get the PK and load the input parameters of a calculation in the graph of Section [sec:aiida<sub>g</sub>raph]. Then display its content by typing
+Nested dictionaries with individual parameters, as well as lists and arrays, are represented in AiiDA with `ParameterData` objects. Get the PK and load the input parameters of a calculation in the graph of Section [sec:aiida_graph]. Then display its content by typing
 
 ``` python
  params.get_dict()
@@ -144,7 +141,7 @@ where `YOUR_DICT` is the modified dictionary. Note that the parameter object is 
 
 ### Structures
 
-Find a structure in the graph of Section [sec:aiida<sub>g</sub>raph] and load it. Display its chemical formula, atomic positions and species using
+Find a structure in the graph of Section [sec:aiida_graph] and load it. Display its chemical formula, atomic positions and species using
 
 ``` python
  structure.get_formula()
@@ -165,7 +162,7 @@ Let’s try now to define a new structure to study, specifically a silicon cryst
  the_cell = [[alat/2,alat/2,0.],[alat/2,0.,alat/2],[0.,alat/2,alat/2]]
 ```
 
-<span>**Note**</span>: Default units for crystal structure cell and coordinates in AiiDA are Å.
+**Note**: Default units for crystal structure cell and coordinates in AiiDA are Å.
 
 Structures in AiiDA are instances of `StructureData` class: load it in the verdi shell
 
@@ -216,7 +213,7 @@ Now you can store the new structure object in the database with the command:
 Finally, we can also import the silicon structure from an external (online) repository such as the Crystallography Open Database :
 
 ``` python
-from aiida.tools.dbimporters.plugins.cod import CodDbImporter 
+from aiida.tools.dbimporters.plugins.cod import CodDbImporter
 importer = CodDbImporter()
 for entry in importer.query(formula='Si',spacegroup='F d -3 m'):
         structure = entry.get_aiida_structure()
@@ -226,10 +223,9 @@ for entry in importer.query(formula='Si',spacegroup='F d -3 m'):
 
 In that case two duplicate structures are found for Si.
 
-Accessing inputs and outputs
-----------------------------
+## Accessing inputs and outputs
 
-Load again the calculation node used in Section [load<sub>n</sub>ode]:
+Load again the calculation node used in Section [loadnode]:
 
 ``` python
  calc = load_node(PK)
@@ -285,8 +281,7 @@ Alternatively, you can get a dictionary where the keys are the link names and th
 
 Note: You will sometime see entries in the dictionary with names like `output_kpoints_3511`. These exist because standard python dictionaries require unique key names while link labels may not be unique. Therefore, we use the link label plus the PK separated by underscores.
 
-Pseudopotential families
-------------------------
+## Pseudopotential families
 
 Pseudopotentials in AiiDA are grouped in “families” that contain one single pseudo per element. We will see how to work with UPF pseudopotentials (the format used by Quantum ESPRESSO and some other codes).
 Download and untar the SSSP  pseudopotentials via the commands:

@@ -15,7 +15,7 @@ addons:
             - latex-xcolor
             - pgf
             - dvipng
-            - dvidvi   
+            - dvidvi
 
 env:
 - LATEX_INTERACTION_MODE="-interaction=nonstopmode"

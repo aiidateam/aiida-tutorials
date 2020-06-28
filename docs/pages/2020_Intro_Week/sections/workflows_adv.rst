@@ -15,7 +15,7 @@ A non-zero exit status is often used to communicate that there was some kind of 
 However, the severity of the problem can vary and a non-zero exit status can also be used to just give a warning and does not necessarily mean the process suffered a critical error.
 Still, in AiiDA, a non-zero exit status technically marks a process as failed and the :meth:`~aiida.orm.nodes.process.ProcessNode.is_failed` property will return `True`.
 
-Exit codes can be defined using the :meth:`~aiida.engine.processes.process_spec.ProcessSpec.exit_code` method during the process specification in the :meth:`~aiida.engine.processes.process_spec.ProcessSpec.define` method.
+Exit codes can be defined using the :meth:`~aiida.engine.processes.process_spec.ProcessSpec.exit_code` method during the process specification in the :meth:`~aiida.engine.processes.process.Process.define` method.
 It takes three arguments: the exit status, an exit label for easy reference and the exit message.
 Take the ``MultiplyAddWorkChain`` as an example:
 

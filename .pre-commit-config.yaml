@@ -1,23 +1,43 @@
-- repo: local
-  hooks:
-  - id: yapf
-    name: yapf
-    entry: yapf
-    language: system
-    types: [python]
-    exclude: &exclude_files >
-      (?x)^(
-        docs/pages/.*/snippets/.*|
-        docs/pages/2019_molsim_school_Amsterdam/assets/raspa_loading.py|
-        docs/pages/2019_molsim_school_Amsterdam/assets/multiply_unitcell.py|
-        docs/assets/2018_PRACE_MaX/latex/de-macro.py
-      )$
-    args: ["-i"]
+exclude: >
+    (?x)^(
+      docs/pages/.*/snippets/.*|
+      docs/pages/2019_molsim_school_Amsterdam/assets/raspa_loading.py|
+      docs/pages/2019_molsim_school_Amsterdam/assets/multiply_unitcell.py|
+      docs/assets/2018_PRACE_MaX/latex/de-macro.py|
+      .*xsf|
+      .*agr|
+      .*tex
+    )$
+repos:
+  - repo: git://github.com/pre-commit/pre-commit-hooks
+    rev: v2.2.3
+    hooks:
+    - id: check-yaml
+    - id: end-of-file-fixer
+    - id: trailing-whitespace
 
-  - id: prospector
-    language: system
-    types: [file, python]
-    name: prospector
-    description: "This hook runs Prospector: https://github.com/landscapeio/prospector"
-    entry: prospector
-    exclude: *exclude_files
+  - repo: https://github.com/pre-commit/mirrors-yapf
+    rev: v0.27.0
+    hooks:
+    - id: yapf
+      name: yapf
+      types: [python]
+      args: ['-i']
+
+  - repo: https://github.com/PyCQA/pylint
+    rev: pylint-2.4.4
+    hooks:
+    - id: pylint
+      language: system
+
+  - repo: https://github.com/myint/rstcheck
+    rev: 'master'
+    hooks:
+    - id: rstcheck
+      additional_dependencies:
+        - sphinx==2.4.4
+
+  - repo: https://github.com/markdownlint/markdownlint
+    rev: 'v0.9.0'
+    hooks:
+    - id: markdownlint

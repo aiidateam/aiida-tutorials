@@ -24,9 +24,9 @@ parameters_dict = {
 
 The two mistakes in the dictionary are the following. First, we wrote a wrong namelist name (’CTRL’ instead of ’CONTROL’). Second, we inserted the number of atoms explicitly: while that is how the number of atoms is specified in Quantum ESPRESSO, in AiiDA this key is reserved by the system: in fact this information is already contained in the StructureData. Modify the script with this ParameterData. In this case, we use a tool (the input validator that we provide in AiiDA) to check the input file before submitting. Therefore, the behavior will be slightly different from the previous example: the plugin will check for some keys and will refuse to submit the calculation. This kind of mistakes is revealed by either
 
--   Submitting a calculation. You will see the calculation ending up in the SUBMISSIONFAILED status. Check therefore the logs to recognize the source of the error.
+- Submitting a calculation. You will see the calculation ending up in the SUBMISSIONFAILED status. Check therefore the logs to recognize the source of the error.
 
--   Submitting a test. You will not be able to successfully create the test and the traceback will guide you to the problem.
+- Submitting a test. You will not be able to successfully create the test and the traceback will guide you to the problem.
 
 Over the time this kind of trivial mistakes can be annoying, but they can be avoided with a utility function that checks the “grammar” of the input parameters. In your script, after you defined the parameters\_dict, you can validate it with the command (note that you need to pass also the input crystal structure, `s`, to allow the validator to perform all needed checks):
 

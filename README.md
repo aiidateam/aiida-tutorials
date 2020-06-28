@@ -5,20 +5,20 @@
 The official place to find materials from AiiDA tutorial events,
 interactive demos and videos.
 
-Visit http://aiida-tutorials.readthedocs.org
+Visit <http://aiida-tutorials.readthedocs.org>
 
 ## Contributing
 
 We highly welcome contributions of
 
- * links to new tutorial materials
- * corrections of existing tutorial materials
+* links to new tutorial materials
+* corrections of existing tutorial materials
 
 If you would like to contribute a fix or a link to a new tutorial resource, please:
 
- * Fork this repository
- * Make your changes
- * Submit a [pull request](https://github.com/aiidateam/aiida-tutorials/pulls)
+* Fork this repository
+* Make your changes
+* Submit a [pull request](https://github.com/aiidateam/aiida-tutorials/pulls)
 
 If you have a question, feel free to just [open an issue](https://github.com/aiidateam/aiida-tutorials/issues/new).
 
@@ -26,8 +26,8 @@ If you have a question, feel free to just [open an issue](https://github.com/aii
 
 ### Prerequisites
 
- * python 3.5 or greater
- * [pandoc](https://pandoc.org/)
+* python 3.5 or greater
+* [pandoc](https://pandoc.org/)
 
 ### Build instructions
 

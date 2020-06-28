@@ -54,7 +54,7 @@ options = {
     "withmpi": False,                      # we run in serial mode
 }
 
-submit(RaspaCalculation.process(), 
+submit(RaspaCalculation.process(),
     code=test_and_get_code("raspa@bazis", expected_code_type='raspa'),
     structure=load_node("<uuid>"),
     parameters=parameters,

@@ -23,9 +23,9 @@ For this session, we suggest two options depending on your interests -- please p
 
     **Task:** Template your own plugin package using the `AiiDA plugin cutter <https://github.com/aiidateam/aiida-plugin-cutter>`_ and start wrapping your code.
 
-    **Result:** An AiiDA plugin package, prepared for distribution via PyPI, and including templates for continuous integration tests and documentation. 
+    **Result:** An AiiDA plugin package, prepared for distribution via PyPI, and including templates for continuous integration tests and documentation.
 
-    **Time:** Don't expect to have a fully fledged plugin ready by the end of the session! 
+    **Time:** Don't expect to have a fully fledged plugin ready by the end of the session!
     This is is an open-ended task aimed at getting you through initial hurdles more quickly by having AiiDA developers around to ask for help.
 
 

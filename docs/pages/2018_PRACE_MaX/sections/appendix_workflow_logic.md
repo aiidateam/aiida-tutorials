@@ -59,26 +59,26 @@ This outline already roughly explains the algorithm: after an initialization (`i
 
 If you are interested in the details of the algorithm, you can inspect the file. The main ideas are described here:
 
-init  
+init
 Generate a `pw.x` calculation for the input structure (with volume \(V\)), and one for a structure where the volume is \(V+4\text{\AA}^3\) (just to get a closeby volume). Store the results in the context as `r0` and `r1`
 
-put\_step0\_in\_ctx  
+put\_step0\_in\_ctx
 Store in the context \(V\), \(E(V)\) and \(dE/dV\) for the first calculation `r0`
 
-move\_next\_step  
+move\_next\_step
 This is the most important function. Calculate \(V\), \(E(V)\) and \(dE/dV\) for `r1`. Also, estimate \(d^2E/dV^2\) from the finite difference of the first derivative of `r0` and `r1` (helper functions to achieve this are provided). Get the \(a\), \(b\) and \(c\) coefficients of a parabolic fit \(E=aV^2 + bV + c\) and estimated the expected minimum of the EOS function as the minimum of the fit \(V_0=-b/2a\). Finally, replace `r0` with `r1` in the context (i.e., get rid of the oldest point) and launch a new pw calculation at volume \(V_0\), that will be stored in the context replacing `r1`. In this way, at the next iteration `r0` and `r1` will contain the latest two simulations. Finally, at each step some relevant information (coefficients \(a\), \(b\) and \(c\), volumes, energies, energy derivatives, ...) are stored in a list called `steps`. This whole list is stored in the context because it provides quantities to be preserved between different workfunction steps.
 
-not\_converged  
+not\_converged
 Return `True` if convergence has not been achieved yet. Convergence is achieved if the difference in volume between the two latest simulations is smaller than a given threshold (`volume_tolerance`).
 
-report  
+report
 This is the final step. Mainly, we return the output nodes: `steps` with the list of results at each step, and `structure` with the final converged structure.
 
 The results returned in `steps` can be used to represent the evolution of the minimisation algorithm. A possible way to visualize it is presented in Fig. [fig:convpressure], obtained with an initial lattice constant of \(a_{\text{lat}} = 5.2\text{\AA}\).
 
 ![[fig:convpressure]Example of results of the convergence algorithm presented in Sec. [sec:convpressure]. The bottom plot is a zoom near the minimum. The dots represent the (volume,energy) points obtained from Quantum ESPRESSO, and the numbers indicate at which iteration they were obtained. The parabolas represent the parabolic fits used in the algorithm; the minimum of the parabola is represented with a small cross, in correspondence of the vertical lines, used as the volume for the following step.]({{ site.baseurl}}/assets/2018_PRACE_MaX/convergence_pressure)
 
-<span>9</span> P. Giannozzi et al., J.Phys. Cond. Matt. 29, 465901 (2017). S. R. Bahn and K. W. Jacobsen, Comput. Sci. Eng., 4, 56-66 (2002). S. Ping Ong et al., Comput. Mater. Sci. 68, 314-319 (2013). K.F. Garrity, J.W. Bennett, K.M. Rabe and D. Vanderbilt, Comput. Mater. Sci. 81, 446 (2014). G. Prandini, A. Marrazzo, I. E. Castelli, N. Mounet, N. Marzari, A Standard Solid State Pseudopotentials (SSSP) library optimized for accuracy and efficiency (Version 1.0, data download), Materials Cloud Archive (2018), [doi:10.24435/materialscloud:2018.0001/v1](http://doi.org/10.24435/materialscloud:2018.0001/v1). Crystallographic Open Database (<span>COD</span>), <http://www.crystallography.net/cod/>.
+9 P. Giannozzi et al., J.Phys. Cond. Matt. 29, 465901 (2017). S. R. Bahn and K. W. Jacobsen, Comput. Sci. Eng., 4, 56-66 (2002). S. Ping Ong et al., Comput. Mater. Sci. 68, 314-319 (2013). K.F. Garrity, J.W. Bennett, K.M. Rabe and D. Vanderbilt, Comput. Mater. Sci. 81, 446 (2014). G. Prandini, A. Marrazzo, I. E. Castelli, N. Mounet, N. Marzari, A Standard Solid State Pseudopotentials (SSSP) library optimized for accuracy and efficiency (Version 1.0, data download), Materials Cloud Archive (2018), [doi:10.24435/materialscloud:2018.0001/v1](http://doi.org/10.24435/materialscloud:2018.0001/v1). Crystallographic Open Database (COD), <http://www.crystallography.net/cod/>.
 
 [1] The string provided to the `DataFactory` encodes both the location and the name of the required class according to some specific rules.
 

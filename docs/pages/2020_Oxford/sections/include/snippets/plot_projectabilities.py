@@ -16,7 +16,7 @@ def parse_arguments():
         help="PK of Wannier90BandsWorkChain"
     )
     return parser.parse_args()
-    
+
 def erfc_scdm(x,mu,sigma):
     from scipy.special import erfc
     return 0.5*erfc((x-mu)/sigma)
@@ -94,4 +94,3 @@ if __name__ == "__main__":
     pl.ylabel('Projectability')
     pl.legend(loc='best')
     pl.savefig('{}_proj.png'.format(formula))
-

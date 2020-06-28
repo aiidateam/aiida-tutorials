@@ -1,5 +1,4 @@
-Querying the AiiDA database {#sec:querybuilder}
-===========================
+# Querying the AiiDA database {#sec:querybuilder}
 
 We will now learn how to *query* the AiiDA database using the python interface.
 Queries are, in essence, questions to your database and you will use the
@@ -13,6 +12,7 @@ When working in the `verdi shell` or a jupyter notebook with `%aiida` enabled,
 the `QueryBuilder` class has already been imported.
 
 Let's create a new querybuilder for our query:
+
 ```python
 qb = QueryBuilder()
 ```
@@ -31,13 +31,13 @@ At this point, we can finish our query by asking for all nodes matching these cr
 qb.all() # Returns all nodes in the database
 ```
 
-> **Note**  
+> **Note**
 > We could also have used `qb.first()` to get the first node.
 > Always use tab-completion when in doubt which functions can be used on a python object.
 
 This command will return us all the Nodes directly, which may
 not be the most wise thing to do considering that is the biggest family
-of AiiDA stored objects that we can query. 
+of AiiDA stored objects that we can query.
 To understand the size of the result, we can type the following command:
 
 ```python
@@ -48,18 +48,18 @@ If you are interested to retrieve a subclass of a node, append that
 specific subclass instead of Node:
 
 ```python
-CifData = DataFactory('cif') 
-qb = QueryBuilder() # Creating a new QueryBuilder instance 
-qb.append(CifData) # Telling the QueryBuilder instance that I want a cif data type 
+CifData = DataFactory('cif')
+qb = QueryBuilder() # Creating a new QueryBuilder instance
+qb.append(CifData) # Telling the QueryBuilder instance that I want a cif data type
 qb.all() # Asking for all the results!
 ```
 
-> **Note**  
+> **Note**
 > Remember to create a new `qb = QueryBuilder()` instance for each new query.
 
-
 Other data types we will need in the tutorial are:
-```
+
+```python
 ParameterData = DataFactory('parameter')
 NetworkCalculation = CalculationFactory('zeopp.network')
 RaspaCalculation = CalculationFactory('raspa')
@@ -68,7 +68,7 @@ RaspaCalculation = CalculationFactory('raspa')
 ---
 ### Exercise
 
-Find the number of `CifData` and `NetworkCalculation` nodes in the database.  
+Find the number of `CifData` and `NetworkCalculation` nodes in the database.
 Is there one calculation for every structure?
 
 You may also be interested to learn [where the structures are coming from](../theoretical/502-mofs).
@@ -87,13 +87,13 @@ You may also be interested to learn [where the structures are coming from](../th
 
 *List of some Node subclasses and how many times they occur in our test database.*
 
-> **Note**  
-> Advanced users who are familiar with SQL 
+> **Note**
+> Advanced users who are familiar with SQL
 > (Structured Query Language) syntax, can inspect the generated SQL query via:
 > ```python
 > str(qb)
 > ```
- 
+
 ## Projections
 
 So far, we've retrieved node objects but we are interested in the information they contain.
@@ -110,17 +110,18 @@ specify which properties of the selected nodes our query should return.
 |Group    | id, uuid, name, type, time, description|
 |---------| -------------------------|
 
-*<center>A selection of entities and some of their properties.</center>*
+### A selection of entities and some of their properties
 
 For example, we might be interested only in type and universally unique
 identifier (UUID) of each node:
 
 ```python
-qb = QueryBuilder() 
-qb.append(Node, project=["type", "uuid"]) 
+qb = QueryBuilder()
+qb.append(Node, project=["type", "uuid"])
 qb.all()
 ```
-> **Note**  
+
+> **Note**
 > Please use the `id` keyword in QueryBuilder queries to access the PK of a node.
 
 ## Filters
@@ -131,7 +132,7 @@ but often we would like to filter the results by other node properties.
 For example, we might want to select all
 the calculations that were launched on a specific date. In database
 language, this is called "adding a filter" to a query. A filter is a
-boolean operator that returns `True` or `False`. 
+boolean operator that returns `True` or `False`.
 
 |  Operator   |         Datatype         |               Example
 |-------------| -------------------------| ------------------------------------
@@ -140,17 +141,17 @@ boolean operator that returns `True` or `False`.
 | >,<,<=,>=   |  floats, integers, dates |             `{'>':5.2}`
 |    like     |           Chars          |       `{'like':'calculation%'}`
 |    ilike    |           Chars          |       `{'ilike':'caLculAtioN%'}`
-|     or      |                          |  `{'or':[{'<':5.3}, {'>':6.3}]}` 
+|     or      |                          |  `{'or':[{'<':5.3}, {'>':6.3}]}`
 |     and     |                          |  `{'and':[{'>':5.3}, {'<':6.3}]}`
 
-*<center>Selection of filter operators.</center>*
+### Selection of filter operators
 
 If you want to add filters to your query, use the `filters`
 and provide a dictionary with the filters you would like to apply.
 Let's filter out the structure with label "HKUST1":
 
 ```python
-qb = QueryBuilder()  # Instantiating a new QueryBuilder 
+qb = QueryBuilder()  # Instantiating a new QueryBuilder
 qb.append(CifData,   # I want structures
   project=["id"],    # I want to know the id
   filters={"label": {"==":"HKUST1"}})  # Only structures with this label

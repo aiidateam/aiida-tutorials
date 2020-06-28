@@ -1,0 +1,94 @@
+name: continuous-integration
+
+on: [push, pull_request]
+
+jobs:
+
+  pre-commit:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install python dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run pre-commit
+      run:
+        pre-commit run --all-files || ( git status --short ; git diff ; exit 1 )
+
+  build:
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    strategy:
+      matrix:
+        format: ["html", "latexpdf", "transifex"]
+      fail-fast: false
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install pandoc
+      run: |
+        sudo apt update
+        sudo apt install \
+          pandoc
+    - name: Install latexpdf dependencies
+      if: ${{ matrix.format == 'latexpdf' }}
+      run: |
+        sudo apt update
+        sudo apt install \
+          texlive-base \
+          texlive-generic-recommended \
+          texlive-fonts-recommended \
+          fonts-freefont-otf \
+          texlive-latex-base \
+          texlive-latex-recommended \
+          texlive-latex-extra \
+          texlive-xetex \
+          latexmk \
+          dvipng \
+          dvidvi
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install python dependencies
+      run: |
+        pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: "build docs: html"
+      if: ${{ matrix.format == 'html' }}
+      run: |
+        make -C docs ${{ matrix.format }}
+      env:
+        SPHINXOPTS: -nW --keep-going
+    - name: "build docs: latexpdf"
+      if: ${{ matrix.format == 'latexpdf' }}
+      run: |
+        make -C docs ${{ matrix.format }}
+      # TODO there are reference issues for latexpdf in e.g. docs/pages/2019_molsim_school_Amsterdam/screening/export.md
+      # I believe due to relative document references which don't work in latexpdf, since all documents are merged into one doctree
+      env:
+        SPHINXOPTS: -n
+    - name: "build docs: transifex"
+      if: ${{ matrix.format == 'transifex' }}
+      run: |
+        sphinx-build -b gettext -D gettext_compact=0 docs locale
+        tx init --no-interactive
+        sphinx-intl update-txconfig-resources --pot-dir locale --transifex-project-name ${TRANSIFEX_PROJECT_NAME}
+      env:
+        SPHINXOPTS: -nW --keep-going
+        TRANSIFEX_PROJECT_NAME: aiida-tutorials
+    - name: "publish transifex"
+      if: ${{ matrix.format == 'transifex' && github.ref == 'master' }}
+      run: |
+          sudo echo $'[https://www.transifex.com]\nhostname = https://www.transifex.com\nusername = '"${{ secrets.TRANSIFEX_USER }}"$'\npassword = '"${{ secrets.TRANSIFEX_PASSWORD }}"$'\n' > ~/.transifexrc
+          tx push -s
