@@ -3,8 +3,7 @@ sphinx-rtd-theme>=0.4.3,<0.5
 sphinx-copybutton~=0.2.12
 sphinx-panels~=0.4.1
 ipython>=4.0,<6.0
-# this can be removed when https://github.com/jupyter/jupyter-sphinx/pull/132 is merged
-git+https://github.com/chrisjsewell/jupyter-sphinx.git@improve-download-rebase
+jupyter-sphinx==0.3.0a1
 myst-nb~=0.8.3
 jupytext~=1.5.0
 jupyter_client>=5.2.4,<6
