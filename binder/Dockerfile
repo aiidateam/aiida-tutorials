@@ -123,25 +123,20 @@ RUN chown -R ${NB_USER}:${NB_USER} ${REPO_DIR}
 
 # Container image Labels!
 # Put these at the end, since we don't want to rebuild everything
-# when these change! Did I mention I hate Dockerfile cache semantics?
 
 LABEL repo2docker.ref="None"
 LABEL repo2docker.repo="local"
-LABEL repo2docker.version="0.11.0"
+LABEL repo2docker.version="0.1.0"
 
 # We always want containers to run as non-root
 USER ${NB_USER}
 
 # Make sure that postBuild scripts are marked executable before executing them
-RUN chmod +x binder/postBuild
-RUN ./binder/postBuild
+RUN ./binder/build_script_files/aiida-profile.bash
 
-# Add start script
-RUN chmod +x "${REPO_DIR}/binder/start"
-ENV R2D_ENTRYPOINT "${REPO_DIR}/binder/start"
 # Add entrypoint
-COPY ./binder/build_script_files/repo2docker-entrypoint /usr/local/bin/repo2docker-entrypoint
-ENTRYPOINT ["/usr/local/bin/repo2docker-entrypoint"]
+COPY ./binder/build_script_files/startup-entrypoint.bash /usr/local/bin/startup-entrypoint
+ENTRYPOINT ["/usr/local/bin/startup-entrypoint"]
 
 # Specify the default command to run
 CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
