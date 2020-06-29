@@ -177,7 +177,7 @@ Before we can ask the `QueryBuilder` questions about our database, we first need
 qb = QueryBuilder()
 ```
 
-Now that we have an instance of our `QueryBuilder` which we named `qb`, we are ready to start asking about the content of our database. For example, we may want to know exactly how many nodes there are in our database. To tell `qb` that we are interested in all the occurrences of the `Node` class in our database, we `append` it to the list of objects it should find. 
+Now that we have an instance of our `QueryBuilder` which we named `qb`, we are ready to start asking about the content of our database. For example, we may want to know exactly how many nodes there are in our database. To tell `qb` that we are interested in all the occurrences of the `Node` class in our database, we `append` it to the list of objects it should find.
 
 *Note*: The method is called `append` because, as we will see later, you can append multiple nodes to a `QueryBuilder` instance consecutively to search in the graph, as if you had a list: what we are doing is querying a graph, and for every vertice of the graph in our subquery, we will use one `append` call. But we'll see this use better in a few steps.
 
@@ -264,18 +264,18 @@ If all went well, you should see something like the following, where of course t
 
 Class name     | Entries
 ---------------|--------
- Node          | 10273 
- StructureData | 271   
- KpointsData   | 953   
- Dict          | 2922  
- UpfData       | 85    
+ Node          | 10273
+ StructureData | 271
+ KpointsData   | 953
+ Dict          | 2922
+ UpfData       | 85
  Code          | 10
 
 +++
 
 ## Projection and filters
 
-Up until now we have always asked the `QueryBuilder` to return the node class. However, we might not necessarily be interested in all the node's properties, but rather just a selected set or even just a single property. We can tell the `QueryBuilder` which properties we would like to be returned, by asking it to **project** those properties in the result. For example, we may only want to get the `uuid`s of a set of nodes. 
+Up until now we have always asked the `QueryBuilder` to return the node class. However, we might not necessarily be interested in all the node's properties, but rather just a selected set or even just a single property. We can tell the `QueryBuilder` which properties we would like to be returned, by asking it to **project** those properties in the result. For example, we may only want to get the `uuid`s of a set of nodes.
 
 ```{code-cell} ipython3
 qb = QueryBuilder()
@@ -329,7 +329,7 @@ You may have multiple criteria that you want to filter for, in which case you ca
 ```{code-cell} ipython3
 qb = QueryBuilder()
 qb.append(
-    Node, 
+    Node,
     filters={
         'and': [
             {'ctime': {'>': datetime.now() - timedelta(days=12)}},
@@ -536,7 +536,7 @@ qb.append(PwCalculation, tag='calculation', with_group=) # Complete the function
 qb.append(PwCalculation, tag='calculation', with_group='group')
 #TUT_SOLUTION_END
 #Visualize
-generate_query_graph(qb.get_json_compatible_queryhelp(), 'query4.png') 
+generate_query_graph(qb.get_json_compatible_queryhelp(), 'query4.png')
 Image(filename='query4.png')
 ```
 

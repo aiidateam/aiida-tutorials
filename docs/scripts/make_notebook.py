@@ -73,10 +73,8 @@ def make_notebook(template_file_name,
 def make_markdown(template_file_name,
                   tutorial_file_name=None,
                   solution_file_name=None):
-    """
-    Master function to create requested notebooks, in markdown format
-
-    """
+    """ Master function to create requested notebooks, in markdown format."""
+    # pylint: disable=too-many-branches
     from myst_nb.converter import myst_to_notebook
     import nbformat
 
