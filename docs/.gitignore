@@ -1,5 +1,7 @@
 *~
 build/
 
-querybuilder-solutions.ipynb
-querybuilder-tutorial.ipynb
+*-solutions.ipynb
+*-tutorial.ipynb
+*-solutions.md
+*-tutorial.md
