@@ -136,7 +136,7 @@ RUN ./binder/build_script_files/aiida-profile.bash
 
 # Add entrypoint
 COPY ./binder/build_script_files/startup-entrypoint.bash /usr/local/bin/startup-entrypoint
-ENTRYPOINT ["/usr/local/bin/startup-entrypoint"]
+ENTRYPOINT ["tini", "-g", "--", "/usr/local/bin/startup-entrypoint"]
 
 # Specify the default command to run
 CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
