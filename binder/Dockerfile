@@ -131,6 +131,10 @@ LABEL repo2docker.version="0.11.0"
 # We always want containers to run as non-root
 USER ${NB_USER}
 
+# Make sure that postBuild scripts are marked executable before executing them
+RUN chmod +x binder/postBuild
+RUN ./binder/postBuild
+
 # Add start script
 RUN chmod +x "${REPO_DIR}/binder/start"
 ENV R2D_ENTRYPOINT "${REPO_DIR}/binder/start"

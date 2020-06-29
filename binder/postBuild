@@ -9,6 +9,7 @@ pg_ctl initdb
 pg_ctl start -l pglog
 
 # Create AiiDA profile.
+reentry scan
 export AIIDA_PATH=$HOME/.aiida
 verdi quicksetup                           \
     --non-interactive                      \
