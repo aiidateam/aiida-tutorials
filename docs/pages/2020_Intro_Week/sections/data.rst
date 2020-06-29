@@ -6,7 +6,7 @@ Working with data and querying your results
 
 This part of the tutorial is provided only in interactive mode through a Jupyter notebook, which you will be able to run in your browser.
 For instructions on starting the Jupyter server, please refer to the :ref:`setup section<2020_virtual_intro:setup:jupyter>`.
-Once the server is running, :download:`download this tutorial notebook <../notebooks/querybuilder-tutorial.ipynb>` and open it in Jupyter.
+Once the server is running, :jupyter-download:nb:`download this tutorial notebook <../notebooks/querybuilder-tutorial>` and open it in Jupyter.
 For instructions on downloading these files on a machine through which you are connected through SSH, refer to :ref:`this section<2020_virtual_intro:setup:downloading_files>`.
 
 The notebook will show you how the ``QueryBuilder`` can be used to query your
@@ -22,4 +22,4 @@ See below for a rendered version of the notebook:
 
 .. toctree::
 
-   QueryBuilder Notebook <../notebooks/querybuilder-tutorial.ipynb>
+   QueryBuilder Notebook <../notebooks/querybuilder-tutorial>

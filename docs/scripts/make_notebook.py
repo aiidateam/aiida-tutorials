@@ -1,12 +1,9 @@
 #!/usr/bin/env python
-"""Prepare teaching + solution verison of querybuilder notebook"""
+"""Prepare teaching + solution version of querybuilder notebook"""
 # pylint: disable=invalid-name
-from __future__ import print_function
-from __future__ import absolute_import
 import copy
 import json
 import sys
-from six.moves import range
 
 
 def remove_lines_from_cell(cell, remove_from_string, remove_to_string,
@@ -73,6 +70,63 @@ def make_notebook(template_file_name,
                       separators=(',', ': '))
 
 
+def make_markdown(template_file_name,
+                  tutorial_file_name=None,
+                  solution_file_name=None):
+    """
+    Master function to create requested notebooks, in markdown format
+
+    """
+    from myst_nb.converter import myst_to_notebook
+    import nbformat
+
+    if tutorial_file_name is None and solution_file_name is None:
+        print("Nothing to do")
+        return
+
+    with open(template_file_name) as f:
+        template = f.readlines()
+
+    if tutorial_file_name is not None:
+        in_solution = False
+        tutorial_lines = []
+        for i, line in enumerate(template):
+            if line.startswith("#TUT_SOLUTION_START"):
+                in_solution = True
+            elif line.startswith("#TUT_SOLUTION_END"):
+                in_solution = False
+            elif line.startswith("#TUT_USER"):
+                if in_solution:
+                    raise Exception(
+                        "Line {}: In solution, but found user end/start".
+                        format(i))
+            elif not in_solution:
+                tutorial_lines.append(line)
+        with open(tutorial_file_name, 'w') as f:
+            f.writelines(tutorial_lines)
+
+    if solution_file_name is not None:
+        in_tutorial = False
+        solution_lines = []
+        for i, line in enumerate(template):
+            if line.startswith("#TUT_USER_START"):
+                in_tutorial = True
+            elif line.startswith("#TUT_USER_END"):
+                in_tutorial = False
+            elif line.startswith("#TUT_SOLUTION"):
+                if in_tutorial:
+                    raise Exception(
+                        "Line {}: In tutorial, but found solution end/start".
+                        format(i))
+            elif not in_tutorial:
+                solution_lines.append(line)
+        # for the solution, since we are not going to parse it in sphinx,
+        # we just convert it straight to a notebook
+        notebook = myst_to_notebook("\n".join(solution_lines))
+        with open(solution_file_name, 'w') as f:
+            nbformat.write(notebook, solution_file_name)
+
+
 if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser(
@@ -93,7 +147,16 @@ if __name__ == '__main__':
                         '--solution',
                         help='Make the solution and store in this file',
                         type=str)
+    parser.add_argument('-m',
+                        '--markdown',
+                        action='store_true',
+                        help='Parse as markdown file')
     pa = parser.parse_args(sys.argv[1:])
-    make_notebook(template_file_name=pa.template,
-                  tutorial_file_name=pa.tutorial,
-                  solution_file_name=pa.solution)
+
+    func = make_notebook
+    if pa.markdown:
+        func = make_markdown
+
+    func(template_file_name=pa.template,
+         tutorial_file_name=pa.tutorial,
+         solution_file_name=pa.solution)
