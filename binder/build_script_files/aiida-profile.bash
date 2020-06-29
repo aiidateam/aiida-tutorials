@@ -19,6 +19,6 @@ verdi quicksetup                           \
     --last-name "Starr"                    \
     --institution "The Beatles"            \
 
-verdi import --non-interactive ${REPO_DIR}/docs/pages/2020_Intro_Week/notebooks/tutorial_perovskites_v0.1.aiida
+verdi import --non-interactive /tmp/data.aiida
 
 pg_ctl stop

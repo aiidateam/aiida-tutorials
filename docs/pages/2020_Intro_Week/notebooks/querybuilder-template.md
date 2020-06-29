@@ -16,6 +16,8 @@ language_info:
 
 # AiiDA's QueryBuilder
 
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/aiidateam/aiida-tutorials/myst-nb2?filepath=docs%2Fpages%2F2020_Intro_Week%2Fnotebooks%2Fquerybuilder-tutorial.md)
+
 ```{important}
 Make sure to execute the cell below this one (it may be hidden)
 ```

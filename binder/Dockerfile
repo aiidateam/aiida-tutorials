@@ -112,6 +112,12 @@ USER ${NB_USER}
 RUN conda clean --all -f -y && \
     conda list -p ${NB_PYTHON_PREFIX}
 
+# create the aiida profile and populate the database
+USER ${NB_USER}
+COPY ./binder/build_script_files/aiida-profile.bash /tmp/aiida-profile.bash
+COPY ./docs/pages/2020_Intro_Week/notebooks/tutorial_perovskites_v0.1.aiida /tmp/data.aiida
+RUN /tmp/aiida-profile.bash
+
 # Copy and chown stuff. This doubles the size of the repo, because
 # you can't actually copy as USER, only as root! Thanks, Docker!
 USER root
@@ -131,11 +137,12 @@ LABEL repo2docker.version="0.1.0"
 # We always want containers to run as non-root
 USER ${NB_USER}
 
-# Make sure that postBuild scripts are marked executable before executing them
-RUN ./binder/build_script_files/aiida-profile.bash
+# make tutorial and solution notebooks
+RUN cd ${REPO_DIR}/docs && make templatenotebooks
 
 # Add entrypoint
 COPY ./binder/build_script_files/startup-entrypoint.bash /usr/local/bin/startup-entrypoint
+# tini is set as PID 1 to reap zombie processes 
 ENTRYPOINT ["tini", "-g", "--", "/usr/local/bin/startup-entrypoint"]
 
 # Specify the default command to run
