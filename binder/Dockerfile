@@ -142,7 +142,7 @@ RUN cd ${REPO_DIR}/docs && make templatenotebooks
 
 # Add entrypoint
 COPY ./binder/build_script_files/startup-entrypoint.bash /usr/local/bin/startup-entrypoint
-# tini is set as PID 1 to reap zombie processes 
+# tini is set as PID 1 to reap zombie processes
 ENTRYPOINT ["tini", "-g", "--", "/usr/local/bin/startup-entrypoint"]
 
 # Specify the default command to run
