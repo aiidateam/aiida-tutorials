@@ -2,11 +2,12 @@
 # lightest possible entrypoint that ensures that
 # we use a login shell to get a fully configured shell environment
 # (e.g. sourcing /etc/profile.d, ~/.bashrc, and friends)
-if [[ ! -z "${R2D_ENTRYPOINT:-}" ]]; then
-    if [[ ! -x "$R2D_ENTRYPOINT" ]]; then
-        chmod u+x "$R2D_ENTRYPOINT"
-    fi
-    exec "$R2D_ENTRYPOINT" "$@"
-else
-    exec "$@"
-fi
+
+set -e
+
+export PGDATA=$HOME/pgsql/data
+export AIIDA_PATH=$HOME/.aiida
+
+pg_ctl start -l pglog
+
+exec "$@"
