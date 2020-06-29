@@ -1,21 +1,21 @@
-
 #!/bin/bash
 set -e
 
+# set data directory and initialize
 export PGDATA=$HOME/pgsql/data
-
 mkdir -p "$PGDATA"
 pg_ctl initdb
 
 pg_ctl start -l pglog
 
+# Create AiiDA profile.
 export AIIDA_PATH=$HOME/.aiida
-verdi quicksetup                   \
-    --non-interactive              \
-    --profile "default"            \
-    --email "bob@geldof.com"       \
-    --first-name "bob"             \
-    --last-name "geldof"           \
-    --institution "The Beatles"    \
+verdi quicksetup                           \
+    --non-interactive                      \
+    --profile "default"                    \
+    --email "ringo@starr.com"              \
+    --first-name "Ringo"                   \
+    --last-name "Starr"                    \
+    --institution "The Beatles"            \
 
 pg_ctl stop
