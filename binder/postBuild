@@ -1,0 +1,21 @@
+
+#!/bin/bash
+set -e
+
+export PGDATA=$HOME/pgsql/data
+
+mkdir -p "$PGDATA"
+pg_ctl initdb
+
+pg_ctl start -l pglog
+
+export AIIDA_PATH=$HOME/.aiida
+verdi quicksetup                   \
+    --non-interactive              \
+    --profile "default"            \
+    --email "bob@geldof.com"       \
+    --first-name "bob"             \
+    --last-name "geldof"           \
+    --institution "The Beatles"    \
+
+pg_ctl stop
