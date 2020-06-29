@@ -3,7 +3,7 @@
 This Dockerfile is for use with <https://mybinder.org/>.
 The template was initially created using [repo2docker](https://github.com/jupyter/repo2docker).
 
-To create the docker container locally run:
+To create the docker container locally run in the root folder:
 
 ```console
 $ docker build --file binder/Dockerfile --tag tutorial-binder:v1 .
