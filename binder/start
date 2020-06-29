@@ -1,6 +1,10 @@
 #!/bin/bash
 
+set -e
+
 export PGDATA=$HOME/pgsql/data
 export AIIDA_PATH=$HOME/.aiida
 
 pg_ctl start -l pglog
+
+exec "$@"
