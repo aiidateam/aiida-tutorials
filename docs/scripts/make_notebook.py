@@ -75,7 +75,7 @@ def make_markdown(template_file_name,
                   solution_file_name=None):
     """ Master function to create requested notebooks, in markdown format."""
     # pylint: disable=too-many-branches
-    from myst_nb.converter import myst_to_notebook
+    from jupytext.myst import myst_to_notebook
     import nbformat
 
     if tutorial_file_name is None and solution_file_name is None:
@@ -120,7 +120,7 @@ def make_markdown(template_file_name,
                 solution_lines.append(line)
         # for the solution, since we are not going to parse it in sphinx,
         # we just convert it straight to a notebook
-        notebook = myst_to_notebook("\n".join(solution_lines))
+        notebook = myst_to_notebook("".join(solution_lines))
         with open(solution_file_name, 'w') as f:
             nbformat.write(notebook, solution_file_name)
 
