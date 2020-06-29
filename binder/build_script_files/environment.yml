@@ -11,7 +11,7 @@ dependencies:
   # - jupyterhub-singleuser
   - nbresuse==0.3.6 # displays an indication of how much resources your current notebook server and its children (kernels, terminals, etc) are using
   # - ipywidgets
-  - tini==0.18.0  # used to run as PID 0, for managing all processes 
+  - tini==0.18.0  # used to run as PID 0, for managing all processes
   # to convert markdown files to notebooks
   - jupytext==1.5.0
   - myst-parser==0.8.2
