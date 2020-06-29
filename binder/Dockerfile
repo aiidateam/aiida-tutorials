@@ -16,6 +16,7 @@ RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
+ENV TZ Europe/Zurich
 
 # Use bash as default shell, rather than sh
 ENV SHELL /bin/bash

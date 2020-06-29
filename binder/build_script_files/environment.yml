@@ -16,4 +16,9 @@ dependencies:
   - jupytext==1.5.0
   - myst-parser==0.8.2
   # required for tutorial content
-  - matplotlib==3.2.2
+  - pymatgen==2019.7.2
+  - ase==3.18.2
+  - matplotlib==2.2.4
+  - pip==20.1.1
+  - pip:
+    - aiida-quantumespresso==3.0.0
