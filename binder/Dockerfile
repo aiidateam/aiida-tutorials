@@ -140,7 +140,7 @@ RUN chmod +x "${REPO_DIR}/binder/start"
 ENV R2D_ENTRYPOINT "${REPO_DIR}/binder/start"
 # Add entrypoint
 COPY ./binder/build_script_files/repo2docker-entrypoint /usr/local/bin/repo2docker-entrypoint
-ENTRYPOINT ["/usr/local/bin/repo2docker-entrypoint"]
+# ENTRYPOINT ["/usr/local/bin/repo2docker-entrypoint"]
 
 # Specify the default command to run
 CMD ["jupyter", "notebook", "--ip", "0.0.0.0"]
