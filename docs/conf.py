@@ -39,6 +39,7 @@ extensions = [
     'sphinx.ext.extlinks',
     'sphinx.ext.mathjax',
     'sphinx_copybutton',
+    "sphinx_panels"
 ]
 ipython_mplbackend = ""
 
