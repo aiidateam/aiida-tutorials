@@ -292,39 +292,39 @@ Producing the output:
 
 .. code:: bash
 
-    Property       Value
-    -------------  ------------------------------------
-    type           CalcJobNode
-    pk             828
-    uuid           ce81c420-7751-48f6-af8e-eb7c6a30cec3
+    Property     Value
+    -----------  ------------------------------------
+    type         PwCalculation
+    state        Finished [0]
+    pk           630
+    uuid         ce81c420-7751-48f6-af8e-eb7c6a30cec3
     label
     description
-    ctime          2014-10-27 17:51:21.781045+00:00
-    mtime          2019-05-09 14:10:09.307986+00:00
-    process state  Finished
-    exit status    0
-    computer       [1] daint
+    ctime        2014-10-27 17:51:21.781045+00:00
+    mtime        2019-05-09 14:10:09.307986+00:00
+    computer     [1] daint
 
     Inputs      PK    Type
     ----------  ----  -------------
     pseudos
-        Ba      611   UpfData
-        O       661   UpfData
-        Ti      989   UpfData
-    code        825   Code
-    kpoints     811   KpointsData
-    parameters  829   Dict
-    settings    813   Dict
-    structure   27    StructureData
+        Ba      1092  UpfData
+        O       1488  UpfData
+        Ti      1855  UpfData
+    code        631   Code
+    kpoints     498   KpointsData
+    parameters  629   Dict
+    settings    500   Dict
+    structure   1133  StructureData
 
     Outputs                    PK  Type
     -----------------------  ----  -------------
-    output_kpoints           1894  KpointsData
-    output_parameters          62  Dict
-    output_structure           61  StructureData
-    output_trajectory_array    63  ArrayData
-    remote_folder             357  RemoteData
-    retrieved                  60  FolderData
+    output_kpoints           1455  KpointsData
+    output_parameters         789  Dict
+    output_structure          788  StructureData
+    output_trajectory_array   790  ArrayData
+    remote_folder            1811  RemoteData
+    retrieved                 787  FolderData
+
 
 You can use the PKs shown for the inputs and outputs to get more information about those nodes.
 
