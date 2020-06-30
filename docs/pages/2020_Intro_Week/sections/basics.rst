@@ -81,6 +81,7 @@ From now on, all ``verdi`` commands will apply to the ``quicksetup`` profile.
     To quickly perform a single command on a profile that is not the default, use the ``-p/--profile`` option:
     For example, ``verdi -p generic code list`` will display the codes for the ``generic`` profile, despite it not being the current default profile.
 
+.. _2020_virtual_importing_data:
 
 Importing data
 --------------
@@ -90,7 +91,7 @@ Let's import one from the web:
 
 .. code:: bash
 
-    verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2019_05_perovskites_v0.3.aiida
+    verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 
 Contrary to most databases, AiiDA databases contain not only *results* of calculations but also their inputs and information on how a particular result was obtained.
 This information, the *data provenance*, is stored in the form of a *directed acyclic graph* (DAG).
@@ -414,41 +415,6 @@ Then, you can then copy ``<IDENTIFIER>.xsf`` from the Amazon machine to your loc
 
     xcrysden --xsf <IDENTIFIER>.xsf
 
-Codes and computers
-~~~~~~~~~~~~~~~~~~~
-
-Let us focus now on the nodes of type ``Code``.
-A code represents (in the database) the actual executable used to run the calculation.
-Find the identifier of such a node in the graph (e.g. the input code of the calculation you were inspecting earlier) and type:
-
-.. code:: bash
-
-    verdi code show <IDENTIFIER>
-
-The command prints information on the plugin used to interface the code to AiiDA, the remote machine on which the code is executed, the path of its executable, etc.
-To show a list of all available codes type:
-
-.. code:: bash
-
-    verdi code list
-
-If you want to show all codes, including hidden ones and those created by other users, use ``verdi code list -a -A``.
-Now, among the entries of the output you should also find the code just shown.
-
-Similarly, the list of computers on which AiiDA can submit calculations is accessible by means of the command:
-
-.. code:: bash
-
-    verdi computer list -a
-
-The ``-a`` flag shows all computers, also the one imported in your database but that you did not configure, i.e. to which you don't have access.
-Details about each computer can be obtained by the command:
-
-.. code:: bash
-
-    verdi computer show <COMPUTERNAME>
-
-Now you have the tools to answer the question: what is the scheduler installed on the computer where the calculations of the graph have run?
 
 Calculation results
 ~~~~~~~~~~~~~~~~~~~
@@ -604,20 +570,20 @@ the command itself:
 
     !verdi process list
 
-.. _loadnode:
+.. _2020_virtual_loadnode:
 
 Loading a node
 --------------
 
 Most AiiDA objects are represented by nodes, identified in the database by its
-``PK`` (an integer). You can access a node using the following command
+*PK* (an integer). You can access a node using the following command
 in the shell:
 
 .. code:: python
 
     node = load_node(PK)
 
-Load a node using the ``PK`` of one of the calculations visible in the graph you displayed in the previous section of the tutorial.
+Load a node using the *PK* of one of the calculations visible in the graph you displayed in the previous section of the tutorial.
 Then get the energy of the calculation with the command:
 
 .. code:: python
@@ -638,12 +604,12 @@ Loading specific kinds of nodes
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
-From the graph you generated in  section :ref:`2020_virtual_aiidagraph`, find the ``PK`` of the pseudopotential file (LDA).
+From the graph you generated in  section :ref:`2020_virtual_aiidagraph`, find the UUID of the pseudopotential file (LDA).
 Load it and show what elements it corresponds to by typing:
 
 .. code:: python
 
-    upf = load_node(PK)
+    upf = load_node("<UUID>")
     upf.element
 
 All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing ``TAB``.
@@ -656,6 +622,7 @@ Choose one from the graph of produced in section :ref:`2020_virtual_aiidagraph`,
 
 .. code:: python
 
+    kpoints = load_node("<UUID>")
     kpoints.get_kpoints_mesh()
 
 Then get the full (explicit) list of k-points belonging to this mesh using
@@ -700,12 +667,12 @@ Parameters
 ~~~~~~~~~~
 
 Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
-Get the PK and load the input parameters of a calculation in the graph produced in section :ref:`2020_virtual_aiidagraph`.
+Get the UUID and load the input parameters of a calculation in the graph produced in section :ref:`2020_virtual_aiidagraph`.
 Then display its content by typing
 
 .. code:: python
 
-    params = load_node('<IDENTIFIER>')
+    params = load_node('<UUID>')
     YOUR_DICT = params.get_dict()
     YOUR_DICT
 
