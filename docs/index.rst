@@ -11,7 +11,7 @@ The official home of AiiDA tutorial materials and videos.
 
    .. link-button:: 2020_Intro_Week_Homepage
       :type: ref
-      :text: In-Depth: 2020 Introductory Virtual tutorial 
+      :text: In-Depth: 2020 Introductory Virtual tutorial
       :classes: btn-link btn-block stretched-link
 
    -------
