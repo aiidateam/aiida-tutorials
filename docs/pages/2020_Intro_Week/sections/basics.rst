@@ -151,7 +151,13 @@ To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
     scp aiidatutorial:<path_with_the_graph_pdf> <local_folder>
 
 and then open the file.
-Alternatively, you can use graphical software to achieve the same, for instance: on Windows: WinSCP; on a Mac: Cyberduck; on Linux Ubuntu: using the 'Connect to server' option in the main menu after clicking on the desktop.
+
+.. note::
+
+    You can also use the ``jupyter notebook`` setup explained :ref:`here <2020_virtual_intro:setup:jupyter>` to download files.
+    Note that while Firefox will display the PDF directly in the browser `Chrome and Safari block viewing PDFs from jupyter notebook servers <https://stackoverflow.com/a/55264795/1069467>`_ - with these browsers, you will need to tick the checkbox next to the PDF and download the file.
+
+    Alternatively, you can use graphical software to achieve the same, for instance: on Windows: WinSCP; on a Mac: Cyberduck; on Linux Ubuntu: using the 'Connect to server' option in the main menu after clicking on the desktop.
 
 
 The provenance browser
