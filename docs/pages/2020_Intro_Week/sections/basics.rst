@@ -609,7 +609,7 @@ Load it and show what elements it corresponds to by typing:
 
 .. code:: python
 
-    upf = load_node("<UUID>")
+    upf = load_node('<UUID>')
     upf.element
 
 All methods of ``UpfData`` are accessible by typing ``upf.`` and then pressing ``TAB``.
