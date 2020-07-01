@@ -400,7 +400,7 @@ Copy the code snippet above into a Python file, (e.g. :download:`rescale.py <inc
 Once the ``rescale`` function has been decorated, it's time to put it to the test!
 Open a ``verdi shell``, load the ``StructureData`` node for silicon that you just stored, and generate a set of rescaled structures:
 
-.. code:: python
+.. code:: ipython
 
     In [1]: from rescale import rescale
        ...:
