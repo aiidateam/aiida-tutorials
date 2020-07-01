@@ -52,6 +52,11 @@ Your ``localhost`` computer should now show up in
 
    verdi computer list
 
+.. note::
+
+    AiiDA export archives like the one we imported :ref:`in the very beginning <2020_virtual_importing_data>` can also contain computers set up by other AiiDA users (without the private *configuration* information).
+    Use ``verdi computer list -a`` to list both configured and unconfigured computers.
+
 Before proceeding, test that it works:
 
 .. code:: bash
@@ -100,6 +105,9 @@ You can always check the configuration details of an existing code using:
 
    The ``generic`` profile has already a number of other codes configured.
    See ``verdi -p generic code list``.
+
+   In order to also show codes created by other users (e.g. from imported archives), use ``verdi code list -A``.
+
 
 
 The AiiDA daemon

@@ -176,11 +176,18 @@ Troubleshooting
    virtual environment with ``workon aiida`` before launching ``python``,
    ``ipython`` or the ``jupyter`` notebook server.
 
+-  If, while connecting to your VM, you get a warning similar to::
+
+       bind [127.0.0.1]:8888: Address already in use
+       channel_setup_fwd_listener_tcpip: cannot listen to port: 8888
+
+   your local port 8888 is already occupied - likely because you are running a ``jupyter notebook`` server locally.
+   We suggest you stop any locally running jupyter notebook servers before connecting to the VM.
+   If necessary, you can start them again *after* you have connected (``jupyter notebook`` will then realize that port 8888 is already taken and simply serve the notebook on a different port).
+
 -  If your browser cannot connect to the jupyter notebook server, check that
-   you have correctly configured SSH tunneling/forwarding as described
-   above.
-   Keep in mind that you need to start the jupyter server from the
-   terminal connected to the VM, while the web browser should be opened locally
-   on your laptop.
+   you have configured SSH tunneling/forwarding as described above.
+   Keep in mind that you need to start the jupyter server from the terminal connected to the VM, while opening the web browser locally on your laptop.
+
 
 -  See the `jupyter notebook documentation <https://jupyter-notebook.readthedocs.io/en/stable/notebook.html#browser-compatibility>`_ for compatibility of jupyter with various web browsers.
