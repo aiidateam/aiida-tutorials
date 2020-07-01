@@ -177,7 +177,7 @@ The inputs and output that we define are essentially determined by the sub proce
 Since the ``ArithmeticAddCalculation`` requires the inputs ``x`` and ``y``, and produces the ``sum`` as output, we `mirror` those in the specification of the work chain, otherwise we wouldn't be able to pass the necessary inputs.
 Finally, we define the logical outline, which if you look closely, resembles the logical flow chart presented in :numref:`workflow-error-handling-flow-loop` a lot.
 We start by *setting up* the work chain and then enter a loop: *while* the subprocess has not yet finished successfully *and* we haven't exceeded the maximum number of iterations, we *run* another instance of the process and then *inspect* the results.
-The while conditions are included in the ``should_run_process`` outline step.
+The while conditions are implemented in the ``should_run_process`` outline step.
 When the process finishes successfully or we have to abandon, we report the *results*.
 Now unlike with normal work chain implementations, we *do not* have to implement these outline steps ourselves.
 They have already been implemented by the ``BaseRestartWorkChain`` so that we don't have to.
@@ -288,7 +288,14 @@ When submitting or running the work chain using namespaced inputs (``add`` in th
 
 .. code-block:: python
 
-    submit(ArithmeticAddBaseWorkChain, **{'add': {'x': Int(3), 'y': Int(4), 'code': load_code('add@localhost')}})
+    inputs = {
+        'add': {
+            'x': Int(3),
+            'y': Int(4),
+            'code': load_code('add@localhost')
+        }
+    }
+    submit(ArithmeticAddBaseWorkChain, **inputs)
 
 .. note::
 
@@ -361,6 +368,7 @@ With this simple addition, we can now launch the work chain again:
 
 .. code-block:: console
 
+    $ verdi process status 1941
     ArithmeticAddBaseWorkChain<1941> Finished [0] [2:results]
         ├── ArithmeticAddCalculation<1942> Finished [410]
         └── ArithmeticAddCalculation<1947> Finished [0]
@@ -425,6 +433,7 @@ The base restart work chain will detect this exit code and abort the work chain,
 
 .. code-block:: console
 
+    $ verdi process status 1951
     ArithmeticAddBaseWorkChain<1951> Finished [450] [1:while_(should_run_process)(1:inspect_process)]
     └── ArithmeticAddCalculation<1952> Finished [410]
 
