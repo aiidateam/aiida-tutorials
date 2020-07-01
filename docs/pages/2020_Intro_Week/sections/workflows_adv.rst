@@ -8,7 +8,7 @@ In this hands-on, we'll be looking at some more advanced concepts related to wor
 
 .. note::
 
-    If you have not already been through `_2020_virtual_intro:workflow_basic:`_, you should setup the proper ``Code``:
+    If you have not already been through :ref:`2020_virtual_intro:workflow_basic`, you should setup the proper ``Code``:
 
     To set up the ``Code`` the work chain uses to add two numbers together:
 
