@@ -29,7 +29,7 @@ class EquationOfState(WorkChain):
         super(EquationOfState, cls).define(spec)
         spec.input('code', valid_type=Code)
         spec.input('pseudo_family', valid_type=Str)
-        spec.input('initial_structure', valid_type=StructureData)
+        spec.input('structure', valid_type=StructureData)
         spec.output('eos', valid_type=Dict)
         spec.outline(
             cls.run_eos,
@@ -39,19 +39,19 @@ class EquationOfState(WorkChain):
     def run_eos(self):
         """Run calculations for equation of state."""
         # Create basic structure and attach it as an output
-        initial_structure = self.inputs.initial_structure
+        structure = self.inputs.structure
 
         calculations = {}
 
         for label, factor in zip(labels, scale_facs):
 
-            structure = rescale(initial_structure, Float(factor))
-            inputs = generate_scf_input_params(structure, self.inputs.code,
+            rescaled_structure = rescale(structure, Float(factor))
+            inputs = generate_scf_input_params(rescaled_structure, self.inputs.code,
                                                self.inputs.pseudo_family)
 
             self.report(
                 'Running an SCF calculation for {} with scale factor {}'.
-                format(initial_structure.get_formula(), factor))
+                format(structure.get_formula(), factor))
             future = self.submit(PwCalculation, **inputs)
             calculations[label] = future
 

@@ -66,7 +66,7 @@ If we pass the ``multiply`` function two ``Int`` nodes instead:
 .. code-block:: ipython
 
     In [3]: multiply(Int(3), Int(4))
-    Out[3]: <Int: uuid: bf07e69f-87aa-4cca-b7f4-450d81d673df (pk: 5) value: 12>
+    Out[3]: <Int: uuid: 627ae988-5bf5-46e9-993c-39e7c195a58b (pk: 2754) value: 12>
 
 In this case, the ``multiply`` calculation function *creates* a new ``Int`` node, and automatically stores it in the database.
 
@@ -232,6 +232,14 @@ The second argument is the result of the work chain, extracted from the ``Int`` 
 Launching a work chain
 ----------------------
 
+Before we can launch the ``MultiplyAddWorkChain``, we still have to set up the ``Code`` the work chain uses to add two numbers together:
+
+.. code-block:: console
+
+    $ verdi code setup -L add --on-computer --computer=localhost -P arithmetic.add --remote-abs-path=/bin/bash -n
+
+This command sets up a code with *label* ``add`` on the *computer* ``localhost``, using the *plugin* ``arithmetic.add``.
+
 To launch a work chain, you can either use the ``run`` or ``submit`` functions.
 For either function, you need to provide the class of the work chain as the first argument, followed by the inputs as keyword arguments.
 To make things a little easier, we have added these basic arithmetic functions to `aiida-core`, along with a set of entry points, so they can be loaded using a factory.
@@ -285,7 +293,7 @@ Once the ``submit`` call returns, you will not get the result as with ``run``, b
 .. code-block:: ipython
 
     In [6]: workchain_node
-    Out[6]: <WorkChainNode: uuid: 168dec14-b218-435a-b521-702a8e365365 (pk: 4296) (aiida.workflows:arithmetic.multiply_add)>
+    Out[6]: <WorkChainNode: uuid: 17fbe11e-b71b-4ffe-a08e-0d5e3b1ae5ed (pk: 2787) (aiida.workflows:arithmetic.multiply_add)>
 
 Submitting a work chain instead of directly running it not only makes it easier to execute multiple work chains in parallel, but also ensures that the progress of a workchain is not lost when you restart your computer.
 
@@ -372,14 +380,14 @@ Let's have a look at the ``structure`` variable:
 .. code-block:: ipython
 
     In [4]: structure
-    Out[4]: <StructureData: uuid: c8474026-f595-4d96-920d-741b79b28627 (unstored)>
+    Out[4]: <StructureData: uuid: 3d4ab03b-4149-4c31-88ef-180640f1f79a (unstored)>
 
 We can see that the ``structure`` variable contains an instance of ``StructureData``, but that it hasn't been stored in the AiiDA database. Let's do that now:
 
 .. code-block:: ipython
 
     In [5]: structure.store()
-    Out[5]: <StructureData: uuid: c8474026-f595-4d96-920d-741b79b28627 (pk: 4194)>
+    Out[5]: <StructureData: uuid: 3d4ab03b-4149-4c31-88ef-180640f1f79a (pk: 2804)>
 
 For the equation of state you need another function that takes as input a ``StructureData`` object and a rescaling factor, and returns a ``StructureData`` object with the rescaled lattice parameter:
 
@@ -390,14 +398,14 @@ Of course, this *regular* Python function won't be stored in the provenance grap
 Copy the code snippet above into a Python file, (e.g. :download:`rescale.py <include/snippets/workflows_rescale.py>`), and add the ``calcfunction`` decorator to the ``rescale`` function.
 
 Once the ``rescale`` function has been decorated, it's time to put it to the test!
-Open a verdi shell, load the ``StructureData`` node for silicon that you just stored, and generate a set of rescaled structures:
+Open a ``verdi shell``, load the ``StructureData`` node for silicon that you just stored, and generate a set of rescaled structures:
 
 .. code:: python
 
-    from rescale import rescale
-
-    initial_structure = load_node(pk=234)
-    rescaled_structures = [rescale(initial_structure, Float(factor)) for factor in (0.98, 0.99, 1.0, 1.1, 1.2)]
+    In [1]: from rescale import rescale
+       ...:
+       ...: initial_structure = load_node(pk=2804)
+       ...: rescaled_structures = [rescale(initial_structure, Float(factor)) for factor in (0.98, 0.99, 1.0, 1.1, 1.2)]
 
 .. note::
 
@@ -407,16 +415,16 @@ Now let's check the contents of the ``rescaled_structures`` variable:
 
 .. code-block:: ipython
 
-    In [3]: rescaled_structures
-    Out[3]:
-    [<StructureData: uuid: 252e63b1-cd0d-4a44-a9df-6a542d82f067 (pk: 237)>,
-    <StructureData: uuid: b863bbbe-3e5a-4248-91ac-c0b6d5147ba2 (pk: 240)>,
-    <StructureData: uuid: e89f5465-0a28-4347-b8d3-58c383fad075 (pk: 243)>,
-    <StructureData: uuid: 754683d7-c45d-4428-b34f-c40ee418fe34 (pk: 246)>,
-    <StructureData: uuid: 77de654b-948e-4f3e-b90b-31a706d6be79 (pk: 249)>]
+    In [2]: rescaled_structures
+    Out[2]:
+    [<StructureData: uuid: a1801ec8-35c8-4e1d-bbbf-36fbcef7d034 (pk: 2807)>,
+     <StructureData: uuid: e2714063-63ce-492b-b003-b05323c70a22 (pk: 2810)>,
+     <StructureData: uuid: 842aa50b-c6ce-429c-b089-96a1480cea9f (pk: 2813)>,
+     <StructureData: uuid: 78bb6406-ec94-425d-a396-9a7cc7ffbacf (pk: 2816)>,
+     <StructureData: uuid: 8f9c876e-d5e9-4018-9bb5-9e52c335fe0c (pk: 2819)>]
 
-Notice that all of the ``StructureData`` nodes are already stored in the database with their own PK.
-
+Notice that all of the ``StructureData`` nodes of the rescaled structures are already stored in the database with their own PK.
+This is because they are the output nodes of the ``rescale`` calculation function.
 
 .. _2020_intro_workflow_eos_work_functions:
 
@@ -428,7 +436,7 @@ For this part of the tutorial, we provide some utility functions that get the co
 
 .. important::
 
-    The workflow scripts for the rest of this section rely on the methods in ``rescaly.py`` and ``common_wf.py`` to function.
+    The workflow scripts for the rest of this section rely on the methods in ``rescale.py`` and ``common_wf.py`` to function.
     Make sure the Python files with the workflows are in the same directory as these two files.
 
 In the script shown below, a work function has been implemented that generates a scaled structure and calculates its energy for a range of 5 scaling factors:
@@ -441,7 +449,7 @@ Next, let's open up a ``verdi shell`` and run the equation of state workflow. Fi
 
 .. code-block:: ipython
 
-    In [1]: initial_structure = load_node(234)
+    In [1]: initial_structure = load_node(pk=2804)
 
 Next, load the Quantum ESPRESSO pw code you used previously to run calculations:
 
@@ -453,7 +461,7 @@ To run the workflow, we also have to specify the family of pseudopotentials as a
 
 .. code-block:: ipython
 
-    In [3]: pseudo_str = Str('sg15-oncv-1.1')
+    In [3]: pseudo_str = Str('SSSP')
 
 Finally, we are ready to import the ``run_eos()`` work function and run it!
 
@@ -467,7 +475,7 @@ Once it is complete, the output will look something like this:
 
 .. code-block:: ipython
 
-    Running run_eos_wf<359>
+    Running run_eos_wf<2821>
     Running a scf for Si8 with scale factor 0.96
     Running a scf for Si8 with scale factor 0.98
     Running a scf for Si8 with scale factor 1.0
@@ -480,7 +488,7 @@ Let's have a look at the result!
 
     In [5]: result
     Out[5]:
-    <Dict: uuid: f4a83444-bdac-4c9a-9a93-245a234e1b57 (pk: 475)>
+    <Dict: uuid: 4a8cdde5-a2ff-4c97-9a13-28096b1d9b91 (pk: 2878)>
 
 We can see that the work function returns a ``Dict`` node with the results for the equation of state.
 Let's have a look at the contents of this node:
@@ -489,11 +497,11 @@ Let's have a look at the contents of this node:
 
     In [6]: result.get_dict()
     Out[6]:
-    {'eos': [[137.84870014835, -855.36913240343, 'eV'],
-      [146.64498086438, -856.4028196621, 'eV'],
-      [155.807721341, -856.97790748897, 'eV'],
-      [165.34440034884, -857.16829669527, 'eV'],
-      [175.26249665852, -857.03831213429, 'eV']]}
+    {'eos': [[137.84870014835, -1240.4759003187, 'eV'],
+      [146.64498086438, -1241.4786547651, 'eV'],
+      [155.807721341, -1242.0231198534, 'eV'],
+      [165.34440034884, -1242.1847659475, 'eV'],
+      [175.26249665852, -1242.0265883524, 'eV']]}
 
 We can see that the dictionary contains the volume, calculated energy and its units for each scaled structure.
 Of course, this information is much better represented with a graph, so let's plot the equation of state and fit it with a Birch-Birch–Murnaghan equation.
@@ -502,7 +510,7 @@ For this purpose, we have provided the ``plot_eos`` script in the ``common_wf.py
 .. code-block:: ipython
 
     In [7]: from common_wf import plot_eos
-       ...: plot_eos(359)
+       ...: plot_eos(2821)
 
 Submitting the workflow: Workchains
 -----------------------------------
@@ -575,9 +583,9 @@ For example, you can execute:
 
 .. code-block::
 
-    In [1]: from eos_workchain import EquationOfState
+    In [1]: from workchains import EquationOfState
        ...: from aiida.engine import run
-       ...: run(EquationOfState, code=load_code('qe-6.5-pw@localhost'), pseudo_family=Str('sg15-oncv-1.1'), initial_structure=load_node(234))
+       ...: run(EquationOfState, code=load_code('qe-6.5-pw@localhost'), pseudo_family=Str('SSSP'), structure=load_node(pk=2804))
     06/19/2020 12:02:04 PM <11810> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [541|EquationOfState|run_eos]: Running an SCF calculation for Si8 with scale factor 0.96
     06/19/2020 12:02:05 PM <11810> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [541|EquationOfState|run_eos]: Running an SCF calculation for Si8 with scale factor 0.98
     06/19/2020 12:02:05 PM <11810> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [541|EquationOfState|run_eos]: Running an SCF calculation for Si8 with scale factor 1.0
@@ -590,7 +598,7 @@ Once the work chain is completed, the equation of state dictionary will be print
 
 .. code-block:: ipython
 
-    Out[3]: {'eos': <Dict: uuid: d2be862f-104d-4a65-b4d0-a931a56b4de1 (pk: 598)>}
+    Out[1]: {'eos': <Dict: uuid: eedffd9f-c3d4-4cc8-9af5-242ede5ac23b (pk: 2937)>}
 
 As a final exercise, instead of running the ``EquationOfState``, we will submit it to the daemon.
 However, in this case the work chain will need to be globally importable so the daemon can load it.
@@ -599,13 +607,13 @@ If your ``workchains.py`` sits in ``/home/max/workchains``, add a line ``export 
 
 .. code-block:: bash
 
-    $ echo 'export PYTHONPATH=$PYTHONPATH:/home/max' >> /home/max/.virtualenvs/aiida/bin/activate
+    $ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> /home/max/.virtualenvs/aiida/bin/activate
 
 Next, it is **very important** to restart the daemon, so it can successfully find the ``EquationOfState`` work chain:
 
 .. code-block:: bash
 
-    $ verdi daemon restart
+    $ verdi daemon restart --reset
 
 Once the daemon has been restarted, it is time to *submit* the ``EquationOfState`` work chain from the ``verdi shell``:
 
@@ -613,7 +621,7 @@ Once the daemon has been restarted, it is time to *submit* the ``EquationOfState
 
     In [1]: from workchains import EquationOfState
        ...: from aiida.engine import submit
-       ...: submit(EquationOfState, code=load_code('qe-6.5-pw@localhost'), pseudo_family=Str('sg15-oncv-1.1'), initial_structure=load_node(234))
+       ...: submit(EquationOfState, code=load_code('qe-6.5-pw@localhost'), pseudo_family=Str('SSSP'), structure=load_node(pk=2804))
     Out[1]: <WorkChainNode: uuid: 9e5c7c48-a47c-49fc-a8ab-fff081f250ee (pk: 665) (eos.workchain.EquationOfState)>
 
 Note that similar as for the ``MultiplyAddWorkChain``, the ``submit`` function returns the ``WorkChain`` instance for our equation of state workflow.
