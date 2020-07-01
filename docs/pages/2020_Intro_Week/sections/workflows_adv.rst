@@ -109,7 +109,8 @@ This logic of such a base work chain is very generic and can be applied to any c
 
     Schematic flow diagram of the logic of a *base* work chain, whose job it is to run a subprocess repeatedly, fixing any potential errors, until it finishes successfully.
 
-The work chain runs the subprocess and once it has finished, inspects the status.
+The work chain runs the subprocess.
+Once it has finished, it then inspects the status.
 If the subprocess finished successfully, the work chain returns the results and its job is done.
 If, instead, the subprocess failed, the work chain should inspect the cause of failure, and attempt to fix the problem and restart the subprocess.
 This cycle is repeated until the subprocess finishes successfully.
@@ -216,10 +217,11 @@ We can now launch it like any other work chain and the ``BaseRestartWorkChain`` 
 
     submit(ArithmeticAddBaseWorkChain, x=Int(3), y=Int(4), code=load_code('add@localhost'))
 
-Once the work chain finished, we can inspect what has happened with, for example, ``verdi process status PK``, where ``PK`` is the ``pk`` of the submitted work chain process:
+Once the work chain finished, we can inspect what has happened with, for example, ``verdi process status``:
 
 .. code-block:: console
 
+    $ verdi process status 1909
     ArithmeticAddBaseWorkChain<1909> Finished [0] [2:results]
         └── ArithmeticAddCalculation<1910> Finished [0]
 
@@ -240,6 +242,8 @@ As you can see the work chain launched a single instance of the ``ArithmeticAddC
     .. code-block:: bash
 
         $ verdi daemon restart --reset
+
+    Indeed, when updating an existing work chain file or adding a new one, it is **necessary** to restart the daemon **every time** after all changes have taken place.
 
 Exposing inputs and outputs
 ===========================
@@ -297,14 +301,6 @@ When submitting or running the work chain using namespaced inputs (``add`` in th
     }
     submit(ArithmeticAddBaseWorkChain, **inputs)
 
-.. note::
-
-    When updating an existing work chain file or adding a new one, it is **necessary** to restart the daemon **every time** after all changes have taken place:
-
-    .. code-block:: bash
-
-        $ verdi daemon restart --reset
-
 Error handling
 ==============
 So far you have seen how easy it is to get a work chain up and running that will run a subprocess using the ``BaseRestartWorkChain``.
@@ -321,6 +317,7 @@ This time we will see that the work chain takes quite a different path:
 
 .. code-block:: console
 
+    $ verdi process status 1930
     ArithmeticAddBaseWorkChain<1930> Finished [402] [1:while_(should_run_process)(1:inspect_process)]
         ├── ArithmeticAddCalculation<1931> Finished [410]
         └── ArithmeticAddCalculation<1934> Finished [410]
@@ -341,20 +338,26 @@ To "register" a process handler for a base restart work chain implementation, yo
 
     from aiida.engine import process_handler, ProcessHandlerReport
 
-    @process_handler
-    def handle_negative_sum(self, node):
-        """Check if the calculation failed with `ERROR_NEGATIVE_NUMBER`.
+    class ArithmeticAddBaseWorkChain(BaseRestartWorkChain):
 
-        If this is the case, simply make the inputs positive by taking the absolute value.
+        _process_class = ArithmeticAddCalculation
 
-        :param node: the node of the subprocess that was ran in the current iteration.
-        :return: optional :class:`~aiida.engine.processes.workchains.utils.ProcessHandlerReport` instance to signal
-            that a problem was detected and potentially handled.
-        """
-        if node.exit_status == ArithmeticAddCalculation.exit_codes.ERROR_NEGATIVE_NUMBER.status:
-            self.ctx.inputs['x'] = orm.Int(abs(node.inputs.x.value))
-            self.ctx.inputs['y'] = orm.Int(abs(node.inputs.y.value))
-            return ProcessHandlerReport()
+        ...
+
+        @process_handler
+        def handle_negative_sum(self, node):
+            """Check if the calculation failed with `ERROR_NEGATIVE_NUMBER`.
+
+            If this is the case, simply make the inputs positive by taking the absolute value.
+
+            :param node: the node of the subprocess that was ran in the current iteration.
+            :return: optional :class:`~aiida.engine.processes.workchains.utils.ProcessHandlerReport` instance to signal
+                that a problem was detected and potentially handled.
+            """
+            if node.exit_status == ArithmeticAddCalculation.exit_codes.ERROR_NEGATIVE_NUMBER.status:
+                self.ctx.inputs['x'] = orm.Int(abs(node.inputs.x.value))
+                self.ctx.inputs['y'] = orm.Int(abs(node.inputs.y.value))
+                return ProcessHandlerReport()
 
 The method name can be anything as long as it is a valid Python method name and does not overlap with one of the base work chain's methods.
 For better readability, it is, however, recommended to have the method name start with ``handle_``.
