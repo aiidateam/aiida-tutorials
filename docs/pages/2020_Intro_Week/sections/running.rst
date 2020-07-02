@@ -12,6 +12,8 @@ Workflows, which you'll encounter later in this tutorial, can help you avoid the
 
 Note that besides the `aiida-quantumespresso <https://github.com/aiidateam/aiida-quantumespresso>`_ plugin, AiiDA comes with plugins for many other codes, all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
 
+.. _2020_virtual_intro:running:computer:
+
 Computer setup
 ==============
 

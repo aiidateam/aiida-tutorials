@@ -6,6 +6,20 @@ Workflows: Advanced
 
 In this hands-on, we'll be looking at some more advanced concepts related to workflows.
 
+.. note::
+
+    If you have not already been through :ref:`2020_virtual_intro:workflow_basic`, you should setup the proper ``Code``:
+
+    To set up the ``Code`` the work chain uses to add two numbers together:
+
+    .. code-block:: console
+
+        $ verdi code setup -L add --on-computer --computer=localhost -P arithmetic.add --remote-abs-path=/bin/bash -n
+
+    This command sets up a code with *label* ``add`` on the *computer* ``localhost``, using the *plugin* ``arithmetic.add``.
+
+    To learn more about setting up a computer see :ref:`2020_virtual_intro:running:computer`.
+
 Exit Codes
 **********
 Exit codes are used to clearly communicate *how* a process terminated.
@@ -24,7 +38,7 @@ Take the ``MultiplyAddWorkChain`` as an example:
     :pyobject: MultiplyAddWorkChain.define
     :dedent: 4
 
-It defines the ``ERROR_NEGATIVE_NUMBER`` exit code with status ``400`` and message `'The result is a negative number.'`.
+It defines the ``ERROR_NEGATIVE_NUMBER`` exit code with status ``410`` and message `'The result is a negative number.'`.
 This exit code is used in the ``validate_result`` step, where the sum produced by the ``ArithmeticAddCalculation`` is validated.
 
 .. literalinclude:: include/snippets/workflows_multiply_add.py
@@ -37,7 +51,7 @@ Note that you can use the ``self.exit_codes`` property of the ``WorkChain`` to q
 Returning an exit code instructs the engine to abort the work chain, and set the corresponding exit status and message on the node in the provenance graph.
 
 In principle, you can use any positive integer when you define an exit code, however, there are some naming conventions that are generally respected by plugin developers.
-Note that these are not enforced and so you can decide to ignore them, however, they might complicate interoperability with other plugins.
+Note that these are not enforced and so you can decide to ignore them, however, that might complicate interoperability with other plugins.
 The following integer ranges are reserved or suggested:
 
     *   0 -  99: Reserved for internal use by ``aiida-core``
@@ -59,8 +73,8 @@ In the :py:meth:`~aiida.workflows.arithmetic.multiply_add.MultiplyAddWorkChain.v
 However, there is one thing that we didn't consider here: what if the calculation failed to produce the sum?
 For such a trivial example of a calculation adding two numbers, although possible, it is very unlikely that it will fail.
 Nonetheless, if it *were* to fail, the work chain would except because the line ``self.ctx.addition.outputs.sum`` will raise an ``AttributeError``.
-In this case, where the work chain just runs a single calculation, that is not such a big deal, but for real-life work chains, that run a number of calculations in sequence, having the work chain except will cause all the work up to that point to be lost.
-Take as an example a workflow that computes the phonons of a crystal structure, when using Quantum ESPRESSO, that takes a sequence of four calculations:
+In this case, where the work chain just runs a single calculation that is not such a big deal, but for real-life work chains that run a number of calculations in sequence, having the work chain except will cause all the work up to that point to be lost.
+Take as an example a workflow that computes the phonons of a crystal structure using Quantum ESPRESSO:
 
 .. figure:: include/images/workflow_error_handling_basic_success.png
 
@@ -73,13 +87,13 @@ If the workflow does not explicitly check for this case, but instead blindly ass
 
 .. figure:: include/images/workflow_error_handling_basic_failed.png
 
-    Example execution of the Quantum ESPRESSO phonon workflow where the third step, the ``q2r.x`` code, failed and because the workflow blindly assumed it would have finished without errors also fails.
+    Example execution of the Quantum ESPRESSO phonon workflow where the third step, the ``q2r.x`` code, failed, and because the workflow blindly assumed it would have finished without errors also fails.
 
 The solution seems simple then.
 After each calculation, we simply add a check to verify that it finished successfully and produced the required outputs before continuing with the next calculation.
 What do we do, though, when the calculation failed?
 Depending on the cause of the failure, we might actually be able to fix the problem, and re-run the calculation, potentially with corrected inputs.
-A common example is that the calculation ran out of walltime and was cancelled by the job scheduler.
+A common example is that the calculation ran out of walltime (requested time from the job scheduler) and was cancelled by the job scheduler.
 In this case, simply restarting the calculation (if the code supports restarts), and optionally giving the job more walltime or resources, may fix the problem.
 
 You might be tempted to add this error handling directly into the workflow.
@@ -87,21 +101,22 @@ However, you will find yourself implementing the same error-handling code many t
 For example, we could add the error-handling for the ``pw.x`` code directly in our phonon workflow, but a structure optimization workflow will also have to run ``pw.x`` and will have to implement the same error-handling logic.
 Is there a way that we can implement this once and easily reuse it in various workflows?
 
-Instead of directly running a calculation in a workflow, one should rather run a work chain that is explicitly designed to run the calculation to completion.
-This *base work chain* knows about the various failure modes of the calculation and can try to fix the problem and restart the calculation whenever it fails until it finishes successfully.
+Yes! Instead of directly running a calculation in a workflow, one should rather run a work chain that is explicitly designed to run the calculation to completion.
+This *base* work chain knows about the various failure modes of the calculation and can try to fix the problem and restart the calculation whenever it fails, until it finishes successfully.
 This logic of such a base work chain is very generic and can be applied to any calculation, and actually any process:
 
 .. figure:: include/images/workflow_error_handling_flow_base.png
     :align: center
     :height: 500px
 
-    Schematic flow diagram of the logic of a *base work chain* whose job it is to run a subprocess repeatedly, fixing any potential errors, until it finishes successfully.
+    Schematic flow diagram of the logic of a *base* work chain, whose job it is to run a subprocess repeatedly, fixing any potential errors, until it finishes successfully.
 
-The work chain runs the subprocess and, once it has finished, inspects the status.
+The work chain runs the subprocess.
+Once it has finished, it then inspects the status.
 If the subprocess finished successfully, the work chain returns the results and its job is done.
 If, instead, the subprocess failed, the work chain should inspect the cause of failure, and attempt to fix the problem and restart the subprocess.
 This cycle is repeated until the subprocess finishes successfully.
-Of course this runs risk of entering in an infinite loop if the work chain never manages to fix the problem, so we want to build in a limit to the maximum number of calculations that can be run:
+Of course this runs the risk of entering into an infinite loop if the work chain never manages to fix the problem, so we want to build in a limit to the maximum number of calculations that can be re-run:
 
 .. _workflow-error-handling-flow-loop:
 .. figure:: include/images/workflow_error_handling_flow_loop.png
@@ -111,7 +126,7 @@ Of course this runs risk of entering in an infinite loop if the work chain never
     An improved flow diagram for the base work chain that limits the maximum number of iterations that the work chain can try and get the calculation to finish successfully.
 
 Since this is such a common logical flow for a base work chain that is to wrap another :py:class:`~aiida.engine.processes.process.Process` and restart it until it is finished successfully, we have implemented it as an abstract base class in ``aiida-core``.
-The :py:class:`~aiida.engine.processes.workchains.restart.BaseRestartWorkChain` implements the logic of flow diagram shown above and takes care of a lot of boiler-plate code.
+The :py:class:`~aiida.engine.processes.workchains.restart.BaseRestartWorkChain` implements the logic of the flow diagram shown above.
 Although the ``BaseRestartWorkChain`` is a subclass of :py:class:`~aiida.engine.processes.workchains.workchain.WorkChain` itself, you cannot launch it.
 The reason is that it is completely general and so does not know which :py:class:`~aiida.engine.processes.process.Process` class it should run.
 Instead, to make use of the base restart work chain, you should subclass it for the process class that you want to wrap.
@@ -141,6 +156,9 @@ Next, as with all work chains, we should *define* its process specification:
 
 .. code-block:: python
 
+    from aiida import orm
+    from aiida.engine import while_
+
     @classmethod
     def define(cls, spec):
         """Define the process specification."""
@@ -162,10 +180,11 @@ The inputs and output that we define are essentially determined by the sub proce
 Since the ``ArithmeticAddCalculation`` requires the inputs ``x`` and ``y``, and produces the ``sum`` as output, we `mirror` those in the specification of the work chain, otherwise we wouldn't be able to pass the necessary inputs.
 Finally, we define the logical outline, which if you look closely, resembles the logical flow chart presented in :numref:`workflow-error-handling-flow-loop` a lot.
 We start by *setting up* the work chain and then enter a loop: *while* the subprocess has not yet finished successfully *and* we haven't exceeded the maximum number of iterations, we *run* another instance of the process and then *inspect* the results.
+The while conditions are implemented in the ``should_run_process`` outline step.
 When the process finishes successfully or we have to abandon, we report the *results*.
 Now unlike with normal work chain implementations, we *do not* have to implement these outline steps ourselves.
 They have already been implemented by the ``BaseRestartWorkChain`` so that we don't have to.
-This is why the base restart work chain is so useful, as it saves us from writing and repeating a lot of boilerplate code.
+This is why the base restart work chain is so useful, as it saves us from writing and repeating a lot of `boilerplate code <https://en.wikipedia.org/wiki/Boilerplate_code>`__.
 
 .. warning::
 
@@ -188,7 +207,7 @@ One way of doing this is to reuse the :py:meth:`~aiida.engine.processes.workchai
         internal loop.
         """
         super().setup()
-        self.ctx.inputs = {'x': self.inputs.x, 'y': self.inputs.y}
+        self.ctx.inputs = {'x': self.inputs.x, 'y': self.inputs.y, 'code': self.inputs.code}
 
 Note that, as explained before, the ``setup`` step forms a crucial part of the logical outline of any base restart work chain.
 Omitting it from the outline will break the work chain, but so will overriding it completely, except as long as we call the ``super``.
@@ -204,10 +223,29 @@ Once the work chain finished, we can inspect what has happened with, for example
 
 .. code-block:: console
 
+    $ verdi process status 1909
     ArithmeticAddBaseWorkChain<1909> Finished [0] [2:results]
         └── ArithmeticAddCalculation<1910> Finished [0]
 
 As you can see the work chain launched a single instance of the ``ArithmeticAddCalculation`` which finished successfully, so the job of the work chain was done as well.
+
+.. note::
+
+    If the work chain excepted, make sure the directory containing the WorkChain definition is in the ``PYTHONPATH``.
+
+    You can add the folder in which you have your Python file defining the WorkChain to the ``PYTHONPATH`` through:
+
+    .. code-block:: bash
+
+        $ export PYTHONPATH=/path/to/workchain/directory/:$PYTHONPATH
+
+    After this, it is **very important** to restart the daemon:
+
+    .. code-block:: bash
+
+        $ verdi daemon restart --reset
+
+    Indeed, when updating an existing work chain file or adding a new one, it is **necessary** to restart the daemon **every time** after all changes have taken place.
 
 Exposing inputs and outputs
 ===========================
@@ -252,6 +290,18 @@ This utility now allows us to simplify the ``setup`` outline step that we have s
 
 This way we don't have to manually fish out all the individual inputs from the ``self.inputs`` but have to just call this single method, saving a lot of time and lines of code.
 
+When submitting or running the work chain using namespaced inputs (``add`` in the example above), it is important to use the namespace:
+
+.. code-block:: python
+
+    inputs = {
+        'add': {
+            'x': Int(3),
+            'y': Int(4),
+            'code': load_code('add@localhost')
+        }
+    }
+    submit(ArithmeticAddBaseWorkChain, **inputs)
 
 Error handling
 ==============
@@ -269,6 +319,7 @@ This time we will see that the work chain takes quite a different path:
 
 .. code-block:: console
 
+    $ verdi process status 1930
     ArithmeticAddBaseWorkChain<1930> Finished [402] [1:while_(should_run_process)(1:inspect_process)]
         ├── ArithmeticAddCalculation<1931> Finished [410]
         └── ArithmeticAddCalculation<1934> Finished [410]
@@ -276,7 +327,7 @@ This time we will see that the work chain takes quite a different path:
 As expected, the ``ArithmeticAddCalculation`` failed this time with a ``410``.
 The work chain noticed the failure when inspecting the result of the subprocess in ``inspect_process``, and in keeping with its name and design, restarted the calculation.
 However, since the inputs were not changed, the calculation inevitably and wholly expectedly failed once more with the exact same error code.
-Unlike after the first iteration, however, the work chain did not restart again, but gave up and returned the exit code ``420`` itself, which stands for ``ERROR_SECOND_CONSECUTIVE_UNHANDLED_FAILURE``.
+Unlike after the first iteration, however, the work chain did not restart again, but gave up and returned the exit code ``402`` itself, which stands for ``ERROR_SECOND_CONSECUTIVE_UNHANDLED_FAILURE``.
 As the name suggests, the work chain tried to run the subprocess but it failed twice in a row without the problem being *handled*.
 The obvious question now of course is: "How exactly can we instruct the base work chain to handle certain problems?"
 
@@ -287,7 +338,7 @@ To "register" a process handler for a base restart work chain implementation, yo
 
 .. code-block:: python
 
-    from aiida.engine import BaseRestartWorkChain, process_handler
+    from aiida.engine import process_handler, ProcessHandlerReport
 
     class ArithmeticAddBaseWorkChain(BaseRestartWorkChain):
 
@@ -306,11 +357,12 @@ To "register" a process handler for a base restart work chain implementation, yo
                 that a problem was detected and potentially handled.
             """
             if node.exit_status == ArithmeticAddCalculation.exit_codes.ERROR_NEGATIVE_NUMBER.status:
-                self.ctx.inputs['x'] = Int(abs(node.inputs.x.value))
-                self.ctx.inputs['y'] = Int(abs(node.inputs.y.value))
+                self.ctx.inputs['x'] = orm.Int(abs(node.inputs.x.value))
+                self.ctx.inputs['y'] = orm.Int(abs(node.inputs.y.value))
                 return ProcessHandlerReport()
 
 The method name can be anything as long as it is a valid Python method name and does not overlap with one of the base work chain's methods.
+For better readability, it is, however, recommended to have the method name start with ``handle_``.
 In this example, we want to specifically check for a particular failure mode of the ``ArithmeticAddCalculation``, so we compare the :meth:`~aiida.orm.nodes.process.process.ProcessNode.exit_status` of the node with that of the spec of the process.
 If the exit code matches, we know that the problem was due to the sum being negative.
 Fixing this fictitious problem for this example is as simple as making sure that the inputs are all positive, which we can do by taking the absolute value of them.
@@ -319,13 +371,15 @@ Finally, to indicate that we have handled the problem, we return an instance of 
 This will instruct the work chain to restart the subprocess, taking the updated inputs from the context.
 With this simple addition, we can now launch the work chain again:
 
-.. code-block:: python
+.. code-block:: console
 
+    $ verdi process status 1941
     ArithmeticAddBaseWorkChain<1941> Finished [0] [2:results]
         ├── ArithmeticAddCalculation<1942> Finished [410]
         └── ArithmeticAddCalculation<1947> Finished [0]
 
-This time around, although the first subprocess fails again with a ``410``, the new process handler is called, "fixes" the inputs and when the work chain restarts the subprocess with the new inputs it finishes successfully.
+This time around, although the first subprocess fails again with a ``410``, the new process handler is called.
+It "fixes" the inputs, and when the work chain restarts the subprocess with the new inputs it finishes successfully.
 With this simple process you can add as many process handlers as you would like to deal with any potential problem that might occur for the specific subprocess type of the work chain implementation.
 To make the code even more readable, the :func:`~aiida.engine.processes.workchains.utils.process_handler` decorator comes with various syntactic sugar.
 Instead of having a conditional at the start of each handler to compare the exit status of the node to a particular exit code of the subprocess, you can define it through the ``exit_codes`` keyword argument of the decorator:
@@ -335,8 +389,8 @@ Instead of having a conditional at the start of each handler to compare the exit
     @process_handler(exit_codes=ArithmeticAddCalculation.exit_codes.ERROR_NEGATIVE_NUMBER)
     def handle_negative_sum(self, node):
         """Handle the `ERROR_NEGATIVE_NUMBER` failure mode of the `ArithmeticAddCalculation`."""
-        self.ctx.inputs['x'] = Int(abs(node.inputs.x.value))
-        self.ctx.inputs['y'] = Int(abs(node.inputs.y.value))
+        self.ctx.inputs['x'] = orm.Int(abs(node.inputs.x.value))
+        self.ctx.inputs['y'] = orm.Int(abs(node.inputs.y.value))
         return ProcessHandlerReport()
 
 If the ``exit_codes`` keyword is defined, which can be either a single instance of :class:`~aiida.engine.processes.exit_code.ExitCode` or a list thereof, the process handler will only be called if the exit status of the node corresponds to one of those exit codes, otherwise it will simply be skipped.
@@ -351,8 +405,8 @@ This can be done through the ``priority`` keyword:
     @process_handler(priority=400, exit_codes=ArithmeticAddCalculation.exit_codes.ERROR_NEGATIVE_NUMBER)
     def handle_negative_sum(self, node):
         """Handle the `ERROR_NEGATIVE_NUMBER` failure mode of the `ArithmeticAddCalculation`."""
-        self.ctx.inputs['x'] = Int(abs(node.inputs.x.value))
-        self.ctx.inputs['y'] = Int(abs(node.inputs.y.value))
+        self.ctx.inputs['x'] = orm.Int(abs(node.inputs.x.value))
+        self.ctx.inputs['y'] = orm.Int(abs(node.inputs.y.value))
         return ProcessHandlerReport()
 
 The process handlers with a higher priority will be called first.
@@ -364,8 +418,8 @@ This can be achieved by setting the ``do_break`` argument of the ``ProcessHandle
     @process_handler(priority=400, exit_codes=ArithmeticAddCalculation.exit_codes.ERROR_NEGATIVE_NUMBER)
     def handle_negative_sum(self, node):
         """Handle the `ERROR_NEGATIVE_NUMBER` failure mode of the `ArithmeticAddCalculation`."""
-        self.ctx.inputs['x'] = Int(abs(node.inputs.x.value))
-        self.ctx.inputs['y'] = Int(abs(node.inputs.y.value))
+        self.ctx.inputs['x'] = orm.Int(abs(node.inputs.x.value))
+        self.ctx.inputs['y'] = orm.Int(abs(node.inputs.y.value))
         return ProcessHandlerReport(do_break=True)
 
 Finally, sometimes one detects a problem that simply cannot or should not be corrected by the work chain.
@@ -373,10 +427,19 @@ In this case, the handler can signal that the work chain should abort by setting
 
 .. code-block:: python
 
+    from aiida.engine import ExitCode
+
     @process_handler(priority=400, exit_codes=ArithmeticAddCalculation.exit_codes.ERROR_NEGATIVE_NUMBER)
     def handle_negative_sum(self, node):
         """Handle the `ERROR_NEGATIVE_NUMBER` failure mode of the `ArithmeticAddCalculation`."""
         return ProcessHandlerReport(exit_code=ExitCode(450, 'Inputs lead to a negative sum but I will not correct them'))
 
-The base restart work chain will detect this exit code and abort the work chain, setting the corresponding status and message on the node as usual.
-With these basic tools, a broad range of use-cases can be addressed while preventing a lot of boiler-plate code.
+The base restart work chain will detect this exit code and abort the work chain, setting the corresponding status and message on the node as usual:
+
+.. code-block:: console
+
+    $ verdi process status 1951
+    ArithmeticAddBaseWorkChain<1951> Finished [450] [1:while_(should_run_process)(1:inspect_process)]
+    └── ArithmeticAddCalculation<1952> Finished [410]
+
+With these basic tools, a broad range of use-cases can be addressed while preventing a lot of boilerplate code.
