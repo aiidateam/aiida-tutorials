@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 """Pressure convergence WorkChain"""
-from __future__ import absolute_import
-from __future__ import print_function
 from aiida.engine import WorkChain, ToContext, while_, calcfunction, workfunction
 from aiida.orm import Code, Float, Str, StructureData
 from aiida.plugins import CalculationFactory, DataFactory
