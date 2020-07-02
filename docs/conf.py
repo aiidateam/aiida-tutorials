@@ -26,19 +26,12 @@ needs_sphinx = '2.0.0'
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.todo',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.viewcode',
+    'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo',
+    'sphinx.ext.ifconfig', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode',
     'IPython.sphinxext.ipython_console_highlighting',
-    'IPython.sphinxext.ipython_directive',
-    'recommonmark',
-    'nbsphinx',
-    'sphinx.ext.extlinks',
-    'sphinx.ext.mathjax',
-    'sphinx_copybutton',
+    'IPython.sphinxext.ipython_directive', 'recommonmark', 'nbsphinx',
+    'sphinx.ext.extlinks', 'sphinx.ext.mathjax', 'sphinx_copybutton',
+    "sphinx_panels"
 ]
 ipython_mplbackend = ""
 
