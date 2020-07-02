@@ -18,6 +18,8 @@ In this hands-on, we'll be looking at some more advanced concepts related to wor
 
     This command sets up a code with *label* ``add`` on the *computer* ``localhost``, using the *plugin* ``arithmetic.add``.
 
+    To learn more about setting up a computer see :ref:`2020_virtual_intro:running:computer`.
+
 Exit Codes
 **********
 Exit codes are used to clearly communicate *how* a process terminated.
@@ -72,7 +74,7 @@ However, there is one thing that we didn't consider here: what if the calculatio
 For such a trivial example of a calculation adding two numbers, although possible, it is very unlikely that it will fail.
 Nonetheless, if it *were* to fail, the work chain would except because the line ``self.ctx.addition.outputs.sum`` will raise an ``AttributeError``.
 In this case, where the work chain just runs a single calculation that is not such a big deal, but for real-life work chains that run a number of calculations in sequence, having the work chain except will cause all the work up to that point to be lost.
-Take as an example a workflow that computes the phonons of a crystal structure using Quantum ESPRESSO over a sequence of four calculations:
+Take as an example a workflow that computes the phonons of a crystal structure using Quantum ESPRESSO:
 
 .. figure:: include/images/workflow_error_handling_basic_success.png
 
@@ -91,7 +93,7 @@ The solution seems simple then.
 After each calculation, we simply add a check to verify that it finished successfully and produced the required outputs before continuing with the next calculation.
 What do we do, though, when the calculation failed?
 Depending on the cause of the failure, we might actually be able to fix the problem, and re-run the calculation, potentially with corrected inputs.
-A common example is that the calculation ran out of walltime (scheduled run time on a remote cluster) and was cancelled by the job scheduler.
+A common example is that the calculation ran out of walltime (requested time from the job scheduler) and was cancelled by the job scheduler.
 In this case, simply restarting the calculation (if the code supports restarts), and optionally giving the job more walltime or resources, may fix the problem.
 
 You might be tempted to add this error handling directly into the workflow.
