@@ -40,7 +40,7 @@ This will prompt you for some information, such as the name of the profile, your
 The information about you as a user will be associated with all the data that you create in AiiDA
 and it is important for attribution when you will later share your data with others.
 After you have answered all the questions, a new profile will be created, along
-with the required database and repository.
+with the required :ref:`database and repository.<aiida:intro:install:database>`
 
 .. note::
 
@@ -951,7 +951,7 @@ You should be able to rotate the view with the right mouse button.
 
 .. note::
 
-    If you receive some errors, make sure your X-forwarding settings have been set up correctly.
+    If you receive some errors, make sure your X-forwarding settings have been set up correctly, as explained in :ref:`the setup section <2020_virtual_intro:setup>`.
 
 Alternatively, especially if showing them interactively is too slow over SSH, you can export the content of a structure node in various popular formats such as ``xyz``, ``xsf`` or ``cif``.
 This is achieved by typing in the terminal:

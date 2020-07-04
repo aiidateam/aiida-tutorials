@@ -27,3 +27,5 @@ If, instead, you want to know all the groups to which a specific node belongs, y
 .. code-block:: console
 
     $ verdi group list -N/--node <IDENTIFIER>
+
+Please see the :ref:`corresponding section in the documentation <aiida:how-to:data:organize>` for more details on groups and how to use them.
