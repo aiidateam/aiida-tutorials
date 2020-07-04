@@ -97,7 +97,7 @@ The provenance browser
 
 While the ``verdi`` CLI provides full access to the data underlying the provenance graph, a more intuitive tool for browsing AiiDA graphs is the interactive provenance browser available on `Materials Cloud <https://www.materialscloud.org>`__.
 
-In order to use it, we first need to start the `AiiDA REST API <https://aiida-core.readthedocs.io/en/latest/restapi/index.html>`_:
+In order to use it, we first need to start the :ref:`AiiDA REST API <reference:rest-api>`:
 
 .. code:: bash
 

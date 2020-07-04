@@ -6,8 +6,10 @@ AiiDA basics
 
 This part of the tutorial will give you a first taste of some of the features of AiiDA, and help you familiarize with the ``verdi`` command-line interface (CLI), as well as AiiDA's IPython shell.
 
-.. important:: Remember to run ``workon aiida`` in any new terminal, in order to enter the correct virtual environment,
-   otherwise the ``verdi`` command will not be available.
+.. important:: 
+
+    Before starting this tutorial, make sure you have watched the demonstration on `working with your virtual machine <https://youtu.be/vlmjVwGJgEU>`__.
+    Also remember to run ``workon aiida`` in any new terminal, in order to enter the correct virtual environment, otherwise the ``verdi`` command will not be available.
 
 * The ``verdi`` command supports **tab-completion**:
   In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
@@ -17,7 +19,7 @@ This part of the tutorial will give you a first taste of some of the features of
 
     $ verdi quicksetup -h
 
-More details on ``verdi`` can be found in the `online documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html>`_.
+More details on ``verdi`` can be found in the :ref:`online documentation <aiida:topics:cli>`.
 
 .. _2020_virtual_intro:setup_profile:
 
@@ -101,7 +103,7 @@ In the provenance graph, you can see different types of *nodes* represented by d
 The green ellipses are ``Data`` nodes, the blue ellipse is a ``Code`` node, and the rectangles represent *processes*, i.e. the calculations performed in your *workflow*.
 
 The provenance graph allows us to not only see what data we have, but also how it was produced.
-During this basic tutorial we will first be using AiiDA to generate the provenance graph in :numref:`fig_intro_workchain_graph` step by step.
+During this basic tutorial we will first be using AiiDA to generate the provenance graph in :numref:`fig_intro_workchain_graph`, step by step.
 
 Data nodes
 ----------
@@ -693,7 +695,7 @@ Have a look to the figure and its caption before moving on.
    The node with linkname ``retrieved`` contains the relevant raw output files stored in the AiiDA repository; all other nodes are added by the parser.
    Additional nodes (symbolized in gray) can be added by the parser: e.g., an output ``StructureData`` if you performed a relaxation calculation, a ``TrajectoryData`` for molecular dynamics, etc.
 
-:numref:`2020_virtual_fig_graph` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi node graph generate <IDENTIFIER>``.
+:numref:`2020_virtual_fig_graph` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to ``verdi node graph generate <IDENTIFIER>``, or using the :ref:`graph's python API <aiida:how-to:data:visualise-provenance>`.
 Remember that identifiers in AiiDA can come in several forms:
 
  * "Primary Key" (PK): An integer, e.g. ``723``, that identifies your entity within your database (automatically assigned)
@@ -761,7 +763,7 @@ Note that processes can be in any of the following states:
 
 The first three states are 'active' states, meaning the process is not done yet, and the last three are 'terminal' states.
 Once a process is in a terminal state, it will never become active again.
-The `official documentation <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/processes/concepts.html#process-state>`_ contains more details on process states.
+The :ref:`official documentation <aiida:topics:processes:concepts:state>` contains more details on process states.
 
 Remember that in order to list processes of *all* states, you can use the ``-a/--all`` flag:
 
@@ -861,7 +863,7 @@ The ``Code`` node and its setup will be discussed in the next hands-on on :ref:`
 Dict - parameters
 ~~~~~~~~~~~~~~~~~
 
-Let's investigate some of in- and output nodes of the ``PwCalculation``.
+Let's investigate some of the input and output nodes of the ``PwCalculation``.
 Dictionaries with various parameters are represented in AiiDA by ``Dict`` nodes.
 From the inputs of the process, let's choose the node of type ``Dict`` with input link name ``parameters`` and type in the terminal:
 
@@ -961,7 +963,7 @@ This is achieved by typing in the terminal:
 This outputs the structure in ``xsf`` format and writes it to a file.
 
 You can open the generated ``xsf`` file and observe the cell and the coordinates.
-Then, you can then copy ``BaTiO3.xsf`` from the Amazon machine to your local one and then visualize it, e.g. with ``xcrysden`` (if you have it installed):
+Then, you can then copy ``BaTiO3.xsf`` from the Amazon machine to your local one and then visualize it, e.g. with `xcrysden <http://www.xcrysden.org>`__ (if you have it installed):
 
 .. code-block:: console
 
@@ -1126,6 +1128,8 @@ Look for an identifier (PK or UUID) of the ``KpointsData`` input node of the ``P
 
 You can get the k-points mesh using:
 
+.. code-block:: ipython
+
     In [2]: kpoints.get_kpoints_mesh()
     Out[2]: ([6, 6, 6], [0.0, 0.0, 0.0])
 
@@ -1150,7 +1154,7 @@ In this case, get the list of k-points coordinates using
 
 Conversely, if the ``KpointsData`` node *does* actually represent a mesh, this method is the one, that when called, will throw an ``AttributeError``.
 
-If you prefer Cartesian (rather than fractional) coordinates, type
+If you prefer Cartesian (rather than fractional) coordinates, type:
 
 .. code-block:: ipython
 
@@ -1240,9 +1244,9 @@ and
 
 Use the latter to verify that the Fermi energy that you have found in the last step has been extracted correctly from the output file.
 
-.. note::
+.. tip::
 
-    Hint: filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines.
+    Filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines.
 
 The results of calculations are stored in two ways: ``Dict`` objects are stored in the database, which makes querying them very convenient, whereas ``ArrayData`` objects are stored on the disk.
 Once more, use the command ``verdi data array show <IDENTIFIER>`` to determine the Fermi energy obtained from calculation with the UUID ``ce81c420``.
