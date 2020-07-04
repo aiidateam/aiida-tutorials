@@ -6,7 +6,7 @@ AiiDA basics
 
 This part of the tutorial will give you a first taste of some of the features of AiiDA, and help you familiarize with the ``verdi`` command-line interface (CLI), as well as AiiDA's IPython shell.
 
-.. important:: 
+.. important::
 
     Before starting this tutorial, make sure you have watched the demonstration on `working with your virtual machine <https://youtu.be/vlmjVwGJgEU>`__.
     Also remember to run ``workon aiida`` in any new terminal, in order to enter the correct virtual environment, otherwise the ``verdi`` command will not be available.
@@ -578,7 +578,7 @@ Workflows
 So far we have executed each process manually.
 AiiDA allows us to automate these steps by linking them together in a *workflow*, whose provenance is stored to ensure reproducibility.
 For this tutorial we have prepared a basic ``WorkChain`` that is already implemented in ``aiida-core``.
-You will see the details of this code in the section on :ref:`basic workflows <2020_virtual_intro:workflow_basic>`. 
+You will see the details of this code in the section on :ref:`basic workflows <2020_virtual_intro:workflow_basic>`.
 
 .. note::
 
@@ -893,7 +893,7 @@ Next, we can use the ``get_dict()`` method to obtain the dictionary stored in th
     In [2]: pw_dict = params.get_dict()
 
     In [3]: pw_dict
-    Out[3]: 
+    Out[3]:
     {'SYSTEM': {'nspin': 2,
       'degauss': 0.02,
       'ecutrho': 600,
@@ -975,22 +975,22 @@ First, open the ``verdi shell`` and load the structure node:
 .. code-block:: ipython
 
     In [1]: structure = load_node('3a4b1270')
-    In [2]: structure                                                                                                                   
+    In [2]: structure
     Out[2]: <StructureData: uuid: 3a4b1270-82bf-4d66-a51f-982294f6e1b3 (pk: 1161)>
 
 You can display its chemical formula using:
 
 .. code-block:: ipython
 
-    In [3]: structure.get_formula()                                                                                                     
+    In [3]: structure.get_formula()
     Out[3]: 'BaO3Ti'
 
 or, to obtain the atomic positions and species:
 
 .. code-block:: ipython
 
-    In [4]: structure.sites                                                                                                             
-    Out[4]: 
+    In [4]: structure.sites
+    Out[4]:
     [<Site: kind name 'Ba' @ 0.0,1.78886419607596e-30,0.0>,
      <Site: kind name 'Ti' @ 1.98952035955311,1.98952035955311,1.98952035955311>,
      <Site: kind name 'O' @ 1.98952035955311,1.98952035955311,0.0>,
@@ -1006,8 +1006,8 @@ If you are familiar with `ASE <https://wiki.fysik.dtu.dk/ase/>`__ and `Pymatgen 
 
 .. code-block:: ipython
 
-    In [6]: structure.get_pymatgen()                                                                                                    
-    Out[6]: 
+    In [6]: structure.get_pymatgen()
+    Out[6]:
     Structure Summary
     Lattice
         abc : 3.97904071910623 3.97904071910623 3.97904071910623
@@ -1032,7 +1032,7 @@ In order to add new structures to your AiiDA database, you can also define a str
 
     .. code-block:: ipython
 
-        In [1]: alat = 5.4 
+        In [1]: alat = 5.4
            ...: unit_cell = [[alat/2, alat/2, 0.], [alat/2, 0., alat/2], [0., alat/2, alat/2]]
 
     .. note::
@@ -1082,10 +1082,10 @@ In order to add new structures to your AiiDA database, you can also define a str
 
     .. code-block:: ipython
 
-        In [7]: from ase.spacegroup import crystal 
-           ...: ase_structure = crystal('Si', [(0, 0, 0)], spacegroup=227, 
-           ...:             cellpar=[alat, alat, alat, 90, 90, 90], primitive_cell=True) 
-           ...: structure = StructureData(ase=ase_structure) 
+        In [7]: from ase.spacegroup import crystal
+           ...: ase_structure = crystal('Si', [(0, 0, 0)], spacegroup=227,
+           ...:             cellpar=[alat, alat, alat, 90, 90, 90], primitive_cell=True)
+           ...: structure = StructureData(ase=ase_structure)
 
     Now you can store the new structure object in the database with the command:
 
@@ -1093,7 +1093,7 @@ In order to add new structures to your AiiDA database, you can also define a str
 
         In [8]: structure.store()
 
-    .. note:: 
+    .. note::
 
         Similarly, a ``StructureData`` instance can also be intialized from a pymatgen structure using ``StructureData(pymatgen=pmg_structure)``.
 
@@ -1138,7 +1138,7 @@ To get the full (explicit) list of k-points belonging to this mesh, use:
 .. code-block:: ipython
 
     In [3]: kpoints.get_kpoints_mesh(print_list=True)
-    Out[3]: 
+    Out[3]:
     array([[0.        , 0.        , 0.        ],
            [0.        , 0.        , 0.16666667],
            ...

@@ -48,12 +48,12 @@ For a more programmatic approach, you can get a representation of the inputs and
 
 .. code-block:: ipython
 
-    In [4]: calc.get_incoming()                                                                                                          
+    In [4]: calc.get_incoming()
     Out[4]: <aiida.orm.utils.links.LinkManager at 0x14a27ca6f240>
 
 .. code-block:: ipython
 
-    In [5]: calc.get_outgoing()                                                                                                          
+    In [5]: calc.get_outgoing()
     Out[5]: <aiida.orm.utils.links.LinkManager at 0x14a27d038940>
 
 These methods return an instance of the ``LinkManager`` class.
@@ -61,14 +61,14 @@ You can obtain all nodes calling the ``.all()`` method:
 
 .. code-block:: ipython
 
-    In [6]: print(calc.get_incoming().all())                                                                           
+    In [6]: print(calc.get_incoming().all())
 
 or you can just iterate over the neighboring nodes and check the link properties as follows:
 
 .. code-block:: ipython
 
-    In [7]: for entry in calc.get_outgoing(): 
-       ...:     print(entry.link_label, entry.link_type, entry.node) 
+    In [7]: for entry in calc.get_outgoing():
+       ...:     print(entry.link_label, entry.link_type, entry.node)
 
 each entry is a named tuple (called ``LinkTriple``), from which you can get the link label and type and the neighboring node itself.
 If you print one, you will see something like:
@@ -83,7 +83,7 @@ For example if you are only interested in the link labels you can use:
 .. code-block:: ipython
 
     In [8]: calc.get_outgoing().all_link_labels()
-    Out[8]: 
+    Out[8]:
     ['retrieved',
      'output_parameters',
      'remote_folder',
@@ -106,7 +106,7 @@ For example, if you only want to get the outgoing links whose label starts with 
 .. code-block:: ipython
 
     In [10]: calc.get_outgoing(link_label_filter='output%').all()
-    Out[10]: 
+    Out[10]:
     [LinkTriple(node=<Dict: uuid: 0119c80c-fb2d-46d7-b2f0-a4b59a62ae5b (pk: 817)>, link_type=<LinkType.CREATE: 'create'>, link_label='output_parameters'),
      LinkTriple(node=<StructureData: uuid: 254e5a86-7478-4b91-ab2d-7e980eced9be (pk: 816)>, link_type=<LinkType.CREATE: 'create'>, link_label='output_structure'),
      LinkTriple(node=<ArrayData: uuid: db55db3b-ba60-44b3-a479-65fcb62f5988 (pk: 818)>, link_type=<LinkType.CREATE: 'create'>, link_label='output_trajectory_array'),
