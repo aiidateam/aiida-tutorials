@@ -53,7 +53,7 @@ Label
 Type string
    This tells us the what "sub-class" of group this is.
    Type strings can be used to class certain types of data, for example here we have general groups (core), groups containing pseudopotentials (core.upf), and an auto-generated group containing the nodes we imported from the archive (core.import).
-   For advanced use, you can create your own group subclass plugins, with specialised methods. 
+   For advanced use, you can create your own group subclass plugins, with specialised methods.
 User
    The email of the user that created this group.
 
@@ -158,7 +158,7 @@ Organising groups in hierarchies
 --------------------------------
 
 Earlier we mentioned that groups are like files in folders on your filesystem.
-As with folders and sub-folders then, as the amount of groups we have grows, we may also wish to structure our groups in a hierarchy. 
+As with folders and sub-folders then, as the amount of groups we have grows, we may also wish to structure our groups in a hierarchy.
 Groups in AiiDA are inherently "flat", in that groups may only contain nodes and not other groups.
 However it is possible to construct *virtual* group hierarchies based on delimited group labels, using the ``grouppath`` utility.
 
