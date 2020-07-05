@@ -478,7 +478,7 @@ Submitting to the daemon
 ------------------------
 
 When we used the ``run`` command in the previous section, the IPython shell was blocked while it was waiting for the ``CalcJob`` to finish.
-This is not a problem when we're simply adding two number together, but if we want to run multiple calculations that take hours or days, this is no longer practical.
+This is not a problem when we're simply multiplying two numbers, but if we want to run multiple calculations that take hours or days, this is no longer practical.
 Instead, we are going to *submit* the ``CalcJob`` to the AiiDA *daemon*.
 The daemon is a program that runs in the background and manages submitted calculations until they are *terminated*.
 Let's first check the status of the daemon using the ``verdi`` CLI:
@@ -558,7 +558,8 @@ Now you can either use ``verdi process list`` to follow the execution of the ``C
 
     $ verdi process watch 12
 
-Let's wait for the ``CalcJob`` to complete and then use ``verdi process list -a`` to see all processes we have run so far:
+Let's wait for the ``CalcJob`` to complete (state changes to "finished").
+Quit the watch command (Ctrl+C) and use ``verdi process list -a`` to see all processes we have run so far:
 
 .. code-block:: bash
 
