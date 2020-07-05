@@ -45,6 +45,13 @@ Hands-on sessions
 Appendices
 ----------
 
+.. toctree::
+   :maxdepth: 1
+   :numbered:
+
+   ./appendices/groups
+   ./appendices/exploring_provenance
+
 https://github.com/aiidateam/aiida-tutorials/issues/229
 
 .. _2020:appendix_computer_code_setup:
