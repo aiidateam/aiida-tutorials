@@ -720,7 +720,7 @@ Let's generate a graph for the calculation node with UUID ``ce81c420-7751-48f6-a
 This command will create the file ``<PK>.dot.pdf`` that can be viewed with any PDF document viewer.
 See the :ref:`notes on how to open the pdf on AWS<2020_virtual_intro:basic:open_pdf>` in case you need a quick reminder on how to do so.
 
-For the remainder of this section, we'll use the AiiDA CLI and ``verdi shell`` to explore the properties of the ``PwCalculation``, as well as its inputs and outputs.
+For the remainder of this section, we'll use the ``verdi`` CLI and the ``verdi shell`` to explore the properties of the ``PwCalculation``, as well as its inputs and outputs.
 Understanding these data types will come in handy for the section on running calculations.
 We'll also introduce some new CLI commands and shell features that will be useful for the hands-on sessions that follow.
 
@@ -847,7 +847,7 @@ To see a list of all the files used to run a calculation (input file, submission
 
     $ verdi calcjob inputls ce81c420
 
-Adding a ``--color`` flag allows you to easily distinguish files from folders by a different coloring.
+Adding the ``--color`` flag helps distinguishing files from folders.
 Once you know the name of the file you want to visualize, you can call the ``verdi calcjob inputcat [PATH]`` command specifying the path of the file to show.
 For instance, to see the submission script, you can use:
 
@@ -885,7 +885,7 @@ Of course, we can also load the contents of the parameters dictionary in Python.
 
 .. code-block:: ipython
 
-    In [1]: params = load_node(<IDENTIFIER>)
+    In [1]: params = load_node(PK)
 
 Next, we can use the ``get_dict()`` method to obtain the dictionary stored in the ``Dict`` node:
 

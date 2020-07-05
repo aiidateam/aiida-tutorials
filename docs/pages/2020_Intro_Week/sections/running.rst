@@ -7,8 +7,8 @@ Running computations
 In this section we'll be learning how to run external codes with AiiDA through calculation plugins.
 
 We will use the `Quantum ESPRESSO <https://www.quantum-espresso.org/>`_ package to launch a simple `density functional theory <https://en.wikipedia.org/wiki/Density_functional_theory>`_ calculation of a silicon crystal using the :doi:`PBE exchange-correlation functional <10.1103/PhysRevLett.77.3865>` and check its results.
-In doing so, we will introduce some problem-causing parameters in order to show how to 'manually' debug problems and errors in the runs.
-Workflows, which you'll encounter later in this tutorial, can help you avoid these issues systematically.
+In doing so, we will intentionally introduce some bogus input parameters in order to show how to 'manually' debug problems when encountering errors.
+Workflows, which you'll see later in this tutorial, can help you avoid these issues systematically.
 
 Note that besides the `aiida-quantumespresso <https://github.com/aiidateam/aiida-quantumespresso>`_ plugin, AiiDA comes with plugins for many other codes, all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
 
@@ -547,14 +547,11 @@ You can check again the outputs and the reports with the tools explained in this
 Restarting calculations
 -----------------------
 
-You should have noticed that the error in the last case is that the calculation did not converge because we specified a too low number of self consistent iterations (3).
-You could just change the number of iterations and re-run the calculation from scratch in this simple case, but in a real-life scenario you would like instead to restart the calculation.
-Other examples in which you want to restart a calculation are molecular dynamics (to run for a longer time), or a relaxation of a structure (to improve the results using tighter force and stress parameters).
+It turns out that your last calculation did not converge because we stopped the self-consistency iteration cycle before it converged (3).
+In this simple case, you could just re-run the calculation from scratch with a sufficient number of iterations, but for expensive calculations (including a structural relaxation or molecular dynamics), you would like instead to restart your calculation from the previous one to save time.
 
-You will now learn how to relaunch a calculation from one that has already completed, and how to add or change inputs before launching it.
-
-To easily restart from the previous calculation, instead of retyping all the inputs, we will use the ``get_builder_restart`` method of ``CalcJobNode``.
-Just like the ``get_builder`` method of the ``Code`` or of the ``Process`` class, this creates an instance of the ``ProcessBuilder``, but with all inputs already pre-populated, using those on the "parent" node.
+For this purpose, ``CalcJobNode`` provides the ``get_builder_restart`` method.
+Just like the ``get_builder`` method of the ``Code`` or of the ``Process`` class, this creates an instance of the ``ProcessBuilder``, but with all inputs already pre-populated from those of the "parent" node.
 
 Let us load the node of the calculation job that we want to restart in a ``verdi shell`` and create a new builder from it:
 
@@ -563,45 +560,35 @@ Let us load the node of the calculation job that we want to restart in a ``verdi
     failed_calculation = load_node(<pk>)
     restart_builder = failed_calculation.get_builder_restart()
 
-If you simply type ``restart_builder`` and press Enter, you can see that all the inputs have already been set to those that were used for the original calculation.
-The only thing that now remains to be done, is to adapt those inputs that caused the failure.
-Simply giving the calculation some more steps in the convergence cycle will probably already fix the problem.
+Type ``restart_builder`` and press Enter to verify that all inputs have already been set to those that were used for the original calculation.
+Let's give the new calculation some more steps in the SCF cycle in order to let it converge:
 
 .. code:: python
 
     parameters = restart_builder.parameters.get_dict()
     parameters['ELECTRONS']['electron_maxstep'] = 80
 
-We could now just store these modified ``parameters`` in a new ``Dict`` node (as the original input is immutable, in order to preserve the provenance) and use it to run a new calculation.
-However, in this Quantum ESPRESSO example even more can be done, by using the results of the previous calculation to speed up the restart.
-To do so, we simply have to set the input ``parent_folder`` to the remote working directory of the old calculation, i.e.:
+The ``aiida-quantumespresso`` plugin supports restarting a calculation by setting the corresponding ``restart_mode`` and attaching the remote working directory of the previous calculations as the ``parent_folder`` input [#f3]_:
 
 .. code:: python
 
     parameters['CONTROL']['restart_mode'] = 'restart'
-    restart_builder.parameters = Dict(dict=parameters)
     restart_builder.parent_folder = failed_calculation.outputs.remote_folder
+    restart_builder.parameters = Dict(dict=parameters)
 
-Note that this particular step is specific to a ``PwCalculation`` [#f3]_, but the restart builder concept works for any calculation class.
-Any of the inputs can be changed or set.
-For example, you may also want to record that this calculation is a restart, in addition to the provenance graph, by setting the label or description:
+Note that we've created a new ``Dict`` node for the modifed parameters since the original input is stored in the database and immutable.
+
+Finally, let's label this calculation as a restarted one and submit the new calculation:
 
 .. code:: python
 
     restart_builder.metadata.label = 'Restart from PwCalculation<{}>'.format(failed_calculation.pk)
-
-Ultimately whatever needs to be changed for the restart is up to you, but the restart builder makes it a lot easier.
-Finally, to submit the restart, since it is a process builder, it works exactly as any other builder:
-
-.. code:: python
-
     calculation = submit(builder)
 
-You can now inspect the restarted calculation to verify that this time it actually completed successfully, with a zero exit status.
-You should see a finished status with exit code zero when running ``verdi process list -a -p1``.
 
-Using the restart builder, the required code to setup a calculation is much shorter than the one needed to launch a new one from scratch.
-There is no need to load or create many of the inputs such as the pseudopotentials, structures and k-points, because they were reused from the first calculation.
+Inspect the restarted calculation to verify that, this time, it completes successfully.
+You should see a "finished" status with exit code zero when running ``verdi process list -a -p1``.
+
 
 Using the calculation results
 =============================
@@ -627,4 +614,6 @@ While the name of this output dictionary node can be chosen by the plugin, AiiDA
 
 .. [#f1] In order to avoid duplication of KpointsData, you would first need to learn how to query the database, therefore we will ignore this issue for now.
 .. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminated, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
-.. [#f3] Connecting an input ``parent_folder`` to a calculation, in order to mark it as a restart, is a pattern that is applied extensively in the ``aiida-quantumespresso`` plugin, but it is also a very general and standard pattern for plugins to indicate a restart. In this way, the relation in the graph is: ``parent_calculation --> remote_folder --> restart_calculation``. We remind that the intermediate node of type ``RemoteFolder`` represents in the graph a "symbolic link" to the folder where the ``parent_calculation`` run on the remote computer. In this way, all the checkpoint files are not stored in the AiiDA repository (these could be big), but still the relationship (and so the provenance) between the two calculations is correctly represented in AiiDA. It is the responsibility of the calculation plugin (in this case the plugin for the ``pw.x`` code) to know what to do when a ``parent_folder`` is specified. In the case of Quantum ESPRESSO plugin, the code will copy the ``outdir`` of the parent simulation into the correct location, so that Quantum ESPRESSO can find the wavefunctions, charge densities, ...
+.. [#f3] The ``parent_folder`` input for reusing the remote working folder of a previous calculation is specific to the ``aiida-quantumespresso`` plugin, but similar patterns are used in other plugins.
+    The ``PwCalculation`` ``CalcJob`` plugin will copy the ``outdir`` of the parent simulation into the appropriate location, where Quantum ESPRESSO's ``pw.x`` executable looks for wavefunctions, charge densities, etc.
+    This allows to keep the checkpoint files (which may be large) on the remote machine, while still recording the provenance of the new calculation in the AiiDA graph as: ``parent_calculation --> remote_folder --> restart_calculation``.
