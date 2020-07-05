@@ -6,11 +6,13 @@ Running computations
 
 In this section we'll be learning how to run external codes with AiiDA through calculation plugins.
 
-We will use the `Quantum Espresso <https://www.quantum-espresso.org/>`_ package to launch a simple `density functional theory <https://en.wikipedia.org/wiki/Density_functional_theory>`_ calculation of a silicon crystal using the :doi:`PBE exchange-correlation functional <10.1103/PhysRevB.54.16533>` and check its results.
+We will use the `Quantum ESPRESSO <https://www.quantum-espresso.org/>`_ package to launch a simple `density functional theory <https://en.wikipedia.org/wiki/Density_functional_theory>`_ calculation of a silicon crystal using the :doi:`PBE exchange-correlation functional <10.1103/PhysRevLett.77.3865>` and check its results.
 In doing so, we will introduce some problem-causing parameters in order to show how to 'manually' debug problems and errors in the runs.
 Workflows, which you'll encounter later in this tutorial, can help you avoid these issues systematically.
 
-Note that besides the ``aiida-quantumespresso`` plugin, AiiDA comes with plugins for a range of other codes, all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
+Note that besides the `aiida-quantumespresso <https://github.com/aiidateam/aiida-quantumespresso>`_ plugin, AiiDA comes with plugins for many other codes, all of which are listed in the `AiiDA plugin registry <https://aiidateam.github.io/aiida-registry/>`_.
+
+.. _2020_virtual_intro:running:computer:
 
 Computer setup
 ==============
@@ -18,8 +20,8 @@ Computer setup
 In a production environment, AiiDA would typically be running on your work station or laptop, while launching calculations on remote high-performance compute resources that you have SSH access to.
 For this reason AiiDA has the concept of a ``Computer`` to run calculations on.
 
-To keep things simple, Quantum ESPRESSO (together with several other *ab initio* codes) has been installed directly in the ``codes`` subfolder of your virtual machine, and you are going to launch your first calculations on the same computer where AiiDA is installed.
-Nevertheless, we're now going to set up this computer for launching calculations:
+To keep things simple, Quantum ESPRESSO (together with several other *ab initio* codes) has been installed directly in your virtual machine, and you are going to launch your first calculations on the same computer where AiiDA is installed.
+Nevertheless, even if it is the same computer, we need to create a new ``Computer`` instance in AiiDA in order to launch calculations on it:
 
 .. code:: bash
 
@@ -34,9 +36,9 @@ where ``computer.yml`` is a configuration file in the `YAML format <https://en.w
     When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<2020_virtual_intro:setup_profile>`.
     The configuration file should work for the virtual machine that comes with this tutorial but may need to be adapted when you are running AiiDA in a different environment, as explained in :ref:`this appendix<2020:appendix_computer_code_setup>`.
 
-Finally, you need to provide AiiDA with information on how to access the ``Computer``.
-For remote computers with ``ssh`` transport, this would involve e.g. an SSH key.
-For ``local`` computers, this is just a "formality" (press enter to confirm the default cooldown time):
+The ``computer setup`` step informs AiiDA of the existence of the computer and of its basic settings, like the scheduler installed on it. Before being able to use the computer, you also need to provide AiiDA with information on how to access the ``Computer``.
+For remote computers with ``ssh`` transport, this would involve e.g. an SSH key, the username on the remote computer, the port to connect to, etc.
+For ``local`` computers, this is just a "formality" (press enter to confirm the default cooldown time, that is the time between consecutive opening of a connection - for a local computer this can be safely set to zero, while when connecting via SSH it is better to leave a time of a few seconds, to avoid overloading of the remote computer):
 
 .. code:: bash
 
@@ -51,6 +53,11 @@ Your ``localhost`` computer should now show up in
 .. code:: bash
 
    verdi computer list
+
+.. note::
+
+    AiiDA export archives like the one we imported :ref:`in the very beginning <2020_virtual_importing_data>` can also contain computers set up by other AiiDA users (without the private *configuration* information).
+    Use ``verdi computer list -a`` to list both configured and unconfigured computers.
 
 Before proceeding, test that it works:
 
@@ -75,6 +82,9 @@ Once you have the configuration file in your local working environment, set up t
 
     verdi code setup --config code.yml
 
+Try to understand the various parameters in the YAML file.
+In particular, we note that this code needs the ``quantumespresso.pw`` plugin, and we are specifying the fact that the code is already present on the computer, the absolute path to this code, the name of the AiiDA computer (``localhost``) on which it is, and some text to prepend before each execution (in this case ``ulimit -s unlimited``, but in other cases it could e.g. be a ``module load``).
+
 .. warning::
 
     The configuration should work for the virtual machine that comes with this tutorial.
@@ -98,6 +108,9 @@ You can always check the configuration details of an existing code using:
    The ``generic`` profile has already a number of other codes configured.
    See ``verdi -p generic code list``.
 
+   In order to also show codes created by other users (e.g. from imported archives), use ``verdi code list -A``.
+
+
 
 The AiiDA daemon
 ================
@@ -108,7 +121,7 @@ The AiiDA daemon is a program that
  * runs continuously in the background
  * waits for new calculations to be submitted
  * transfers the inputs of new calculations to your compute resource
- * checks the status of your calculation at the compute resource, and
+ * checks the status of your calculation on the compute resource, and
  * retrieves the results from the compute resource
 
 Check the status of the daemon process by typing in the terminal:
@@ -121,7 +134,7 @@ If the daemon is running, the output should look like
 
 .. code:: bash
 
-    Profile: default
+    Profile: quicksetup
     Daemon is running as PID 2050 since 2019-04-30 12:37:12
     Active workers [1]:
       PID    MEM %    CPU %  started
@@ -153,20 +166,20 @@ As you go along, feel free to keep track of your commands by copying them into a
         verdi run <scriptname>
 
 
-Every calculation sent to a cluster is linked to a *code*, which describes the executable file to be used as well as some metadata.
-Let's have a look at the codes already installed on your machine:
+Every calculation sent to a cluster is linked to a *code*, which describes the executable file as we saw earlier.
+We also saw how to list all codes available using
 
 .. code:: bash
 
     verdi code list
 
-There should be a number of them. Here, we're interested in the "PWscf" executable of Quantum Espresso, i.e. in codes for the ``quantumespresso.pw`` plugin:
+In this part of the tutorial we are interested in running the ``pw.x`` executable of Quantum ESPRESSO, i.e. in codes for the ``quantumespresso.pw`` plugin. If you have many codes for different executables, you can filter only those using a specific plugin with the command:
 
 .. code:: bash
 
     verdi code list -P quantumespresso.pw
 
-Pick the correct codename, that might look like, e.g. ``qe-6.5-pw@localhost`` and load it in the verdi shell.
+Pick the correct codename (``qe-6.5-pw@localhost`` if you followed the instrucitons earlier) and load it in the verdi shell:
 
 .. code:: python
 
@@ -176,7 +189,7 @@ Pick the correct codename, that might look like, e.g. ``qe-6.5-pw@localhost`` an
 
    ``load_code`` returns an object of type ``Code``, which is the general AiiDA class for describing simulation codes.
 
-Let's build the inputs for a new ``PwCalculation`` (defined by the ``quantumespresso.pw`` plugin, the default plugin for the code you chose before)
+Let's build the inputs for a new ``PwCalculation`` (defined by the ``quantumespresso.pw`` plugin) using a "builder", a class provided by AiiDA that will help you out:
 
 .. code:: python
 
@@ -191,10 +204,10 @@ As the first step, assign a (short) label or a (long) description to your calcul
 
 This information will be saved in the database for later queries or inspection.
 Note that you can press TAB after writing ``builder.`` to see all inputs available for this calculation.
-In order to figure out which data type is expected for a particular input, such as ``builder.structure``, and whether the input is optional or required, use ``builder.structure??``.
+In order to figure out which data type is expected for a particular input, such as ``builder.structure``, and whether the input is optional or required, use ``builder.structure?``.
 
 Now, specify the number of machines (a.k.a. cluster nodes) you are going to run on and the maximum time allowed for the calculation.
-The general options grouped under ``builder.metadata.options`` are independent of the code or plugin, and will be passed to the scheduler that handles the queue on your compute resource .
+The general options grouped under ``builder.metadata.options`` are independent of the code or plugin, and will be passed to the scheduler that handles the queue on your compute resource.
 
 .. code:: python
 
@@ -251,14 +264,14 @@ You can list the preconfigured families from the command line:
 
     verdi data upf listfamilies
 
-Pick the one you configured earlier (or one of the ``SSSP`` families that we provide) and link it to the calculation using the command:
+Pick the one you configured earlier (the``SSSP`` family) and link the correct pseudopotentials to the calculation using the command:
 
 .. code:: python
 
     from aiida.orm.nodes.data.upf import get_pseudos_from_structure
     builder.pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY_NAME>')
 
-Print the content of the `pseudos` namespace (`print(builder.pseudos)`) to see what the helper function created.
+Print the content of the ``pseudos`` namespace with ``print(builder.pseudos)`` to see what the helper function created.
 
 Preparing and debugging input parameters
 ----------------------------------------
@@ -293,7 +306,7 @@ By default, the AiiDA plugin will *not* validate your input and simply pass it o
 We have also introduced a combination of a very high accuracy (``'conv_thr': 1.e-14``) coupled with a very low maximum number of self consistent iterations (``'electron_maxstep': 3``).
 This means that even if we eliminate the invalid key, the calculation will not converge and will not be successful, despite there not being any other mistake in the parameters dictionary.
 
-Let's wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node and see what happens.
+Let's wrap the ``parameters_dict`` python dictionary in an AiiDA ``Dict`` node, and set it as the input of name ``parameters``. We'll see what happens.
 
 .. code:: python
 
@@ -390,8 +403,6 @@ See the :ref:`previous section <2019-aiida-identifiers>` for more details on the
 To preserve the integrity of the data provenance, AiiDA will prevent you from changing the core content ("attributes") of a stored node.
 There is an "extras" section though, which is writable after storage, to allow you to set additional information, e.g. as a way of labelling nodes and providing information for querying.
 
-Note that while AiiDA will prevent you from changing the content of stored nodes, the concept of "extras" allows you to set extra attributes, e.g. as a way of labelling nodes and providing information for querying.
-
 For example, let's add an extra attribute called ``element``, with value ``Si``:
 
 .. code:: python
@@ -444,14 +455,14 @@ Check the content of input files with
 Troubleshooting
 ===============
 
-Your calculation should end up in a FAILED state (last column of ``verdi process list -a -p1``), and correspondingly the error code near the "Finished" status of the State should be non-zero,
+Your calculation should end up in a finished state, but with some error: this is represented by a non-zero error code in brackets near the "Finished" status of the State:
 
 .. code:: bash
 
     $ verdi process list -a -p1
-      PK  Created    State             Process label    Process status
-    ----  ---------  ----------------  ---------------  ----------------
-      98  16h ago    Finished [115]    PwCalculation
+      PK  Created    Process label    Process State     Process status
+    ----  ---------  ---------------  ----------------  ----------------
+    2060  5m ago     PwCalculation    ⏹ Finished [305]
     ...
     $ # Anything but [0] after the Finished state signals a failure
 
@@ -463,47 +474,50 @@ In general for any calculation (both successful and failed) you can get a more d
 .. code:: bash
 
     $ verdi process show <pk_number>
-    Property       Value
-    -------------  ---------------------------------------------------
-    type           CalcJobNode
-    pk             98
-    uuid           4c444afd-f6e2-4896-b9ae-8cb8a5ec75c5
-    label          PW test
-    description    My first AiiDA calc with Quantum ESPRESSO on Si
-    ctime          2019-05-01 15:59:39.180018+00:00
-    mtime          2019-05-01 16:01:44.870902+00:00
-    process state  Finished
-    exit status    115
-    computer       [1] localhost
+    Property     Value
+    -----------  --------------------------------------------------------------------------------
+    type         PwCalculation
+    state        Finished [305] Both the stdout and XML output files could not be read or parsed.
+    pk           2060
+    uuid         95a58902-9c2a-47a7-b858-a058a2ea76e5
+    label        PW test
+    description  My first AiiDA calc with Quantum ESPRESSO on Si
+    ctime        2020-06-30 07:16:45.987116+00:00
+    mtime        2020-06-30 07:19:55.964423+00:00
+    computer     [2] localhost
 
     Inputs      PK    Type
     ----------  ----  -------------
     pseudos
-        Si      50    UpfData
-    code        2     Code
-    kpoints     10    KpointsData
-    parameters  96    Dict
-    settings    97    Dict
-    structure   9     StructureData
+        Si      2043  UpfData
+    code        2056  Code
+    kpoints     2058  KpointsData
+    parameters  2059  Dict
+    structure   2057  StructureData
 
-    Outputs          PK  Type
-    -------------  ----  ----------
-    remote_folder    99  RemoteData
-    retrieved       100  FolderData
+    Outputs              PK  Type
+    -----------------  ----  --------------
+    output_parameters  2064  Dict
+    output_trajectory  2063  TrajectoryData
+    remote_folder      2061  RemoteData
+    retrieved          2062  FolderData
 
     Log messages
     ---------------------------------------------
-    There are 2 log messages for this calculation
-    Run 'verdi process report 98' to see them
+    There are 4 log messages for this calculation
+    Run 'verdi process report 2060' to see them
+
 
 The last part of the output alerts you to the fact that there are some log messages waiting for you, if you run ``verdi process report <pk>``.
 
-In this case you can also try inspecting the output file of PWscf.
-Not all calculations will have a default file for ``outputcat``, so it is usually better to use ``verdi process report`` whenever possible.
+If you read the report, you will see that it says that the output files could not be parsed.
+In this case you can also try inspecting directly the output file of PWscf.
 
 .. code:: bash
 
     verdi calcjob outputcat <pk_number> | less
+
+You will see an error message complaining about the ``mickeymouse`` line in the input.
 
 Let's now correct our input parameters dictionary by leaving out the invalid key and see if our calculation succeeds:
 
@@ -525,11 +539,7 @@ Let's now correct our input parameters dictionary by leaving out the invalid key
     builder.parameters = Dict(dict=parameters_dict)
     calculation = submit(builder)
 
-If you have been using the separate script approach, modify the script to remove the faulty input and run it again with:
-
-.. code:: bash
-
-    verdi run test_pw.py
+(Note: If you have been using the separate script approach, modify the script to remove the faulty input and run it again).
 
 Use ``verdi process list -a -p1`` to verify that the error code is different now.
 You can check again the outputs and the reports with the tools explained in this section and try to fix it yourself before going on to the next.
@@ -537,24 +547,24 @@ You can check again the outputs and the reports with the tools explained in this
 Restarting calculations
 -----------------------
 
-In the previous case where the wrong input parameters were passed to a calculation, causing it to fail, we had to retype a lot of code to setup a new calculation with the correct inputs.
-In addition, there are many real-life scenarios where one would need to restart calculations from completed calculations with largely the same inputs.
-For example when we run molecular dynamics, we might want to add more time steps than we initially thought, or as another example you might want to refine the relaxation of a structure with tighter parameters.
+You should have noticed that the error in the last case is that the calculation did not converge because we specified a too low number of self consistent iterations (3).
+You could just change the number of iterations and re-run the calculation from scratch in this simple case, but in a real-life scenario you would like instead to restart the calculation.
+Other examples in which you want to restart a calculation are molecular dynamics (to run for a longer time), or a relaxation of a structure (to improve the results using tighter force and stress parameters).
 
-So to fix the second problem of the low number of self consistent iterations (3) we will present a different way to prepare the correct calculation.
-You will now learn how to relaunch a calculation from one that has already completed, while having the chance to add or change inputs before launching it.
+You will now learn how to relaunch a calculation from one that has already completed, and how to add or change inputs before launching it.
 
-To easily restart from the previous calculation, instead of retyping all the inputs, you can simply use the ``get_builder_restart`` method of the ``CalcJobNode``.
-Just like the ``get_builder`` method of the ``Process`` class, this will create an instance of the ``ProcessBuilder``, except this one will have all the inputs pre-populated based on the node.
-To do so, simply load the node of a terminated calculation job in a ``verdi shell``, that you want to restart from, e.g.:
+To easily restart from the previous calculation, instead of retyping all the inputs, we will use the ``get_builder_restart`` method of ``CalcJobNode``.
+Just like the ``get_builder`` method of the ``Code`` or of the ``Process`` class, this creates an instance of the ``ProcessBuilder``, but with all inputs already pre-populated, using those on the "parent" node.
+
+Let us load the node of the calculation job that we want to restart in a ``verdi shell`` and create a new builder from it:
 
 .. code:: python
 
     failed_calculation = load_node(<pk>)
     restart_builder = failed_calculation.get_builder_restart()
 
-If you simply type ``restart_builder``, you can see that all the inputs have already been set to those that were used for the original calculation.
-The only thing that now remains to be done, is to replace those inputs that caused the failure in the first place.
+If you simply type ``restart_builder`` and press Enter, you can see that all the inputs have already been set to those that were used for the original calculation.
+The only thing that now remains to be done, is to adapt those inputs that caused the failure.
 Simply giving the calculation some more steps in the convergence cycle will probably already fix the problem.
 
 .. code:: python
@@ -572,7 +582,7 @@ To do so, we simply have to set the input ``parent_folder`` to the remote workin
     restart_builder.parameters = Dict(dict=parameters)
     restart_builder.parent_folder = failed_calculation.outputs.remote_folder
 
-Note that this particular step is specific to a ``PwCalculation``, but the restart builder concept works for any calculation class.
+Note that this particular step is specific to a ``PwCalculation`` [#f3]_, but the restart builder concept works for any calculation class.
 Any of the inputs can be changed or set.
 For example, you may also want to record that this calculation is a restart, in addition to the provenance graph, by setting the label or description:
 
@@ -587,7 +597,7 @@ Finally, to submit the restart, since it is a process builder, it works exactly 
 
     calculation = submit(builder)
 
-You can now inspect the restarted calculation to verify that this time it actually completed successfully.
+You can now inspect the restarted calculation to verify that this time it actually completed successfully, with a zero exit status.
 You should see a finished status with exit code zero when running ``verdi process list -a -p1``.
 
 Using the restart builder, the required code to setup a calculation is much shorter than the one needed to launch a new one from scratch.
@@ -596,7 +606,7 @@ There is no need to load or create many of the inputs such as the pseudopotentia
 Using the calculation results
 =============================
 
-Now you can access the results as you have seen earlier. For example, note down the pk of the calculation so that you can load it in the ``verdi shell`` and check the total energy with the commands:
+Now you can access the results as you have seen earlier. For example, note down the PK of the calculation so that you can load it in the ``verdi shell`` and check the total energy with the commands:
 
 .. code:: python
 
@@ -610,10 +620,11 @@ In the case of the ``aiida-quantumespresso`` plugin this output node is availabl
 
     calculation.outputs.output_parameters.attributes
 
-While the name of this output dictionary node can be chosen by the plugin, AiiDA provides the "results" shortcut ``calculation.res`` that plugin developers can use to provide what they consider the result of the calculation.
+While the name of this output dictionary node can be chosen by the plugin, AiiDA provides the "results" shortcut ``calculation.res`` that plugin developers can use to provide what they consider the result of the calculation (so, in this case, ``calculation.res.energy`` is just a shortcut to ``calculation.outputs.output_parameters.attributes['energy']``).
 
 
 .. rubric:: Footnotes
 
 .. [#f1] In order to avoid duplication of KpointsData, you would first need to learn how to query the database, therefore we will ignore this issue for now.
 .. [#f2] A process is considered active if it is either ``Created``, ``Running`` or ``Waiting``. If a process is no longer active, but terminated, it will have a state ``Finished``, ``Killed`` or ``Excepted``.
+.. [#f3] Connecting an input ``parent_folder`` to a calculation, in order to mark it as a restart, is a pattern that is applied extensively in the ``aiida-quantumespresso`` plugin, but it is also a very general and standard pattern for plugins to indicate a restart. In this way, the relation in the graph is: ``parent_calculation --> remote_folder --> restart_calculation``. We remind that the intermediate node of type ``RemoteFolder`` represents in the graph a "symbolic link" to the folder where the ``parent_calculation`` run on the remote computer. In this way, all the checkpoint files are not stored in the AiiDA repository (these could be big), but still the relationship (and so the provenance) between the two calculations is correctly represented in AiiDA. It is the responsibility of the calculation plugin (in this case the plugin for the ``pw.x`` code) to know what to do when a ``parent_folder`` is specified. In the case of Quantum ESPRESSO plugin, the code will copy the ``outdir`` of the parent simulation into the correct location, so that Quantum ESPRESSO can find the wavefunctions, charge densities, ...

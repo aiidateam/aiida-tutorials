@@ -63,7 +63,7 @@ the command itself:
 
     !some bash command
 
-.. _2020_virtual_loadnode:
+.. _2019_EPFL_loadnode:
 
 Loading a node
 --------------
@@ -298,7 +298,7 @@ In that case two duplicate structures are found for 'Si'.
 Accessing inputs and outputs
 ----------------------------
 
-Load again the calculation node used in Section :ref:`2020_virtual_loadnode`:
+Load again the calculation node used in Section :ref:`2019_EPFL_loadnode`:
 
 .. code:: python
 
