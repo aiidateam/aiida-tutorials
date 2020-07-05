@@ -16,12 +16,6 @@ language_info:
 
 # AiiDA's QueryBuilder
 
-```{only} html
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/aiidateam/aiida-tutorials/myst-nb2?filepath=docs%2Fpages%2F2020_Intro_Week%2Fnotebooks%2Fquerybuilder-tutorial.md)
-```
-
-+++
-
 ```{important}
 Make sure to execute the cell below this one (it may be hidden)
 ```
@@ -560,7 +554,7 @@ The following section assumes that a specific dataset is present in your current
 You can download the Virtual Machine image from [https://aiida-tutorials.readthedocs.io](https://aiida-tutorials.readthedocs.io) along with the tutorial text (choose the correct version of the tutorial, depending on which version of AiiDA you want to try).
 
 ```{note}
-If you are not following the tutorial on the official virtual machine that comes with this data, but you are working with your own database, you first have to {download}`import this archive <tutorial_perovskites_v0.1.aiida>` using `verdi import`.
+If you are not following the tutorial on the official virtual machine that comes with this data, but you are working with your own database, you first have to {download}`import this archive <../archives/tutorial_perovskites_v0.1.aiida>` using `verdi import`.
 ```
 
 +++
