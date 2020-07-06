@@ -34,7 +34,8 @@ where ``computer.yml`` is a configuration file in the `YAML format <https://en.w
 
 .. note::
     When used without the ``--config`` option, ``verdi computer setup`` will prompt you for the required information, just like you have seen when :ref:`setting up a profile<2020_virtual_intro:setup_profile>`.
-    The configuration file should work for the virtual machine that comes with this tutorial but may need to be adapted when you are running AiiDA in a different environment, as explained in :ref:`this appendix<2020:appendix_computer_code_setup>`.
+    The configuration file should work for the virtual machine that comes with this tutorial but may need to be adapted when you are running AiiDA in a different environment, as explained in the :ref:`aiida online documentation <aiida:how-to:run_codes:computer>`.
+
 
 The ``computer setup`` step informs AiiDA of the existence of the computer and of its basic settings, like the scheduler installed on it. Before being able to use the computer, you also need to provide AiiDA with information on how to access the ``Computer``.
 For remote computers with ``ssh`` transport, this would involve e.g. an SSH key, the username on the remote computer, the port to connect to, etc.
@@ -88,7 +89,8 @@ In particular, we note that this code needs the ``quantumespresso.pw`` plugin, a
 .. warning::
 
     The configuration should work for the virtual machine that comes with this tutorial.
-    If you are following this tutorial in a different environment, you will need to install Quantum ESPRESSO and adapt the configuration to your needs, as explained in :ref:`this appendix<2020:appendix_computer_code_setup>`.
+    If you are following this tutorial in a different environment, you will need to install Quantum ESPRESSO and adapt the configuration to your needs, as explained in the :ref:`aiida online documentation <aiida:how-to:run_codes:code>`.
+
 
 Similar to the computers, you can list all the configured codes with:
 

@@ -114,8 +114,8 @@ Appendices
    :numbered:
 
    ./appendices/exploring_provenance
-
-.. https://github.com/aiidateam/aiida-tutorials/issues/229
+   ./appendices/input_validation
+   ./appendices/workflow_logic
 
 Acknowledgements
 ----------------
