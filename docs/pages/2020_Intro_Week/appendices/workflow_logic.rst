@@ -9,7 +9,7 @@ More workflow logic: while loops and conditional statements
 ===========================================================
 
 In the previous sections, you have been introduced to ``WorkChains``, and the reason for using them over 'standard' work functions.
-However, in the :ref:`original example<workchainsimple>`, the ``spec.outline`` was quite simple, with a 'static' sequence of two steps.
+However, in the :ref:`original example<2020_virtual_intro:workflow_basic:eos_workchain>`, the ``spec.outline`` was quite simple, with a 'static' sequence of two steps.
 Most often, however, you need dynamic workflows, where you need to decide at runtime whether to continue to compute or not (e.g. in a convergence loop, where you need to stop if convergence has been achieved).
 To support this scenario, the ``spec.outline`` can support logic: `while` loops and `if/elif/else` blocks.
 The simplest way to explain it is to show an example:
@@ -53,6 +53,24 @@ The only constraint is that condition functions (in the example above ``isA``, `
 A suggestion on how to write new workchains: use the outline to help you in designing the logic.
 First create the spec outline writing, almost if you were explaining it in words, what you expect the workflow to do.
 Then, define one by one the methods.
+
+.. note::
+
+    If the work chain excepted, make sure the directory containing the WorkChain definition is in the ``PYTHONPATH``.
+
+    You can add the folder in which you have your Python file defining the WorkChain to the ``PYTHONPATH`` through:
+
+    .. code-block:: bash
+
+        $ export PYTHONPATH=/path/to/workchain/directory/:$PYTHONPATH
+
+    After this, it is **very important** to restart the daemon:
+
+    .. code-block:: bash
+
+        $ verdi daemon restart --reset
+
+    Indeed, when updating an existing work chain file or adding a new one, it is **necessary** to restart the daemon **every time** after all changes have taken place.
 
 .. _2020:convpressure:
 

@@ -51,9 +51,9 @@ Appendices
 
    ./appendices/groups
    ./appendices/exploring_provenance
-   ./sections/appendix_computer_code_setup
-   ./sections/appendix_input_validation
-   ./sections/appendix_workflow_logic
+   ./appendices/computer_code_setup
+   ./appendices/input_validation
+   ./appendices/workflow_logic
 
 https://github.com/aiidateam/aiida-tutorials/issues/229
 

@@ -512,6 +512,8 @@ For this purpose, we have provided the ``plot_eos`` script in the ``common_wf.py
     In [7]: from common_wf import plot_eos
        ...: plot_eos(2821)
 
+.. _2020_virtual_intro:workflow_basic:eos_workchain:
+
 Submitting the workflow: Workchains
 -----------------------------------
 
