@@ -553,9 +553,14 @@ For more exercises on relationships and attributes/extras, have a look at the ap
 The following section assumes that a specific dataset is present in your current AiiDA profile. If you are not running this script on the Virtual Machine of the AiiDA tutorial, this script will not produce the desired output.
 You can download the Virtual Machine image from [https://aiida-tutorials.readthedocs.io](https://aiida-tutorials.readthedocs.io) along with the tutorial text (choose the correct version of the tutorial, depending on which version of AiiDA you want to try).
 
-```{note}
-If you are not following the tutorial on the official virtual machine that comes with this data, but you are working with your own database, you first have to {download}`import this archive <../archives/tutorial_perovskites_v0.1.aiida>` using `verdi import`.
+````{note}
+If you are not following the tutorial on the official virtual machine that comes with this data, but you are working with your own database, you first have import the database:
+
+```{code-block} console
+$ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 ```
+
+````
 
 +++
 
