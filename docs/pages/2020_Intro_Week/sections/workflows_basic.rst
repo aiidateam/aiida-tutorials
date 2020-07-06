@@ -31,8 +31,9 @@ There are two variants of process functions:
  * work functions
 
 These operate mostly the same, but they should be used for different purposes, which will become clear later.
-A normal function can be converted to a calculation function by using a `Python decorator <https://docs.python.org/3/glossary.html#term-decorator>`_ that takes care of storing the execution as a calculation and adding the links between the input and output data nodes.
+You've already seen calculation functions in the :ref:`basic hands-on<2020_virtual_intro:basic>`, below is a quick refresher on the topic.
 
+A normal function can be converted to a calculation function by using a `Python decorator <https://docs.python.org/3/glossary.html#term-decorator>`_ that takes care of storing the execution as a calculation and adding the links between the input and output data nodes.
 Let's say you want to multiply two ``Int`` data nodes.
 The following Python function:
 
