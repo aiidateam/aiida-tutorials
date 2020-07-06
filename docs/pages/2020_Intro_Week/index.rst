@@ -27,25 +27,27 @@ For this virtual tutorial, all presentations have been recorded beforehand, so y
 However, you are required to watch certain presentations before the hands-on sessions of certain days.
 These are tabulated below:
 
-+--------------------+--------------------------------------------------------------------+
-| Tuesday July 7th   | `AiiDA Tutorial Overview`_                                         |
-+                    +--------------------------------------------------------------------+
-|                    | `Introduction to AiiDA`_                                           |
-+                    +--------------------------------------------------------------------+
-|                    | `Setting up an environment with Quantum Mobile Cloud`_             |
-+--------------------+--------------------------------------------------------------------+
-| Wednesday July 8th | `Provenance and workflows in AiiDA`_                               |
-+--------------------+--------------------------------------------------------------------+
-| Thursday July 9th  | `The AiiDA Plugin Ecosystem`_                                      |
-+--------------------+--------------------------------------------------------------------+
-| Friday July 10th   | `The Materials Cloud`_                                             |
-+                    +--------------------------------------------------------------------+
-|                    | `AiiDA lab`_                                                       |
-+                    +--------------------------------------------------------------------+
-|                    | `AiiDA and OPTIMADE`_                                              |
-+                    +--------------------------------------------------------------------+
-|                    | `OSSCAR`_                                                          |
-+--------------------+--------------------------------------------------------------------+
++------------------------+-------------------------+--------------------------------------------------------------------+
+| **Date**               | **Presenter**           | **Title**                                                          |
++========================+=========================+====================================================================+
+| **Tuesday July 7th**   | Marnik Bercx            | `AiiDA Tutorial Overview`_                                         |
++                        +-------------------------+--------------------------------------------------------------------+
+|                        | Francisco Ramirez       | `Introduction to AiiDA`_                                           |
++                        +-------------------------+--------------------------------------------------------------------+
+|                        | Chris Sewell            | `Setting up an environment with Quantum Mobile Cloud`_             |
++------------------------+-------------------------+--------------------------------------------------------------------+
+| **Wednesday July 8th** | Sebastiaan Huber        | `Provenance and workflows in AiiDA`_                               |
++------------------------+-------------------------+--------------------------------------------------------------------+
+| **Thursday July 9th**  | Leopold Talirz          | `The AiiDA Plugin Ecosystem`_                                      |
++------------------------+-------------------------+--------------------------------------------------------------------+
+| **Friday July 10th**   | Giovanni Pizzi          | `The Materials Cloud`_                                             |
++                        +-------------------------+--------------------------------------------------------------------+
+|                        | Aliaksandr Yakotovich   | `AiiDA lab`_                                                       |
++                        +-------------------------+--------------------------------------------------------------------+
+|                        | Casper Andersen         | `AiiDA and OPTIMADE`_                                              |
++                        +-------------------------+--------------------------------------------------------------------+
+|                        | Dou Du                  | `OSSCAR`_                                                          |
++------------------------+-------------------------+--------------------------------------------------------------------+
 
 .. _AiiDA Tutorial Overview: https://www.youtube.com/watch?v=RtdXXWFLvF8&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
 .. _Introduction to AiiDA: https://www.youtube.com/watch?v=jigMCyWGNAE&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
@@ -57,25 +59,27 @@ These are tabulated below:
 .. _AiiDA and OPTIMADE: https://www.youtube.com/watch?v=F0e3cQHNbNM&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
 .. _OSSCAR: https://www.youtube.com/watch?v=3rkhzYBUuA4&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
 
-Next to these presentations from the ``aiida-core`` developers, there are also the contributed talks from the plugin developers.
+Supplementing these presentations from the ``aiida-core`` developers, there are also contributed talks from the plugin developers.
 These can be watched at any time, but please try to watch them **before Friday July 10th**, as we have planned a Q&A with the plugin developers at the start of the first hands-on session of that day.
 Here is a list of all the contributed talks:
 
-+--------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Daniele Ongari           | `Using AiiDA to study gas adsorption in microporous crystals`_                                                       |
-+--------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Dominik Gresch           | `Introduction to aiida-optimize`_                                                                                    |
-+--------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Atsushi Togo             | `Harmonic phonon calculation using AiiDA AiiDA-VASP AiiDA-phonopy`_                                                  |
-+--------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Bonan Zhu                | `Introducing aiida-castep`_                                                                                          |
-+--------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Emanuele Bosoni          | `Introducing aiida-siesta`_                                                                                          |
-+--------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Philipp Rüßmann          | `The aiida-kkr plugin`_                                                                                              |
-+--------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Miki Bonacci             | `The Yambo-AiiDA plugin`_                                                                                            |
-+--------------------------+----------------------------------------------------------------------------------------------------------------------+
++------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| **Presenter**                | **Title**                                                                                                            |
++==============================+======================================================================================================================+
+| Dr. Daniele Ongari           | `Using AiiDA to study gas adsorption in microporous crystals`_                                                       |
++------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| Dr. Dominik Gresch           | `Introduction to aiida-optimize`_                                                                                    |
++------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| Dr. Atsushi Togo             | `Harmonic phonon calculation using AiiDA AiiDA-VASP AiiDA-phonopy`_                                                  |
++------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| Dr. Bonan Zhu                | `Introducing aiida-castep`_                                                                                          |
++------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| Dr. Emanuele Bosoni          | `Introducing aiida-siesta`_                                                                                          |
++------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| Dr. Philipp Rüßmann          | `The aiida-kkr plugin`_                                                                                              |
++------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| Dr. Miki Bonacci             | `The Yambo-AiiDA plugin`_                                                                                            |
++------------------------------+----------------------------------------------------------------------------------------------------------------------+
 
 .. _Using AiiDA to study gas adsorption in microporous crystals: https://www.youtube.com/watch?v=9p_krkdEz_A&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
 .. _Introduction to aiida-optimize: https://www.youtube.com/watch?v=YzHuIrYhyFI&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
@@ -84,8 +88,6 @@ Here is a list of all the contributed talks:
 .. _Introducing aiida-siesta: https://www.youtube.com/watch?v=0S7rvut8gpE&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
 .. _The aiida-kkr plugin: https://www.youtube.com/watch?v=ccmEWKgVfVc&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
 .. _The Yambo-AiiDA plugin: https://www.youtube.com/watch?v=NzhN5ce0Sc8&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V
-
-Many thanks to the plugin developers for their contribution!
 
 Hands-on sessions
 -----------------
@@ -118,6 +120,7 @@ Appendices
 Acknowledgements
 ----------------
 
+We are very grateful to the plugin developers for their contributed talks.
 The `AiiDA virtual tutorial <http://www.aiida.net/aiida-virtual-tutorial-july-2020/>`__  was made possible by support from the MaX European Centre of Excellence, the swissuniversities P-5 project “Materials Cloud”, the MARVEL National Centre of Competence in Research, the H2020 MARKETPLACE project, the H2020 INTERSECT project and the PASC project.
 
 .. image:: sponsors/max.png
