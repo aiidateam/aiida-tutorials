@@ -264,7 +264,7 @@ You can list the preconfigured families from the command line:
 
     verdi data upf listfamilies
 
-Pick the one you configured earlier (the``SSSP`` family) and link the correct pseudopotentials to the calculation using the command:
+Pick the one you :ref:`configured in the basics hands on<2020_virtual_intro:basic:pseudopotentials>` (the``SSSP`` family) and link the correct pseudopotentials to the calculation using the command:
 
 .. code:: python
 
@@ -589,16 +589,70 @@ Finally, let's label this calculation as a restarted one and submit the new calc
 Inspect the restarted calculation to verify that, this time, it completes successfully.
 You should see a "finished" status with exit code zero when running ``verdi process list -a -p1``.
 
+Calculation results
+===================
 
-Using the calculation results
-=============================
+The results of a calculation can be accessed directly from the calculation node using the following:
 
-Now you can access the results as you have seen earlier. For example, note down the PK of the calculation so that you can load it in the ``verdi shell`` and check the total energy with the commands:
+.. code-block:: console
 
-.. code:: python
+    $ verdi calcjob res <IDENTIFIER>
 
-    calculation = load_node(<pk>)
-    calculation.res.energy
+which will print the output dictionary of the 'scalar' results parsed by AiiDA at the end of the calculation.
+Note that this is actually a shortcut for:
+
+.. code-block:: console
+
+    $ verdi data dict show <IDENTIFIER>
+
+where ``IDENTIFIER`` refers to the ``Dict`` node attached as an output of the calculation node, with link name ``output_parameters``.
+By looking at the output of the command, what is the Fermi energy of the calculation you have run?
+
+Similarly to what you did for the calculation inputs, you can access the output files via the commands:
+
+.. code-block:: console
+
+    $ verdi calcjob outputls <IDENTIFIER>
+
+and
+
+.. code-block:: console
+
+    $ verdi calcjob outputcat <IDENTIFIER>
+
+Use the latter to verify that the Fermi energy that you have found in the last step has been extracted correctly from the output file.
+
+.. tip::
+
+    Filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines.
+
+The results of calculations are stored in two ways: ``Dict`` objects are stored in the database, which makes querying them very convenient, whereas ``ArrayData`` objects are stored on the disk.
+Once more, use the command ``verdi data array show <IDENTIFIER>`` to determine the Fermi energy obtained from calculation you ran.
+This time you will need to use the identifier of the output ``ArrayData`` of the calculation, with link name ``output_trajectory_array``.
+As you might have realized, the difference now is that the whole series of values of the Fermi energy calculated after each relax/vc-relax step are stored.
+The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the parser of ``pw.x`` implemented in the `aiida-quantumespresso <https://github.com/aiidateam/aiida-quantumespresso>`__ plugin.
+
+The output of calculation jobs can also be obtained via the ``verdi shell``.
+ For example, note down the PK of the calculation so that you can load it in the ``verdi shell`` and check the total energy with the commands:
+
+.. code-block:: ipython
+
+    In [1]: pw_node = load_node(<PK>)
+
+Then get the energy of the calculation with the command:
+
+.. code-block:: ipython
+
+    In [2]: pw_node.res.energy
+    Out[2]: -3890.18043749032
+
+You can also type
+
+.. code-block:: python
+
+    node.res.
+
+and then press ``TAB`` to see all the available results of the calculation.
 
 Besides writing input files, running the software for you, storing the output files, and connecting it all together in your provenance graph, many AiiDA plugins will parse the output of your code and make output values of interest available through an output dictionary node (as depicted in the graph above).
 In the case of the ``aiida-quantumespresso`` plugin this output node is available at ``calculation.outputs.output_parameters`` and you can access all the available attributes (not only the energy) using:
@@ -608,7 +662,6 @@ In the case of the ``aiida-quantumespresso`` plugin this output node is availabl
     calculation.outputs.output_parameters.attributes
 
 While the name of this output dictionary node can be chosen by the plugin, AiiDA provides the "results" shortcut ``calculation.res`` that plugin developers can use to provide what they consider the result of the calculation (so, in this case, ``calculation.res.energy`` is just a shortcut to ``calculation.outputs.output_parameters.attributes['energy']``).
-
 
 .. rubric:: Footnotes
 

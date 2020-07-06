@@ -720,7 +720,7 @@ Let's generate a graph for the calculation node with UUID ``ce81c420-7751-48f6-a
 This command will create the file ``<PK>.dot.pdf`` that can be viewed with any PDF document viewer.
 See the :ref:`notes on how to open the pdf on AWS<2020_virtual_intro:basic:open_pdf>` in case you need a quick reminder on how to do so.
 
-For the remainder of this section, we'll use the ``verdi`` CLI and the ``verdi shell`` to explore the properties of the ``PwCalculation``, as well as its inputs and outputs.
+For the remainder of this section, we'll use the ``verdi`` CLI and the ``verdi shell`` to explore the properties of the ``PwCalculation``, as well as its inputs.
 Understanding these data types will come in handy for the section on running calculations.
 We'll also introduce some new CLI commands and shell features that will be useful for the hands-on sessions that follow.
 
@@ -1173,6 +1173,8 @@ This can be done with the following set of commands:
 Here, we first load the ``KpointsData`` class using the ``DataFactory`` and the entry point (``array.kpoints``).
 Then, we create an instance of the ``KpointData`` class, and use the ``set_kpoints_mesh()`` method to set the mesh to a regular 2x2x2 Gamma-point centered mesh.
 
+.. _2020_virtual_intro:basic:pseudopotentials:
+
 Pseudopotentials
 ~~~~~~~~~~~~~~~~
 
@@ -1208,74 +1210,6 @@ Finally, you can list all the pseudo families present in the database with
 .. code-block:: console
 
     $ verdi data upf listfamilies
-
-Outputs
--------
-
-Calculation results
-~~~~~~~~~~~~~~~~~~~
-
-The results of a calculation can be accessed directly from the calculation node using the following:
-
-.. code-block:: console
-
-    $ verdi calcjob res <IDENTIFIER>
-
-which will print the output dictionary of the 'scalar' results parsed by AiiDA at the end of the calculation.
-Note that this is actually a shortcut for:
-
-.. code-block:: console
-
-    $ verdi data dict show <IDENTIFIER>
-
-where ``IDENTIFIER`` refers to the ``Dict`` node attached as an output of the calculation node, with link name ``output_parameters``.
-By looking at the output of the command, what is the Fermi energy of the calculation with UUID ``ce81c420``?
-
-Similarly to what you did for the calculation inputs, you can access the output files via the commands:
-
-.. code-block:: console
-
-    $ verdi calcjob outputls <IDENTIFIER>
-
-and
-
-.. code-block:: console
-
-    $ verdi calcjob outputcat <IDENTIFIER>
-
-Use the latter to verify that the Fermi energy that you have found in the last step has been extracted correctly from the output file.
-
-.. tip::
-
-    Filter the lines containing the string 'Fermi', e.g. using ``grep``, to isolate the relevant lines.
-
-The results of calculations are stored in two ways: ``Dict`` objects are stored in the database, which makes querying them very convenient, whereas ``ArrayData`` objects are stored on the disk.
-Once more, use the command ``verdi data array show <IDENTIFIER>`` to determine the Fermi energy obtained from calculation with the UUID ``ce81c420``.
-This time you will need to use the identifier of the output ``ArrayData`` of the calculation, with link name ``output_trajectory_array``.
-As you might have realized, the difference now is that the whole series of values of the Fermi energy calculated after each relax/vc-relax step are stored.
-The choice of what to store in ``Dict`` and ``ArrayData`` nodes is made by the parser of ``pw.x`` implemented in the `aiida-quantumespresso <https://github.com/aiidateam/aiida-quantumespresso>`__ plugin.
-
-The output of calculation jobs can also be obtained via the ``verdi shell``.
-First, load the node of the ``PwCalculation``:
-
-.. code-block:: ipython
-
-    In [1]: pw_node = load_node('ce81c420')
-
-Then get the energy of the calculation with the command:
-
-.. code-block:: ipython
-
-    In [2]: pw_node.res.energy
-    Out[2]: -3890.18043749032
-
-You can also type
-
-.. code-block:: python
-
-    node.res.
-
-and then press ``TAB`` to see all the available results of the calculation.
 
 (Optional section) Comments
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
