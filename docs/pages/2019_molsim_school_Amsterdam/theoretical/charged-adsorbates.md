@@ -4,7 +4,8 @@ The sequestration of carbon dioxide from flue gasses is an active field of resea
 where MOFs appear to be very promising.
 
 ---
-### Challenge
+
+## Challenge
 
 Can you find the best MOF for [carbon capture](https://en.wikipedia.org/wiki/Carbon_capture_and_storage)?
 

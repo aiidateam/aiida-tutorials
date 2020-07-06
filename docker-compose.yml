@@ -1,0 +1,21 @@
+# This configuration can be used to launch an environment for testing the documentation content.
+# It creates a Docker container with the necessary aiida environment,
+# exposes ports for you to access locally, and mounts the document pages inside the container
+
+version: '3'
+services:
+  aiida:
+    build: .docker/
+    image: "aiidateam/aiida-core-nb:stable"
+    container_name: aiida-core
+    expose:
+      - "5432" # postgres
+      - "5000" # REST API
+      - "8888" # notebook
+    ports:
+      # local:container
+      - 5432:5432
+      - 5000:5000
+      - 8888:8888
+    volumes:
+      - "./docs/pages:/tmp/mount_folder"

@@ -1,0 +1,11 @@
+channels:
+  - conda-forge
+dependencies:
+  - pip:
+    # install jupyter notebook and REST dependencies
+    - aiida-core[notebook,rest]==1.3.0
+    # so markdown myst files load in jupyter notebook
+    - jupytext[myst]
+    # required for tutorial content
+    - aiida-quantumespresso==3.0.0
+    - matplotlib
