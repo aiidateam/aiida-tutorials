@@ -129,7 +129,7 @@ The results returned in ``steps`` can be used to represent the evolution of the 
 A possible way to visualize it is presented in :numref:`fig_convpressure` obtained with an initial lattice constant of `alat = 5.2`.
 
 .. _2020_fig_convpressure:
-.. figure:: include/images/convergence_pressure.png
+.. figure:: ../sections/include/images/convergence_pressure.png
 
    Example of results of the convergence algorithm presented in this section.
    The bottom plot is a zoom near the minimum.

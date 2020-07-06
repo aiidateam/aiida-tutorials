@@ -55,8 +55,6 @@ Appendices
    ./appendices/input_validation
    ./appendices/workflow_logic
 
-https://github.com/aiidateam/aiida-tutorials/issues/229
-
 
 Acknowledgements
 ----------------
