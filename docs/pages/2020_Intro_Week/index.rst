@@ -51,7 +51,6 @@ Appendices
 
    ./appendices/groups
    ./appendices/exploring_provenance
-   ./appendices/computer_code_setup
    ./appendices/input_validation
    ./appendices/workflow_logic
 
