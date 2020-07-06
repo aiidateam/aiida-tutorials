@@ -934,6 +934,8 @@ Let's finish this example by storing the ``new_params`` dictionary node in the d
 
     While it is also possible to import the ``Dict`` class directly, it is recommended to use the ``DataFactory`` function instead, as this is more future-proof: even if the import path of the class changes in the future, its entry point string (``'dict'``) will remain stable.
 
+.. _2020_virtual_intro:basic:structure:
+
 StructureData
 ~~~~~~~~~~~~~
 
@@ -1116,6 +1118,8 @@ In order to add new structures to your AiiDA database, you can also define a str
 
     This will connect to the COD database on the web, perform the query for all entries with formula ``Si`` and spacegroup ``Fd-3m``, fetch the results and convert them to AiiDA StructureData objects.
     In this case two structures exist for 'Si' in COD and both are shown.
+
+.. _2020_virtual_intro:basic:kpoints:
 
 KpointsData
 ~~~~~~~~~~~
