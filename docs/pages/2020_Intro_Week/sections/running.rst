@@ -221,7 +221,7 @@ Again, to see the list of available options, type ``builder.metadata.options.`` 
 Preparation of inputs
 ---------------------
 
-A Quantum Espresso calculation needs a number of inputs:
+A Quantum ESPRESSO calculation needs a number of inputs:
 
 1. `Pseudopotentials <https://en.wikipedia.org/wiki/Pseudopotential>`_
 2. a structure
@@ -266,7 +266,7 @@ You can list the preconfigured families within the IPython shell using:
 
     In [6]: !verdi data upf listfamilies
 
-Pick the one you :ref:`configured in the basics hands on<2020_virtual_intro:basic:pseudopotentials>` (the``SSSP`` family) and link the correct pseudopotentials to the calculation using the command:
+Pick the one you :ref:`configured in the basics hands on<2020_virtual_intro:basic:pseudopotentials>` (the ``SSSP`` family) and link the correct pseudopotentials to the calculation using the command:
 
 .. code-block:: ipython
 
@@ -294,7 +294,7 @@ Define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of
        ...:     'SYSTEM': {
        ...:         'ecutwfc': 30.,
        ...:         'ecutrho': 200.,
-       ...:         'mickeymouse': 240.,
+       ...:         'radames': 240.,
        ...:     },
        ...:     'ELECTRONS': {
        ...:         'conv_thr': 1.e-14,
@@ -302,7 +302,7 @@ Define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of
        ...:     },
        ...: }
 
-This dictionary is almost a valid input for the Quantum ESPRESSO plugin, except for an invalid key ``mickeymouse``. When Quantum ESPRESSO receives an unrecognized key, it will stop.
+This dictionary is almost a valid input for the Quantum ESPRESSO plugin, except for an invalid key ``radames``. When Quantum ESPRESSO receives an unrecognized key, it will stop.
 By default, the AiiDA plugin will *not* validate your input and simply pass it on to the code.
 
 We have also introduced a combination of a very high accuracy (``'conv_thr': 1.e-14``) coupled with a very low maximum number of self consistent iterations (``'electron_maxstep': 3``).
@@ -519,7 +519,7 @@ In this case you can also try inspecting directly the output file of PWscf.
 
     $ verdi calcjob outputcat <pk_number> | less
 
-You will see an error message complaining about the ``mickeymouse`` line in the input.
+You will see an error message complaining about the ``radames`` line in the input.
 
 Let's now correct our input parameters dictionary by leaving out the invalid key and see if our calculation succeeds:
 
