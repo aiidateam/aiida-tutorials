@@ -4,8 +4,7 @@
 Working with data and querying your results
 *******************************************
 
-In this section of the tutorial we will focus on how to organise and explore the data which you, hopefully, have now generated from running some computations.
-
+In this section of the tutorial we will focus on how to organise and explore the data in an AiiDA database.
 As in :ref:`2020_virtual_importing_data`, we will be using the previously created database entries for this tutorial.
 To follow the tutorial then, you can use the profile in to which you have previously imported this data, or you may wish to create a fresh profile and import the archive into that:
 
