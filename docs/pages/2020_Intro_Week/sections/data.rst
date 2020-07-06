@@ -4,10 +4,10 @@
 Working with data and querying your results
 *******************************************
 
-In this section of the tutorial we will focus on how to organise and explore the data which you hopefully have now generated from running some computations.
+In this section of the tutorial we will focus on how to organise and explore the data which you, hopefully, have now generated from running some computations.
 
-As in :ref:`2020_virtual_importing_data`, we will be using a previously created database for this tutorial.
-To follow the tutorial then, you can use the profile that you have previously imported this data into, or you may wish to create a fresh profile and import the archive into that:
+As in :ref:`2020_virtual_importing_data`, we will be using the previously created database entries for this tutorial.
+To follow the tutorial then, you can use the profile in to which you have previously imported this data, or you may wish to create a fresh profile and import the archive into that:
 
 .. code-block:: console
 
@@ -214,10 +214,9 @@ This feature is also particularly useful in the verdi shell:
 Querying for data
 -----------------
 
-This part of the tutorial is provided only in interactive mode through a Jupyter notebook, which you will be able to run in your browser.
+For the part if the tutorial, we shall move to interacting with AiiDA using a Jupyter notebook, which you will be able to run in your browser.
 For instructions on starting the Jupyter server, please refer to the :ref:`setup section<2020_virtual_intro:setup:jupyter>`.
-Once the server is running, :jupyter-download:nb:`download this tutorial notebook <../notebooks/querybuilder-tutorial>` and open it in Jupyter.
-For instructions on downloading these files on a machine through which you are connected through SSH, refer to :ref:`this section<2020_virtual_intro:setup:downloading_files>`.
+Once the server is running, :jupyter-download:nb:`download this tutorial notebook on to your Virtual Machine <../notebooks/querybuilder-tutorial>`, using the instruction in :ref:`this section<2020_virtual_intro:setup:downloading_files>`, and open it in Jupyter.
 
 The notebook will show you how the ``QueryBuilder`` can be used to query your
 database for specific data. It will demonstrate certain concepts and then ask
