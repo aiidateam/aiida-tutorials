@@ -78,7 +78,7 @@ To start a notebook server that you can access locally:
 $ docker exec -it --user aiida aiida-core /bin/bash -c "jupyter notebook --port=8888 --ip=0.0.0.0 --no-browser"
 ```
 
-Then open http://localhost:8888/?token=<TOKEN> in your browser.
+Then open <http://localhost:8888/?token=...> in your browser.
 
 To start the REST API:
 
@@ -86,7 +86,7 @@ To start the REST API:
 $ docker exec -it --user aiida aiida-core /bin/bash -c "verdi restapi --port 5000 --hostname=0.0.0.0"
 ```
 
-Then open http://127.0.0.1:5000/api/v4 in your browser.
+Then open <http://127.0.0.1:5000/api/v4> in your browser.
 (TODO this currentl gives error: `172.21.0.1 - - [05/Jul/2020 05:35:45] "GET /api/v4 HTTP/1.1" 404 -`)
 
 Once finished, shut down the container (**NOTE**, this will reset the aiida database):
