@@ -229,5 +229,6 @@ but try not to use them at first!
 See below for a rendered version of the notebook:
 
 .. toctree::
+   :maxdepth: 2
 
    QueryBuilder Notebook <../notebooks/querybuilder-tutorial>
