@@ -4,18 +4,16 @@
 Working with data and querying your results
 *******************************************
 
-In this section of the tutorial we will focus on how to organise and explore the data you hopefully have now generated from running some computations.
+In this section of the tutorial we will focus on how to organise and explore the data which you hopefully have now generated from running some computations.
 
-This section has been written using an AiiDA profile populated with the data from :download:`this archive <../archives/tutorial_perovskites_v0.1.aiida>`.
-To follow the tutorial then, you can use the profile that you have already using for the previous sections, or you may wish to try creating a new profile and importing the archive:
+As in :ref:`2020_virtual_importing_data`, we will be using a previously created database for this tutorial.
+To follow the tutorial then, you can use the profile that you have previously imported this data into, or you may wish to create a fresh profile and import the archive into that:
 
 .. code-block:: console
 
    $ verdi quicksetup --profile data
    $ verdi profile setdefault data
-   $ verdi import --migration <FILE_OR_URL>
-
-where the ``FILE_OR_URL`` can be the local path where you have placed the archive (on you virtual machine) or the URL to the file source on GitHub, e.g. ``https://github.com/aiidateam/aiida-tutorials/raw/master/docs/pages/2020_Intro_Week/archives/tutorial_perovskites_v0.1.aiida``.
+   $ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 
 
 How to group nodes
@@ -74,15 +72,15 @@ We can then inspect a groups contents, by the label (if it is unique) or the PK:
    # Nodes:
    PK  Type         Created
    ----  -----------  -----------------
-   1149  CalcJobNode  2077D:13h:38m ago
-   1404  CalcJobNode  2077D:13h:38m ago
+    380  CalcJobNode  2078D:17h:46m ago
+   1273  CalcJobNode  2078D:18h:03m ago
    ...
 
 Conversely, if you want to see all the groups a node belongs to, you can run:
 
 .. code-block:: console
 
-   $ verdi group list -a -A --node 1149
+   $ verdi group list -a -A --node 380
    PK  Label            Type string    User
    ----  ---------------  -------------  ---------------
       1  tutorial_pbesol  core           aiida@localhost
@@ -109,7 +107,7 @@ Now we can add one or more nodes to it:
 
 .. code-block:: console
 
-   $ verdi group add-nodes -G my_group 1149 1404
+   $ verdi group add-nodes -G my_group 380 1273
    Do you really want to add 2 nodes to Group<my_group>? [y/N]: y
 
 We can also copy the nodes from an existing group to another group:
@@ -129,15 +127,15 @@ We can also copy the nodes from an existing group to another group:
    # Nodes:
    PK  Type         Created
    ----  -----------  -----------------
-   35  CalcJobNode  2077D:13h:53m ago
-   87  CalcJobNode  2076D:22h:48m ago
+   74  CalcJobNode  2078D:17h:51m ago
+   76  CalcJobNode  2078D:17h:57m ago
    ...
 
 To remove nodes from the group run:
 
 .. code-block:: console
 
-   $ verdi group remove-nodes -G my_group 1149
+   $ verdi group remove-nodes -G my_group 74
    Do you really want to remove 1 nodes from Group<my_group>? [y/N]: y
 
 and finally to remove the group entirely:
