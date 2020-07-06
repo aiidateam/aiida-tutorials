@@ -51,13 +51,9 @@ Appendices
 
    ./appendices/groups
    ./appendices/exploring_provenance
+   ./appendices/input_validation
+   ./appendices/workflow_logic
 
-https://github.com/aiidateam/aiida-tutorials/issues/229
-
-.. _2020:appendix_computer_code_setup:
-
-Setting up computers and codes
-..............................
 
 Acknowledgements
 ----------------
