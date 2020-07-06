@@ -1,14 +1,18 @@
-Sphinx>=2.0,<3.0
+sphinx>=2.0,<3.0
 sphinx-rtd-theme>=0.4.3,<0.5
+sphinx-copybutton~=0.2.12
+sphinx-panels~=0.4.1
 ipython>=4.0,<6.0
-recommonmark>=0.5.0
-nbsphinx>=0.4.2,<0.5
-jupyter_client==5.2.4,<6
+jupyter-sphinx==0.3.0a1
+myst-nb~=0.8.3
+jupytext~=1.5.0
+jupyter_client>=5.2.4,<6
 ipykernel>=4.10,<5.0
 # pre-commit hooks
 pre-commit>=1.16,<2
-prospector==1.1.6.2
+pylint==2.4.4
 yapf==0.27.0
 # transifex
 sphinx-intl==2.0.0
-transifex-client==0.13.6
+transifex-client==0.13.7
+six==1.12.0

@@ -1,10 +1,8 @@
-Submit, monitor and debug calculations
-======================================
+# Submit, monitor and debug calculations
 
 The goal of this section is to understand how to create new data in AiiDA. We will launch a total energy calculation and check its results. We will introduce intentionally some common mistakes along the process of defining and submitting a calculation and we will explain you how to recognize and correct them. While this debugging is done here ‘manually’, workflows (that we will learn later in this tutorial) can automate this procedure considerably. For computing the DFT energy of the silicon crystal (with a PBE functional) we will use Quantum ESPRESSO , in particular the PWscf code (`pw.x`). Besides the AiiDA-core package, a number of plugins exist for many different codes. These are listed in the [AiiDA plugin registry](https://aiidateam.github.io/aiida-registry/)[4]. In particular, the “aiida-quantumespresso” plugin (already installed in your machine) provides a very extensive set of plugins, covering most (if not all) the functionalities of the underlying codes.
 
-The AiiDA daemon
-----------------
+## The AiiDA daemon
 
 First of all, check that the AiiDA daemon is actually running. The AiiDA daemon is a program running all the time in the background, checking if new calculations appear and need to be submitted to the scheduler. The daemon also takes care of all the necessary operations before the calculation submission, and after the calculation has completed on the cluster. Type in the terminal
 
@@ -32,12 +30,11 @@ verdi daemon start
 
 to start the daemon.
 
-Creating a new calculation
---------------------------
+## Creating a new calculation
 
 To launch a calculation, you will need to interact with AiiDA mainly in the `verdi shell`. We strongly suggest you to first try the commands in the shell, and then copy them in a script “test\_pw.py” using a text editor. This will be very useful for later execution of a similar series of commands.
 
-**The best way to run python scripts using AiiDA functionalities is to run them in a terminal by means of the command**
+**Note**: The best way to run python scripts using AiiDA functionalities is to run them in a terminal by means of the command
 
 ```console
  verdi run <scriptname>
@@ -91,13 +88,10 @@ Just like the normal inputs, these builder options are also TAB-completed. Type 
 
 Quantum ESPRESSO requires an input file containing Fortran namelists and variables, plus some cards sections (the documentation is available [online](http://www.quantum-espresso.org/wp-content/uploads/Doc/INPUT_PW.html)[5]). The Quantum ESPRESSO plugin of AiiDA requires quite a few nodes in input, which are documented [online](http://aiida-core.readthedocs.io/en/latest/plugins/quantumespresso/pw.html)[6]. Here we will instruct our calculation with a minimal configuration for computing the energy of silicon. We need:
 
-1.  Pseudopotentials
-
-2.  a structure
-
-3.  the k-points
-
-4.  the input parameters
+1. Pseudopotentials
+2. a structure
+3. the k-points
+4. the input parameters
 
 We leave the parameters as the last thing to setup and start with structure, k-points, and pseudopotentials.
 
@@ -158,7 +152,7 @@ This dictionary is almost a valid input for the Quantum ESPRESSO plugin, except 
 As done before, load the ParameterData class
 
 ``` python
- ParameterData = DataFactory("parameter") 
+ ParameterData = DataFactory("parameter")
 ```
 
 and create an instance of the class containing all the input parameters you just defined
@@ -213,7 +207,7 @@ In the meantine, as soon as you submitted your calculation, the daemon picked it
 You can check the calculation status from the command line:
 
 ```console
- verdi calculation list                                   
+ verdi calculation list
 ```
 
 Note that `verdi` commands can be slow in this tutorial when the calculation is running (because you just have one CPU which is also used by the PWscf calculation).
@@ -223,7 +217,7 @@ By now, it is possible that the calculation you submitted has already finished, 
 To see also (your) calculations that have finished (and limit those only to the one created in the past day), use instead
 
 ```console
- verdi calculation list -a -p1                                  
+ verdi calculation list -a -p1
 ```
 
 as explained in the first section.
@@ -240,8 +234,7 @@ with `pk_number` the pk number of your calculation. This will show the contents 
  verdi calculation inputcat <pk_number> | less
 ```
 
-Troubleshooting
----------------
+## Troubleshooting
 
 After all this work the calculation should end up in a FAILED Job state (last column of `verdi calculation list`), and correspondingly the error code near the \`\`Finished" status of the State should be non-zero (400 for FAILED calculations). This was expected, since we used an invalid key in the input parameters. Situations like this happen (probably often...) in real life, so we built in AiiDA the tools to traceback the problem source and correct it.
 

@@ -26,22 +26,17 @@ needs_sphinx = '2.0.0'
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
 extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.todo',
-    'sphinx.ext.imgmath',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.viewcode',
+    'sphinx.ext.autodoc', 'sphinx.ext.doctest', 'sphinx.ext.todo',
+    'sphinx.ext.ifconfig', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode',
     'IPython.sphinxext.ipython_console_highlighting',
-    'IPython.sphinxext.ipython_directive',
-    'recommonmark',
-    'nbsphinx',
-    'sphinx.ext.extlinks',
-    'sphinx.ext.mathjax',
+    'IPython.sphinxext.ipython_directive', 'myst_nb', 'sphinx.ext.extlinks',
+    'sphinx.ext.mathjax', 'sphinx_copybutton', 'sphinx_panels'
 ]
 ipython_mplbackend = ""
-imgmath_image_format = 'svg'
+
+copybutton_selector = 'div:not(.no-copy)>div.highlight pre'
+copybutton_prompt_text = '>>> |\\\\$ |In \\\\[\\\\d\\\\]: |\\\\s+\\.\\.\\.: '
+copybutton_prompt_is_regexp = True
 
 todo_include_todos = True
 
@@ -51,12 +46,6 @@ extlinks = {
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
-
-# The suffix of source filenames.
-source_suffix = {
-    '.rst': 'restructuredtext',
-    '.md': 'markdown',
-}
 
 # The encoding of source files.
 #source_encoding = 'utf-8-sig'
@@ -102,6 +91,9 @@ exclude_patterns = [
     'pages/*/notebooks/*-solutions.ipynb',
     'pages/*/notebooks/*-template.ipynb',
     'pages/2019_*/notebooks/bandstructure.ipynb',
+    'pages/*/notebooks/*-solutions.md',
+    'pages/*/notebooks/*-template.md',
+    'pages/2019_*/notebooks/bandstructure.md',
 ]
 
 # The reST default role (used for this markup: `text`) to use for all documents.
@@ -209,7 +201,7 @@ html_static_path = ['_static']
 
 # -- Options for LaTeX output --------------------------------------------------
 
-#latex_engine = 'xelatex'
+latex_engine = 'xelatex'
 
 latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
@@ -348,12 +340,12 @@ def setup(app):
 
 
 # We are not installing a full aiida environment
-nbsphinx_execute = 'never'
-#nbsphinx_allow_errors = True
+jupyter_execute_notebooks = "off"
 
 # Intersphinx configuration
 intersphinx_mapping = {
-    'aiida': ('http://aiida-core.readthedocs.org/en/latest/', None)
+    'aiida': ('http://aiida-core.readthedocs.io/en/latest/', None),
+    'plumpy': ('https://plumpy.readthedocs.io/en/latest/', None)
 }
 
 # Compile all things needed before building the docs

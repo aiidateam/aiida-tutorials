@@ -58,16 +58,16 @@ Let us first inspect the node you just created:
     verdi node show <PK>
 
 You will get in output some information on the node,
-including its type (``StructureData``, the AiiDA data type for storing crystal 
-structures), a label and a description (empty for now, can be changed), 
-a creation time (``ctime``) and a last modification time (``mtime``), 
+including its type (``StructureData``, the AiiDA data type for storing crystal
+structures), a label and a description (empty for now, can be changed),
+a creation time (``ctime``) and a last modification time (``mtime``),
 the PK of the node and its UUID (universally unique identifier).
 
 .. note::
 
   **When should I use the PK and when should I use the UUID?**
 
-  A **PK** is a short integer identifying the node and therefore easy to remember. 
+  A **PK** is a short integer identifying the node and therefore easy to remember.
   However, the same PK number (e.g., PK=10)
   might appear in two different databases referring to two completely different
   pieces of data.
@@ -83,7 +83,7 @@ the PK of the node and its UUID (universally unique identifier).
   Therefore, use the UUID to keep a long-term reference to a node.
   Feel free to use the PK for quick, everyday use (e.g. to inspect a node).
 
-.. note:: 
+.. note::
   All AiiDA commands accepting a PK can also accept a UUID. Check this by
   trying the command before, this time with ``verdi node show <UUID>``.
 
@@ -108,7 +108,7 @@ the PK of the node and its UUID (universally unique identifier).
   - Note that you can put the dash in any part of the string, and you don't need
     to respect the typical UUID pattern with 8-4-4-4-12 characters per section:
     AiiDA will anyway first strip all dashes, and then put them back in the right
-    place, so e.g. ``verdi node show 24-95-3`` will give you the same result as 
+    place, so e.g. ``verdi node show 24-95-3`` will give you the same result as
     ``verdi node show 24953-``.
 
 - Try to use again ``verdi node show`` on the ``StructureData`` node above,
@@ -118,13 +118,13 @@ the PK of the node and its UUID (universally unique identifier).
 - ``StructureData`` can be exported to file in various formats.
   As an example, let's export the structure in XSF format and visualize it
   with XCrySDen:
-   
+
   .. code:: bash
 
     verdi data structure export --format=xsf <PK> > exported.xsf
     xcrysden --xsf exported.xsf
 
-  You should be visualize to see the Si supercell (8 atoms) that we downloaded 
+  You should be visualize to see the Si supercell (8 atoms) that we downloaded
   from the COD database (in CIF format), imported into AiiDA and exported back
   into a different format (XSF).
 
@@ -219,7 +219,7 @@ Now, this Quantum ESPRESSO calculation ran on your (virtual) machine.
 This is fine for tests, but for production calculations you'll typically want to run on a remote compute cluster.
 In AiiDA, moving a calculation from one computer to another means changing one line of code.
 
-For the purposes of this tutorial, you'll run on the machine at the IJS 
+For the purposes of this tutorial, you'll run on the machine at the IJS
 institute that you have already been using in the past days.
 
 .. note:: In case you don't have access to the IJS machine, you can instead use
@@ -306,8 +306,8 @@ To see what is going on, AiiDA provides a command that lets you jump to the fold
   verdi process list --all  # get PK of new calculation
   verdi calcjob gotocomputer <PK>
 
-Have a look around. 
- * Do you recognize the different files? 
+Have a look around.
+ * Do you recognize the different files?
  * Have a look at the submission script ``_aiidasubmit.sh``.
    Compare it to the submission script of your previous calculation.
    What are the differences?
@@ -370,7 +370,7 @@ and open the |provenance browser| (from the browser inside the virtual machine).
 
 
 .. note::
-   
+
    The provenance browser is a Javascript application that connects to the AiiDA REST API.
    Your data never leaves your computer.
 
@@ -378,14 +378,14 @@ and open the |provenance browser| (from the browser inside the virtual machine).
 .. a sentence on how to continue from here
 
 Browse your AiiDA database.
- * Start by finding your Quantum ESPRESSO calculation (the type of node is called 
+ * Start by finding your Quantum ESPRESSO calculation (the type of node is called
    a ``CalcJobNode`` in AiiDA, since it is run as a job on a scheduler).
    Select ``Calculations`` in the left menu to filter for calculations only.
  * Inspect the raw inputs and outputs of the calculation, and use the provenance
    browser to explore the input and output nodes of the calculation and the whole
    provenance of your simulations.
 
-.. note:: 
+.. note::
 
      When perfoming calculations for a publication, you can export your provenance graph using ``verdi export create`` and upload it to the `Materials Cloud Archive <https://archive.materialscloud.org/>`_, enabling your peers to explore the provenance of your calculations online.
 
@@ -434,10 +434,10 @@ Here are some options for how to continue:
  * Try `setting up AiiDA directly on your laptop <https://aiida-core.readthedocs.io/en/latest/install/quick_installation.html>`_.
 
    .. note:: **For advanced Linux & python users only**.
-     AiiDA depends on a number of services and software that require some skill to set up. 
+     AiiDA depends on a number of services and software that require some skill to set up.
      Unfortunately, we don't have the human resources to help you solve
      issues related to your setup in a tutorial context.
-     
+
  * Continue your work from other parts of the workshop, chat with participants and enjoy yourself :-)
 
 

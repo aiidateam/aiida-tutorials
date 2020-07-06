@@ -3,13 +3,46 @@ AiiDA Tutorials
 
 The official home of AiiDA tutorial materials and videos.
 
-Where to start
----------------------
+.. panels::
+   :body: bg-light text-center
 
-- short demo: the :ref:`Ljubljana 2019 tutorial <Ljubljana 2019 Homepage>` (using Quantum ESPRESSO), or 
-  the :ref:`Wannier90 "Virtual Edition" 2020 tutorial <Oxford 2020 Homepage>` (using Wannier90).
-- in-depth tutorial: the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`, including `lecture videos <https://www.youtube.com/playlist?list=PL19kfLn4sO_-QtPaHAA8KByFluT2vvlG0>`_
-- `AiiDA cheatsheet <https://github.com/aiidateam/aiida-tutorials/raw/b5a8d54176153ce2b735e1fae8cae2c93c78a6bf/docs/pages/2019_IIT_Mandi_India/cheatsheet/cheatsheet.pdf>`_ with class hierarchy and common commands
+   ------
+   :column: col-lg-12 pl-0 pr-0
+
+   .. link-button:: 2020_Intro_Week_Homepage
+      :type: ref
+      :text: In-Depth: 2020 Introductory Virtual tutorial
+      :classes: btn-link btn-block stretched-link
+
+   -------
+   :column: col-lg-12 pl-0 pr-0
+
+   .. link-button:: https://github.com/aiidateam/aiida-tutorials/raw/b5a8d54176153ce2b735e1fae8cae2c93c78a6bf/docs/pages/2019_IIT_Mandi_India/cheatsheet/cheatsheet.pdf
+      :type: url
+      :text: AiiDA Cheat Sheet
+      :classes: btn-link btn-block stretched-link
+
+   -------
+   :column: col-lg-12 pl-0 pr-0
+   :body: + font-weight-bold
+
+   Short Demonstrations
+
+   -------
+   :column: col-lg-6 col-xs-12 pl-0 pr-0
+
+   .. link-button:: Ljubljana 2019 Homepage
+      :type: ref
+      :text: Quantum ESPRESSO: Ljubljana 2019 tutorial
+      :classes: btn-link btn-block stretched-link
+
+   -------
+   :column: col-lg-6 col-xs-12 pl-0 pr-0
+
+   .. link-button:: Oxford 2020 Homepage
+      :type: ref
+      :text: Wannier90: "Virtual Edition" 2020 tutorial
+      :classes: btn-link btn-block stretched-link
 
 
 Videos
@@ -31,6 +64,7 @@ links inside the respective sections.
    :maxdepth: 1
    :caption: Tutorial materials
 
+   2020, Introductory workshop Virtual Edition (aiida-core 1.2.1)<./pages/2020_Intro_Week/index>
    2020, Wannier workshop Virtual Edition (aiida-core 1.1.1)<./pages/2020_Oxford/index>
    2019, ISSP University of Tokyo, Chiba, Japan (aiida-core 1.0.1)<./pages/2019_ISSP_Chiba_Japan/index>
    2019, IIT Mandi, Mandi, India (aiida-core 1.0.0b6)<./pages/2019_IIT_Mandi_India/index>

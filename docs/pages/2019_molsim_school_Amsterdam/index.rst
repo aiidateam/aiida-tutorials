@@ -35,7 +35,7 @@ machine, using a compute resource with
 `zeo++ <http://www.zeoplusplus.org/>`__ and
 `RASPA2 <https://github.com/numat/RASPA2>`__ installed.
 
-.. note:: 
+.. note::
 
    This tutorial requires a basic knowledge of
    `python <https://docs.python.org/2.7/tutorial/index.html>`__. If you are

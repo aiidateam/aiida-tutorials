@@ -18,7 +18,7 @@ parameters = {
     'ecutwfc': 30.,  # wave function cutoff in Ry
     'ecutrho': 240.,  # density cutoff in Ry
   },
-}  
+}
 builder.parameters = Dict(dict=parameters)
 
 # Select pseudopotentials
@@ -31,7 +31,7 @@ kpoints.set_kpoints_mesh([4,4,4])
 builder.kpoints = kpoints
 
 # Set resources
-builder.metadata.options.resources = {'num_machines': 1} 
+builder.metadata.options.resources = {'num_machines': 1}
 
 # Submit the job
 calcjob = submit(builder)

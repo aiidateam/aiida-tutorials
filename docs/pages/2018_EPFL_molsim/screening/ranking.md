@@ -1,10 +1,10 @@
-Ranking the structures
-======================
+# Ranking the structures
 
 We've prepared an interactive jupyter app that helps you with ranking
 and visualizing the structures. Use at your convenience.
 
-### Installation
+## Installation
+
 To get the app please download it using the following link:
 
 ```console
@@ -24,14 +24,14 @@ $ jupyter nbextension     enable --py --sys-prefix appmode
 $ jupyter serverextension enable --py --sys-prefix appmode
 ```
 
-### Usage
+## Usage
 
-To use the application please open 
+To use the application please open
 
- - `dc_group.ipynb`, if you followed the *quick and simple* route
- - `dc_wf.ipynb`, if you followed the *elegant and robust* route
+- `dc_group.ipynb`, if you followed the *quick and simple* route
+- `dc_wf.ipynb`, if you followed the *elegant and robust* route
 
-Switch to the Appmode for the convenience. 
+Switch to the Appmode for the convenience.
 
 For the users of Quantum Mobile it is enough to launch "Jupyter Apps" icon on
 the desktop and chose corresponding notebook from the "Molsim course" app.

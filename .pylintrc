@@ -12,8 +12,9 @@
 disable=import-error,
         locally-disabled,
         invalid-name,
-        relative-beyond-top-level
-
+        relative-beyond-top-level,
+        duplicate-code,
+        import-outside-toplevel
 
 [FORMAT]
 

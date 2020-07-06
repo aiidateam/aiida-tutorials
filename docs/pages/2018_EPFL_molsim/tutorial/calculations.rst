@@ -17,32 +17,32 @@ Please set up the computer as follows:
 
 .. code:: console
 
-    $ verdi computer setup 
+    $ verdi computer setup
     At any prompt, type ? to get some help.
-    ————————————— 
-    => Computer name: aws Creating new computer with name 'aws' 
-    => Fully-qualified hostname: 34.244.10.104 
-    => Description: AWS instance for tutorial 
-    => Enabled: True 
-    => Transport type: ssh 
-    => Scheduler type: torque 
-    => shebang line at the beginning of the submission script: \#!/bin/console 
-    => AiiDA work directory: /tmp/{username}/aiida~r~un/ 
+    —————————————
+    => Computer name: aws Creating new computer with name 'aws'
+    => Fully-qualified hostname: 34.244.10.104
+    => Description: AWS instance for tutorial
+    => Enabled: True
+    => Transport type: ssh
+    => Scheduler type: torque
+    => shebang line at the beginning of the submission script: \#!/bin/console
+    => AiiDA work directory: /tmp/{username}/aiida~r~un/
     => mpirun command: mpirun -np {tot_num_mpiprocs}
-    => Default number of CPUs per machine: 2 
-    => Text to prepend to each command execution: 
-    # This is a multiline input, press CTRL+D on a 
-    # empty line when you finish 
+    => Default number of CPUs per machine: 2
+    => Text to prepend to each command execution:
+    # This is a multiline input, press CTRL+D on a
+    # empty line when you finish
     # ——————————————
-    # End of old input. You can keep adding 
-    # lines, or press CTRL+D to store this value 
-    # —————————————— 
-    => Text to append to each command execution: 
-    # This is a multiline input, press CTRL+D on a 
-    # empty line when you finish 
-    # —————————————— 
-    # End of old input. You can keep adding 
-    # lines, or press CTRL+D to store this value 
+    # End of old input. You can keep adding
+    # lines, or press CTRL+D to store this value
+    # ——————————————
+    => Text to append to each command execution:
+    # This is a multiline input, press CTRL+D on a
+    # empty line when you finish
+    # ——————————————
+    # End of old input. You can keep adding
+    # lines, or press CTRL+D to store this value
     # ——————————————
     Computer 'aws' successfully stored in DB.
 
@@ -64,25 +64,25 @@ and use it to configure the ``aws`` computer:
 
 .. code:: console
 
-    $ verdi computer configure aws 
-    Configuring computer 'aws' for the AiiDA user 'aiida@localhost' 
+    $ verdi computer configure aws
+    Configuring computer 'aws' for the AiiDA user 'aiida@localhost'
     Computer aws has transport of type ssh
 
     Note: to leave a field unconfigured, leave it empty and press [Enter]
 
-    => username = aiida 
-    => port = 22 
-    => look for keys = True 
-    => key filename = /home/max/.ssh/aws.pem 
-    => timeout = 60 
-    => allow agent = 
-    => proxy command = 
-    => compress = True 
-    => gssauth = no 
-    => gsskex = no 
-    => gssdelegcreds = no 
+    => username = aiida
+    => port = 22
+    => look for keys = True
+    => key filename = /home/max/.ssh/aws.pem
+    => timeout = 60
+    => allow agent =
+    => proxy command =
+    => compress = True
+    => gssauth = no
+    => gsskex = no
+    => gssdelegcreds = no
     => gsshost = 34.244.10.104
-    => load system hostkeys = True 
+    => load system hostkeys = True
     => key policy = AutoAddPolicy
     Configuration stored for your user on computer 'aws'.
 
@@ -103,30 +103,30 @@ follows:
 
 .. code:: console
 
-    $ verdi code setup 
-    At any prompt, type ? to get some help. 
+    $ verdi code setup
+    At any prompt, type ? to get some help.
     —————————————
-    => Label: raspa 
+    => Label: raspa
     => Description: Raspa code for molsim course
-    => Local: False 
-    => Default input plugin: raspa 
-    => Remote computer name: aws 
-    => Remote absolute path: /home/aiida/.local/bin/simulate 
-    => Text to prepend to each command execution 
-    FOR INSTANCE, MODULES TO BE LOADED FOR THIS CODE: 
-    # This is a multiline input, press CTRL+D on a 
-    # empty line when you finish 
-    # —————————————— 
-    # End of old input. You can keep adding 
-    # lines, or press CTRL+D to store this value 
-    # —————————————— 
-    => Text to append to each command execution: 
-    # This is a multiline input, press CTRL+D on a 
-    # empty line when you finish 
-    # —————————————— 
-    # End of old input. You can keep adding 
-    # lines, or press CTRL+D to store this value 
-    # —————————————— 
+    => Local: False
+    => Default input plugin: raspa
+    => Remote computer name: aws
+    => Remote absolute path: /home/aiida/.local/bin/simulate
+    => Text to prepend to each command execution
+    FOR INSTANCE, MODULES TO BE LOADED FOR THIS CODE:
+    # This is a multiline input, press CTRL+D on a
+    # empty line when you finish
+    # ——————————————
+    # End of old input. You can keep adding
+    # lines, or press CTRL+D to store this value
+    # ——————————————
+    => Text to append to each command execution:
+    # This is a multiline input, press CTRL+D on a
+    # empty line when you finish
+    # ——————————————
+    # End of old input. You can keep adding
+    # lines, or press CTRL+D to store this value
+    # ——————————————
     Code 'raspa' successfully stored in DB.
 
 The list of codes should now include your new code ``raspa@aws``
@@ -188,7 +188,7 @@ the executable file to be used. Therefore, first load the suitable code:
 
 .. code:: python
 
-    from aiida.common.example_helpers import test_and_get_code 
+    from aiida.common.example_helpers import test_and_get_code
     code = test_and_get_code(codename, expected_code_type='raspa')
 
 Here ``test_and_get_code`` is an AiiDA function handling all possible
@@ -224,5 +224,5 @@ you are going to run on and the maximum time allowed for the calculation
 
 .. code:: python
 
-    calc.set_resources('num_machines': 1, 'num_mpiprocs_per_machine':1)
+    calc.set_resources({'num_machines': 1, 'num_mpiprocs_per_machine':1})
     calc.set_max_wallclock_seconds(30*60)

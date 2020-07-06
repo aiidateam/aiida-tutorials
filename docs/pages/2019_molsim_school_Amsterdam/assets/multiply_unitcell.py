@@ -17,7 +17,7 @@ def multiply_unit_cell(cif, cutoff):
     gamma = float(struct['_cell_angle_gamma']) * deg2rad
 
     # first step is computing cell parameters according to  https://en.wikipedia.org/wiki/Fractional_coordinates
-    # Note: this is the algorithm implemented in Raspa (framework.c/UnitCellBox). 
+    # Note: this is the algorithm implemented in Raspa (framework.c/UnitCellBox).
     # There also is a simpler one but it is less robust.
     v = sqrt(1 - cos(alpha)**2 - cos(beta)**2 - cos(gamma)**2 +
              2 * cos(alpha) * cos(beta) * cos(gamma))

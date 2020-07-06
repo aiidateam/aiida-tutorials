@@ -35,20 +35,20 @@ old_calc = load_node(PK)
 
 ``` python
 from aiida_quantumespresso.utils.restart import create_restart_pw
-builder = create_restart_pw(                                     
-   old_calc,                            
-   use_output_structure=False,  
-   restart_from_beginning=False, 
+builder = create_restart_pw(
+   old_calc,
+   use_output_structure=False,
+   restart_from_beginning=False,
    force_restart=True)
 ```
 
 The flag usage (most of them are optional) is:
 
--   `use_output_structure`: if True and `old_calc` has an output structure, the new calculation will use it as input;
+- `use_output_structure`: if True and `old_calc` has an output structure, the new calculation will use it as input;
 
--   `restart_from_beginning`: if False the new calculation will start from the charge density of `old_calc`, it will start from the beginning otherwise;
+- `restart_from_beginning`: if False the new calculation will start from the charge density of `old_calc`, it will start from the beginning otherwise;
 
--   `force_restart`: if True, the new calculation will be created even if `old_calc` is not in a FINISHED job state.
+- `force_restart`: if True, the new calculation will be created even if `old_calc` is not in a FINISHED job state.
 
 Since this calculation has exactly the same parameters of before, we have to modify the input parameters and increase `electron_maxstep` to a larger value. To this aim, let’s load the dictionary of values and change it
 
@@ -69,10 +69,9 @@ builder.parameters = new_parameters
 Now you can launch the new calculation
 
 ``` python
-from aiida.work.run import submit    
+from aiida.work.run import submit
 new_calc = submit(builder)
 print new_calc.pk
 ```
 
 that this time can proceed until the end and return converged total energy. Using the restart method, the script is much shorter than the one needed to launch a new one from scratch: you didn’t need to define pseudopotentials, structures and k-points, which are the same as before. You can indeed inspect the new calculation to check that now it actually completed successfully.
-

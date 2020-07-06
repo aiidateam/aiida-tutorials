@@ -1,25 +1,23 @@
-Using the verdi command line
-============================
+# Using the verdi command line
 
 This part of the tutorial will help you familiarize with the command
-line utility <span>`verdi`</span>, one of the most common ways to
-interact with AiiDA. <span>`verdi`</span> with its subcommands enables a
+line utility `verdi`, one of the most common ways to
+interact with AiiDA. `verdi` with its subcommands enables a
 variety of operations such as inspecting the status of ongoing or
 terminated calculations, showing the details of calculations, computers,
 codes, or data structures, access the input and the output of a
 calculation, etc. Similar to the `bash` shell, verdi command support Tab
-compltion. Try right now to type <span>`verdi`</span> in a terminal and
+compltion. Try right now to type `verdi` in a terminal and
 tap Tab twice to have a list of subcommands. Whenever you need the
-explanation of a command type <span>`verdi help`</span> or add
-<span>`-h`</span> flag if you are using any of the <span>`verdi`</span>
+explanation of a command type `verdi help` or add
+`-h` flag if you are using any of the `verdi`
 subcommands. Finally, fields enclosed in angular brackets, such as
 `<pk>`, are placeholders to be replaced by the actual value of that
 field (an integer, a string, etc...).
 
-The list of calculations
-------------------------
+## The list of calculations
 
-Let us try our first <span>`verdi`</span> commands. Type in the terminal
+Let us try our first `verdi` commands. Type in the terminal
 
 ```console
 verdi calculation list
@@ -36,17 +34,17 @@ should look like
 ```
 
 In order to print a list with all calculations that finished correctly
-in the AiiDA database, you can use the <span>`-a/--all-states`</span>
-and <span>`-A/--all-users`</span> flag as follows:
+in the AiiDA database, you can use the `-a/--all-states`
+and `-A/--all-users` flag as follows:
 
 ```console
 verdi calculation list –all-states –all-users
 ```
 
 Another very typical option combination allows to get calculations in
-*any* state (flag <span>`-a`</span>) d in the past
-<span>`NUM`</span> days (<span>`-p <NUM>`</span>): e.g., for calculation
-in the past 1 day: <span>`verdi calculation list -p1 -a`</span>.
+*any* state (flag `-a`) d in the past
+`NUM` days (`-p <NUM>`): e.g., for calculation
+in the past 1 day: `verdi calculation list -p1 -a`.
 
 Each row of the output identifies a calculation and shows several
 information about it. For a more detailed list of properties, choose one
@@ -61,6 +59,7 @@ the input nodes (e.g. initial structure, settings etc.), the output
 nodes (e.g. output parameters, etc.). An example of RASPA calculation
 (pk=3006) output is provided below
 
+```console
     -----------  ------------------------------------
     type         RaspaCalculation
     pk           3006
@@ -84,9 +83,9 @@ nodes (e.g. output parameters, etc.). An example of RASPA calculation
     retrieved          1132  FolderData
     output_parameters  1131  ParameterData
     component_0        1130  ParameterData
+```
 
-A typical AiiDA graph
----------------------
+## A typical AiiDA graph
 
 Note that pk number shown in the examples may be different for your
 database.
@@ -97,20 +96,20 @@ well as the its outputs.
 ![Dependency graph of a Raspa calculation.]({{ site.baseurl}}/assets/2018_EPFL_molsim/raspa_sample_graph.png "Dependency graph of a Raspa calculation.")
 
 You can create a similar graph for any calculation node by using the
-utility <span>`verdi graph  <pk>`</span>. For example, before
+utility `verdi graph  <pk>`. For example, before
 you obtained information (in text form) for `pk=3006`. To visualize
 similar information in graph(ical) form, run (replacing
-<span>`<pk>`</span> with your number):
+`<pk>` with your number):
 
 ```console
 verdi graph  <pk>
 ```
 
-This command creates the file <pk>.dot that can be rendered by means
-of the utility <span>`dot`</span>. Convert it to PDF and have a look:
+This command creates the file `<pk>`.dot that can be rendered by means
+of the utility `dot`. Convert it to PDF and have a look:
 
 ```console
-dot -Tpdf -o <pk>.pdf <pk>.dot 
+dot -Tpdf -o <pk>.pdf <pk>.dot
 evince <pk>.pdf
 ```
 
@@ -119,8 +118,7 @@ root node (highlighted in blue) and trace back the structure used as an
 input. This is an example of a Raspa calculation. We will now inspect
 the different elements of this graph.
 
-Inspecting the nodes of a graph
--------------------------------
+## Inspecting the nodes of a graph
 
 ### ParameterData and Calculations
 
@@ -162,7 +160,7 @@ verdi calculation inputls <pk>
 folders by a different coloring).
 
 Once you know the name of the file you want to visualize, you can call
-the <span>`verdi calculation inputcat`</span> command specifying the
+the `verdi calculation inputcat` command specifying the
 path. For instance, to see the submission script, you can do:
 
 ```console
@@ -209,7 +207,7 @@ is accessible by means of the command
 verdi computer list -a
 ```
 
-(<span>`-a`</span> shows all computers, also the one imported in your
+(`-a` shows all computers, also the one imported in your
 database but that you did not configure, i.e., to which you don’t have
 access). Details about each computer can be obtained by the command
 
@@ -268,5 +266,4 @@ verdi calculation outputcat -p <filename> <pk>
 Use the latter to verify that the average total energy that you have
 found in the last step has been extracted correctly from the output file
 (Hint: filter the lines containing the string “Total energy”, e.g. using
-`grep Total energy: -A 8 `, to isolate the relevant lines).
-
+`grep Total energy: -A 8`, to isolate the relevant lines).

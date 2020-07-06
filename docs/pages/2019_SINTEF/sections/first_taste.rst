@@ -108,9 +108,9 @@ You can generate such a provenance graph for any calculation or data in AiiDA by
 
 Try to reproduce the figure using the PK of your calculation.
 
-.. note:: 
+.. note::
 
-  By default, AiiDA uses UUIDs to label nodes in provenance graphs (more about UUIDs vs PKs later). 
+  By default, AiiDA uses UUIDs to label nodes in provenance graphs (more about UUIDs vs PKs later).
   Try using the ``-h`` option to figure out how to switch to the PK identifier.
 
 

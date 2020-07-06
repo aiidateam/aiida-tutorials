@@ -414,9 +414,9 @@ Here below you can find the basic rules that allow you to convert your workfunct
 
 .. warning::
 
-    WorkChains need to be defined in a **separate file** from the script used to run them. 
+    WorkChains need to be defined in a **separate file** from the script used to run them.
     E.g. save your WorkChain in ``workchains.py`` and use ``from workchains import MyWorkChain`` to import it in your script.
-    
+
     Furthermore, the directory containing the WorkChain definition needs to be in the ``PYTHONPATH`` in order for the AiiDA daemon to find it.
     If your ``workchains.py`` sits in ``/home/max/workchains``, add a line ``export PYTHONPATH=$PYTHONPATH:/home/max`` to the ``/home/max/.virtualenvs/aiida/bin/activate`` script, followed by ``verdi daemon restart``.
 

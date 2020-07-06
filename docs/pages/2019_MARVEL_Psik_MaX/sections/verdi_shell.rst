@@ -63,7 +63,7 @@ the command itself:
 
     !some bash command
 
-.. _loadnode:
+.. _2019_EPFL_loadnode:
 
 Loading a node
 --------------
@@ -186,9 +186,9 @@ write the modified dictionary to the database, create a new object of class ``Di
     Dict = DataFactory('dict')
     new_params = Dict(dict=YOUR_DICT)
 
-where ``YOUR_DICT`` is the modified python dictionary. 
-Note that ``new_params`` is not yet stored in the database. 
-In fact, typing ``new_params`` in the verdi shell will print a string notifying you of its 'unstored' status. 
+where ``YOUR_DICT`` is the modified python dictionary.
+Note that ``new_params`` is not yet stored in the database.
+In fact, typing ``new_params`` in the verdi shell will print a string notifying you of its 'unstored' status.
 Let's finish by storing the ``new_params`` dictionary node in the datbase:
 
 .. code:: python
@@ -298,7 +298,7 @@ In that case two duplicate structures are found for 'Si'.
 Accessing inputs and outputs
 ----------------------------
 
-Load again the calculation node used in Section :ref:`loadnode`:
+Load again the calculation node used in Section :ref:`2019_EPFL_loadnode`:
 
 .. code:: python
 

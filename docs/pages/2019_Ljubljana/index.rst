@@ -26,8 +26,8 @@
    If the machine becomes slow after a few hours of use, in VirtualBox 6 you can change the settings of the
    graphics controller to VMSVGA.
 
-These are the hands-on materials from the 1-day AiiDA tutorial, part of the 
-`Summer School on Advanced Materials and Molecular Modelling <http://qe2019.ijs.si>`_,
+These are the hands-on materials from the 1-day AiiDA tutorial, part of the
+`Summer School on Advanced Materials and Molecular Modelling <http://qe2019.ijs.si>`__,
 held on September 16-20, 2019 in Ljubljana (Slovenia).
 
 .. note:: During the tutorial, some of the AiiDA developers will be online and
@@ -57,7 +57,7 @@ or of the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`.
 Acknowledgements
 ----------------
 
-The `Summer School on Advanced Materials and Molecular Modelling <http://qe2019.ijs.si>`_  was made possible by support from 
+The `Summer School on Advanced Materials and Molecular Modelling <http://qe2019.ijs.si>`_  was made possible by support from
 the Quantum ESPRESSO foundation, MaX, and the Jožef Stefan Institute.
 
 .. image:: sponsors/qef.png

@@ -14,7 +14,7 @@ pseudopotentials, energy cutoffs, k-point meshes, high-symmetry k-point paths,
 and performing the various calculation steps -- are performed automatically by
 the ``WorkChain``.
 
-The demonstration of the WorkChain will be performed in a Jupyter notebook, 
+The demonstration of the WorkChain will be performed in a Jupyter notebook,
 that you can :download:`download from here <../notebooks/bandstructure.ipynb>`.
 There you will find some example structures that are loaded from the
 Crystallography Open Database (COD), using the COD-importer integrated in

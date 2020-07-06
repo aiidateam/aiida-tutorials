@@ -21,12 +21,14 @@ take 3 minutes):
 ```console
 $ pip install aiidalab==19.01.2
 ```
-> **Note**  
+
+> **Note**
 > You may encounter warnings about version conflicts.
 > As long as the command finishes with `Successfully installed ...` don't worry and proceed.
-
-> **Note**  
+>
+> **Note**
 > To make sure that AiiDA noticed all the plugin updates please run
+>
 > ```console
 > $ reentry scan
 > ```
@@ -37,7 +39,7 @@ Furthermore, you are currently using the `default` AiiDA profile.
 $ verdi profile list
 ```
 
-At the end of the tutorial, we'll ask you to submit the data you computed, 
+At the end of the tutorial, we'll ask you to submit the data you computed,
 so let's create a new profile in order to associate this data with you:
 
 ```console
@@ -70,7 +72,7 @@ Installing default AiiDA user...
 Starting user configuration for leopold.talirz@epfl.ch...
 Configuring a new user with email 'leopold.talirz@epfl.ch'
 >> User Leopold Talirz saved. <<
-** NOTE: no password set for this user, 
+** NOTE: no password set for this user,
          so he/she will not be able to login
          via the REST API and the Web Interface.
 Setup finished.
@@ -82,9 +84,8 @@ Use `verdi profile list` to verify that you've switched to your new personal Aii
 
 If you encounter any issues throughout the tutorial, please consider
 
- * consulting the extensive [AiiDA documentation](https://aiida-core.readthedocs.io/en/stable/)
- * asking in the [Slack channel of the tutorial](http://bit.ly/molsim2019-slack) of the tutorial
- * opening a new issue on the [tutorial issue tracker](https://github.com/aiidateam/aiida-tutorials/issues)
- * asking your neighbor 
- * asking a tutor
-
+* consulting the extensive [AiiDA documentation](https://aiida-core.readthedocs.io/en/stable/)
+* asking in the [Slack channel of the tutorial](http://bit.ly/molsim2019-slack) of the tutorial
+* opening a new issue on the [tutorial issue tracker](https://github.com/aiidateam/aiida-tutorials/issues)
+* asking your neighbor
+* asking a tutor

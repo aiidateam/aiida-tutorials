@@ -27,13 +27,13 @@
    If the machine becomes slow after a few hours of use, in VirtualBox 6 you can change the settings of the
    graphics controller to VMSVGA.
 
-These are the hands-on materials from the 1-day AiiDA tutorial, part of the 
+These are the hands-on materials from the 1-day AiiDA tutorial, part of the
 `Wannier90 v3.0: new features and applications  <http://www.wannier.org/events/school-2020-virtual-edition/>`_,
 that should have been held on March 25-27, 2020 in Oxford (UK) but was converted to a "Virtual Edition"
 (as discussed on the online page).
 
 
-AiiDA-Wannier90 hands-on 
+AiiDA-Wannier90 hands-on
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
 Demo
@@ -46,13 +46,10 @@ Demo
    ./sections/setup-no-cloud
    ./sections/first_taste
    ./sections/automated_wannierisation
-   
+
 In-depth tutorial
 -----------------
 In this tutorial, no in-depth tutorial on AiiDA has been presented.
 
 If you are interested, you can check the in-depth tutorial of the :ref:`Xiamen 2019 tutorial <Xiamen 2019 Homepage>`
 or of the :ref:`EPFL 2019 tutorial <EPFL 2019 Homepage>`.
-
-
-
