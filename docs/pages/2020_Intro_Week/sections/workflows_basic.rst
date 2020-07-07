@@ -97,7 +97,7 @@ A *work function* is a process function that calls one or more calculation funct
 Moreover, work functions can also call other work functions, allowing you to write nested workflows.
 Writing a work function, whose provenance is automatically stored, is as simple as writing a Python function and decorating it with the :func:`~aiida.engine.processes.functions.workfunction` decorator:
 
-.. literalinclude:: include/snippets/workflows_add_multiply.py
+.. literalinclude:: include/snippets/add_multiply.py
     :language: python
     :start-after: start-marker
 
@@ -105,7 +105,7 @@ It is important to reiterate here that the :func:`~aiida.engine.processes.functi
 The ``add()`` and ``multiply()`` calculation functions create the ``Int`` data nodes, all the work function does is *return* the results of the ``multiply()`` calculation function.
 Moreover, both calculation and work functions can only accept and return data nodes, i.e. instances of classes that subclass the :class:`~aiida.orm.nodes.data.data.Data` class.
 
-Copy the code snippet above and execute it in the ``verdi shell``, or put it into a Python script (e.g. :download:`add_multiply.py <include/snippets/workflows_add_multiply.py>`) and import the add_multiply work function in the ``verdi shell``:
+Copy the code snippet above and execute it in the ``verdi shell``, or put it into a Python script (e.g. :download:`add_multiply.py <include/snippets/add_multiply.py>`) and import the add_multiply work function in the ``verdi shell``:
 
 .. code-block:: ipython
 
@@ -142,14 +142,14 @@ When the workflow you want to run is more complex and takes longer to finish, it
 Writing a work chain in AiiDA requires creating a class that inherits from the :class:`~aiida.engine.processes.workchains.workchain.WorkChain` class.
 Below is an example of a work chain that takes three integers as inputs, multiplies the first two and then adds the third to obtain the final result:
 
-.. literalinclude:: include/snippets/workflows_multiply_add.py
+.. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :start-after: start-marker
 
 You can give the work chain any valid Python class name, but the convention is to have it end in :class:`~aiida.engine.processes.workchains.workchain.WorkChain` so that it is always immediately clear what it references.
 Let's go over the methods of the ``MultiplyAddWorkChain`` one by one:
 
-.. literalinclude:: include/snippets/workflows_multiply_add.py
+.. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.define
     :dedent: 4
@@ -181,7 +181,7 @@ Next, the ``define()`` method should be used to define the specifications of the
 The ``multiply`` method is the first step in the outline of the ``MultiplyAddWorkChain`` work chain.
 
 
-.. literalinclude:: include/snippets/workflows_multiply_add.py
+.. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.multiply
     :dedent: 4
@@ -189,7 +189,7 @@ The ``multiply`` method is the first step in the outline of the ``MultiplyAddWor
 This step simply involves running the calculation function ``multiply()``, on the ``x`` and ``y`` **inputs** of the work chain.
 To store the result of this function and use it in the next step of the outline, it is added to the *context* of the work chain using ``self.ctx``.
 
-.. literalinclude:: include/snippets/workflows_multiply_add.py
+.. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.add
     :dedent: 4
@@ -211,7 +211,7 @@ To tell the work chain to wait for this process to finish before continuing the 
     More information on the ``ToContext`` class can be found in :ref:`the topics section on submitting sub processes<topics:workflows:usage:workchains:submitting_sub_processes>`.
 
 
-.. literalinclude:: include/snippets/workflows_multiply_add.py
+.. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.validate_result
     :dedent: 4
@@ -221,7 +221,7 @@ After the ``addition`` node has been extracted from the context, we take the ``s
 In case the value of this ``Int`` node is negative, the ``ERROR_NEGATIVE_NUMBER`` exit code - defined in the ``define()`` method - is returned.
 Note that once an exit code is returned during any step in the outline, the work chain will be terminated and no further steps will be executed.
 
-.. literalinclude:: include/snippets/workflows_multiply_add.py
+.. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.result
     :dedent: 4
@@ -233,13 +233,14 @@ The second argument is the result of the work chain, extracted from the ``Int`` 
 Launching a work chain
 ----------------------
 
-Before we can launch the ``MultiplyAddWorkChain``, we still have to set up the ``Code`` the work chain uses to add two numbers together:
+In order to launch the ``MultiplyAddWorkChain``, we need the ``Code`` the work chain uses to add two numbers together.
+This is the ``add@tutor`` code that you have set up in the basics section. Use ``verdi code list`` to see if it is set up, if not, run the following command:
 
 .. code-block:: console
 
-    $ verdi code setup -L add --on-computer --computer=localhost -P arithmetic.add --remote-abs-path=/bin/bash -n
+    $ verdi code setup -L add --on-computer --computer=tutor -P arithmetic.add --remote-abs-path=/bin/bash -n
 
-This command sets up a code with *label* ``add`` on the *computer* ``localhost``, using the *plugin* ``arithmetic.add``.
+Again, command sets up a code with *label* ``add`` on the *computer* ``tutor``, using the *plugin* ``arithmetic.add``.
 
 To launch a work chain, you can either use the ``run`` or ``submit`` functions.
 For either function, you need to provide the class of the work chain as the first argument, followed by the inputs as keyword arguments.
@@ -256,7 +257,7 @@ Using the ``run`` function, or "running", a work chain means it is executed in t
 .. code-block:: ipython
 
     In [2]: from aiida.engine import run
-       ...: add_code = load_code(label='add')
+       ...: add_code = load_code(label='add@tutor')
        ...: results = run(MultiplyAddWorkChain, x=Int(2), y=Int(3), z=Int(5), code=add_code)
 
 Alternatively, you can first construct a dictionary of the inputs, and pass it to the ``run`` function by taking advantage of `Python's automatic keyword expansion <https://docs.python.org/3/tutorial/controlflow.html#unpacking-argument-lists>`_:
@@ -282,7 +283,7 @@ So, it is advisable to *submit* more complex or longer work chains to the daemon
 
     In [5]: from aiida.engine import submit
        ...:
-       ...: add_code = load_code(label='add')
+       ...: add_code = load_code(label='add@tutor')
        ...: inputs = {'x': Int(1), 'y': Int(2), 'z': Int(3), 'code': add_code}
        ...:
        ...: workchain_node = submit(MultiplyAddWorkChain, **inputs)
@@ -328,7 +329,7 @@ Using the builder, the inputs of the ``WorkChain`` can be provided one by one:
 
 .. code-block:: ipython
 
-    In [3]: builder.code = load_code(label='add')
+    In [3]: builder.code = load_code(label='add@tutor')
        ...: builder.x = Int(2)
        ...: builder.y = Int(3)
        ...: builder.z = Int(5)
@@ -392,11 +393,11 @@ We can see that the ``structure`` variable contains an instance of ``StructureDa
 
 For the equation of state you need another function that takes as input a ``StructureData`` object and a rescaling factor, and returns a ``StructureData`` object with the rescaled lattice parameter:
 
-.. literalinclude:: include/snippets/workflows_rescale.py
+.. literalinclude:: include/snippets/rescale.py
     :language: python
 
 Of course, this *regular* Python function won't be stored in the provenance graph, so we need to decorate it with the ``calcfunction`` decorator.
-Copy the code snippet above into a Python file, (e.g. :download:`rescale.py <include/snippets/workflows_rescale.py>`), and add the ``calcfunction`` decorator to the ``rescale`` function.
+Copy the code snippet above into a Python file, (e.g. :download:`rescale.py <include/snippets/rescale.py>`), and add the ``calcfunction`` decorator to the ``rescale`` function.
 
 Once the ``rescale`` function has been decorated, it's time to put it to the test!
 Open a ``verdi shell``, load the ``StructureData`` node for silicon that you just stored, and generate a set of rescaled structures:
@@ -442,10 +443,10 @@ For this part of the tutorial, we provide some utility functions that get the co
 
 In the script shown below, a work function has been implemented that generates a scaled structure and calculates its energy for a range of 5 scaling factors:
 
-.. literalinclude:: include/snippets/workflows_eos_workfunction.py
+.. literalinclude:: include/snippets/eos_workfunction.py
     :language: python
 
-Copy the contents of this script into a Python file, for example ``workfunctions.py``.
+Copy the contents of this script into a Python file, for example ``eos_workfunction.py`` , or simply :download:`download <include/snippets/eos_workfunction.py>` it.
 Next, let's open up a ``verdi shell`` and run the equation of state workflow. First, load the silicon structure you imported earlier using its PK:
 
 .. code-block:: ipython
@@ -468,7 +469,7 @@ Finally, we are ready to import the ``run_eos()`` work function and run it!
 
 .. code-block:: ipython
 
-    In [4]: from workfunctions import run_eos_wf
+    In [4]: from eos_workfunction import run_eos_wf
        ...: result = run_eos_wf(code, pseudo_str, initial_structure)
 
 The work function will start running and print one line of output for each scale factor used.
@@ -513,6 +514,10 @@ For this purpose, we have provided the ``plot_eos`` script in the ``common_wf.py
     In [7]: from common_wf import plot_eos
        ...: plot_eos(2821)
 
+.. note::
+
+    This plot can take a bit of time to appear on your local machine with X-forwarding.
+
 .. _2020_virtual_intro:workflow_basic:eos_workchain:
 
 Submitting the workflow: Workchains
@@ -525,13 +530,14 @@ Perhaps you killed the calculation and you experienced the unpleasant consequenc
 Clearly, when writing workflows that involve the use of an *ab initio* code like Quantum ESPRESSO, it is better to use a work chain.
 Below you can find the basic rules that allow you to convert your workfunction-based script to a workchain-based one and a snippet example focusing on the code used to perform the calculation of an equation of state.
 
-.. include:: include/snippets/workflows_eos_workchain.py
+.. include:: include/snippets/eos_workchain.py
     :code: python
 
 .. warning::
 
     WorkChains need to be defined in a **separate file** from the script used to run them.
-    E.g. save your WorkChain in ``workchains.py`` and use ``from workchains import MyWorkChain`` to import it in your script.
+    E.g. save your WorkChain in ``eos_workchain.py`` and use ``from eos_workchain import EquationOfState`` to import it in your script.
+    You can also download this file :download:`here <include/snippets/eos_workchain.py>`.
 
 -   Instead of using decorated functions you need to define a class, inheriting from a prototype class called ``WorkChain`` that is provided by AiiDA in the ``aiida.engine`` module.
 
@@ -586,9 +592,9 @@ For example, you can execute:
 
 .. code-block::
 
-    In [1]: from workchains import EquationOfState
+    In [1]: from eos_workchain import EquationOfState
        ...: from aiida.engine import run
-       ...: run(EquationOfState, code=load_code('qe-6.5-pw@localhost'), pseudo_family=Str('SSSP'), structure=load_node(pk=2804))
+       ...: result = run(EquationOfState, code=load_code('qe-6.5-pw@localhost'), pseudo_family=Str('SSSP'), structure=load_node(pk=2804))
     06/19/2020 12:02:04 PM <11810> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [541|EquationOfState|run_eos]: Running an SCF calculation for Si8 with scale factor 0.96
     06/19/2020 12:02:05 PM <11810> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [541|EquationOfState|run_eos]: Running an SCF calculation for Si8 with scale factor 0.98
     06/19/2020 12:02:05 PM <11810> aiida.orm.nodes.process.workflow.workchain.WorkChainNode: [REPORT] [541|EquationOfState|run_eos]: Running an SCF calculation for Si8 with scale factor 1.0
@@ -597,16 +603,18 @@ For example, you can execute:
 
 While the workflow is running, open a different terminal and check what is happening to the calculations using ``verdi process list``.
 You will see that after a few seconds the calculations are all submitted to the scheduler and can potentially run at the same time.
-Once the work chain is completed, the equation of state dictionary will be printed:
+Once the work chain is completed, you can check the result:
 
 .. code-block:: ipython
 
-    Out[1]: {'eos': <Dict: uuid: eedffd9f-c3d4-4cc8-9af5-242ede5ac23b (pk: 2937)>}
+    In [2]: result
+    Out[2]: {'eos': <Dict: uuid: eedffd9f-c3d4-4cc8-9af5-242ede5ac23b (pk: 2937)>}
 
 As a final exercise, instead of running the ``EquationOfState``, we will submit it to the daemon.
 However, in this case the work chain will need to be globally importable so the daemon can load it.
 To achieve this, the directory containing the WorkChain definition needs to be in the ``PYTHONPATH`` in order for the AiiDA daemon to find it.
-If your ``workchains.py`` sits in ``/home/max/workchains``, add a line ``export PYTHONPATH=$PYTHONPATH:/home/max`` to the ``/home/max/.virtualenvs/aiida/bin/activate`` script.
+When your ``eos_workchain.py`` is in ``/home/max/workchains``, add a line ``export PYTHONPATH=$PYTHONPATH:/home/max/workchains`` to the ``/home/max/.virtualenvs/aiida/bin/activate`` script.
+Or, if it is in your current directory:
 
 .. code-block:: bash
 
@@ -622,7 +630,7 @@ Once the daemon has been restarted, it is time to *submit* the ``EquationOfState
 
 .. code-block:: ipython
 
-    In [1]: from workchains import EquationOfState
+    In [1]: from eos_workchain import EquationOfState
        ...: from aiida.engine import submit
        ...: submit(EquationOfState, code=load_code('qe-6.5-pw@localhost'), pseudo_family=Str('SSSP'), structure=load_node(pk=2804))
     Out[1]: <WorkChainNode: uuid: 9e5c7c48-a47c-49fc-a8ab-fff081f250ee (pk: 665) (eos.workchain.EquationOfState)>

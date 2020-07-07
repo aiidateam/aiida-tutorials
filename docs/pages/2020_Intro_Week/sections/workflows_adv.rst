@@ -33,7 +33,7 @@ Exit codes can be defined using the :meth:`~aiida.engine.processes.process_spec.
 It takes three arguments: the exit status, an exit label for easy reference and the exit message.
 Take the ``MultiplyAddWorkChain`` as an example:
 
-.. literalinclude:: include/snippets/workflows_multiply_add.py
+.. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.define
     :dedent: 4
@@ -41,7 +41,7 @@ Take the ``MultiplyAddWorkChain`` as an example:
 It defines the ``ERROR_NEGATIVE_NUMBER`` exit code with status ``410`` and message `'The result is a negative number.'`.
 This exit code is used in the ``validate_result`` step, where the sum produced by the ``ArithmeticAddCalculation`` is validated.
 
-.. literalinclude:: include/snippets/workflows_multiply_add.py
+.. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.validate_result
     :dedent: 4
