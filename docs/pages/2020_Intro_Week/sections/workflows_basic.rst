@@ -283,7 +283,7 @@ So, it is advisable to *submit* more complex or longer work chains to the daemon
 
     In [5]: from aiida.engine import submit
        ...:
-       ...: add_code = load_code(label='add')
+       ...: add_code = load_code(label='add@tutor')
        ...: inputs = {'x': Int(1), 'y': Int(2), 'z': Int(3), 'code': add_code}
        ...:
        ...: workchain_node = submit(MultiplyAddWorkChain, **inputs)
@@ -329,7 +329,7 @@ Using the builder, the inputs of the ``WorkChain`` can be provided one by one:
 
 .. code-block:: ipython
 
-    In [3]: builder.code = load_code(label='add')
+    In [3]: builder.code = load_code(label='add@tutor')
        ...: builder.x = Int(2)
        ...: builder.y = Int(3)
        ...: builder.z = Int(5)
