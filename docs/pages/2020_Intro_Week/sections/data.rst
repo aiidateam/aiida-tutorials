@@ -58,7 +58,7 @@ User
 
    The ``-a`` and ``-A`` flags we used above ensure that groups for all type strings and users are shown respectively.
 
-We can then inspect a group's contents by its label (if it is unique) or the PK:
+We can then inspect the content of a group by its label (if it is unique) or the PK:
 
 .. code-block:: console
 
