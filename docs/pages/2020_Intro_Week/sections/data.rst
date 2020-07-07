@@ -31,7 +31,7 @@ Lets explore the groups already present in the imported archive:
 .. code-block:: console
 
    $ verdi group list -a -A
-   PK  Label            Type string    User
+   PK    Label            Type string    User
    ----  ---------------  -------------  ---------------
       1  tutorial_pbesol  core           aiida@localhost
       2  tutorial_lda     core           aiida@localhost
@@ -48,8 +48,8 @@ PK
 Label
    The label by which the group has been named
 Type string
-   This tells us the what "sub-class" of group this is.
-   Type strings can be used to class certain types of data, for example here we have general groups (core), groups containing pseudopotentials (core.upf), and an auto-generated group containing the nodes we imported from the archive (core.import).
+   This tells us what "sub-class" of group this is.
+   Type strings can be used to class certain types of data, for example here we have general groups (``core``), groups containing pseudopotentials (``core.upf``), and an auto-generated group containing the nodes we imported from the archive (``core.import``).
    For advanced use, you can create your own group subclass plugins, with specialised methods.
 User
    The email of the user that created this group.
@@ -58,7 +58,7 @@ User
 
    The ``-a`` and ``-A`` flags we used above ensure that groups for all type strings and users are shown respectively.
 
-We can then inspect a groups contents, by the label (if it is unique) or the PK:
+We can then inspect a group's contents by its label (if it is unique) or the PK:
 
 .. code-block:: console
 
@@ -69,7 +69,7 @@ We can then inspect a groups contents, by the label (if it is unique) or the PK:
    Group description  <no description>
    -----------------  ----------------
    # Nodes:
-   PK  Type         Created
+   PK    Type         Created
    ----  -----------  -----------------
     380  CalcJobNode  2078D:17h:46m ago
    1273  CalcJobNode  2078D:18h:03m ago
@@ -80,7 +80,7 @@ Conversely, if you want to see all the groups a node belongs to, you can run:
 .. code-block:: console
 
    $ verdi group list -a -A --node 380
-   PK  Label            Type string    User
+   PK    Label            Type string    User
    ----  ---------------  -------------  ---------------
       1  tutorial_pbesol  core           aiida@localhost
       7  20200705-071658  core.import    aiida@localhost
@@ -124,7 +124,7 @@ We can also copy the nodes from an existing group to another group:
    Group description  <no description>
    -----------------  ----------------
    # Nodes:
-   PK  Type         Created
+   PK    Type         Created
    ----  -----------  -----------------
    74  CalcJobNode  2078D:17h:51m ago
    76  CalcJobNode  2078D:17h:57m ago
@@ -159,7 +159,7 @@ As with folders and sub-folders then, as the amount of groups we have grows, we 
 Groups in AiiDA are inherently "flat", in that groups may only contain nodes and not other groups.
 However it is possible to construct *virtual* group hierarchies based on delimited group labels, using the ``grouppath`` utility.
 
-Like folder paths grouppath requires delimitation by `/` characters.
+Like folder paths grouppath requires delimitation by ``/`` (forward slash) characters.
 Lets copy and rename the three tutorial groups:
 
 .. code-block:: console
@@ -173,7 +173,7 @@ We can now list the groups in a new way:
 .. code-block:: console
 
    $ verdi group path ls -l
-   Path               Sub-Groups
+   Path             Sub-Groups
    ---------------  ------------
    tutorial                    3
    tutorial_lda                0
@@ -190,7 +190,7 @@ We can then step into a path:
 .. code-block:: console
 
    $ verdi group path ls -l tutorial
-   Path            Sub-Groups
+   Path          Sub-Groups
    ------------  ------------
    tutorial/gga             2
    tutorial/lda             1
@@ -213,9 +213,9 @@ This feature is also particularly useful in the verdi shell:
 Querying for data
 -----------------
 
-For the part if the tutorial, we shall move to interacting with AiiDA using a Jupyter notebook, which you will be able to run in your browser.
+For this part of the tutorial, we shall move to interacting with AiiDA using a Jupyter notebook, which you will be able to run in your browser.
 For instructions on starting the Jupyter server, please refer to the :ref:`setup section<2020_virtual_intro:setup:jupyter>`.
-Once the server is running, :jupyter-download:nb:`download this tutorial notebook on to your Virtual Machine <../notebooks/querybuilder-tutorial>`, using the instruction in :ref:`this section<2020_virtual_intro:setup:downloading_files>`, and open it in Jupyter.
+Once the server is running, :jupyter-download:nb:`download this tutorial notebook on to your Virtual Machine <../notebooks/querybuilder-tutorial>`, using the instructions in :ref:`this section<2020_virtual_intro:setup:downloading_files>`, and open it in Jupyter.
 
 The notebook will show you how the ``QueryBuilder`` can be used to query your
 database for specific data. It will demonstrate certain concepts and then ask
@@ -226,7 +226,7 @@ Once you have finished the notebook, you can download a
 :download:`notebook with the solutions <../notebooks/querybuilder-solutions.ipynb>`
 but try not to use them at first!
 
-See below for a rendered version of the notebook:
+Go to any of the sections below for a rendered version of the notebook:
 
 .. toctree::
    :maxdepth: 2
