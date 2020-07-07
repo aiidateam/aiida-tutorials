@@ -294,7 +294,7 @@ Define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of
        ...:     'SYSTEM': {
        ...:         'ecutwfc': 30.,
        ...:         'ecutrho': 200.,
-       ...:         'radames': 240.,
+       ...:         'mickeymouseouse': 240.,
        ...:     },
        ...:     'ELECTRONS': {
        ...:         'conv_thr': 1.e-14,
@@ -302,7 +302,7 @@ Define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of
        ...:     },
        ...: }
 
-This dictionary is almost a valid input for the Quantum ESPRESSO plugin, except for an invalid key ``radames``. When Quantum ESPRESSO receives an unrecognized key, it will stop.
+This dictionary is almost a valid input for the Quantum ESPRESSO plugin, except for an invalid key ``mickeymouse``. When Quantum ESPRESSO receives an unrecognized key, it will stop.
 By default, the AiiDA plugin will *not* validate your input and simply pass it on to the code.
 
 We have also introduced a combination of a very high accuracy (``'conv_thr': 1.e-14``) coupled with a very low maximum number of self consistent iterations (``'electron_maxstep': 3``).
@@ -519,7 +519,7 @@ In this case you can also try inspecting directly the output file of PWscf.
 
     $ verdi calcjob outputcat <pk_number> | less
 
-You will see an error message complaining about the ``radames`` line in the input.
+You will see an error message complaining about the ``mickeymouse`` line in the input.
 
 Let's now correct our input parameters dictionary by leaving out the invalid key and see if our calculation succeeds:
 
