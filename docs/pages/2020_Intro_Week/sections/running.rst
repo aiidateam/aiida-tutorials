@@ -294,7 +294,7 @@ Define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of
        ...:     'SYSTEM': {
        ...:         'ecutwfc': 30.,
        ...:         'ecutrho': 200.,
-       ...:         'mickeymouseouse': 240.,
+       ...:         'mickeymouse': 240.,
        ...:     },
        ...:     'ELECTRONS': {
        ...:         'conv_thr': 1.e-14,
