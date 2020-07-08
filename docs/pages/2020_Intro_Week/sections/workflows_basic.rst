@@ -4,6 +4,30 @@
 Workflows: Basics
 *****************
 
+.. warning::
+
+    In order to launch the workflows of this section, we will be using the computers and codes set up in the first two hands-on sessions.
+    So, you will have to set the profile that you set up at the start of the tutorial as the default.
+    You can do this using:
+
+    .. code-block:: console
+
+        $ verdi profile setdefault <PROFILE_NAME>
+        Success: <PROFILE_NAME> set as default profile
+
+    Where <PROFILE_NAME> is the name of the profile you have set up (e.g. ``quicksetup`` is the default).
+    In order to check you have the required codes, you can use:
+
+    .. code-block:: console
+
+        $ verdi code list
+        # List of configured codes:
+        # (use 'verdi code show CODEID' to see the details)
+        * pk 5 - add@tutor
+        * pk 2083 - qe-6.5-pw@localhost
+
+    You should have the ``add@tutor`` and ``qe-6.5-pw@localhost`` listed when you execute this ``verdi`` command.
+
 The aim of this tutorial is to introduce how to write and launch workflows in AiiDA.
 
 In this section, you will learn to:
@@ -234,15 +258,6 @@ The second argument is the result of the work chain, extracted from the ``Int`` 
 
 Launching a work chain
 ----------------------
-
-In order to launch the ``MultiplyAddWorkChain``, we need the ``Code`` the work chain uses to add two numbers together.
-This is the ``add@tutor`` code that you have set up in the basics section. Use ``verdi code list`` to see if it is set up, if not, run the following command:
-
-.. code-block:: console
-
-    $ verdi code setup -L add --on-computer --computer=tutor -P arithmetic.add --remote-abs-path=/bin/bash -n
-
-Again, command sets up a code with *label* ``add`` on the *computer* ``tutor``, using the *plugin* ``arithmetic.add``.
 
 To launch a work chain, you can either use the ``run`` or ``submit`` functions.
 For either function, you need to provide the class of the work chain as the first argument, followed by the inputs as keyword arguments.
