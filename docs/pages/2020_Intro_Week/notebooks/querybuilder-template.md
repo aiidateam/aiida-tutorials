@@ -542,9 +542,50 @@ qb.all()
 #TUT_SOLUTION_END
 ```
 
-```{seealso}
-For more exercises on relationships and attributes/extras, have a look at the appendix section on queries.
+## Generating a provenance graph
+
++++
+
+Previously we have used `verdi graph generate` on the command-line, to generate a graph of the data provenance.
+To do this, AiiDA actually uses some of the queries which you have learn't about above.
+We can also visualise sections of the provenance in a more customisable way, using the `Graph` class.
+
+For example, lets query for a calculation, then use methods of the `Graph` class to visualise the inputs and outputs of this calculation:
+
+```{code-cell} ipython3
+qb = QueryBuilder()
+qb.append(PwCalculation)
+node, = qb.first()
+
+from aiida.tools.visualization import Graph
+graph = Graph(graph_attr={"rankdir": "LR"})
+
+graph.add_incoming(node.uuid, annotate_links="both")
+graph.add_outgoing(node.uuid, annotate_links="both")
+graph.graphviz
 ```
+
+The `Graph` class also has methods for recurcing up or down the provenenance tree.
+In this example, lets query for a pseudopotential, and visualise which processes it is used in:
+
+```{code-cell} ipython3
+qb = QueryBuilder()
+qb.append(UpfData, filters={'attributes.element': {'==': 'Si'}})
+node, = qb.first()
+
+graph = Graph(graph_attr={"rankdir": "LR"})
+
+graph.recurse_descendants(
+    node.uuid,
+    annotate_links="both",
+    depth=1
+)
+graph.graphviz
+```
+
+For further information on using `Graph` to generate provenanace graphs, please see [this section](https://aiida.readthedocs.io/projects/aiida-core/en/latest/howto/visualising_graphs/visualising_graphs.html) in the documentation.
+
+You can also explore the provenance in other ways. If you have time, please work through [this appendix](https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/appendices/exploring_provenance.html) on exploring provenance.
 
 +++
 
