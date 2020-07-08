@@ -91,6 +91,7 @@ exclude_patterns = [
     'pages/*/notebooks/*-solutions.ipynb',
     'pages/*/notebooks/*-template.ipynb',
     'pages/2019_*/notebooks/bandstructure.ipynb',
+    'pages/2020_*/notebooks/bandstructure.ipynb',
     'pages/*/notebooks/*-solutions.md',
     'pages/*/notebooks/*-template.md',
     'pages/2019_*/notebooks/bandstructure.md',
