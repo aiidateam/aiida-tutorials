@@ -21,7 +21,7 @@ def get_eos_data(**kwargs):
 
 
 class EquationOfState(WorkChain):
-    """WorkChain to compute Equation of State using Quantum Espresso."""
+    """WorkChain to compute Equation of State using Quantum ESPRESSO."""
 
     @classmethod
     def define(cls, spec):
