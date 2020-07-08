@@ -36,11 +36,17 @@ PwBandStructureWorkChain = WorkflowFactory('quantumespresso.pw.band_structure')
 ```
 
 ## Calculating the electronic band structure with an AiiDA workchain
-This tutorial will show how useful a workchain can be in performing a well defined task, such as computing and visualizing the electronic band structure for a simple crystal structure. The goal of this tutorial is not to show you the intricacies of the actual workchain itself, but rather to serve as an example that workchains can simplify standard workflows in computational materials science. The workchain that we will use here will employ Quantum ESPRESSO's `pw.x` code to calculate the charge densities for several crystal structures and compute a band structure from those. Many choices that normally face the researcher before being able to perform this calculation, such as the selection of suitable pseudo potentials, energy cutoff values, k-point grids and k-point paths along high symmetry points, are now performed automatically by the workchain. All that remains for the user to do is to simply define a structure, pass it to the workchain and sit back!
+
+This tutorial will show how useful a workchain can be in performing a well defined task, such as computing and visualizing the electronic band structure for a simple crystal structure.
+The goal of this tutorial is not to show you the intricacies of the actual workchain itself, but rather to serve as an example that workchains can simplify standard workflows in computational materials science.
+The workchain that we will use here will employ Quantum ESPRESSO's `pw.x` code to calculate the charge densities for several crystal structures and compute a band structure from those.
+Many choices that normally face the researcher before being able to perform this calculation, such as the selection of suitable pseudo potentials, energy cutoff values, k-point grids and k-point paths along high symmetry points, are now performed automatically by the workchain.
+All that remains for the user to do is to simply define a structure, pass it to the workchain and sit back!
 
 +++
 
-Below, we import the crystal structure of Al (aluminium) as an example, and run the `PwBandStructureWorkChain` for that structure. The estimated run time is noted in a comment in the calculation cell.
+Below, we import the crystal structure of Al (aluminium) as an example, and run the `PwBandStructureWorkChain` for that structure.
+The estimated run time is noted in a comment in the calculation cell.
 
 ```{code-cell} ipython3
 # Loading the COD importer so we can directly import structure from COD id's
@@ -69,31 +75,37 @@ structure_Al.get_formula()
 +++
 
 The bandstructure workchain follows the following protocol:
+
 * Determine the primitive cell of the input structure
-* Run a vc-relax to relax the structure
-* Refine the symmetry of the relaxed structure to ensure the primitive cell is used and run a self-consistent field calculation on it
-* Run a non self-consistent field band structure calculation along a path of high symmetry k-points determined by [seekpath](http://materialscloud.org/tools/seekpath)
+* Run a `vc-relax` (variable-cell) computation, to relax the structure
+* Refine the symmetry of the relaxed structure, to ensure the primitive cell is used, and run a self-consistent field calculation on it
+* Run a non self-consistent field band structure calculation, along a path of high symmetry k-points determined by [seekpath](http://materialscloud.org/tools/seekpath)
 
 Numerical parameters for the default 'theos-ht-1.0' protocol are determined as follows:
+
 * Suitable pseudopotentials and energy cutoffs are automatically searched from the [SSSP library](http://materialscloud.org/sssp) installed on your machine  (it uses the efficiency version 1.1).
 * K-point mesh is selected to have a minimum k-point density of 0.2 Å<sup>-1</sup>
 * A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
 
 In case the pseudopotentials are not installed, they can be downloaded in a terminal as:
 
-    mkdir sssp_pseudos
-    wget 'https://archive.materialscloud.org/record/file?filename=SSSP_1.1_PBE_efficiency.tar.gz&record_id=23&file_id=d2ce4186-bf76-4e05-8b39-444b4da30273' -O SSSP_1.1_PBE_efficiency.tar.gz
-    tar -C sssp_pseudos -zxvf SSSP_1.1_PBE_efficiency.tar.gz
-    verdi data upf uploadfamily sssp_pseudos 'SSSP' 'SSSP pseudopotential library'
+```console
+$ mkdir sssp_pseudos
+$ wget 'https://archive.materialscloud.org/record/file?filename=SSSP_1.1_PBE_efficiency.tar.gz&record_id=23&file_id=d2ce4186-bf76-4e05-8b39-444b4da30273' -O SSSP_1.1_PBE_efficiency.tar.gz
+$ tar -C sssp_pseudos -zxvf SSSP_1.1_PBE_efficiency.tar.gz
+$ verdi data upf uploadfamily sssp_pseudos 'SSSP' 'SSSP pseudopotential library'
+```
 
 The protocol looks for a UPF file with a specific hash code, that is unique for each different file.
 You can check that you have the right
 one by performing a search in the database:
 
-    UpfData = DataFactory('upf')
-    qb=QueryBuilder()
-    qb.append(UpfData, filters={'attributes.md5':{'==':'cfc449ca30b5f3223ec38ddd88ac046d'}})
-    len(qb.all())
+```python
+UpfData = DataFactory('upf')
+qb=QueryBuilder()
+qb.append(UpfData, filters={'attributes.md5':{'==':'cfc449ca30b5f3223ec38ddd88ac046d'}})
+len(qb.all())
+```
 
 'md5' is a searchable attribute of the pseudopotential data object.
 
@@ -118,6 +130,7 @@ The system has inversion symmetry: {has_inversion_symmetry}""".format(
 
 If you want to use a different pseudopotential family (or version of the family) (for instance [SSSP v1.0](https://doi.org/10.24435/materialscloud:2018.0001/v1) instead of the default SSSP v1.1) you can pass an additional parameter when calling the WorkChain, as follows:
 
+```python
     run(
         # ...,
         protocol = Dict(dict={
@@ -127,5 +140,8 @@ If you want to use a different pseudopotential family (or version of the family)
            }
         })
     )
+```
 
-(note that only some values are accepted for pseudo, that you can find [here](https://github.com/aiidateam/aiida-quantumespresso/blob/a52266d096afe48dbc6b38b63ac17a9989dd12fe/aiida_quantumespresso/utils/protocols/pw.py#L24); and that you will have to import the pseudopotentials in AiiDA first).
+```{note}
+Only some values are accepted for pseudo, that you can find [here](https://github.com/aiidateam/aiida-quantumespresso/blob/a52266d096afe48dbc6b38b63ac17a9989dd12fe/aiida_quantumespresso/utils/protocols/pw.py#L24); and that you will have to import the pseudopotentials in AiiDA first.
+```
