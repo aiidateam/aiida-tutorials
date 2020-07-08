@@ -44,5 +44,6 @@ repos:
       # currently mistaking comment lines in code cells for headers!?
       exclude: >
         (?x)^(
-          docs/pages/2020_Intro_Week/notebooks/querybuilder-template.md
+          docs/pages/2020_Intro_Week/notebooks/querybuilder-template.md|
+          docs/pages/2020_Intro_Week/notebooks/bandstructure.md
         )$

@@ -221,7 +221,7 @@ Again, to see the list of available options, type ``builder.metadata.options.`` 
 Preparation of inputs
 ---------------------
 
-A Quantum Espresso calculation needs a number of inputs:
+A Quantum ESPRESSO calculation needs a number of inputs:
 
 1. `Pseudopotentials <https://en.wikipedia.org/wiki/Pseudopotential>`_
 2. a structure
@@ -266,7 +266,7 @@ You can list the preconfigured families within the IPython shell using:
 
     In [6]: !verdi data upf listfamilies
 
-Pick the one you :ref:`configured in the basics hands on<2020_virtual_intro:basic:pseudopotentials>` (the``SSSP`` family) and link the correct pseudopotentials to the calculation using the command:
+Pick the one you :ref:`configured in the basics hands on<2020_virtual_intro:basic:pseudopotentials>` (the ``SSSP`` family) and link the correct pseudopotentials to the calculation using the command:
 
 .. code-block:: ipython
 

@@ -4,6 +4,28 @@
 Workflows: Basics
 *****************
 
+.. important::
+
+    In order to launch the workflows of this section, we will be using the computers and codes set up in the first two hands-on sessions.
+    You should make sure that your default profile is set to the profile which you set up during these sessions (see :ref:`2020_virtual_intro:setup_profile`).
+    You can do this using:
+
+    .. code-block:: console
+
+        $ verdi profile setdefault <PROFILE_NAME>
+        Success: <PROFILE_NAME> set as default profile
+
+    Where ``<PROFILE_NAME>`` is the name of the profile you set up (``quicksetup`` by default).
+    You should now have the following codes available:
+
+    .. code-block:: console
+
+        $ verdi code list
+        # List of configured codes:
+        # (use 'verdi code show CODEID' to see the details)
+        * pk 5 - add@tutor
+        * pk 2083 - qe-6.5-pw@localhost
+
 The aim of this tutorial is to introduce how to write and launch workflows in AiiDA.
 
 In this section, you will learn to:
@@ -149,6 +171,8 @@ Below is an example of a work chain that takes three integers as inputs, multipl
 You can give the work chain any valid Python class name, but the convention is to have it end in :class:`~aiida.engine.processes.workchains.workchain.WorkChain` so that it is always immediately clear what it references.
 Let's go over the methods of the ``MultiplyAddWorkChain`` one by one:
 
+.. _2020_virtual_intro:workflow_basic:define:
+
 .. literalinclude:: include/snippets/multiply_add.py
     :language: python
     :pyobject: MultiplyAddWorkChain.define
@@ -232,15 +256,6 @@ The second argument is the result of the work chain, extracted from the ``Int`` 
 
 Launching a work chain
 ----------------------
-
-In order to launch the ``MultiplyAddWorkChain``, we need the ``Code`` the work chain uses to add two numbers together.
-This is the ``add@tutor`` code that you have set up in the basics section. Use ``verdi code list`` to see if it is set up, if not, run the following command:
-
-.. code-block:: console
-
-    $ verdi code setup -L add --on-computer --computer=tutor -P arithmetic.add --remote-abs-path=/bin/bash -n
-
-Again, command sets up a code with *label* ``add`` on the *computer* ``tutor``, using the *plugin* ``arithmetic.add``.
 
 To launch a work chain, you can either use the ``run`` or ``submit`` functions.
 For either function, you need to provide the class of the work chain as the first argument, followed by the inputs as keyword arguments.
@@ -435,6 +450,7 @@ Running the equation of state workflow
 
 Now that we have our initial structure and a calculation function for rescaling the unit cell, we can put this together with the ``PwCalculation`` from the session on running calculations to calculate the equation of state.
 For this part of the tutorial, we provide some utility functions that get the correct pseudopotentials and generate the input for a ``PwCalculation`` in :download:`common_wf.py <../scripts/common_wf.py>`.
+This is done in a similar way to how you have prepared the inputs in the :ref:`running computations<2020_virtual_intro:running>` hands on.
 
 .. important::
 
@@ -506,7 +522,7 @@ Let's have a look at the contents of this node:
       [175.26249665852, -1242.0265883524, 'eV']]}
 
 We can see that the dictionary contains the volume, calculated energy and its units for each scaled structure.
-Of course, this information is much better represented with a graph, so let's plot the equation of state and fit it with a Birch-Birch–Murnaghan equation.
+Of course, this information is much better represented with a graph, so let's plot the equation of state and fit it with a Birch-Murnaghan equation.
 For this purpose, we have provided the ``plot_eos`` script in the ``common_wf.py`` file that takes the PK of the work function as an input and plots the equation of state:
 
 .. code-block:: ipython
@@ -528,36 +544,92 @@ In this case, this will take the time required to launch the calculations, the a
 Perhaps you killed the calculation and you experienced the unpleasant consequences: intermediate calculation results are potentially lost and it is extremely difficult to restart a workflow from the exact place where it stopped.
 
 Clearly, when writing workflows that involve the use of an *ab initio* code like Quantum ESPRESSO, it is better to use a work chain.
-Below you can find the basic rules that allow you to convert your workfunction-based script to a workchain-based one and a snippet example focusing on the code used to perform the calculation of an equation of state.
+Below you can find an incomplete snippet for the ``EquationOfState`` work chain.
+It is almost completely implemented, all that it is missing is its ``define`` method.
 
-.. include:: include/snippets/eos_workchain.py
-    :code: python
+.. code-block:: python
+
+    # -*- coding: utf-8 -*-
+    """Equation of State WorkChain."""
+    from aiida.engine import WorkChain, ToContext, calcfunction
+    from aiida.orm import Code, Dict, Float, Str, StructureData
+    from aiida.plugins import CalculationFactory
+
+    from rescale import rescale
+    from common_wf import generate_scf_input_params
+
+    PwCalculation = CalculationFactory('quantumespresso.pw')
+    scale_facs = (0.96, 0.98, 1.0, 1.02, 1.04)
+    labels = ['c1', 'c2', 'c3', 'c4', 'c5']
+
+
+    @calcfunction
+    def get_eos_data(**kwargs):
+        """Store EOS data in Dict node."""
+        eos = [(result.dict.volume, result.dict.energy, result.dict.energy_units)
+            for label, result in kwargs.items()]
+        return Dict(dict={'eos': eos})
+
+
+    class EquationOfState(WorkChain):
+        """WorkChain to compute Equation of State using Quantum Espresso."""
+
+        @classmethod
+        def define(cls, spec):
+
+            #
+            # TODO: WRITE THE DEFINE METHOD AS AN EXERCISE
+            #
+
+        def run_eos(self):
+            """Run calculations for equation of state."""
+            # Create basic structure and attach it as an output
+            structure = self.inputs.structure
+
+            calculations = {}
+
+            for label, factor in zip(labels, scale_facs):
+
+                rescaled_structure = rescale(structure, Float(factor))
+                inputs = generate_scf_input_params(rescaled_structure, self.inputs.code,
+                                                self.inputs.pseudo_family)
+
+                self.report(
+                    'Running an SCF calculation for {} with scale factor {}'.
+                    format(structure.get_formula(), factor))
+                future = self.submit(PwCalculation, **inputs)
+                calculations[label] = future
+
+            # Ask the workflow to continue when the results are ready and store them in the context
+            return ToContext(**calculations)
+
+        def results(self):
+            """Process results."""
+            inputs = {
+                label: self.ctx[label].get_outgoing().get_node_by_label(
+                    'output_parameters')
+                for label in labels
+            }
+            eos = get_eos_data(**inputs)
+
+            # Attach Equation of State results as output node to be able to plot the EOS later
+            self.out('eos', eos)
 
 .. warning::
 
     WorkChains need to be defined in a **separate file** from the script used to run them.
-    E.g. save your WorkChain in ``eos_workchain.py`` and use ``from eos_workchain import EquationOfState`` to import it in your script.
-    You can also download this file :download:`here <include/snippets/eos_workchain.py>`.
+    E.g. save your WorkChain in ``eos_workchain.py`` and use ``from eos_workchain import EquationOfState`` to import the work chain in your script.
 
--   Instead of using decorated functions you need to define a class, inheriting from a prototype class called ``WorkChain`` that is provided by AiiDA in the ``aiida.engine`` module.
+To start, note the following differences between the ``run_eos_wf`` work function and the ``EquationOfState``:
 
--   Within your class you need to implement a ``define`` classmethod that always takes ``cls`` and ``spec`` as inputs.
-    Here you specify the main information on the workchain, in particular:
+-   Instead of using a ``workfunction``-decorated function you need to define a class, inheriting from a prototype class called ``WorkChain`` that is provided by AiiDA in the ``aiida.engine`` module.
 
-    -   The *inputs* that the workchain expects.
-        This is obtained by means of the ``spec.input()`` method, which provides as the key feature the automatic validation of the input types via the ``valid_type`` argument.
-        The same holds true for outputs, as you can use the ``spec.output()`` method to state what output types are expected to be returned by the workchain.
+-   For the ``WorkChain``, you need to split your main code into methods, which are the steps of the workflow.
+    Where should the code be split for the equation of state workflow?
+    Well, the splitting points should be put where you would normally block the execution of the script for collecting results in a standard work function.
+    For example here we split after submitting the ``PwCalculation``'s.
 
-    -   The ``outline`` consisting in a list of 'steps' that you want to run, put in the right sequence.
-        This is obtained by means of the method ``spec.outline()`` which takes as input the steps.
-        *Note*: in this example we just split the main execution in two sequential steps, that is, first ``run_eos`` then ``results``.
-
--   You need to split your main code into methods, with the names you specified before into the outline (``run_eos`` and ``results`` in this example).
-    Where exactly should you split the code?
-    Well, the splitting points should be put where you would normally block the execution of the script for collecting results in a standard work function, namely whenever you call the method ``.result()``.
-    Each method should accept only one parameter, ``self``, e.g. ``def step_name(self)``.
-
--   You will notice that the methods reference the attribute ``ctx`` through ``self.ctx``, which is called the *context* and is inherited from the base class ``WorkChain``.
+-   Note again the use of the attribute ``ctx`` through ``self.ctx``, which is called the *context* and is inherited from the base class ``WorkChain``.
     A python function or process function normally just stores variables in the local scope of the function.
     For instance, in the example of :ref:`this subsection<2020_intro_workflow_eos_work_functions>`, you stored the completed calculations in the ``calculations`` dictionary, that was a local variable.
 
@@ -576,19 +648,27 @@ Below you can find the basic rules that allow you to convert your workfunction-b
     See how the ``ToContext`` object is created and returned in ``run_eos``.
     By doing this, the workchain will implicitly wait for the results of all the futures you have specified, and then call the next step *only when all futures have completed*.
 
--   *Return values*: While in normal process functions you attach output nodes to the node by invoking the *return* statement, in a workchain you need to call ``self.out(link_name, node)`` for each node you want to return.
-    Of course, if you have already prepared a dictionary of outputs, you can just use the following syntax:
-
-    .. code:: python
-
-        self.out_many(retdict)  # Keys are link names, value the nodes
-
+-   While in normal process functions you attach output nodes to the node by invoking the *return* statement, in a work chain you need to call ``self.out(link_name, node)`` for each node you want to return.
     The advantage of this different syntax is that you can start emitting output nodes already in the middle of the execution, and not necessarily at the very end as it happens for normal functions (*return* is always the last instruction executed in a function or method).
     Also, note that once you have called ``self.out(link_name, node)`` on a given ``link_name``, you can no longer call ``self.out()`` on the same ``link_name``: this will raise an exception.
 
-Finally, the workflow has to be run.
-For this you have to use the function ``run`` passing as arguments the ``EquationOfState`` class and the inputs as key-value arguments.
-For example, you can execute:
+As an exercise, try to complete the ``define`` method.
+Do do this, you need to implement a ``define`` classmethod that always takes ``cls`` and ``spec`` as inputs.
+In this method you specify the main information on the workchain, in particular:
+
+-   The *inputs* that the workchain expects.
+    This is obtained by means of the ``spec.input()`` method, which provides as the key feature the automatic validation of the input types via the ``valid_type`` argument.
+    The same holds true for outputs, as you can use the ``spec.output()`` method to state what output types are expected to be returned by the workchain.
+
+-   The ``outline`` consisting in a list of 'steps' that you want to run, put in the right sequence.
+    This is obtained by means of the method ``spec.outline()`` which takes as input the steps.
+    *Note*: in this example we just split the main execution in two sequential steps, that is, first ``run_eos`` then ``results``.
+
+You can look at the ``define`` method of the ``MultiplyAddWorkChain`` :ref:`as an example <2020_virtual_intro:workflow_basic:define>`.
+If you get stuck, you can also download the complete script :download:`here <include/snippets/eos_workchain.py>`.
+
+Once the work chain is complete, let's start by *running* it.
+For this you once again have to use the function ``run`` passing as arguments the ``EquationOfState`` class and the inputs as key-value arguments:
 
 .. code-block::
 
@@ -641,17 +721,19 @@ Depending on what stage of the work chain you are in, you will see something lik
 
 .. code-block:: bash
 
-    (aiida) max@quantum-mobile:~$ verdi process list
+    (aiida) max@quantum-mobile:~/wf_basic$ verdi process list
       PK  Created    Process label    Process State    Process status
-    ----  ---------  ---------------  ---------------  ---------------------------------------
-     186  3h ago     run_eos_wf       ⏵ Running
-     665  34s ago    EquationOfState  ⏵ Waiting        Waiting for child processes: 689, 695
-     689  32s ago    PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
-     695  31s ago    PwCalculation    ⏵ Waiting        Monitoring scheduler: job state QUEUED
+    ----  ---------  ---------------  ---------------  ----------------------------------------------------
+     346  26s ago    EquationOfState  ⏵ Waiting        Waiting for child processes: 352, 358, 364, 370, 376
+     352  25s ago    PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
+     358  25s ago    PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
+     364  24s ago    PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
+     370  24s ago    PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
+     376  23s ago    PwCalculation    ⏵ Waiting        Monitoring scheduler: job state RUNNING
 
-    Total results: 4
+    Total results: 6
 
-    Info: last time an entry changed state: 8s ago (at 11:36:01 on 2020-06-19)
+    Info: last time an entry changed state: 20s ago (at 21:00:35 on 2020-06-07)
 
 .. rubric:: Footnotes
 
