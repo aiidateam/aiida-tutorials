@@ -16,11 +16,12 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 # Note: if you don't want to directly include the solutions in the HTML documentation
 # but just make it downloadable, remember to add the path to the `exclude_patterns`
 # in the `conf.py` file
-IPYNB_TEMPATE_PATTERNS = \
+IPYNB_TEMPLATE_PATTERNS = \
 	$(patsubst %-template.ipynb, %-tutorial.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.ipynb)) \
 	$(patsubst %-template.ipynb, %-solutions.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.ipynb)) \
 	$(patsubst %-template.md, %-tutorial.md, $(wildcard pages/*/notebooks/querybuilder-template.md)) \
-	$(patsubst %-template.md, %-solutions.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.md))
+	$(patsubst %-template.md, %-solutions.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.md)) \
+	$(patsubst %.md, %.ipynb, $(wildcard pages/*/notebooks/bandstructure.md))
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext all default defaultdoc templatenotebooks cleannotebooks pre-docs
 
@@ -33,7 +34,7 @@ default: pre-docs defaultdoc
 # parameters. However, this must also be called "by hand" in Travis
 pre-docs: templatenotebooks
 
-templatenotebooks: $(IPYNB_TEMPATE_PATTERNS)
+templatenotebooks: $(IPYNB_TEMPLATE_PATTERNS)
 
 %-tutorial.ipynb: %-template.ipynb
 	python scripts/make_notebook.py -t $@ $<
@@ -47,8 +48,11 @@ templatenotebooks: $(IPYNB_TEMPATE_PATTERNS)
 %-solutions.ipynb: %-template.md
 	python scripts/make_notebook.py --markdown -s $@ $<
 
+%.ipynb: %.md
+	python scripts/make_notebook.py --markdown -s $@ $<
+
 cleannotebooks:
-	rm -f $(IPYNB_TEMPATE_PATTERNS)
+	rm -f $(IPYNB_TEMPLATE_PATTERNS)
 
 # -W: exit on warning
 defaultdoc:
