@@ -7,14 +7,15 @@ Workflows: Basics
 .. important::
 
     In order to launch the workflows of this section, we will be using the computers and codes set up in the first two hands-on sessions.
-    You should ensure then that your defalt profile is now ``quicksetup``, which we created and added to during these sessions (see :ref:`2020_virtual_intro:setup_profile`).
+    You should make sure that your default profile is set to the profile which you set up during these sessions (see :ref:`2020_virtual_intro:setup_profile`).
     You can do this using:
 
     .. code-block:: console
 
-        $ verdi profile setdefault quicksetup
-        Success: quicksetup set as default profile
+        $ verdi profile setdefault <PROFILE_NAME>
+        Success: <PROFILE_NAME> set as default profile
 
+    Where ``<PROFILE_NAME>`` is the name of the profile you set up (``quicksetup`` by default).
     You should now have the following codes available:
 
     .. code-block:: console
@@ -24,6 +25,7 @@ Workflows: Basics
         # (use 'verdi code show CODEID' to see the details)
         * pk 5 - add@tutor
         * pk 2083 - qe-6.5-pw@localhost
+
 The aim of this tutorial is to introduce how to write and launch workflows in AiiDA.
 
 In this section, you will learn to:
