@@ -71,7 +71,11 @@ This should be updated with the profile you wish to import the data into, on you
 
 You should have now successfully retrieved the complete database of the AiiDA profile `TUTORIAL_PROFILE` on your `aiidatutorial` host and imported it into your local AiiDA profile `LOCAL_PROFILE`.
 
-**Note**: Remember to also copy over the scripts you wrote and saved in files either in your home folder or in a custom folder.
+```{note}
+Remember to also copy over the scripts you wrote and saved in files either in your home folder or in a custom folder, using the same `scp` command used to copy the archive.
+```
 
-**Note**: Remember that all PKs will change, while the UUIDs will remain the same.
+```{important}
+Remember that all PKs will change, while the UUIDs will remain the same!
 So if you have taken notes of the PK numbers, convert them to UUIDs (on the tutorial machine you can use `verdi node show <PK>` to get the corresponding UUID).
+```
