@@ -64,10 +64,14 @@ Info: importing archive /path/to/archive/my_tutorial_nodes.aiida
 ...
 ```
 
-Note, I we are using the profile `LOCAL_PROFILE` here, this should be updated with the profile you wish to import the data into.
-
-If you are currently in the folder where `my_tutorial_nodes.aiida` resides, you can leave out the path and just use `verdi -p LOCAL_PROFILE import my_tutorial_nodes.aiida`.
+Note that we are using the profile `LOCAL_PROFILE` here.
+This should be updated with the profile you wish to import the data into, on your local machine.
 
 ## Success
 
 You should have now successfully retrieved the complete database of the AiiDA profile `TUTORIAL_PROFILE` on your `aiidatutorial` host and imported it into your local AiiDA profile `LOCAL_PROFILE`.
+
+**Note**: Remember to also copy over the scripts you wrote and saved in files either in your home folder or in a custom folder.
+
+**Note**: Remember that all PKs will change, while the UUIDs will remain the same.
+So if you have taken notes of the PK numbers, convert them to UUIDs (on the tutorial machine you can use `verdi node show <PK>` to get the corresponding UUID).
