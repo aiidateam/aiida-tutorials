@@ -294,6 +294,14 @@ When submitting or running the work chain using namespaced inputs (``add`` in th
     }
     submit(ArithmeticAddBaseWorkChain, **inputs)
 
+.. important::
+
+    After making the changes to the ``ArithmeticAddBaseWorkChain``, don't forget to restart the daemon with:
+
+    .. code-block:: bash
+
+        $ verdi daemon restart --reset
+
 Error handling
 ==============
 So far you have seen how easy it is to get a work chain up and running that will run a subprocess using the ``BaseRestartWorkChain``.
