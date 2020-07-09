@@ -6,8 +6,8 @@
 +-----------------+----------------------------------------------------------------------------------------------------------------------+
 | Related resources                                                                                                                      |
 +=================+======================================================================================================================+
-| Virtual Machine | AWS access sent individually or desktop VM available using                                                           |
-|                 | `this release <https://github.com/marvel-nccr/quantum-mobile/releases/tag/20.06.1>`__                                |
+| Virtual Machine | AWS access (sent individually) or desktop VM available using                                                         |
+|                 | `this Quantum Mobile release <https://github.com/marvel-nccr/quantum-mobile/releases/tag/20.06.1>`__                 |
 +-----------------+----------------------------------------------------------------------------------------------------------------------+
 | python packages | `aiida-core 1.3.0`_, `aiida-quantumespresso 3.0.0`_                                                                  |
 +-----------------+----------------------------------------------------------------------------------------------------------------------+

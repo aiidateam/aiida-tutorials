@@ -1,9 +1,13 @@
-# Retrieve tutorial data
+# Retrieving tutorial data
 
-If you wish to retrieve the data from your tutorial cloud machine, you can follow these steps:
+If you wish to retrieve the data which you have generated on your tutorial cloud machine, you can follow the steps below.
 
 Note, these steps needs to be done for each AiiDA profile you wish to retrieve data from.
-In the following, I will be showing it using the profile `TUTORIAL_PROFILE`.
+In the following sections, we will be demonstrating this using the profile `TUTORIAL_PROFILE`.
+
+```{important}
+Shortly after the tutorial has ended we shall terminate your virtual machine, at which point the data will be irretrievable!
+```
 
 ## Save all Nodes in a Group and export
 
@@ -33,26 +37,26 @@ Inclusion rules
 ...
 ```
 
-The last part may take a while, a progress bar should help you see that stuff is going on.
+The final stage of this process may take a number of minutes, at which time there is a progress bar to track the status of the export.
+
+You will now have a new export archive `my_tutorial_nodes.aiida` in your current path.
+Note down this path, for example below we use the path: `/home/max/my_tutorial_nodes.aiida`.
 
 ## Download exported archive
 
-Note down the path to your new export archive `my_tutorial_nodes.aiida`.
-In the following, I use the path: `/home/max/my_tutorial_nodes.aiida`.
-
-First, open a new terminal on your local machine.
-Either `cd` into the path you wish to store the export archive or note down the path.
-In the following, I use the path: `/path/to/archive/`.
-But if you are running the command from the path you wish to store the export archive, you could use `./` instead of `/path/to/archive/`.
+Open a new terminal on your local machine, then you can run the following:
 
 ```console
 $ scp aiidatutorial:/home/max/my_tutorial_nodes.aiida /path/to/archive/
 my_tutorial_nodes.aiida ...
 ```
 
+where `/path/to/archive/` will be the path on your local machine where you want to download the archive to.
+Or you can `cd` to this path and instead use `./`.
+
 ## Import exported archive in your local AiiDA installation
 
-For the last part, you can import the AiiDA archive like you have done all other archives during the tutorial, using `verdi import`:
+You can now import the AiiDA archive like you have done all other archives during the tutorial, using `verdi import`:
 
 ```console
 $ verdi -p LOCAL_PROFILE import /path/to/archive/my_tutorial_nodes.aiida
@@ -60,12 +64,10 @@ Info: importing archive /path/to/archive/my_tutorial_nodes.aiida
 ...
 ```
 
-Note, I am using the profile `LOCAL_PROFILE` here, this should be updated with the profile you wish to import the data into.
+Note, I we are using the profile `LOCAL_PROFILE` here, this should be updated with the profile you wish to import the data into.
 
-If you're currently in the folder where `my_tutorial_nodes.aiida` resides, you can leave out the path and just write `verdi -p LOCAL_PROFILE import my_tutorial_nodes.aiida`.
+If you are currently in the folder where `my_tutorial_nodes.aiida` resides, you can leave out the path and just use `verdi -p LOCAL_PROFILE import my_tutorial_nodes.aiida`.
 
 ## Success
-
-That should be it!
 
 You should have now successfully retrieved the complete database of the AiiDA profile `TUTORIAL_PROFILE` on your `aiidatutorial` host and imported it into your local AiiDA profile `LOCAL_PROFILE`.
