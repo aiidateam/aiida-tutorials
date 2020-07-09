@@ -107,6 +107,7 @@ Here are the links to the material for the hands-on sessions:
     ./sections/bands
     ./sections/workflows_adv
     ./sections/plugins
+    ./sections/retrieve_data
 
 Appendices
 ----------
