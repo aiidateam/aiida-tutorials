@@ -296,7 +296,7 @@ When submitting or running the work chain using namespaced inputs (``add`` in th
 
 .. important::
 
-    After making the changes to the ``ArithmeticAddBaseWorkChain``, don't forget to restart the daemon with:
+    Every time you make changes to the ``ArithmeticAddBaseWorkChain``, don't forget to restart the daemon with:
 
     .. code-block:: bash
 
@@ -312,7 +312,7 @@ Let's launch the work chain with inputs that will cause the calculation to fail,
 
 .. code-block:: python
 
-    submit(ArithmeticAddBaseWorkChain, x=Int(3), y=Int(-4), code=load_code('add@tutor'))
+    submit(ArithmeticAddBaseWorkChain, add={'x': Int(3), 'y': Int(-4), 'code': load_code('add@tutor')})
 
 This time we will see that the work chain takes quite a different path:
 
