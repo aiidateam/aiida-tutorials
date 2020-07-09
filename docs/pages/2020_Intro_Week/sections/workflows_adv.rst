@@ -6,19 +6,10 @@ Workflows: Advanced
 
 In this hands-on, we'll be looking at some more advanced concepts related to workflows.
 
-.. note::
+.. important::
 
-    If you have not already been through :ref:`2020_virtual_intro:workflow_basic`, you should setup the proper ``Code``:
-
-    To set up the ``Code`` the work chain uses to add two numbers together:
-
-    .. code-block:: console
-
-        $ verdi code setup -L add --on-computer --computer=localhost -P arithmetic.add --remote-abs-path=/bin/bash -n
-
-    This command sets up a code with *label* ``add`` on the *computer* ``localhost``, using the *plugin* ``arithmetic.add``.
-
-    To learn more about setting up a computer see :ref:`2020_virtual_intro:running:computer`.
+    Just as in the :ref:`2020_virtual_intro:workflow_basic` section, we will be using the computers and codes set up in the first two hands-on sessions.
+    Make sure you have the profile you :ref:`set up at the start of the tutorial<2020_virtual_intro:setup_profile>` set as the default.
 
 Exit Codes
 **********
@@ -217,7 +208,7 @@ We can now launch it like any other work chain and the ``BaseRestartWorkChain`` 
 
 .. code-block:: python
 
-    submit(ArithmeticAddBaseWorkChain, x=Int(3), y=Int(4), code=load_code('add@localhost'))
+    submit(ArithmeticAddBaseWorkChain, x=Int(3), y=Int(4), code=load_code('add@tutor'))
 
 Once the work chain finished, we can inspect what has happened with, for example, ``verdi process status``:
 
@@ -298,10 +289,18 @@ When submitting or running the work chain using namespaced inputs (``add`` in th
         'add': {
             'x': Int(3),
             'y': Int(4),
-            'code': load_code('add@localhost')
+            'code': load_code('add@tutor')
         }
     }
     submit(ArithmeticAddBaseWorkChain, **inputs)
+
+.. important::
+
+    Every time you make changes to the ``ArithmeticAddBaseWorkChain``, don't forget to restart the daemon with:
+
+    .. code-block:: bash
+
+        $ verdi daemon restart --reset
 
 Error handling
 ==============
@@ -313,7 +312,7 @@ Let's launch the work chain with inputs that will cause the calculation to fail,
 
 .. code-block:: python
 
-    submit(ArithmeticAddBaseWorkChain, x=Int(3), y=Int(-4), code=load_code('add@localhost'))
+    submit(ArithmeticAddBaseWorkChain, add={'x': Int(3), 'y': Int(-4), 'code': load_code('add@tutor')})
 
 This time we will see that the work chain takes quite a different path:
 
