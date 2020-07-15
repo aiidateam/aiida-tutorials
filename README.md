@@ -48,10 +48,10 @@ This does not use the nitpick exception and will ensure that the documentation c
 
 When writing tutorial content that demonstrates interaction with AiiDA, it may be desirable to write and test this in a reproducible environment.
 In the root of this project, the `docker-compose.yml` provides one way to achieve this, by configuring and starting up a Docker container (naturally this requires you to have installed [Docker](https://www.docker.com/)).
-The container initialises an AiiDA environment, exposes ports for you to access locally, and mounts the `./docs/pages/` inside the container.
+The container initialises an AiiDA environment, exposes ports for you to access locally, and mounts the `./docs/source/` inside the container.
 
 To change what python packages are installed, alter `.docker/aiida-environment.yml`.
-Also, if you place an AiiDA archive at `./docs/pages/archive.aiida`, this will be imported on startup.
+Also, if you place an AiiDA archive at `./docs/source/archive.aiida`, this will be imported on startup.
 
 To start the container and wait for it to initialise:
 
