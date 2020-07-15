@@ -44,7 +44,8 @@ def run_eos_wf(code, pseudo_family, structure):
         rescaled_structure = rescale(structure, Float(factor))
 
         # Generate the inputs for the `PwCalculation`
-        inputs = generate_scf_input_params(rescaled_structure, code, pseudo_family)
+        inputs = generate_scf_input_params(rescaled_structure, code,
+                                           pseudo_family)
 
         # Launch a `PwCalculation` for each scaled structure
         print('Running a scf for {} with scale factor {}'.format(

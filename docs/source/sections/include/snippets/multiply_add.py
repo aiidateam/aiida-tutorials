@@ -19,6 +19,7 @@ ArithmeticAddCalculation = CalculationFactory('arithmetic.add')
 
 @calcfunction
 def multiply(x, y):
+    """Return product of x and y"""
     return x * y
 
 
@@ -40,7 +41,9 @@ class MultiplyAddWorkChain(WorkChain):
             cls.result,
         )
         spec.output('result', valid_type=Int)
-        spec.exit_code(400, 'ERROR_NEGATIVE_NUMBER', message='The result is a negative number.')
+        spec.exit_code(400,
+                       'ERROR_NEGATIVE_NUMBER',
+                       message='The result is a negative number.')
 
     def multiply(self):
         """Multiply two integers."""
@@ -48,7 +51,11 @@ class MultiplyAddWorkChain(WorkChain):
 
     def add(self):
         """Add two numbers using the `ArithmeticAddCalculation` calculation job plugin."""
-        inputs = {'x': self.ctx.product, 'y': self.inputs.z, 'code': self.inputs.code}
+        inputs = {
+            'x': self.ctx.product,
+            'y': self.inputs.z,
+            'code': self.inputs.code
+        }
         future = self.submit(ArithmeticAddCalculation, **inputs)
 
         return ToContext(addition=future)

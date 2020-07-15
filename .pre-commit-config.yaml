@@ -1,6 +1,5 @@
 exclude: >
     (?x)^(
-      docs/pages/.*/snippets/.*|
       .*xsf|
       .*agr|
       .*tex

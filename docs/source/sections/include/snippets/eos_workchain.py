@@ -46,7 +46,8 @@ class EquationOfState(WorkChain):
         for label, factor in zip(labels, scale_facs):
 
             rescaled_structure = rescale(structure, Float(factor))
-            inputs = generate_scf_input_params(rescaled_structure, self.inputs.code,
+            inputs = generate_scf_input_params(rescaled_structure,
+                                               self.inputs.code,
                                                self.inputs.pseudo_family)
 
             self.report(

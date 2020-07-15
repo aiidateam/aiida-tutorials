@@ -410,6 +410,7 @@ For the equation of state you need another function that takes as input a ``Stru
 
 .. literalinclude:: include/snippets/rescale.py
     :language: python
+    :start-after: start-marker
 
 Of course, this *regular* Python function won't be stored in the provenance graph, so we need to decorate it with the ``calcfunction`` decorator.
 Copy the code snippet above into a Python file, (e.g. :download:`rescale.py <include/snippets/rescale.py>`), and add the ``calcfunction`` decorator to the ``rescale`` function.

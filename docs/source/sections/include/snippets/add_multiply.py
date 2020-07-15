@@ -14,11 +14,13 @@ from aiida.engine import calcfunction, workfunction
 
 @calcfunction
 def add(x, y):
+    """Return summation of x and y"""
     return x + y
 
 
 @calcfunction
 def multiply(x, y):
+    """Return product of x and y"""
     return x * y
 
 
