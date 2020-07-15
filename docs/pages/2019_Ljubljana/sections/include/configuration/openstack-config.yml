@@ -1,6 +1,0 @@
----
-username: max
-key_filename: "~/.ssh/id_rsa"
-timeout: 30  # timout for SSH before giving up
-key_policy: AutoAddPolicy  # Expect that you already connected once to the machine so it is in the known hosts, otherwise fail
-safe_interval: 5  #  Minimum time (s) between consecutive connections

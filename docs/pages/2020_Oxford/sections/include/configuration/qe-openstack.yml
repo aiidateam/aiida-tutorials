@@ -1,9 +1,0 @@
----
-label: "qe-6.3-pw"
-description: "Quantum ESPRESSO 6.3"
-input_plugin: "quantumespresso.pw"  # input plugin for pw.x code
-computer: "openstack"
-on_computer: true
-remote_abs_path: "/home/max/codes/q-e-90a2aa88298f5005b8ab8f5fcc354c5870481d68/bin/pw.x"
-prepend_text: "ulimit -s unlimited"  # set stacksize to unlimited
-append_text: " "

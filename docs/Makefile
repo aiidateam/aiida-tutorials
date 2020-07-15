@@ -17,11 +17,11 @@ I18NSPHINXOPTS  = $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) .
 # but just make it downloadable, remember to add the path to the `exclude_patterns`
 # in the `conf.py` file
 IPYNB_TEMPLATE_PATTERNS = \
-	$(patsubst %-template.ipynb, %-tutorial.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.ipynb)) \
-	$(patsubst %-template.ipynb, %-solutions.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.ipynb)) \
-	$(patsubst %-template.md, %-tutorial.md, $(wildcard pages/*/notebooks/querybuilder-template.md)) \
-	$(patsubst %-template.md, %-solutions.ipynb, $(wildcard pages/*/notebooks/querybuilder-template.md)) \
-	$(patsubst %.md, %.ipynb, $(wildcard pages/*/notebooks/bandstructure.md))
+	$(patsubst %-template.ipynb, %-tutorial.ipynb, $(wildcard source/notebooks/querybuilder-template.ipynb)) \
+	$(patsubst %-template.ipynb, %-solutions.ipynb, $(wildcard source/notebooks/querybuilder-template.ipynb)) \
+	$(patsubst %-template.md, %-tutorial.md, $(wildcard source/notebooks/querybuilder-template.md)) \
+	$(patsubst %-template.md, %-solutions.ipynb, $(wildcard source/notebooks/querybuilder-template.md)) \
+	$(patsubst %.md, %.ipynb, $(wildcard source/notebooks/bandstructure.md))
 
 .PHONY: help clean html dirhtml singlehtml pickle json htmlhelp qthelp devhelp epub latex latexpdf text man changes linkcheck doctest gettext all default defaultdoc templatenotebooks cleannotebooks pre-docs
 

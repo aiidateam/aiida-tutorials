@@ -1,6 +1,0 @@
----
-username: <YOURUSERNAME> # <<< Replace with the username on percolator.ijs.si that you have setup on the first day of the tutorial
-key_filename: "~/.ssh/id_rsa_nsc"
-timeout: 30  # timout for SSH before giving up
-key_policy: RejectPolicy  # Expect that you already connected once to the machine so it is in the known hosts, otherwise fail
-safe_interval: 5  #  Minimum time (s) between consecutive connections
