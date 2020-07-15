@@ -343,7 +343,7 @@ jupyter_execute_notebooks = "off"
 
 # Intersphinx configuration
 intersphinx_mapping = {
-    'aiida': ('http://aiida-core.readthedocs.io/en/latest/', None),
+    'aiida': ('http://aiida-core.readthedocs.io/en/v1.3.0/', None),
     'plumpy': ('https://plumpy.readthedocs.io/en/latest/', None)
 }
 
