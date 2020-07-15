@@ -17,7 +17,7 @@ The official home of AiiDA tutorial materials and videos.
    -------
    :column: col-lg-12 pl-0 pr-0
 
-   :download:`AiiDA Cheat Sheet <docs/cheatsheet/cheatsheet.pdf>`
+   :download:`AiiDA Cheat Sheet <cheatsheet/cheatsheet.pdf>`
 
    -------
    :column: col-lg-12 pl-0 pr-0
