@@ -40,12 +40,9 @@ machine, using a compute resource with
    `python <https://docs.python.org/2.7/tutorial/index.html>`__. If you are
    not familiar with python, we suggest you partner with someone who is.
 
-Analyzing the database
-----------------------
-
 .. toctree::
    :maxdepth: 1
-   :caption: Analysis
+   :caption: Analyzing the database
    :numbered:
 
    Getting set up <./pages/2019_molsim_school_Amsterdam/tutorial/setup>
@@ -55,12 +52,9 @@ Analyzing the database
    Querying the AiiDA database <./pages/2019_molsim_school_Amsterdam/tutorial/queries>
    Selecting candidate materials <./pages/2019_molsim_school_Amsterdam/tutorial/candidate-selection>
 
-Computing properties of candidate materials
--------------------------------------------
-
 .. toctree::
    :maxdepth: 1
-   :caption: Computing
+   :caption: Computing properties
    :numbered:
 
    Setting up remote computers and codes <./pages/2019_molsim_school_Amsterdam/screening/calculations>
@@ -68,12 +62,9 @@ Computing properties of candidate materials
    Screening <./pages/2019_molsim_school_Amsterdam/screening/screening>
    Upload your results <./pages/2019_molsim_school_Amsterdam/screening/export>
 
-Theoretical background
-----------------------
-
 .. toctree::
    :maxdepth: 1
-   :caption: Background
+   :caption: Theoretical background
    :numbered:
 
    Origin of the MOF database <./pages/2019_molsim_school_Amsterdam/theoretical/502-mofs>
