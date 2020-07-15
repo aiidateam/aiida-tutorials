@@ -14,13 +14,12 @@
 .. _zeo++ 0.3: http://www.zeoplusplus.org/download.html
 .. _raspa 2.0.36: https://github.com/iRASPA/RASPA2/releases/tag/v2.0.36
 
+Metal-organic frameworks for methane storage applications
+=========================================================
+
 This tutorial is part of the `Understanding molecular
 simulation <http://www.acmm.nl/molsim/molsim2019/>`__ school held at the
 University of Amsterdam from January 7-18 2019.
-
-
-Metal-organic frameworks for methane storage applications
-=========================================================
 
 In this tutorial, we will screen metal-organic frameworks (MOFs) for
 their possible application as methane adsorbents, allowing to store
