@@ -45,6 +45,7 @@ Analyzing the database
 
 .. toctree::
    :maxdepth: 1
+   :caption: Analysis
    :numbered:
 
    Getting set up <./pages/2019_molsim_school_Amsterdam/tutorial/setup>
@@ -59,6 +60,7 @@ Computing properties of candidate materials
 
 .. toctree::
    :maxdepth: 1
+   :caption: Computing
    :numbered:
 
    Setting up remote computers and codes <./pages/2019_molsim_school_Amsterdam/screening/calculations>
@@ -71,6 +73,7 @@ Theoretical background
 
 .. toctree::
    :maxdepth: 1
+   :caption: Background
    :numbered:
 
    Origin of the MOF database <./pages/2019_molsim_school_Amsterdam/theoretical/502-mofs>
