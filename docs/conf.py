@@ -51,7 +51,7 @@ templates_path = ['_templates']
 #source_encoding = 'utf-8-sig'
 
 # The master toctree document.
-master_doc = 'pages/2019_molsim_school_Amsterdam/index'
+master_doc = 'index'
 
 # General information about the project.
 project = u'AiiDA Tutorials'

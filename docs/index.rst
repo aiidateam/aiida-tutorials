@@ -47,12 +47,12 @@ Analyzing the database
    :maxdepth: 1
    :numbered:
 
-   Getting set up <./tutorial/setup>
-   Browsing the provenance graph <./tutorial/provenance-graph>
-   The verdi command line <./tutorial/verdi-commands>
-   The AiiDA python interface <./tutorial/python-interface>
-   Querying the AiiDA database <./tutorial/queries>
-   Selecting candidate materials <./tutorial/candidate-selection>
+   Getting set up <./pages/2019_molsim_school_Amsterdam/tutorial/setup>
+   Browsing the provenance graph <./pages/2019_molsim_school_Amsterdam/tutorial/provenance-graph>
+   The verdi command line <./pages/2019_molsim_school_Amsterdam/tutorial/verdi-commands>
+   The AiiDA python interface <./pages/2019_molsim_school_Amsterdam/tutorial/python-interface>
+   Querying the AiiDA database <./pages/2019_molsim_school_Amsterdam/tutorial/queries>
+   Selecting candidate materials <./pages/2019_molsim_school_Amsterdam/tutorial/candidate-selection>
 
 Computing properties of candidate materials
 -------------------------------------------
@@ -61,10 +61,10 @@ Computing properties of candidate materials
    :maxdepth: 1
    :numbered:
 
-   Setting up remote computers and codes <./screening/calculations>
-   Compute methane loading <./screening/methane-loading>
-   Screening <./screening/screening>
-   Upload your results <./screening/export>
+   Setting up remote computers and codes <./pages/2019_molsim_school_Amsterdam/screening/calculations>
+   Compute methane loading <./pages/2019_molsim_school_Amsterdam/screening/methane-loading>
+   Screening <./pages/2019_molsim_school_Amsterdam/screening/screening>
+   Upload your results <./pages/2019_molsim_school_Amsterdam/screening/export>
 
 Theoretical background
 ----------------------
@@ -73,8 +73,8 @@ Theoretical background
    :maxdepth: 1
    :numbered:
 
-   Origin of the MOF database <./theoretical/502-mofs>
-   Geometric properties <./theoretical/geometric-properties>
-   Multiply the unit cell <./theoretical/multiply-uc>
-   Settings for Raspa <./theoretical/settings-raspa>
-   Extra challenge: MOFs for CO2 capture <./theoretical/charged-adsorbates>
+   Origin of the MOF database <./pages/2019_molsim_school_Amsterdam/theoretical/502-mofs>
+   Geometric properties <./pages/2019_molsim_school_Amsterdam/theoretical/geometric-properties>
+   Multiply the unit cell <./pages/2019_molsim_school_Amsterdam/theoretical/multiply-uc>
+   Settings for Raspa <./pages/2019_molsim_school_Amsterdam/theoretical/settings-raspa>
+   Extra challenge: MOFs for CO2 capture <./pages/2019_molsim_school_Amsterdam/theoretical/charged-adsorbates>
