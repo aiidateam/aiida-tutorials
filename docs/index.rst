@@ -17,10 +17,7 @@ The official home of AiiDA tutorial materials and videos.
    -------
    :column: col-lg-12 pl-0 pr-0
 
-   .. link-button:: https://github.com/aiidateam/aiida-tutorials/raw/b5a8d54176153ce2b735e1fae8cae2c93c78a6bf/docs/pages/2019_IIT_Mandi_India/cheatsheet/cheatsheet.pdf
-      :type: url
-      :text: AiiDA Cheat Sheet
-      :classes: btn-link btn-block stretched-link
+   :download:`AiiDA Cheat Sheet <cheatsheet/cheatsheet.pdf>`
 
    -------
    :column: col-lg-12 pl-0 pr-0
