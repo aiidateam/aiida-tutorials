@@ -79,7 +79,7 @@ We can check the contents of the ``node`` variable like this:
 Quite a bit of information on our freshly created node is returned:
 
 * The data node is of the type ``Int``
-* The node has the *universally unique identifier* (**UUID**) ``eac48d2b-ae20-438b-aeab-2d02b69eb6a8``
+* The node has the *universally unique identifier* (**UUID**), which will be different in each case (in the example above, it turned out to be ``eac48d2b-ae20-438b-aeab-2d02b69eb6a8``)
 * The node is currently not stored in the database ``(unstored)``
 * The integer value of the node is ``2``
 
