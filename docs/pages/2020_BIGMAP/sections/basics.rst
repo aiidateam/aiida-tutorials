@@ -36,6 +36,19 @@ The green ellipses are ``Data`` nodes, the blue ellipse is a ``Code`` node, and 
 The provenance graph allows us to not only see what data we have, but also how it was produced.
 During this tutorial we will be using AiiDA to generate the provenance graph in :numref:`fig_intro_workchain_graph` step by step.
 
+.. note::
+
+  Throughout this tutorial we will be using the ``verdi`` command line interface.
+  Here's couple of tricks that will make your life easier:
+
+  * The ``verdi`` command supports **tab-completion**:
+    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
+  * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag:
+
+    .. code-block:: console
+
+        $ verdi -h
+
 .. _BIGMAP_2020_Basics:data_nodes:
 
 Data nodes
@@ -79,7 +92,6 @@ Let's store the node in the database:
 
 As you can see, the data node has now been assigned a *primary key* (**PK**), a number that identifies the node in your database ``(pk: 1)``.
 The PK and UUID both reference the node with the only difference that the PK is unique *for your local database only*, whereas the UUID is a globally unique identifier and can therefore be used between *different* databases.
-Use the PK only if you are working within a single database, i.e. in an interactive session and the UUID in all other cases.
 
 .. important::
 
@@ -94,11 +106,6 @@ Back in the terminal, use the ``verdi`` command line interface (CLI) to check th
 .. code:: console
 
     $ verdi node show 1
-
-This prints something like the following:
-
-.. code-block:: bash
-
     Property     Value
     -----------  ------------------------------------
     type         Int
@@ -112,9 +119,38 @@ This prints something like the following:
 Once again, we can see that the node is of type ``Int``, has PK = 1, and UUID = ``eac48d2b-ae20-438b-aeab-2d02b69eb6a8``.
 Besides this information, the ``verdi node show`` command also shows the (empty) ``label`` and ``description``, as well as the time the node was created (``ctime``) and last modified (``mtime``).
 
-.. note::
+.. seealso::
 
     AiiDA already provides many standard data types, but you can also `create your own <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/data_types.html#adding-support-for-custom-data-types>`_.
+
+.. dropdown:: **When should I use the PK and when should I use the UUID?**
+
+  A **PK** is a short integer identifying the node and therefore easy to remember.
+  However, the same PK number (e.g., PK=10) might appear in two different databases referring to two completely different pieces of data.
+
+  A **UUID** has instead the nice feature of being globally unique: even if you export your data and a colleague imports it, the UUIDs will remain the same (while the PKs will typically be different).
+
+  Therefore, use the UUID to keep a long-term reference to a node, but feel free to use the PK for quick, everyday use in your own database.
+
+.. dropdown:: **UUID/PK - Tips and tricks**
+
+  All AiiDA commands that accept a PK can also accept a UUID. Check this by trying the command before, this time with ``verdi node show <UUID>``.
+
+  Note the following:
+
+  - AiiDA does not require the full UUID, but just the first part of it, as long as only one node starts with the string you provide.
+    E.g., in the example above, you could also say ``verdi node show eac48d2b-ae20``.
+    Most probably, instead, ``verdi node show d1`` will return an error, since most probably you have more than one node starting with the string ``d1``.
+
+  - By default, if what you pass is a valid integer, AiiDA will assume it is a PK; if at least one of the characters is not a digit, then AiiDA will assume it is (the first part of) a UUID.
+
+  - How to solve the issue, then, when the first part of the UUID is composed only by digits (e.g. in ``2495301c-dd00-42d6-92e4-1a8c171bbb4a``)?
+    Indeed, using ``verdi node show 24953`` would look for a node with ``PK=24953``.
+    As a solution, just add a dash, e.g. ``verdi node show 24953-`` so that AiiDA will consider this as the beginning of the UUID.
+
+  - Note that you can put the dash in any part of the string, and you don't need to respect the typical UUID pattern with 8-4-4-4-12 characters per section: AiiDA will anyway first strip all dashes, and then put them back in the right place, so e.g. ``verdi node show 24-95-3`` will give you the same result as ``verdi node show 24953-``.
+
+  Try to use again ``verdi node show`` on the ``Int`` node above, just with the first part of the UUID (that you got from the first call to ``verdi node show`` above).
 
 .. _BIGMAP_2020_Basics:calcfunction:
 
@@ -188,11 +224,6 @@ If you want to see *all* processes (i.e. also the processes that are *terminated
 .. code:: console
 
     $ verdi process list -a
-
-You should now see something like the following output:
-
-.. code-block:: bash
-
       PK  Created    Process label    Process State    Process status
     ----  ---------  ---------------  ---------------  ----------------
        3  1m ago     multiply         ⏹ Finished [0]
@@ -201,11 +232,13 @@ You should now see something like the following output:
 
     Info: last time an entry changed state: 1m ago (at 09:01:05 on 2020-05-13)
 
-We can see that our ``multiply`` calcfunction was created 1 minute ago, assigned the PK 3, and has ``Finished``.
+We can see that our ``multiply`` calculation function was created 1 minute ago, assigned the PK 3, and has ``Finished``.
 
 As a final step, let's have a look at the provenance of this simple calculation.
 The provenance graph can be automatically generated using the verdi CLI.
 Let's generate the provenance graph for the ``multiply`` calculation function we have just run with PK = 3:
+
+.. _BIGMAP_2020_Basics:calcfunction:graph:
 
 .. code-block:: console
 
@@ -222,7 +255,7 @@ It should look something like the graph shown in :numref:`BIGMAP_2020_Basics_fig
 
     Provenance graph of the ``multiply`` calculation function.
 
-.. note:: Remember that the PK of the ``CalcJob`` can be different for your database.
+.. note:: Remember that the PK of the ``calcfunction`` can be different for your database.
 
 .. _tutorial:basic:calcjob:
 
@@ -236,10 +269,6 @@ To run a ``CalcJob``, you need to set up two things: a ``code`` that is going to
 
 If you're running this tutorial in the Quantum Mobile VM or on Binder, these have been pre-configured for you. If you're running on your own machine, you can follow the instructions in the panel below.
 
-.. seealso::
-
-   More details for how to :ref:`run external codes <how-to:run-codes>`.
-
 .. dropdown:: Install localhost computer and code
 
     Let's begin by setting up the computer using the ``verdi computer`` subcommand:
@@ -247,7 +276,7 @@ If you're running this tutorial in the Quantum Mobile VM or on Binder, these hav
     .. code-block:: console
 
         $ verdi computer setup -L tutor -H localhost -T local -S direct -w `echo $PWD/work` -n
-        $ verdi computer configure local tutor --safe-interval 5 -n
+        $ verdi computer configure local tutor --safe-interval 3 -n
 
     The first commands sets up the computer with the following options:
 
@@ -257,7 +286,7 @@ If you're running this tutorial in the Quantum Mobile VM or on Binder, these hav
     * *scheduler* (``-S``): direct
     * *work-dir* (``-w``): The ``work`` subdirectory of the current directory
 
-    The second command *configures* the computer with a minimum interval between connections (``--safe-interval``) of 5 seconds.
+    The second command *configures* the computer with a minimum interval between connections (``--safe-interval``) of 3 seconds.
     For both commands, the *non-interactive* option (``-n``) is added to not prompt for extra input.
 
     Next, let's set up the code we're going to use for the tutorial:
@@ -268,8 +297,12 @@ If you're running this tutorial in the Quantum Mobile VM or on Binder, these hav
 
     This command sets up a code with *label* ``add`` on the *computer* ``tutor``, using the *plugin* ``arithmetic.add``.
 
+.. seealso::
+
+   More details for how to :ref:`run external codes <how-to:run-codes>`.
+
 A typical real-world example of a computer is a remote supercomputing facility.
-Codes can be anything from a Python script to powerful *ab initio* codes such as Quantum Espresso or machine learning tools like Tensorflow.
+Codes can be anything from a Python script to powerful *ab initio* codes such as `Quantum ESPRESSO`_ or machine learning tools like `TensorFlow`_.
 Let's have a look at the codes that are available to us:
 
 .. code:: console
@@ -371,8 +404,16 @@ Now, exit the IPython shell and once more check for *all* processes:
 .. code-block:: console
 
     $ verdi process list -a
+    PK  Created    Process label             Process State    Process status
+    ----  ---------  ------------------------  ---------------  ----------------
+    185  39m ago    multiply                  ⏹ Finished [0]
+    189  1m ago     ArithmeticAddCalculation  ⏹ Finished [0]
 
-You should now see two processes in the list.
+    Total results: 2
+
+    Info: last time an entry changed state: 59s ago (at 00:31:33 on 2020-11-24)
+
+We now see two processes in the list.
 One is the ``multiply`` calcfunction you ran earlier, the second is the ``ArithmeticAddCalculation`` CalcJob that you have just run.
 Grab the PK of the ``ArithmeticAddCalculation``, and generate the provenance graph.
 The result should look like the graph shown in :numref:`BIGMAP_2020_Basics_fig_calcjob_graph`.
@@ -392,7 +433,30 @@ You can see more details on any process, including its inputs and outputs, using
 
 .. code:: console
 
-    $ verdi process show 7
+    $ verdi process show 189
+    Property     Value
+    -----------  ------------------------------------
+    type         ArithmeticAddCalculation
+    state        Finished [0]
+    pk           189
+    uuid         bed94416-9acc-4719-9761-1b43103f594e
+    label
+    description
+    ctime        2020-11-24 00:31:20.715937+00:00
+    mtime        2020-11-24 00:31:33.644555+00:00
+    computer     [2] tutor
+
+    Inputs      PK  Type
+    --------  ----  ------
+    code       187  Code
+    x          186  Int
+    y          188  Int
+
+    Outputs          PK  Type
+    -------------  ----  ----------
+    remote_folder   190  RemoteData
+    retrieved       191  FolderData
+    sum             192  Int
 
 .. _BIGMAP_2020_Basics:submit:
 
@@ -454,11 +518,6 @@ Let's exit the IPython shell and have a look at the process list:
 .. code-block:: console
 
     $ verdi process list
-
-You should see the ``CalcJob`` you have just submitted, with the state ``Created``:
-
-.. code-block:: bash
-
       PK  Created    Process label             Process State    Process status
     ----  ---------  ------------------------  ---------------  ----------------
       12  13s ago    ArithmeticAddCalculation  ⏹ Created
@@ -467,23 +526,21 @@ You should see the ``CalcJob`` you have just submitted, with the state ``Created
 
     Info: last time an entry changed state: 13s ago (at 09:06:57 on 2020-05-13)
 
+You can see the ``CalcJob`` you have just submitted, with the state ``Created``.
 The ``CalcJob`` process is now waiting to be picked up by a daemon runner, but the daemon is currently disabled.
 Let's start it up (again):
 
 .. code-block:: console
 
     $ verdi daemon start
+    Starting the daemon... RUNNING
 
-Now you can either use ``verdi process list`` to follow the execution of the ``CalcJob``, or ``watch`` its progress:
-
-.. code-block:: console
-
-    $ verdi process watch 12
-
+Now you can use ``verdi process list`` to follow the progress of the calculation.
 Let's wait for the ``CalcJob`` to complete and then use ``verdi process list -a`` to see all processes we have run so far:
 
 .. code-block:: bash
 
+    $ verdi process list -a
       PK  Created    Process label             Process State    Process status
     ----  ---------  ------------------------  ---------------  ----------------
        3  6m ago     multiply                  ⏹ Finished [0]
@@ -504,7 +561,7 @@ AiiDA allows us to automate these steps by linking them together in a *workflow*
 For this tutorial we have prepared a basic ``WorkChain`` that is already implemented in ``aiida-core``.
 You can see the code below:
 
-.. dropdown:: MultiplyAddWorkChain code
+.. dropdown:: **MultiplyAddWorkChain code**
 
     .. literalinclude:: include/snippets/multiply_add.py
         :language: python
@@ -543,6 +600,7 @@ Once the ``WorkChain`` input has been set up, we submit it to the daemon using t
 
     In [3]: from aiida.engine import submit
        ...: submit(builder)
+    Out[3]: <WorkChainNode: uuid: b7c738e1-5cab-479e-8a8e-ac527310ac5f (pk: 201) (aiida.workflows:arithmetic.multiply_add)>
 
 Now quickly leave the IPython shell and check the process list:
 
@@ -597,3 +655,6 @@ The provenance graph should be similar to the one we showed at the start of this
     :align: center
 
     Final provenance Graph of the basic AiiDA tutorial.
+
+.. _Quantum ESPRESSO: https://www.quantum-espresso.org/
+.. _TensorFlow: https://www.tensorflow.org/
