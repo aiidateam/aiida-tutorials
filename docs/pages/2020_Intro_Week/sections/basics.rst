@@ -183,7 +183,9 @@ This prints something like the following:
 Once again, we can see that the node is of type ``Int``, has PK = 1, and UUID = ``eac48d2b-ae20-438b-aeab-2d02b69eb6a8``.
 Besides this information, the ``verdi node show`` command also shows the (empty) ``label`` and ``description``, as well as the time the node was created (``ctime``) and last modified (``mtime``).
 
-.. note:: AiiDA already provides many standard data types, but you can also :ref:`create your own<how-to:data:plugin>`.
+.. note::
+
+    AiiDA already provides many standard data types, but you can also `create your own <https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/data_types.html#adding-support-for-custom-data-types>`_.
 
 Calculation functions
 ---------------------
