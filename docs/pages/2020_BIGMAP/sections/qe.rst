@@ -146,11 +146,11 @@ You can get the contents of this dictionary easily using the ``verdi shell``:
 
 .. code-block:: ipython
 
-    In [1]: node = load_node(232)                                                      
+    In [1]: node = load_node(232)
 
-    In [2]: d = node.get_dict()                                      
+    In [2]: d = node.get_dict()
 
-    In [3]: d['energy']                                                                
+    In [3]: d['energy']
     Out[3]: -1242.9739990626
 
 Moreover, you can also easily access the input and output files of the calculation using the ``verdi`` CLI:
