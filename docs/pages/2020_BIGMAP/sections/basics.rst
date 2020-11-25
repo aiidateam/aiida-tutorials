@@ -13,6 +13,10 @@ At the end of this tutorial you will know how to:
 * Run and monitor the status of processes.
 * Explore and visualize the provenance graph.
 
+.. important::
+
+    Before starting, make sure you are in the correct Python environment using ``workon aiida``.
+
 .. _BIGMAP_2020_Basics:provenance:
 
 Provenance
@@ -248,7 +252,7 @@ Let's generate the provenance graph for the ``multiply`` calculation function we
 The command will write the provenance graph to a ``.pdf`` file.
 Use the ``evince`` command to open and have a look:
 
-.. code-block::
+.. code-block:: console
 
     $ evince <PK>.dot.pdf
 
@@ -362,7 +366,7 @@ The ``localhost`` computer has PK = 1, UUID ``de6939f0-029e-49e3-be47-b41e4137c6
 
 .. note::
 
-    You may have noticed that the PK of the ``localhost`` computer is the same as the ``yambo-4.5.1-yambo@localhost`` code, which is represented by a node.
+    You may have noticed that the PK of the ``localhost`` computer is the same as the ``yambo-4.5.1-yambo@localhost`` code, which is represented by a node in the database.
     This is because different entities, such as nodes, computers and groups, are stored in different tables of the database.
     So, the PKs for each entity type are unique for each database, but entities of different types can have the same PK within one database.
 
@@ -597,7 +601,7 @@ You can see the code below:
 
 .. note::
 
-    Besides WorkChain's, workflows can also be implemented as *work functions*.
+    Besides work chains, workflows can also be implemented as *work functions*.
     These are ideal for workflows that are not very computationally intensive and can be easily implemented in a Python function.
 
 Let's run the ``WorkChain`` above!
@@ -680,6 +684,9 @@ The provenance graph should be similar to the one we showed at the start of this
     :align: center
 
     Final provenance Graph of the basic AiiDA tutorial.
+
+Great work so far!
+Once you're ready, click on the "Next" button below to go to the second part of the tutorial.
 
 .. Links:
 
