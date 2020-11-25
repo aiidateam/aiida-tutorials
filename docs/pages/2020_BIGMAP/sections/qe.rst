@@ -279,7 +279,7 @@ and open the |provenance browser| (from the browser inside the virtual machine).
 
 .. |provenance browser| raw:: html
 
-    <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v3" target="_blank">Materials Cloud provenance browser</a>
+    <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v4" target="_blank">Materials Cloud provenance browser</a>
 
 .. note::
 
