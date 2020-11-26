@@ -215,7 +215,7 @@ Querying for data
 
 For this part of the tutorial, we shall move to interacting with AiiDA using a Jupyter notebook, which you will be able to run in your browser.
 For instructions on starting the Jupyter server, please refer to the :ref:`setup section<2020_virtual_intro:setup:jupyter>`.
-Once the server is running, :jupyter-download:nb:`download this tutorial notebook on to your Virtual Machine <../notebooks/querybuilder-tutorial>`, using the instructions in :ref:`this section<2020_virtual_intro:setup:downloading_files>`, and open it in Jupyter.
+Once the server is running, :nb-download:`download this tutorial notebook on to your Virtual Machine <../notebooks/querybuilder-tutorial.ipynb>`, using the instructions in :ref:`this section<2020_virtual_intro:setup:downloading_files>`, and open it in Jupyter.
 
 The notebook will show you how the ``QueryBuilder`` can be used to query your
 database for specific data. It will demonstrate certain concepts and then ask
