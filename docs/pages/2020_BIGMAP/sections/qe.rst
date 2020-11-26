@@ -275,7 +275,7 @@ Start the AiiDA REST API:
 
     $ verdi restapi
 
-and open the |provenance browser| (from the browser inside the virtual machine).
+and open the |provenance browser|.
 
 .. |provenance browser| raw:: html
 
@@ -309,25 +309,21 @@ Use this to produce a PDF of the band structure:
 .. figure:: include/images/si_bands.png
    :width: 100%
 
-   Band structure computed by the ``PwBandStructure`` workchain.
+   Band structure computed by the ``PwBandStructureWorkChain``.
 
 .. note::
    The ``BandsData`` node does contain information about the Fermi energy, so the energy zero in your plot will be arbitrary.
-   You can produce a plot with the Fermi energy set to zero (as above) using the following code in e.g. a Jupyter notebook:
+   You can produce a plot with the Fermi energy set to zero (as above) using the following steps in the ``verdi shell``.
+   Just look for the ``scf_parameters`` and ``band_structure`` output nodes of the ``PwBandStructureWorkChain`` using ``verdi process show`` and replace them in the following code:
 
    .. code-block:: ipython
 
-        %matplotlib inline
-        import aiida
-        aiida.load_profile()
+        In [1]: scf_params = load_node(<PK>)  # PK of the `scf_parameters` node
+           ...: fermi_energy = scf_params.dict.fermi_energy
+           ...: bands = load_node(<PK>)  # PK of the `band_structure` node
+           ...: bands.show_mpl(y_origin=fermi_energy, plot_zero_axis=True)
 
-        from aiida.orm import load_node
 
-        scf_params = load_node(<PK>)  # REPLACE with PK of "scf_parameters" output
-        fermi_energy = scf_params.dict.fermi_energy
-
-        bands = load_node(<PK>)  # REPLACE with PK of "band_structure" output
-        bands.show_mpl(y_origin=fermi_energy, plot_zero_axis=True)
 
 What next?
 ----------
