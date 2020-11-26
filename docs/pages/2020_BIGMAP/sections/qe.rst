@@ -323,7 +323,18 @@ Use this to produce a PDF of the band structure:
            ...: bands = load_node(<PK>)  # PK of the `band_structure` node
            ...: bands.show_mpl(y_origin=fermi_energy, plot_zero_axis=True)
 
+Querying the database
+---------------------
 
+As you will use AiiDA to run your calculations, the database that stores all the data and the provenance will quickly grow to be very large.
+To help you find the needle that you might be looking for in this big haystack, we need an efficient search tool.
+AiiDA provides a tool to do exactly this: the ``QueryBuilder``.
+The ``QueryBuilder`` acts as the gatekeeper to your database, to whom you can ask questions about the contents of your database (also referred to as queries), by specifying what are looking for.
+In the final part of the tutorial, we will show a few examples on how to use the ``QueryBuilder`` to make these queries and understand/use the results.
+
+.. code-block:: console
+
+    $ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 
 What next?
 ----------
