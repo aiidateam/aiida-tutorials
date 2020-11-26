@@ -356,3 +356,17 @@ print(
         os.path.dirname(os.path.realpath(__file__)), 'pre-docs'
     ],
                             universal_newlines=True))
+
+nb_render_priority = {
+    "gettext": (
+        "application/vnd.jupyter.widget-view+json",
+        "application/javascript",
+        "text/html",
+        "image/svg+xml",
+        "image/png",
+        "image/jpeg",
+        "text/markdown",
+        "text/latex",
+        "text/plain",
+    )
+}
