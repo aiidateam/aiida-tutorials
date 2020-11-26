@@ -286,7 +286,7 @@ However, we still have to set up the ``add`` code, which we'll be using for this
     $ verdi code setup -L add --on-computer --computer=localhost -P arithmetic.add --remote-abs-path=/bin/bash -n
     Success: Code<187> add@localhost created
 
-This command sets up a code with *label* ``add`` on the *computer* ``tutor``, using the *plugin* ``arithmetic.add``.
+This command sets up a code with *label* ``add`` on the *computer* ``localhost``, using the *plugin* ``arithmetic.add``.
 The absolute path to the "remote" executable is ``\bin\bash``, i.e. this code simply prepares and runs a bash script.
 Finally, the code is already installed on the computer (``--on-computer``) and the *non-interactive* option (``-n``) is added to not prompt for extra input.
 
