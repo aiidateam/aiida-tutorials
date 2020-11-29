@@ -349,6 +349,10 @@ First, we'll import a set of previously created data entries that we'll use in t
 
     $ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 
+.. note::
+
+    This can take a bit of time when running on the AiiDAlab cluster.
+
 To help you organise your data, AiiDA allows you to *group* nodes together.
 Let's have a look at the groups we've imported from the archive above:
 
