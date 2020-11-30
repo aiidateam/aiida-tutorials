@@ -329,8 +329,8 @@ Querying the database
 As you will use AiiDA to run your calculations, the database that stores all the data and the provenance will quickly grow to be very large.
 To help you find the needle that you might be looking for in this big haystack, we need an efficient search tool.
 AiiDA provides a tool to do exactly this: the ``QueryBuilder``.
-The ``QueryBuilder`` acts as the gatekeeper to your database, to whom you can ask questions about the contents of your database (also referred to as queries), by specifying what are looking for.
-In the final part of the tutorial, we will show an short demo on how to use the ``QueryBuilder`` to make these queries and understand/use the results.
+The ``QueryBuilder`` acts as the gatekeeper to your database, to whom you can ask questions about its contents (also referred to as queries), by specifying what are looking for.
+In this final part of the tutorial, we will show an short demo on how to use the ``QueryBuilder`` to make these queries and understand/use the results.
 
 First, we'll import a set of previously created data entries that we'll use in this section:
 
@@ -351,7 +351,7 @@ Let's have a look at the groups we've imported from the archive above:
        7  tutorial_lda     core           aiida@localhost
        8  tutorial_pbe     core           aiida@localhost
 
-Image you want to understand the influence of the functional on the magnetization of the structure.
+Imagine you want to understand the influence of the functional on the magnetization of the structure.
 Let's *build* a query that helps us investigate this question.
 Start the ``verdi shell``, and load the ``StructureData`` and ``PwCalculation`` classes:
 
@@ -379,7 +379,7 @@ Let's explain the different arguments used in this call of the ``append()`` meth
     * The first *positional* argument is the ``Group`` class, preloaded in the ``verdi shell``.
     * The first *keyword* argument is ``filters``, here we *filter* for the group with ``label`` equal to ``tutorial_pbesol``.
     * The second *keyword* argument is ``tag``.
-      This is reference we use to indicate *relationships* between nodes in future ``append()`` calls.
+      This is a reference we will use to indicate *relationships* between nodes in future ``append()`` calls (as seen below).
 
 Next, we'll look for all the ``PwCalculations`` in this group:
 
@@ -405,8 +405,8 @@ First, we'll *append* the ``StructureData`` to the query:
     In [6]: qb.append(StructureData, with_outgoing='pw', project='extras.formula');
 
 In this step, we've used the ``with_outgoing`` relationship to look for structures that have an *outgoing* link to the ``PwCalculations`` referenced with the ``pw`` tag.
-That means that from the ``PwCalculation``'s perspective, the ``StructureData`` is an input, exactly what we want.
-We also use the ``project`` keyword argument to *project* the formula of the structure, which for this tutorial has been stored in the ``extras`` of the ``StructureData`` nodes.
+That means that from the ``PwCalculation``'s perspective, the ``StructureData`` is an input.
+We also use the ``project`` keyword argument to *project* the formula of the structure, which has been conveniently stored in the ``extras`` of these ``StructureData`` nodes for the purpose of this tutorial.
 By *projecting* the formula, it will be a part of the results of our query.
 
 The final ``append()`` call puts using *relationships*, *filters* and *projections* together.
