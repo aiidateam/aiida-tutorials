@@ -20,6 +20,24 @@ BIG-MAP meeting AiiDA tutorial
 
 This is the content of the AiiDA tutorial organised for the BIG-MAP meeting on 2 December 2020.
 
+
+Setup
+-----
+
+The tutorial will be run on the |AiiDAlab tutorials cluster|, just click the link and log in with a username and password of your choosing.
+
+.. important::
+
+  Make a note of your password!
+  If you lose it, you can make a new account, but you will lose your progress.
+
+That's it!
+You're ready to start with the tutorial.
+
+.. |AiiDAlab tutorials cluster| raw:: html
+
+   <a href="http://aiidalab-tutorials.materialscloud.org/" target="_blank">AiiDAlab tutorials cluster</a>
+
 Hands-on materials
 ------------------
 
@@ -27,7 +45,6 @@ Hands-on materials
    :maxdepth: 1
    :numbered:
 
-   ./sections/setup
    ./sections/basics
    ./sections/qe
 
