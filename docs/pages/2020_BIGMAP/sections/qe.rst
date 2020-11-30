@@ -14,11 +14,12 @@ Let's download a structure from the `Crystallography Open Database <http://cryst
 
     You can also view the structure online `here <http://crystallography.net/cod/9008565.html>`_.
 
-First, download the file and from the COD with ``wget``:
+First, download the Si structure file: :download:`Si.cif <include/Si.cif>`.
+You can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
 
 .. code-block:: console
 
-    $ wget http://crystallography.net/cod/9008565.cif
+    $ wget <LINK>
     --2020-11-25 11:32:32--  http://crystallography.net/cod/9008565.cif
     Resolving crystallography.net (crystallography.net)... 158.129.170.82
     Connecting to crystallography.net (crystallography.net)|158.129.170.82|:80... connected.
@@ -34,8 +35,8 @@ Next, you can import it with the ``verdi`` CLI.
 
 .. code-block:: console
 
-    $ verdi data structure import ase 9008565.cif
-      Successfully imported structure Si8 (PK = 171)
+    $ verdi data structure import ase Si.cif
+      Successfully imported structure Si2 (PK = 171)
 
 Remember that each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
 This is printed out on the screen by the ``verdi data structure import`` command.
@@ -46,7 +47,7 @@ It's a good idea to mark it down, but should you forget, you can always have a l
     $ verdi data structure list
       Id  Label    Formula
     ----  -------  ---------
-     171           Si8
+     171           Si2
 
     Total results: 1
 
@@ -79,7 +80,7 @@ The following short Python script sets up a self-consistent field calculation fo
 .. literalinclude:: include/snippets/demo_calcjob.py
 
 Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
-You can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
+Remember that you can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
 
 .. code-block:: console
 
