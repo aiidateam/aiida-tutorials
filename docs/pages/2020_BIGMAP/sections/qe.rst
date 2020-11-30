@@ -35,7 +35,7 @@ Next, you can import it with the ``verdi`` CLI.
 .. code-block:: console
 
     $ verdi data structure import ase 9008565.cif
-      Successfully imported structure Si8 (PK = 208)
+      Successfully imported structure Si8 (PK = 171)
 
 Remember that each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
 This is printed out on the screen by the ``verdi data structure import`` command.
@@ -46,7 +46,7 @@ It's a good idea to mark it down, but should you forget, you can always have a l
     $ verdi data structure list
       Id  Label    Formula
     ----  -------  ---------
-     208           Si8
+     171           Si8
 
     Total results: 1
 
@@ -62,29 +62,14 @@ Let us first inspect the node you just created:
     Property     Value
     -----------  ------------------------------------
     type         StructureData
-    pk           208
-    uuid         434ed140-ba67-4dc3-9537-1794012fb827
+    pk           171
+    uuid         ac3626d2-60ec-4e54-953f-7b7cf3716b16
     label
     description
-    ctime        2020-11-25 10:32:48.878762+00:00
-    mtime        2020-11-25 10:32:48.894992+00:00
+    ctime        2020-11-29 16:11:39.900886+00:00
+    mtime        2020-11-29 16:11:40.025347+00:00
 
 You can see some information on the node, including its type (``StructureData``, the AiiDA data type for storing crystal structures), a label and a description (empty for now, can be changed), a creation time (``ctime``) and a last modification time (``mtime``), the PK of the node and its UUID (universally unique identifier).
-
-``StructureData`` can be exported from the database to a file in various formats.
-As an example, let's export the structure in XSF format of `XCrySDen`_:
-
-.. code-block:: console
-
-    $ verdi data structure export --format=xsf <PK> > exported.xsf
-
-You can copy the file to your local machine and open it with `XCrySDen`_, or simply have a look at the structure using ASE's `visualization tools`_ with:
-
-.. code-block:: console
-
-    $ verdi data structure show <PK>
-
-This can take some time due to the X forwarding, but after a while you should be able to see the Si supercell (8 atoms) that we downloaded from the COD database (in CIF format), imported into AiiDA and exported back into a different format (XSF).
 
 Running a calculation
 ---------------------
@@ -94,19 +79,26 @@ The following short Python script sets up a self-consistent field calculation fo
 .. literalinclude:: include/snippets/demo_calcjob.py
 
 Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
+You can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
+
+.. code-block:: console
+
+    wget <LINK>
 
 **Exercise:** The ``demo_calcjob.py`` script contains a few placeholders for you to fill in:
 
-    #. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the `pw.x` code and replace ``<CODE LABEL>`` in the script.
+    #. Replace replace ``<CODE LABEL>`` in the script with label of the `Quantum ESPRESSO`_ code you set up in the      AiiDAlab demo.
+       Use ``verdi code list`` to find the label for the ``pw.x`` in case you forgot.
     #. replace ``<STRUCTURE PK>`` with the PK of the structure you imported.
-    #. the VM already contains a number of pseudopotential families. Replace ``<PP FAMILY>`` with the one for the "SSSP efficiency" library found via ``verdi data upf listfamilies``.
+    #. Replace ``<PP FAMILY>`` with the label for the "SSSP efficiency" library.
+       Use ``verdi data upf listfamilies`` to find the right label.
 
 Finally, submit the calculation using:
 
 .. code-block:: console
 
     $ verdi run demo_calcjob.py
-    Submitted CalcJob with PK=211
+    Submitted CalcJob with PK=179
 
 From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
 
@@ -132,53 +124,52 @@ Let's have a look how your calculation is doing:
 .. code-block:: console
 
     $ verdi process list -a
-      PK  Created    Process label             Process State    Process status
-    ----  ---------  ------------------------  ---------------  ----------------
-     185  2h ago     multiply                  ⏹ Finished [0]
-     189  2h ago     ArithmeticAddCalculation  ⏹ Finished [0]
-     194  2h ago     ArithmeticAddCalculation  ⏹ Finished [0]
-     201  2h ago     MultiplyAddWorkChain      ⏹ Finished [0]
-     202  2h ago     multiply                  ⏹ Finished [0]
-     204  2h ago     ArithmeticAddCalculation  ⏹ Finished [0]
-     211  47s ago    PwCalculation             ⏹ Finished [0]
+      PK  Created    Process label                 Process State    Process status
+    ----  ---------  ----------------------------  ---------------  ----------------
+     <! OUTPUT REMOVED !>
+     164  1h ago     MultiplyAddWorkChain          ⏹ Finished [0]
+     165  1h ago     multiply                      ⏹ Finished [0]
+     167  1h ago     ArithmeticAddCalculation      ⏹ Finished [0]
+     179  1m ago     PwCalculation                 ⏹ Finished [0]
 
-    Total results: 7
+    Total results: 15
 
-    Info: last time an entry changed state: 12s ago (at 12:28:25 on 2020-11-25)
+    Info: last time an entry changed state: 28s ago (at 16:20:43 on 2020-11-29)
 
-Once again you can use the PK of the calculation to get more information on it:
+Once again we've removed some of the output.
+Use the PK of the calculation to get more information on it:
 
 .. code-block:: console
 
-    $ verdi process show <PK>
+    $ verdi process show 179
     Property     Value
     -----------  ------------------------------------
     type         PwCalculation
     state        Finished [0]
-    pk           211
-    uuid         6dd985a9-be25-405d-830b-6dd41d06b820
+    pk           179
+    uuid         e3cd88d9-d47c-4599-adb4-7ab5010de614
     label
     description
-    ctime        2020-11-25 12:27:50.675531+00:00
-    mtime        2020-11-25 12:28:26.051858+00:00
+    ctime        2020-11-29 16:20:06.685655+00:00
+    mtime        2020-11-29 16:20:43.282874+00:00
     computer     [1] localhost
 
     Inputs      PK    Type
     ----------  ----  -------------
     pseudos
-        Si      95    UpfData
-    code        3     Code
-    kpoints     210   KpointsData
-    parameters  209   Dict
-    structure   208   StructureData
+        Si      79    UpfData
+    code        1     Code
+    kpoints     178   KpointsData
+    parameters  177   Dict
+    structure   171   StructureData
 
     Outputs              PK  Type
     -----------------  ----  --------------
-    output_band         214  BandsData
-    output_parameters   216  Dict
-    output_trajectory   215  TrajectoryData
-    remote_folder       212  RemoteData
-    retrieved           213  FolderData
+    output_band         182  BandsData
+    output_parameters   184  Dict
+    output_trajectory   183  TrajectoryData
+    remote_folder       180  RemoteData
+    retrieved           181  FolderData
 
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
 AiiDA's record of a calculation is best displayed in the form of a provenance graph:
@@ -190,17 +181,17 @@ AiiDA's record of a calculation is best displayed in the form of a provenance gr
 
 Try to reproduce the figure using the PK of your calculation based on what you learned `in the basics section <BIGMAP_2020_Basics:calcfunction:graph>`_.
 
-Let's have a look at one of the outputs: the ``output_parameters``.
+Let's have a look at one of the outputs, i.e. the ``output_parameters``.
 You can get the contents of this dictionary easily using the ``verdi shell``:
 
 .. code-block:: ipython
 
-    In [1]: node = load_node(232)
+    In [1]: node = load_node(<PK>)
 
     In [2]: d = node.get_dict()
 
     In [3]: d['energy']
-    Out[3]: -1242.9739990626
+    Out[3]: -1242.9731397272
 
 Moreover, you can also easily access the input and output files of the calculation using the ``verdi`` CLI:
 
@@ -228,7 +219,8 @@ As the final step, we are going to launch the ``PwBandStructure`` workflow of th
 
 .. literalinclude:: include/snippets/demo_bands.py
 
-Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet and run it using
+Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet (use ``wget``, as above) and replace the ``<CODE LABEL>`` and structure ``<PK>``.
+Then run it using:
 
 .. code-block:: console
 
@@ -254,16 +246,16 @@ You may notice that ``verdi process list`` now shows more than one entry:
 
     $ verdi process list
       PK  Created    Process label             Process State    Process status
-    ----  ---------  ------------------------  ---------------  --------------------------------------
-     218  6s ago     PwBandStructureWorkChain  ⏵ Waiting        Waiting for child processes: 233
-     233  4s ago     PwBandsWorkChain          ⏵ Waiting        Waiting for child processes: 235
-     235  3s ago     PwRelaxWorkChain          ⏵ Waiting        Waiting for child processes: 238
-     238  2s ago     PwBaseWorkChain           ⏵ Waiting        Waiting for child processes: 244
-     244  1s ago     PwCalculation             ⏵ Waiting        Monitoring scheduler: job state QUEUED
+    ----  ---------  ------------------------  ---------------  ---------------------------------------
+     186  3m ago     PwBandStructureWorkChain  ⏵ Waiting        Waiting for child processes: 201
+     201  3m ago     PwBandsWorkChain          ⏵ Waiting        Waiting for child processes: 203
+     203  3m ago     PwRelaxWorkChain          ⏵ Waiting        Waiting for child processes: 206
+     206  3m ago     PwBaseWorkChain           ⏵ Waiting        Waiting for child processes: 212
+     212  3m ago     PwCalculation             ⏵ Waiting        Monitoring scheduler:job state RUNNING
 
     Total results: 5
 
-    Info: last time an entry changed state: 0s ago (at 12:45:40 on 2020-11-25)
+    Info: last time an entry changed state: 3m ago (at 16:30:24 on 2020-11-29)
 
 While you wait for the workflow to complete, let's start exploring its provenance.
 
@@ -275,16 +267,43 @@ Start the AiiDA REST API:
 
     $ verdi restapi
 
+Now, open a new terminal from the start page and run `ngrok`_, a tool that allows us to expose the REST API to a public URL:
+
+.. code-block:: console
+
+    $ ngrok http 5000 --region eu --bind-tls true
+
 and open the |provenance browser|.
 
 .. |provenance browser| raw:: html
 
-    <a href="https://www.materialscloud.org/explore/ownrestapi?base_url=http://127.0.0.1:5000/api/v4" target="_blank">Materials Cloud provenance browser</a>
+    <a href="https://www.materialscloud.org/explore/connect" target="_blank">Materials Cloud Explore section</a>
+
+Next copy the public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
+
+.. code-block:: console
+
+    ngrok by @inconshreveable                                                                                  (Ctrl+C to quit)
+
+    Session Status                online
+    Session Expires               7 hours, 52 minutes
+    Version                       2.3.35
+    Region                        Europe (eu)
+    Web Interface                 http://127.0.0.1:4040
+    Forwarding                    https://bb84d27809e0.eu.ngrok.io -> http://localhost:5000
+
+Then the URL you should provide the provenance browser is ``https://bb84d27809e0.eu.ngrok.io/api/v4``.
 
 .. note::
 
     The provenance browser is a Javascript application that connects to the AiiDA REST API.
     Your data never leaves your computer.
+
+.. todo::
+
+    Update/improve this final part, see issue `279`_.
+
+    .. _279: https://github.com/aiidateam/aiida-tutorials/issues/279
 
 .. some general comment on importance of the graph?
 .. a sentence on how to continue from here
@@ -337,6 +356,10 @@ First, we'll import a set of previously created data entries that we'll use in t
 .. code-block:: console
 
     $ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
+
+.. note::
+
+    This can take a bit of time when running on the AiiDAlab cluster.
 
 To help you organise your data, AiiDA allows you to *group* nodes together.
 Let's have a look at the groups we've imported from the archive above:
@@ -477,4 +500,5 @@ Here are some options for how to continue:
 .. _XCrySDen: http://www.xcrysden.org/
 .. _Quantum ESPRESSO: https://www.quantum-espresso.org/
 .. _SeeK-path: https://www.materialscloud.org/work/tools/seekpath
+.. _ngrok: https://ngrok.com/
 .. _Materials Cloud Archive: https://archive.materialscloud.org/
