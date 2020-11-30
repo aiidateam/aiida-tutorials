@@ -8,28 +8,12 @@ Now that we've covered the basics, let's continue with a quick demo of how AiiDA
 Importing a structure and inspecting it
 ---------------------------------------
 
-Let's download a structure from the `Crystallography Open Database <http://crystallography.net/cod/>`_ and import it into AiiDA.
-
-.. note::
-
-    You can also view the structure online `here <http://crystallography.net/cod/9008565.html>`_.
-
 First, download the Si structure file: :download:`Si.cif <include/Si.cif>`.
 You can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
 
 .. code-block:: console
 
     $ wget <LINK>
-    --2020-11-25 11:32:32--  http://crystallography.net/cod/9008565.cif
-    Resolving crystallography.net (crystallography.net)... 158.129.170.82
-    Connecting to crystallography.net (crystallography.net)|158.129.170.82|:80... connected.
-    HTTP request sent, awaiting response... 200 OK
-    Length: 4948 (4.8K) [chemical/x-cif]
-    Saving to: ‘9008565.cif’
-
-    9008565.cif          100%[=====================>]   4.83K  --.-KB/s    in 0s
-
-    2020-11-25 11:32:32 (351 MB/s) - ‘9008565.cif’ saved [4948/4948]
 
 Next, you can import it with the ``verdi`` CLI.
 
@@ -80,11 +64,7 @@ The following short Python script sets up a self-consistent field calculation fo
 .. literalinclude:: include/snippets/demo_calcjob.py
 
 Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
-Remember that you can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
-
-.. code-block:: console
-
-    wget <LINK>
+Once again download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``.
 
 **Exercise:** The ``demo_calcjob.py`` script contains a few placeholders for you to fill in:
 
@@ -192,7 +172,7 @@ You can get the contents of this dictionary easily using the ``verdi shell``:
     In [2]: d = node.get_dict()
 
     In [3]: d['energy']
-    Out[3]: -1242.9731397272
+    Out[3]: -310.56885928359
 
 Moreover, you can also easily access the input and output files of the calculation using the ``verdi`` CLI:
 
@@ -240,7 +220,7 @@ The workflow uses the PBE exchange-correlation functional with suitable pseudopo
 .. K-point mesh is selected to have a minimum k-point density of 0.2 Å-1
    A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
 
-The workflow should take ~10 minutes on your virtual machine.
+The workflow should take ~5 minutes on the AiiDAlab cluster.
 You may notice that ``verdi process list`` now shows more than one entry:
 
 .. code-block:: console
@@ -299,12 +279,6 @@ Then the URL you should provide the provenance browser is ``https://bb84d27809e0
 
     The provenance browser is a Javascript application that connects to the AiiDA REST API.
     Your data never leaves your computer.
-
-.. todo::
-
-    Update/improve this final part, see issue `279`_.
-
-    .. _279: https://github.com/aiidateam/aiida-tutorials/issues/279
 
 .. some general comment on importance of the graph?
 .. a sentence on how to continue from here
