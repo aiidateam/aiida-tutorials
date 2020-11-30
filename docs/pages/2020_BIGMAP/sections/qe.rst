@@ -8,34 +8,19 @@ Now that we've covered the basics, let's continue with a quick demo of how AiiDA
 Importing a structure and inspecting it
 ---------------------------------------
 
-Let's download a structure from the `Crystallography Open Database <http://crystallography.net/cod/>`_ and import it into AiiDA.
-
-.. note::
-
-    You can also view the structure online `here <http://crystallography.net/cod/9008565.html>`_.
-
-First, download the file and from the COD with ``wget``:
+First, download the Si structure file: :download:`Si.cif <include/Si.cif>`.
+You can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
 
 .. code-block:: console
 
-    $ wget http://crystallography.net/cod/9008565.cif
-    --2020-11-25 11:32:32--  http://crystallography.net/cod/9008565.cif
-    Resolving crystallography.net (crystallography.net)... 158.129.170.82
-    Connecting to crystallography.net (crystallography.net)|158.129.170.82|:80... connected.
-    HTTP request sent, awaiting response... 200 OK
-    Length: 4948 (4.8K) [chemical/x-cif]
-    Saving to: ‘9008565.cif’
-
-    9008565.cif          100%[=====================>]   4.83K  --.-KB/s    in 0s
-
-    2020-11-25 11:32:32 (351 MB/s) - ‘9008565.cif’ saved [4948/4948]
+    $ wget <LINK>
 
 Next, you can import it with the ``verdi`` CLI.
 
 .. code-block:: console
 
-    $ verdi data structure import ase 9008565.cif
-      Successfully imported structure Si8 (PK = 171)
+    $ verdi data structure import ase Si.cif
+      Successfully imported structure Si2 (PK = 171)
 
 Remember that each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
 This is printed out on the screen by the ``verdi data structure import`` command.
@@ -46,7 +31,10 @@ It's a good idea to mark it down, but should you forget, you can always have a l
     $ verdi data structure list
       Id  Label    Formula
     ----  -------  ---------
-     171           Si8
+     105           Si2
+     111           Si2
+     112           Si8
+     171           Si2
 
     Total results: 1
 
@@ -79,11 +67,7 @@ The following short Python script sets up a self-consistent field calculation fo
 .. literalinclude:: include/snippets/demo_calcjob.py
 
 Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
-You can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
-
-.. code-block:: console
-
-    wget <LINK>
+Once again download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``.
 
 **Exercise:** The ``demo_calcjob.py`` script contains a few placeholders for you to fill in:
 
@@ -141,7 +125,7 @@ Use the PK of the calculation to get more information on it:
 
 .. code-block:: console
 
-    $ verdi process show 179
+    $ verdi process show <PK>
     Property     Value
     -----------  ------------------------------------
     type         PwCalculation
@@ -186,12 +170,10 @@ You can get the contents of this dictionary easily using the ``verdi shell``:
 
 .. code-block:: ipython
 
-    In [1]: node = load_node(<PK>)
-
-    In [2]: d = node.get_dict()
-
-    In [3]: d['energy']
-    Out[3]: -1242.9731397272
+    In [1]: node = load_node(179)
+       ...: d = node.get_dict()
+       ...: d['energy']
+    Out[1]: -310.56885928359
 
 Moreover, you can also easily access the input and output files of the calculation using the ``verdi`` CLI:
 
@@ -239,7 +221,7 @@ The workflow uses the PBE exchange-correlation functional with suitable pseudopo
 .. K-point mesh is selected to have a minimum k-point density of 0.2 Å-1
    A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
 
-The workflow should take ~10 minutes on your virtual machine.
+The workflow should take about 5 minutes on the AiiDAlab cluster.
 You may notice that ``verdi process list`` now shows more than one entry:
 
 .. code-block:: console
@@ -299,12 +281,6 @@ Then the URL you should provide the provenance browser is ``https://bb84d27809e0
     The provenance browser is a Javascript application that connects to the AiiDA REST API.
     Your data never leaves your computer.
 
-.. todo::
-
-    Update/improve this final part, see issue `279`_.
-
-    .. _279: https://github.com/aiidateam/aiida-tutorials/issues/279
-
 .. some general comment on importance of the graph?
 .. a sentence on how to continue from here
 
@@ -318,7 +294,7 @@ Browse your AiiDA database:
 
     When perfoming calculations for a publication, you can export your provenance graph (meaning all the content of the nodes and their connections) into an archive file using ``verdi export create``, and then upload it to the `Materials Cloud Archive`_, enabling your peers to explore the provenance of your calculations online.
 
-Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandStructureWorkChain`` and find the PK of its ``band_structure`` output.
+Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
 Use this to produce a PDF of the band structure:
 
 .. code-block:: console
