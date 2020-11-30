@@ -608,25 +608,18 @@ Similar to a ``CalcJob``, the ``WorkChain`` input can be set up using a builder:
        ...: builder.y = Int(3)
        ...: builder.z = Int(5)
 
-Once the ``WorkChain`` input has been set up, we submit it to the daemon using the ``submit`` function from the AiiDA engine:
+Once the ``WorkChain`` input has been set up, we submit it to the daemon using the ``submit`` function from the AiiDA engine. Since the workflow completes very quickly, we'll immediately execute `verdi process list -a` from within the IPython shell so we can catch it in progress:
 
 .. code-block:: ipython
 
     In [3]: from aiida.engine import submit
        ...: submit(builder)
-    Out[3]: <WorkChainNode: uuid: 96a109fc-c9a8-42e6-ade6-c6c4ab8a8554 (pk: 164) (aiida.workflows:arithmetic.multiply_add)>
-
-Now *quickly* leave the IPython shell and check the process list:
-
-.. code-block:: console
-
-    $ verdi process list -a
+       ...: !verdi process list -a
 
 Depending on which step the workflow is running, you should get something like the following:
 
-.. code-block:: bash
+.. code-block:: console
 
-    $ verdi process list -a
       PK  Created    Process label                 Process State    Process status
     ----  ---------  ----------------------------  ---------------  ------------------------------------
     <! OUTPUT REMOVED !>

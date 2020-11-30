@@ -79,12 +79,19 @@ The following short Python script sets up a self-consistent field calculation fo
 .. literalinclude:: include/snippets/demo_calcjob.py
 
 Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
+You can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
+
+.. code-block:: console
+
+    wget <LINK>
 
 **Exercise:** The ``demo_calcjob.py`` script contains a few placeholders for you to fill in:
 
-    #. the VM already has a number of codes preconfigured. Use ``verdi code list`` to find the label for the `pw.x` code and replace ``<CODE LABEL>`` in the script.
+    #. Replace replace ``<CODE LABEL>`` in the script with label of the `Quantum ESPRESSO`_ code you set up in the      AiiDAlab demo.
+       Use ``verdi code list`` to find the label for the ``pw.x`` in case you forgot.
     #. replace ``<STRUCTURE PK>`` with the PK of the structure you imported.
-    #. the VM already contains a number of pseudopotential families. Replace ``<PP FAMILY>`` with the one for the "SSSP efficiency" library found via ``verdi data upf listfamilies``.
+    #. Replace ``<PP FAMILY>`` with the label for the "SSSP efficiency" library.
+       Use ``verdi data upf listfamilies`` to find the right label.
 
 Finally, submit the calculation using:
 
@@ -212,7 +219,8 @@ As the final step, we are going to launch the ``PwBandStructure`` workflow of th
 
 .. literalinclude:: include/snippets/demo_bands.py
 
-Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet and run it using
+Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet (use ``wget``, as above) and replace the ``<CODE LABEL>`` and structure ``<PK>``.
+Then run it using:
 
 .. code-block:: console
 
