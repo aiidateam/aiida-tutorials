@@ -256,27 +256,34 @@ You may notice that ``verdi process list`` now shows more than one entry:
 
 While you wait for the workflow to complete, let's start exploring its provenance.
 
-The full provenance graph obtained from ``verdi node graph generate`` will already be rather complex (you can try!), so let's try browsing the provenance interactively instead.
+Exploring the database
+----------------------
 
-Start the AiiDA REST API:
+In most cases, the full provenance graph obtained from ``verdi node graph generate`` will be rather complex to follow.
+To see this for yourself, you can try to generate the one for the workchains ran by the QuantumEspresso APP, or for the workchain script of the last section.
+It therefore becomes very useful to learn how to browse the provenance interactively instead.
+
+To do so, we need first to start the AiiDA REST API:
 
 .. code-block:: console
 
-    $ verdi restapi
+  $ verdi restapi
 
-Now, open a new terminal from the start page and run `ngrok`_, a tool that allows us to expose the REST API to a public URL:
+If you were working on your local machine, you would be automatically be able to access your exposed data via `http://127.0.0.1:5000/api/v4` (this would also work from inside the virtual machine).
+Since these virtual machines are remote and we need to access the information locally in your workstation, we will need an extra step.
+Open a new terminal from the start page and run `ngrok`_, a tool that allows us to expose the REST API to a public URL:
 
 .. code-block:: console
 
     $ ngrok http 5000 --region eu --bind-tls true
 
-and open the |provenance browser|.
+
+Now you will be able to open the |provenance browser| and copy there he public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
 
 .. |provenance browser| raw:: html
 
     <a href="https://www.materialscloud.org/explore/connect" target="_blank">Materials Cloud Explore section</a>
 
-Next copy the public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
 
 .. code-block:: console
 
@@ -289,25 +296,70 @@ Next copy the public URL that ``ngrok`` is using, i.e. if the following is the o
     Web Interface                 http://127.0.0.1:4040
     Forwarding                    https://bb84d27809e0.eu.ngrok.io -> http://localhost:5000
 
-Then the URL you should provide the provenance browser is ``https://bb84d27809e0.eu.ngrok.io/api/v4``.
+
+then the URL you should provide the provenance browser is ``https://bb84d27809e0.eu.ngrok.io/api/v4`` (see the last ``Forwarding`` line).
 
 .. note::
 
     The provenance browser is a Javascript application that connects to the AiiDA REST API.
     Your data never leaves your computer.
 
-.. some general comment on importance of the graph?
-.. a sentence on how to continue from here
+For a quick example on how to browse the database, you can do the following.
+First, notice the content of the main page in the `grid` view: all your nodes are listed in the center, while the lateral bar offers the option of filtering according to node type.
 
-Browse your AiiDA database:
+   .. figure:: include/screenshots/explore_00.png
+     :width: 100%
 
-    * Start by finding your `Quantum ESPRESSO`_ calculation (the type of node is called a ``CalcJobNode`` in AiiDA, since it is run as a job on a scheduler).
-    * Select ``Calculations`` in the left menu to filter for calculations only.
-    * Inspect the raw inputs and outputs of the calculation, and use the provenance browser to explore the input and output nodes of the calculation and the whole provenance of your simulations.
+     Main page of the `grid` view.
 
-.. note::
+Now we are going to look at the available band structure nodes, for which we will need to expand the `Array` lateral section and click on the `BandsData` subsection:
 
-    When perfoming calculations for a publication, you can export your provenance graph (meaning all the content of the nodes and their connections) into an archive file using ``verdi export create``, and then upload it to the `Materials Cloud Archive`_, enabling your peers to explore the provenance of your calculations online.
+   .. figure:: include/screenshots/explore_01.png
+     :width: 100%
+
+     All nodes of type ``BandsData``, listed in the `grid` view.
+
+Here we can just select one of the available nodes and click on `details` on the right.
+This will take us to the `details` view of that particular node, which will have useful information on it.
+
+   .. figure:: include/screenshots/explore_02.png
+     :width: 100%
+
+     The `details` view of a specific node of type ``BandsData``.
+
+
+In this case we can see that the Explore Section has available a useful bands visualizer for nodes of type ``BandsData``.
+It also contains (as it does for all type of nodes) the `AiiDA Provenance Browser` on its right.
+This tool allows us to easily explore the connections between nodes more information about, for example, how these results were obtained.
+In effect, we can identify the ``CalcJob`` node that produced this result (red square with the link labeled ``output_band``) and click on it.
+This will immediately redirect us to the `details` page for that ``CalcJob`` node:
+
+   .. figure:: include/screenshots/explore_03.png
+     :width: 100%
+
+     The `details` view of the ``CalcJob`` node that created the original ``BandsData`` node.
+
+You can check out here the details of the calculation, the actual input and output files, the `Node metadata` and `Job information` dropdown menus, etc.
+You may also want to know to which crystal structure does its generated band structure corresponds to.
+Although this information can also be found inside the input files, we will look for it directly in the input nodes, again by using the `AiiDA Provenance Browser`.
+This time we will look for the ``StructureData`` node (green circle) that has an outgoing link (so, the arrow points from the ``data`` node to the central current ``process`` node) with the label `structure`.
+We will finally click in that node.
+
+   .. figure:: include/screenshots/explore_04.png
+     :width: 100%
+
+     The `details` view of the ``StructureData`` node that corresponds to the original ``BandsData`` node.
+
+We can see in this case that the original ``BandsData`` corresponds to a Silica structure.
+You can look at the structure here, explore the details of the cell, etc.
+
+As you can see, the explore tool of the `Materials Cloud <https://www.materialscloud.org/explore/menu>`_ offers a very natural and intuitive interface to use for a light exploration of a database.
+However, you might already imagine that doing a more intensive kind of data mining of specific results this way can quickly become tedious.
+For this use cases, AiiDA has a more versatile tool: the ``QueryBuilder``.
+
+
+Finishing the workchain
+-----------------------
 
 Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
 Use this to produce a PDF of the band structure:
