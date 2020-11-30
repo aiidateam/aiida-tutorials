@@ -13,10 +13,6 @@ At the end of this tutorial you will know how to:
 * Run and monitor the status of processes.
 * Explore and visualize the provenance graph.
 
-.. important::
-
-    Before starting, make sure you are in the correct Python environment using ``workon aiida``.
-
 .. _BIGMAP_2020_Basics:provenance:
 
 Provenance
@@ -121,7 +117,7 @@ Back in the terminal, use the ``verdi`` command line interface (CLI) to check th
     ctime        2020-11-29 14:47:04.196421+00:00
     mtime        2020-11-29 14:47:13.108914+00:00
 
-Once again, we can see that the node is of type ``Int``, has PK = 146, and UUID = ``de5c6cde-a420-405f-b1e5-85519b64efda`.
+Once again, we can see that the node is of type ``Int``, has PK = 146, and UUID = ``de5c6cde-a420-405f-b1e5-85519b64efda``.
 Besides this information, the ``verdi node show`` command also shows the (empty) ``label`` and ``description``, as well as the time the node was created (``ctime``) and last modified (``mtime``).
 
 .. seealso::
@@ -241,9 +237,9 @@ If you want to see *all* processes (i.e. also the processes that are *terminated
      140  5m ago     PwCalculation                 ⏹ Finished [0]
      148  25s ago    multiply                      ⏹ Finished [0]
 
-Total results: 9
+    Total results: 9
 
-Info: last time an entry changed state: 24s ago (at 14:48:08 on 2020-11-29)
+    Info: last time an entry changed state: 24s ago (at 14:48:08 on 2020-11-29)
 
 Notice how the band structure workflow (``PwBandsWorkChain``) you ran in the `Quantum ESPRESSO`_ app of `AiiDAlab`_ is also in the process list!
 Moreover, we can see that our ``multiply`` calculation function was created 1 minute ago, assigned the PK 148, and has ``Finished``.
@@ -282,8 +278,8 @@ For this purpose, AiiDA provides the ``CalcJob`` process class.
 
 To run a ``CalcJob``, you need to set up two things: a ``code`` that is going to implement the desired calculation and a ``computer`` for the calculation to run on.
 
-`Quantum Mobile`_ ships with the ``localhost`` computer set up, which is the one we'll be using throughout the tutorial.
-However, we still have to set up the ``add`` code, which we'll be using for this tutorial:
+`AiiDAlab`_ ships with the ``localhost`` computer set up, which is the one we'll be using throughout the tutorial.
+However, we still have to set up the ``add`` code, which we'll be using for this section:
 
 .. code-block:: console
 
@@ -303,7 +299,7 @@ Codes can be anything from a Python script to powerful *ab initio* codes such as
 
 .. seealso::
 
-   More details for how to :ref:`run external codes <how-to:run-codes>`.
+   More details on how to :ref:`run external codes <how-to:run-codes>`.
 
 Let's have a look at the codes that are available to us:
 
@@ -315,7 +311,7 @@ Let's have a look at the codes that are available to us:
     * pk 1 - pw@localhost
     * pk 150 - add@localhost
 
-The first code is the one you set up in the `AiiDAlab`_ `Quantum ESPRESSO`_ app earlier..
+The first code is the one you set up in the `AiiDAlab`_ `Quantum ESPRESSO`_ app earlier.
 The second one in the list is the code you have just set up: ``add@localhost`` with PK = 150.
 This code allows us to add two integers together.
 The ``add@localhost`` identifier indicates that the code with label ``add`` is run on the computer with label ``localhost``.
@@ -369,7 +365,7 @@ It can be obtained by using the ``get_builder`` method:
     In [2]: builder = code.get_builder()
 
 Using the builder, you can easily set up the calculation by directly providing the input arguments.
-Let's use the ``Int`` node that was *created* by our previous ``calcfunction`` as one of the inputs and a new node as the second input:
+Let's use the ``Int`` node **that was created** by our previous ``calcfunction`` as one of the inputs and a new node as the second input:
 
 .. code-block:: ipython
 
@@ -427,7 +423,7 @@ Now, exit the IPython shell and once more check for *all* processes:
 
 Note that we've removed the output regarding the band structure calculation that you ran in the `AiiDAlab`_ `Quantum ESPRESSO`_ app earlier.
 We now see two *arithmetic* processes in the list.
-One is the ``multiply`` calcfunction you ran earlier, the second is the ``ArithmeticAddCalculation`` CalcJob that you have just run.
+One is the ``multiply`` calcfunction you ran earlier, the second is the ``ArithmeticAddCalculation`` calculation job that you have just run.
 Grab the PK of the ``ArithmeticAddCalculation``, and generate the provenance graph.
 The result should look like the graph shown in :numref:`BIGMAP_2020_Basics_fig_calcjob_graph`.
 
@@ -446,7 +442,7 @@ You can see more details on any process, including its inputs and outputs, using
 
 .. code:: console
 
-    $ verdi process show 152
+    $ verdi process show <PK>
     Property     Value
     -----------  ------------------------------------
     type         ArithmeticAddCalculation
@@ -502,6 +498,8 @@ In this case, let's stop it for now:
 .. code-block:: console
 
     $ verdi daemon stop
+    Profile: default
+    Waiting for the daemon to shut down... OK
 
 Next, let's *submit* the ``CalcJob`` we ran previously.
 Start the ``verdi shell`` and execute the Python code snippet below.
@@ -608,7 +606,7 @@ Similar to a ``CalcJob``, the ``WorkChain`` input can be set up using a builder:
        ...: builder.y = Int(3)
        ...: builder.z = Int(5)
 
-Once the ``WorkChain`` input has been set up, we submit it to the daemon using the ``submit`` function from the AiiDA engine. Since the workflow completes very quickly, we'll immediately execute `verdi process list -a` from within the IPython shell so we can catch it in progress:
+Once the ``WorkChain`` input has been set up, we submit it to the daemon using the ``submit`` function from the AiiDA engine. Since the workflow completes very quickly, we'll immediately execute ``verdi process list -a`` from within the IPython shell so we can catch it in progress:
 
 .. code-block:: ipython
 

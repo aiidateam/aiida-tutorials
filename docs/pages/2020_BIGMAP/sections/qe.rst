@@ -31,6 +31,9 @@ It's a good idea to mark it down, but should you forget, you can always have a l
     $ verdi data structure list
       Id  Label    Formula
     ----  -------  ---------
+     105           Si2
+     111           Si2
+     112           Si8
      171           Si2
 
     Total results: 1
@@ -122,7 +125,7 @@ Use the PK of the calculation to get more information on it:
 
 .. code-block:: console
 
-    $ verdi process show 179
+    $ verdi process show <PK>
     Property     Value
     -----------  ------------------------------------
     type         PwCalculation
@@ -167,12 +170,10 @@ You can get the contents of this dictionary easily using the ``verdi shell``:
 
 .. code-block:: ipython
 
-    In [1]: node = load_node(<PK>)
-
-    In [2]: d = node.get_dict()
-
-    In [3]: d['energy']
-    Out[3]: -310.56885928359
+    In [1]: node = load_node(179)
+       ...: d = node.get_dict()
+       ...: d['energy']
+    Out[1]: -310.56885928359
 
 Moreover, you can also easily access the input and output files of the calculation using the ``verdi`` CLI:
 
@@ -220,7 +221,7 @@ The workflow uses the PBE exchange-correlation functional with suitable pseudopo
 .. K-point mesh is selected to have a minimum k-point density of 0.2 Å-1
    A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
 
-The workflow should take ~5 minutes on the AiiDAlab cluster.
+The workflow should take about 5 minutes on the AiiDAlab cluster.
 You may notice that ``verdi process list`` now shows more than one entry:
 
 .. code-block:: console
@@ -293,7 +294,7 @@ Browse your AiiDA database:
 
     When perfoming calculations for a publication, you can export your provenance graph (meaning all the content of the nodes and their connections) into an archive file using ``verdi export create``, and then upload it to the `Materials Cloud Archive`_, enabling your peers to explore the provenance of your calculations online.
 
-Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandStructureWorkChain`` and find the PK of its ``band_structure`` output.
+Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
 Use this to produce a PDF of the band structure:
 
 .. code-block:: console
