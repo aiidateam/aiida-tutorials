@@ -283,7 +283,8 @@ However, we still have to set up the ``add`` code, which we'll be using for this
 
 .. code-block:: console
 
-    $ verdi code setup -L add --computer=localhost -P arithmetic.add --remote-abs-path=/bin/bash -n
+    $ verdi code setup --label add --computer localhost --input-plugin arithmetic.add --remote-abs-path /bin/bash --non-interactive
+
     Success: Code<150> add@localhost created
 
 This command sets up a code with *label* ``add`` on the *computer* ``localhost``, using the *plugin* ``arithmetic.add``.
@@ -372,7 +373,7 @@ Let's use the ``Int`` node **that was created** by our previous ``calcfunction``
     In [3]: builder.x = load_node(pk=<PK>)
        ...: builder.y = Int(5)
 
-In case that your nodes' PKs are different and you don't remember the PK of the output node from the previous calculation, check the provenance graph you generated earlier and use the UUID of the output node instead:
+In case you don’t remember the PK of the output node from the previous calculation, check the provenance graph you generated earlier and use the UUID of the output node instead:
 
 .. code-block:: ipython
 
@@ -410,7 +411,7 @@ Now, exit the IPython shell and once more check for *all* processes:
 
 .. code-block:: console
 
-    $ verdi process list -a
+    $ verdi process list --all
     PK  Created    Process label                 Process State    Process status
     ----  ---------  ----------------------------  ---------------  ----------------
     <! OUTPUT REMOVED !>
@@ -547,11 +548,11 @@ Let's start it up (again):
     Starting the daemon... RUNNING
 
 Now you can use ``verdi process list`` to follow the progress of the calculation.
-Let's wait for the ``CalcJob`` to complete and then use ``verdi process list -a`` to see all processes we have run so far:
+Let's wait for the ``CalcJob`` to complete and then use ``verdi process list --all`` to see all processes we have run so far:
 
 .. code-block:: bash
 
-    $ verdi process list -a
+    $ verdi process list --all
       PK  Created    Process label                 Process State    Process status
     ----  ---------  ----------------------------  ---------------  ----------------
     <! OUTPUT REMOVED !>
@@ -606,13 +607,13 @@ Similar to a ``CalcJob``, the ``WorkChain`` input can be set up using a builder:
        ...: builder.y = Int(3)
        ...: builder.z = Int(5)
 
-Once the ``WorkChain`` input has been set up, we submit it to the daemon using the ``submit`` function from the AiiDA engine. Since the workflow completes very quickly, we'll immediately execute ``verdi process list -a`` from within the IPython shell so we can catch it in progress:
+Once the ``WorkChain`` input has been set up, we submit it to the daemon using the ``submit`` function from the AiiDA engine. Since the workflow completes very quickly, we'll immediately execute ``verdi process list --all`` from within the IPython shell so we can catch it in progress:
 
 .. code-block:: ipython
 
     In [3]: from aiida.engine import submit
        ...: submit(builder)
-       ...: !verdi process list -a
+       ...: !verdi process list --all
 
 Depending on which step the workflow is running, you should get something like the following:
 
