@@ -557,6 +557,7 @@ What next?
 You now have a first taste of the type of problems AiiDA tries to solve.
 Here are some options for how to continue:
 
+* Get a more detailed view of how to manipulate AiiDA objects in the :ref:`extra section<BIGMAP_2020_Basics>` of this tutorial.
 * Continue with the :ref:`in-depth tutorial<2020_Intro_Week_Homepage>`.
 * Download the `Quantum Mobile`_ virtual machine and try running the tutorial on your laptop instead.
 * Try `setting up AiiDA`_ directly on your laptop.

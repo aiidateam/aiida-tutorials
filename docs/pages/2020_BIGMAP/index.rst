@@ -49,7 +49,6 @@ Hands-on materials
    :numbered:
 
    ./sections/qe
-   ./sections/browse
    ./sections/basics
 
 In-depth tutorial
