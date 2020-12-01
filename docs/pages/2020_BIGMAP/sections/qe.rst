@@ -363,7 +363,8 @@ For this use cases, AiiDA has a more versatile tool: the ``QueryBuilder``.
 Finishing the workchain
 -----------------------
 
-Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
+Let's stop ``ngrok`` using ``Ctrl+C`` and close its terminal, as well as stop the REST API (also using ``Ctrl+C``).
+The workchain we started earlier should be finished by now, let's use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
 Use this to produce a PDF of the band structure:
 
 .. code-block:: console
