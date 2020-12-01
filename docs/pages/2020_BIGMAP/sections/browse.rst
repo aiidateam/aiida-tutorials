@@ -3,7 +3,7 @@
 Browsing your database
 ======================
 
-This final section of the tutorial is optional, and has the purpose of introducing a couple of ways in which you can browse an AiiDA database.
+This final section of the tutorial has the purpose of introducing a couple of ways in which you can browse an AiiDA database.
 
 There are two main reasons you may want to browse a database.
 The first one is to get a general idea of the content of it, for which the explore tool of the `Materials Cloud <https://www.materialscloud.org/explore/menu>`_ can be of great use.
@@ -35,28 +35,15 @@ What next?
 ----------
 
 You now have a first taste of the type of problems AiiDA tries to solve.
+Make sure you have fully completed and understood all the sections of this tutorial.
+For example, if you started this last section while waiting for the workchain at :ref:`the end of the previows one<BIGMAP_2020_QE:workflows>` to finish running, remember you still need to verify its band structure!
+
 Here are some options for how to continue:
 
 * Continue with the :ref:`in-depth tutorial<2020_Intro_Week_Homepage>`.
 * Download the `Quantum Mobile`_ virtual machine and try running the tutorial on your laptop instead.
 * Try `setting up AiiDA`_ directly on your laptop.
 
-.. dropdown:: Remember your workchain!
-
-   If you started this section while waiting for you workchain to finish running, remember you still need to obtain the band structure to finish that section!
-   Here is the relevant information to do so:
-
-   Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandStructureWorkChain`` and find the PK of its ``band_structure`` output.
-   Use this to produce a PDF of the band structure:
-
-   .. code-block:: console
-
-     $ verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
-
-   .. figure:: include/images/si_bands.png
-     :width: 80%
-
-     Band structure computed by the ``PwBandStructure`` workchain.
 
 
 .. _setting up AiiDA: https://aiida.readthedocs.io/projects/aiida-core/en/latest/intro/install_system.html#intro-get-started-system-wide-install
