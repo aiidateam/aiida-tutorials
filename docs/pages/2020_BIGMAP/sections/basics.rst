@@ -1,11 +1,10 @@
 .. _BIGMAP_2020_Basics:
 
-**************
-Basic tutorial
-**************
+*******************
+Provenance Tutorial
+*******************
 
-Welcome to the AiiDA tutorial!
-The goal of this tutorial is to give you a basic idea of how AiiDA helps you in executing data-driven workflows.
+The goal of this section is to give more details on how AiiDA runs and stores data-driven workflows.
 At the end of this tutorial you will know how to:
 
 * Store data in the database and subsequently retrieve it.
