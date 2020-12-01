@@ -49,7 +49,9 @@ It's a good idea to mark it down, but should you forget, you can always have a l
      112           Si8
      171           Si2
 
-    Total results: 1
+    Total results: 4
+
+The first column (marked `Id`) are the PK's of the ``StructureData`` nodes.
 
 .. important::
 
@@ -82,7 +84,7 @@ The PK and UUID both reference the node with the only difference that the PK is 
 Running a calculation
 ---------------------
 
-We'll start with running a simply SCF calculation with `Quantum ESPRESSO`_ for the structure we just imported.
+We'll start with running a simple SCF calculation with `Quantum ESPRESSO`_ for the structure we just imported.
 Let's first look at the codes in our database with the ``verdi shell``:
 
 .. code-block:: console
@@ -103,7 +105,7 @@ To see the list of installed pseudopotential families, do:
     Success: * SSSP_1.1_efficiency [85 pseudos]
     Success: * SSSP_1.1_precision [85 pseudos]
 
-.. note::
+.. dropdown:: Installation of the code and pseudos via the command line
 
     If you didn't manage to install the code during the AiiDAlab demo, here's the ``verdi`` CLI command to do it:
 
@@ -152,34 +154,45 @@ Replace the ``<STRUCTURE_PK>`` with that of the structure we imported at the sta
     One nifty feature of the builder is the ability to use tab completion for the inputs.
     Try it out by typing ``builder.`` + ``<TAB>`` in the verdi shell.
 
+You can get more information on an input by adding a question mark ``?``:
+
+.. code-block:: ipython
+
+    In [4]: builder.structure?
+    Type:        property
+    String form: <property object at 0x7f3393e81050>
+    Docstring:   {"name": "structure", "required": "True", "valid_type": "<class 'aiida.orm.nodes.data.structure.StructureData'>", "help": "The input structure.", "non_db": "False"}
+
+Here you can see that the ``structure`` input is required, needs to be of the ``StructureData`` type and is stored in the database (``"non_db": "False"``).
+
 Next, we'll set up a dictionary with the pseudopotentials.
 This can be done easily with a little utility function
 
 .. code-block:: ipython
 
-    In [4]: from aiida.orm.nodes.data.upf import get_pseudos_from_structure
+    In [5]: from aiida.orm.nodes.data.upf import get_pseudos_from_structure
        ...: pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY>')
 
 If we check the content of the ``pseudos`` variable:
 
 .. code-block:: ipython
 
-    In [5]: pseudos
-    Out[5]: {'Si': <UpfData: uuid: 5600890b-a2f3-4210-8c7e-d54839ade0e0 (pk: 79)>}
+    In [6]: pseudos
+    Out[6]: {'Si': <UpfData: uuid: 5600890b-a2f3-4210-8c7e-d54839ade0e0 (pk: 79)>}
 
 We can see that it is a simple dictionary that maps the ``'Si'`` element to a ``UpfData`` node, which contains the pseudopotential for silicon in the database.
 Let's pass it to the builder:
 
 .. code-block:: ipython
 
-    In [6]: builder.pseudos = pseudos
+    In [7]: builder.pseudos = pseudos
 
 Of course, we also have to set some computational parameters.
 We'll first set up a dictionary with the input parameters for Quantum ESPRESSO:
 
 .. code-block:: ipython
 
-    In [7]: parameters = {
+    In [8]: parameters = {
        ...:   'CONTROL': {
        ...:     'calculation': 'scf',  # self-consistent field
        ...:   },
@@ -193,21 +206,21 @@ In order to store them in the database, they **must** be passed to the builder a
 
 .. code-block:: ipython
 
-    In [8]: builder.parameters = Dict(dict=parameters)
+    In [9]: builder.parameters = Dict(dict=parameters)
 
 The k-points mesh can be supplied via a ``KpointsData`` node.
 Load the corresponding class using the ``DataFactory``:
 
 .. code-block:: ipython
 
-    In [9]: KpointsData = DataFactory('array.kpoints')
+    In [10]: KpointsData = DataFactory('array.kpoints')
 
 The ``DataFactory`` is a useful and robust tool for loading data types based on their *entry point*, e.g. ``'array.kpoints'`` in this case.
 Once the class is loaded, defining the k-points mesh and passing it to the builder is easy:
 
 .. code-block:: ipython
 
-    In [10]: kpoints = KpointsData()
+    In [11]: kpoints = KpointsData()
         ...: kpoints.set_kpoints_mesh([4,4,4])
         ...: builder.kpoints = kpoints
 
@@ -216,14 +229,14 @@ These are stored in the *metadata*:
 
 .. code-block:: ipython
 
-    In [11]: builder.metadata.options.resources = {'num_machines': 1}
+    In [12]: builder.metadata.options.resources = {'num_machines': 1}
 
 Great, we're all set!
 Now all that is left to do is to *submit* the builder to the daemon.
 
 .. code-block:: ipython
 
-    In [12]: from aiida.engine import submit
+    In [13]: from aiida.engine import submit
         ...: calcjob = submit(builder)
 
 From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
@@ -270,7 +283,7 @@ To see *all* processes, use the ``--all`` option:
     Info: last time an entry changed state: 28s ago (at 16:20:43 on 2020-11-29)
 
 Notice how the band structure workflow (``PwBandsWorkChain``) you ran in the `Quantum ESPRESSO`_ app of `AiiDAlab`_ is also in the process list!
-Use the PK of the calculation to get more information on it:
+Use the PK of the most recent `PwCalculation` (the one you just sent)  to get more information on it:
 
 .. code-block:: console
 
