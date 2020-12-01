@@ -77,6 +77,21 @@ Once again download the file to the AiiDAlab cluster by right clicking on the li
     #. Replace ``<PP FAMILY>`` with the label for the "SSSP efficiency" library.
        Use ``verdi data upf listfamilies`` to find the right label.
 
+.. note::
+
+    If you didn't manage to install the code during the AiiDAlab demo, here's the ``verdi`` CLI command to do it:
+
+    .. code-block:: console
+
+        $ verdi code setup -L pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw -n
+
+    Similarly, the pseudopotentials can be installed via the following set of commands:
+
+    .. code-block:: console
+
+        $ verdi import -n http://legacy-archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.aiida
+        $ verdi import -n http://legacy-archive.materialscloud.org/file/2018.0001/v3/SSSP_precision_pseudos.aiida
+
 Finally, submit the calculation using:
 
 .. code-block:: console
