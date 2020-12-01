@@ -32,7 +32,9 @@ The tutorial will be run on the |AiiDAlab tutorials cluster|, just click the lin
   If you lose it, you can make a new account, but you will lose your progress.
 
 That's it!
-You're ready to start with the tutorial.
+You're now ready to start with the tutorial.
+We will begin with a short demonstration on AiiDAlab, where you will set up a code for Quantum ESPRESSO, install a family of pseudopotentials and calculate the band structure of silicon.
+Then we will go under the hood and explain the basic concepts of AiiDA, as well as run some Quantum ESPRESSO calculations and workflows via the Python API.
 
 .. |AiiDAlab tutorials cluster| raw:: html
 
