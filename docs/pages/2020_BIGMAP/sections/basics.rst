@@ -5,7 +5,7 @@ Provenance Tutorial
 *******************
 
 The goal of this section is to give more details on how AiiDA runs and stores data-driven workflows.
-At the end of this tutorial you will know how to:
+At the end of it you will know how to:
 
 * Store data in the database and subsequently retrieve it.
 * Decorate a Python function such that its inputs and outputs are automatically tracked.
@@ -650,8 +650,6 @@ The provenance graph should be similar to the one we showed at the start of this
 
     Final provenance Graph of the basic AiiDA tutorial.
 
-Great work so far!
-Once you're ready, click on the "Next" button below to go to the second part of the tutorial.
 
 .. Links:
 
