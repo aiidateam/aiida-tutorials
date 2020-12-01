@@ -9,11 +9,11 @@ Importing a structure and inspecting it
 ---------------------------------------
 
 First, download the Si structure file: :download:`Si.cif <include/Si.cif>`.
-You can download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``:
+You can download the file to the AiiDAlab cluster using ``wget``:
 
 .. code-block:: console
 
-    $ wget <LINK>
+    $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2020-bigmap-lab/_downloads/a40ce5fed92027564ab551dcc3e51774/Si.cif
 
 Next, you can import it with the ``verdi`` CLI.
 
@@ -66,8 +66,11 @@ The following short Python script sets up a self-consistent field calculation fo
 
 .. literalinclude:: include/snippets/demo_calcjob.py
 
-Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory.
-Once again download the file to the AiiDAlab cluster by right clicking on the link, selecting "Copy link address", and using ``wget``.
+Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory:
+
+.. code-block:: console
+
+    $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2020-bigmap-lab/_downloads/87ca377401915ffe2b2472d953029e9c/demo_calcjob.py
 
 **Exercise:** The ``demo_calcjob.py`` script contains a few placeholders for you to fill in:
 
@@ -83,7 +86,7 @@ Once again download the file to the AiiDAlab cluster by right clicking on the li
 
     .. code-block:: console
 
-        $ verdi code setup -L pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw -n
+        $ verdi code setup --label pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
 
     Similarly, the pseudopotentials can be installed via the following set of commands:
 
@@ -219,7 +222,13 @@ As the final step, we are going to launch the ``PwBandStructure`` workflow of th
 
 .. literalinclude:: include/snippets/demo_bands.py
 
-Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet (use ``wget``, as above) and replace the ``<CODE LABEL>`` and structure ``<PK>``.
+Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet:
+
+.. code-block:: console
+
+    $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2020-bigmap-lab/_downloads/ed78d4494b7eac53786c1b6fe653999d/demo_bands.py
+
+and replace the ``<CODE LABEL>`` and structure ``<PK>``.
 Then run it using:
 
 .. code-block:: console
@@ -363,7 +372,8 @@ For this use cases, AiiDA has a more versatile tool: the ``QueryBuilder``.
 Finishing the workchain
 -----------------------
 
-Once the workchain is finished, use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
+Let's stop ``ngrok`` using ``Ctrl+C`` and close its terminal, as well as stop the REST API (also using ``Ctrl+C``).
+The workchain we started earlier should be finished by now, let's use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
 Use this to produce a PDF of the band structure:
 
 .. code-block:: console
@@ -407,7 +417,7 @@ Let's have a look at the groups we've imported from the archive above, using the
 
 .. code-block:: console
 
-    $ verdi group list -C
+    $ verdi group list --count
     Info: to show groups of all types, use the `-a/--all` option.
       PK  Label            Type string    User               Node count
     ----  ---------------  -------------  ---------------  ------------
@@ -520,7 +530,13 @@ You can find it in the dropdown panel below:
 
     .. literalinclude:: include/snippets/demo_query.py
 
-Download it and use ``verdi run`` to execute it:
+Download it using ``wget``:
+
+.. code-block:: console
+
+    $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2020-bigmap-lab/_downloads/6773ba4cad0c046e468d13e15186cdd8/demo_query.py
+
+and use ``verdi run`` to execute it:
 
 .. code-block:: console
 
