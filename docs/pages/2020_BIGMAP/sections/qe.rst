@@ -76,7 +76,7 @@ The PK and UUID both reference the node with the only difference that the PK is 
 
 .. important::
 
-    The UUIDs are generated randomly and are therefore **guaranteed** to be different.
+    The UUIDs are generated randomly and are therefore **guaranteed** to be different from the ones shown here.
     In the commands that follow, replace ``<PK>``, or ``<UUID>`` by the appropriate identifier.
 
 Running a calculation
@@ -140,11 +140,11 @@ It can be obtained by using the ``get_builder`` method:
     In [2]: builder = code.get_builder()
 
 Let's supply the builder with the structure we just imported.
-Replace the ``<STRUCTURE PK>`` with that of the structure we imported at the start of the section:
+Replace the ``<STRUCTURE_PK>`` with that of the structure we imported at the start of the section:
 
 .. code-block:: ipython
 
-    In [3]: structure = load_node(<STRUCTURE PK>)
+    In [3]: structure = load_node(<STRUCTURE_PK>)
        ...: builder.structure = structure
 
 .. note::
@@ -160,7 +160,7 @@ This can be done easily with a little utility function
     In [4]: from aiida.orm.nodes.data.upf import get_pseudos_from_structure
        ...: pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY>')
 
-If we check the contenst of the ``pseudos`` variable:
+If we check the content of the ``pseudos`` variable:
 
 .. code-block:: ipython
 
