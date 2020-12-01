@@ -34,7 +34,8 @@ The tutorial will be run on the |AiiDAlab tutorials cluster|, just click the lin
 It will take a few minutes for your server to start up on first login, after that you are all set and ready to start with the tutorial!
 
 We will begin with a short demonstration on AiiDAlab, where you will set up a code for Quantum ESPRESSO, install a family of pseudopotentials and calculate the band structure of silicon.
-Then we will go under the hood and explain the basic concepts of AiiDA, as well as run some Quantum ESPRESSO calculations and workflows via the Python API.
+Then we will go under the hood and run some Quantum ESPRESSO calculations and workflows via the Python API.
+The final (optional) section is a step by step tutorial that helps to understand the basic concepts of AiiDA.
 
 .. |AiiDAlab tutorials cluster| raw:: html
 
