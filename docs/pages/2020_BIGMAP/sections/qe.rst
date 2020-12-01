@@ -83,7 +83,7 @@ Once again download the file to the AiiDAlab cluster by right clicking on the li
 
     .. code-block:: console
 
-        $ verdi code setup -L pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw -n
+        $ verdi code setup --label pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
 
     Similarly, the pseudopotentials can be installed via the following set of commands:
 
@@ -407,7 +407,7 @@ Let's have a look at the groups we've imported from the archive above, using the
 
 .. code-block:: console
 
-    $ verdi group list -C
+    $ verdi group list --count
     Info: to show groups of all types, use the `-a/--all` option.
       PK  Label            Type string    User               Node count
     ----  ---------------  -------------  ---------------  ------------
