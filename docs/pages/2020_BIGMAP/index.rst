@@ -47,9 +47,9 @@ Hands-on materials
    :maxdepth: 1
    :numbered:
 
-   ./sections/basics
    ./sections/qe
    ./sections/browse
+   ./sections/basics
 
 In-depth tutorial
 -----------------
