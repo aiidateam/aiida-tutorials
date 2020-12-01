@@ -8,7 +8,7 @@ This final section of the tutorial is optional, and has the purpose of introduci
 There are two main reasons you may want to browse a database.
 The first one is to get a general idea of the content of it, for which the explore tool of the `Materials Cloud <https://www.materialscloud.org/explore/menu>`_ can be of great use.
 The second one is a more specific search with the purpose of gathering more particular and well defined results.
-For this second use, we will reccommend direct queries via the ``QueryBuilder``.
+For this second purpose, we recommend direct queries via the ``QueryBuilder``.
 
 .. note::
 

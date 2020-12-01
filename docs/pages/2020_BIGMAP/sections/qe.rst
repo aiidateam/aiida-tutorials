@@ -260,7 +260,7 @@ Exploring the database
 ----------------------
 
 In most cases, the full provenance graph obtained from ``verdi node graph generate`` will be rather complex to follow.
-To see this for yourself, you can try to generate the one for the workchains ran by the QuantumEspresso APP, or for the workchain script of the last section.
+To see this for yourself, you can try to generate the one for the work chains ran by the `Quantum ESPRESSO`_ app, or for the workchain script of the last section.
 It therefore becomes very useful to learn how to browse the provenance interactively instead.
 
 To do so, we need first to start the AiiDA REST API:
@@ -269,7 +269,7 @@ To do so, we need first to start the AiiDA REST API:
 
   $ verdi restapi
 
-If you were working on your local machine, you would be automatically be able to access your exposed data via `http://127.0.0.1:5000/api/v4` (this would also work from inside the virtual machine).
+If you were working on your local machine, you would be automatically be able to access your exposed data via ``http://127.0.0.1:5000/api/v4`` (this would also work from inside a virtual machine).
 Since these virtual machines are remote and we need to access the information locally in your workstation, we will need an extra step.
 Open a new terminal from the start page and run `ngrok`_, a tool that allows us to expose the REST API to a public URL:
 
@@ -278,7 +278,7 @@ Open a new terminal from the start page and run `ngrok`_, a tool that allows us 
     $ ngrok http 5000 --region eu --bind-tls true
 
 
-Now you will be able to open the |provenance browser| and copy there he public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
+Now you will be able to open the |provenance browser| and enter the public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
 
 .. |provenance browser| raw:: html
 
@@ -320,7 +320,7 @@ Now we are going to look at the available band structure nodes, for which we wil
      All nodes of type ``BandsData``, listed in the `grid` view.
 
 Here we can just select one of the available nodes and click on `details` on the right.
-This will take us to the `details` view of that particular node, which will have useful information on it.
+This will take us to the `details` view of that particular node:
 
    .. figure:: include/screenshots/explore_02.png
      :width: 100%
@@ -328,22 +328,21 @@ This will take us to the `details` view of that particular node, which will have
      The `details` view of a specific node of type ``BandsData``.
 
 
-In this case we can see that the Explore Section has available a useful bands visualizer for nodes of type ``BandsData``.
-It also contains (as it does for all type of nodes) the `AiiDA Provenance Browser` on its right.
-This tool allows us to easily explore the connections between nodes more information about, for example, how these results were obtained.
-In effect, we can identify the ``CalcJob`` node that produced this result (red square with the link labeled ``output_band``) and click on it.
-This will immediately redirect us to the `details` page for that ``CalcJob`` node:
+We can see that the Explore Section can visualise the band structure stored in a ``BandsData`` node.
+It also shows (as it does for all types of nodes) the `AiiDA Provenance Browser` on its right.
+This tool allows us to easily explore the connections between nodes and understand, for example, how these results were obtained.
+For example, go to the ``CalcJob`` node that produced the band structure by finding the red square with the incoming link labeled ``output_band`` and clicking on it.
+This will redirect us to the `details` page for that ``CalcJob`` node:
 
    .. figure:: include/screenshots/explore_03.png
      :width: 100%
 
      The `details` view of the ``CalcJob`` node that created the original ``BandsData`` node.
 
-You can check out here the details of the calculation, the actual input and output files, the `Node metadata` and `Job information` dropdown menus, etc.
-You may also want to know to which crystal structure does its generated band structure corresponds to.
+You can check out here the details of the calculation, such as the input and output files, the `Node metadata` and `Job information` dropdown menus, etc.
+You may also want to know for which crystal structure the band structure was calculated.
 Although this information can also be found inside the input files, we will look for it directly in the input nodes, again by using the `AiiDA Provenance Browser`.
-This time we will look for the ``StructureData`` node (green circle) that has an outgoing link (so, the arrow points from the ``data`` node to the central current ``process`` node) with the label `structure`.
-We will finally click in that node.
+This time we will look for the ``StructureData`` node (green circle) that has an outgoing link (so, the arrow points from the ``data`` node to the central current ``process`` node) with the label `structure` and click on it:
 
    .. figure:: include/screenshots/explore_04.png
      :width: 100%
