@@ -3,7 +3,20 @@
 Quantum ESPRESSO
 ================
 
-Now that we've covered the basics, let's continue with a quick demo of how AiiDA can make your life easier as a computational scientist.
+Let's start with a quick demo of how AiiDA can make your life easier as a computational scientist.
+
+.. note::
+
+  Throughout this tutorial we will be using the ``verdi`` command line interface.
+  Here's couple of tricks that will make your life easier:
+
+  * The ``verdi`` command supports **tab-completion**:
+    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
+  * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag:
+
+    .. code-block:: console
+
+        $ verdi -h
 
 Importing a structure and inspecting it
 ---------------------------------------
@@ -22,7 +35,7 @@ Next, you can import it with the ``verdi`` CLI.
     $ verdi data structure import ase Si.cif
       Successfully imported structure Si2 (PK = 171)
 
-Remember that each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
+Each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
 This is printed out on the screen by the ``verdi data structure import`` command.
 It's a good idea to mark it down, but should you forget, you can always have a look at the structures in the database using:
 
@@ -40,7 +53,8 @@ It's a good idea to mark it down, but should you forget, you can always have a l
 
 .. important::
 
-    Throughout this section, remember to replace the string ``<PK>`` with the appropriate PK number.
+    It is likely that the PK numbers shown throughout this tutorial are different for your database!
+    Throughout this section, replace the string ``<PK>`` with the appropriate PK number.
 
 Let us first inspect the node you just created:
 
@@ -58,27 +72,36 @@ Let us first inspect the node you just created:
     mtime        2020-11-29 16:11:40.025347+00:00
 
 You can see some information on the node, including its type (``StructureData``, the AiiDA data type for storing crystal structures), a label and a description (empty for now, can be changed), a creation time (``ctime``) and a last modification time (``mtime``), the PK of the node and its UUID (universally unique identifier).
+The PK and UUID both reference the node with the only difference that the PK is unique *for your local database only*, whereas the UUID is a globally unique identifier and can therefore be used between *different* databases.
+
+.. important::
+
+    The UUIDs are generated randomly and are therefore **guaranteed** to be different.
+    In the commands that follow, replace ``<PK>``, or ``<UUID>`` by the appropriate identifier.
 
 Running a calculation
 ---------------------
 
-The following short Python script sets up a self-consistent field calculation for the `Quantum ESPRESSO`_ code:
-
-.. literalinclude:: include/snippets/demo_calcjob.py
-
-Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` script to your working directory:
+We'll start with running a simply SCF calculation with `Quantum ESPRESSO`_ for the structure we just imported.
+Let's first look at the codes in our database with the ``verdi shell``:
 
 .. code-block:: console
 
-    $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2020-bigmap-lab/_downloads/87ca377401915ffe2b2472d953029e9c/demo_calcjob.py
+    $ verdi code list
+    # List of configured codes:
+    # (use 'verdi code show CODEID' to see the details)
+    * pk 1 - pw@localhost
 
-**Exercise:** The ``demo_calcjob.py`` script contains a few placeholders for you to fill in:
+We can see the code you set up during the AiiDAlab demo, with label ``pw``, set up on the ``localhost`` computer.
 
-    #. Replace replace ``<CODE LABEL>`` in the script with label of the `Quantum ESPRESSO`_ code you set up in the      AiiDAlab demo.
-       Use ``verdi code list`` to find the label for the ``pw.x`` in case you forgot.
-    #. replace ``<STRUCTURE PK>`` with the PK of the structure you imported.
-    #. Replace ``<PP FAMILY>`` with the label for the "SSSP efficiency" library.
-       Use ``verdi data upf listfamilies`` to find the right label.
+To run the SCF calculation, we'll also need to provide the family of pseudopotentials.
+To see the list of installed pseudopotential families, do:
+
+.. code-block:: console
+
+    $ verdi data upf listfamilies
+    Success: * SSSP_1.1_efficiency [85 pseudos]
+    Success: * SSSP_1.1_precision [85 pseudos]
 
 .. note::
 
@@ -95,12 +118,113 @@ Download the :download:`demo_calcjob.py <include/snippets/demo_calcjob.py>` scri
         $ verdi import -n http://legacy-archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.aiida
         $ verdi import -n http://legacy-archive.materialscloud.org/file/2018.0001/v3/SSSP_precision_pseudos.aiida
 
-Finally, submit the calculation using:
+Along with the PK of the ``StructureData`` node for the silicon structure we imported in the previous section, we now have everything to set up the calculation step by step.
+We will do this in the ``verdi shell``, an interactive IPython shell that has many basic AiiDA classes pre-loaded.
+To start the IPython shell, simply type in the terminal:
 
 .. code-block:: console
 
-    $ verdi run demo_calcjob.py
-    Submitted CalcJob with PK=179
+    $ verdi shell
+
+First, we'll load the code from the database using its label:
+
+.. code-block:: ipython
+
+    In [1]: code = load_code(label='pw')
+
+Every code has a convenient tool for setting up the required input, called the *builder*.
+It can be obtained by using the ``get_builder`` method:
+
+.. code-block:: ipython
+
+    In [2]: builder = code.get_builder()
+
+Let's supply the builder with the structure we just imported.
+Replace the ``<STRUCTURE PK>`` with that of the structure we imported at the start of the section:
+
+.. code-block:: ipython
+
+    In [3]: structure = load_node(<STRUCTURE PK>)
+       ...: builder.structure = structure
+
+.. note::
+
+    One nifty feature of the builder is the ability to use tab completion for the inputs.
+    Try it out by typing ``builder.`` + ``<TAB>`` in the verdi shell.
+
+Next, we'll set up a dictionary with the pseudopotentials.
+This can be done easily with a little utility function
+
+.. code-block:: ipython
+
+    In [4]: from aiida.orm.nodes.data.upf import get_pseudos_from_structure
+       ...: pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY>')
+
+If we check the contenst of the ``pseudos`` variable:
+
+.. code-block:: ipython
+
+    In [5]: pseudos
+    Out[5]: {'Si': <UpfData: uuid: 5600890b-a2f3-4210-8c7e-d54839ade0e0 (pk: 79)>}
+
+We can see that it is a simple dictionary that maps the ``'Si'`` element to a ``UpfData`` node, which contains the pseudopotential for silicon in the database.
+Let's pass it to the builder:
+
+.. code-block:: ipython
+
+    In [6]: builder.pseudos = pseudos
+
+Of course, we also have to set some computational parameters.
+We'll first set up a dictionary with the input parameters for Quantum ESPRESSO:
+
+.. code-block:: ipython
+
+    In [7]: parameters = {
+       ...:   'CONTROL': {
+       ...:     'calculation': 'scf',  # self-consistent field
+       ...:   },
+       ...:   'SYSTEM': {
+       ...:     'ecutwfc': 30.,  # wave function cutoff in Ry
+       ...:     'ecutrho': 240.,  # density cutoff in Ry
+       ...:   },
+       ...: }
+
+In order to store them in the database, they **must** be passed to the builder as a ``Dict`` node:
+
+.. code-block:: ipython
+
+    In [8]: builder.parameters = Dict(dict=parameters)
+
+The k-points mesh can be supplied via a ``KpointsData`` node.
+Load the corresponding class using the ``DataFactory``:
+
+.. code-block:: ipython
+
+    In [9]: KpointsData = DataFactory('array.kpoints')
+
+The ``DataFactory`` is a useful and robust tool for loading data types based on their *entry point*, e.g. ``'array.kpoints'`` in this case.
+Once the class is loaded, defining the k-points mesh and passing it to the builder is easy:
+
+.. code-block:: ipython
+
+    In [10]: kpoints = KpointsData()
+        ...: kpoints.set_kpoints_mesh([4,4,4])
+        ...: builder.kpoints = kpoints
+
+Finally, we can also specify the resources we want to use for our calculation.
+These are stored in the *metadata*:
+
+.. code-block:: ipython
+
+    In [11]: builder.metadata.options.resources = {'num_machines': 1}
+
+Great, we're all set!
+Now all that is left to do is to *submit* the builder to the daemon.
+
+.. code-block:: ipython
+
+    In [12]: from aiida.engine import submit
+        ...: calcjob = submit(builder)
 
 From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
 
@@ -116,29 +240,36 @@ and, if the daemon is not running, you can start it with
 
     $ verdi daemon start
 
-It should take less than one minute to complete.
+The calculation should take less than one minute to complete.
 
 Analyzing the outputs of a calculation
 --------------------------------------
 
-Let's have a look how your calculation is doing:
+Let's have a look how your calculation is doing!
+You can list the processes stored in your database with ``verdi process list``.
+However, by default the command only shows the *active* processes.
+To see *all* processes, use the ``--all`` option:
 
 .. code-block:: console
 
-    $ verdi process list -a
+    $ verdi process list --all
       PK  Created    Process label                 Process State    Process status
     ----  ---------  ----------------------------  ---------------  ----------------
-     <! OUTPUT REMOVED !>
-     164  1h ago     MultiplyAddWorkChain          ⏹ Finished [0]
-     165  1h ago     multiply                      ⏹ Finished [0]
-     167  1h ago     ArithmeticAddCalculation      ⏹ Finished [0]
-     179  1m ago     PwCalculation                 ⏹ Finished [0]
+     107  1h ago     PwBandsWorkChain              ⏹ Finished [0]
+     108  1h ago     seekpath_structure_analysis   ⏹ Finished [0]
+     115  1h ago     PwBaseWorkChain               ⏹ Finished [0]
+     117  1h ago     create_kpoints_from_distance  ⏹ Finished [0]
+     121  1h ago     PwCalculation                 ⏹ Finished [0]
+     129  1h ago     PwCalculation                 ⏹ Finished [0]
+     137  1h ago     PwBaseWorkChain               ⏹ Finished [0]
+     140  1h ago     PwCalculation                 ⏹ Finished [0]
+     179  21s ago    PwCalculation                 ⏹ Finished [0]
 
-    Total results: 15
+    Total results: 9
 
     Info: last time an entry changed state: 28s ago (at 16:20:43 on 2020-11-29)
 
-Once again we've removed some of the output.
+Notice how the band structure workflow (``PwBandsWorkChain``) you ran in the `Quantum ESPRESSO`_ app of `AiiDAlab`_ is also in the process list!
 Use the PK of the calculation to get more information on it:
 
 .. code-block:: console
@@ -181,14 +312,21 @@ AiiDA's record of a calculation is best displayed in the form of a provenance gr
 
     Provenance graph for a single `Quantum ESPRESSO`_ calculation.
 
-Try to reproduce the figure using the PK of your calculation based on what you learned `in the basics section <BIGMAP_2020_Basics:calcfunction:graph>`_.
+To reproduce the figure using the PK of your calculation, you can use the following verdi command:
+
+.. code-block:: console
+
+  $ verdi node graph generate <PK>
+
+The command will write the provenance graph to a ``.pdf`` file.
+If you open a *file manager* on the start page of the JupyterHub, you should be able to see and open the PDF.
 
 Let's have a look at one of the outputs, i.e. the ``output_parameters``.
 You can get the contents of this dictionary easily using the ``verdi shell``:
 
 .. code-block:: ipython
 
-    In [1]: node = load_node(179)
+    In [1]: node = load_node(<PK>)
        ...: d = node.get_dict()
        ...: d['energy']
     Out[1]: -310.56885928359
@@ -599,6 +737,7 @@ Here are some options for how to continue:
 
 .. _setting up AiiDA: https://aiida.readthedocs.io/projects/aiida-core/en/latest/intro/install_system.html#intro-get-started-system-wide-install
 .. _Quantum Mobile: https://github.com/marvel-nccr/quantum-mobile/releases/tag/20.03.1
+.. _AiiDAlab: https://www.materialscloud.org/work/aiidalab
 .. _visualization tools: https://wiki.fysik.dtu.dk/ase/ase/visualize/visualize.html
 .. _XCrySDen: http://www.xcrysden.org/
 .. _Quantum ESPRESSO: https://www.quantum-espresso.org/
