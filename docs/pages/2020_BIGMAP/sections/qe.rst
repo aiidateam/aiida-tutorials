@@ -388,17 +388,15 @@ We can see in this particular case that the original ``BandsData`` corresponds t
 You can look at the structure here, explore the details of the cell, etc.
 
 **Exercise:**
-Once your workflow has finished running, identify the band structure that was produced by it (probably the one with the newest creation time).
-Repeat the same procedure to find out the relaxed structure that was used for this calculation.
-Now, as we explained above, the workflow has a relaxation step, so you could look at the original crystal structure to see if the geometry changed during relaxation.
-To do so:
+By now it is likely that your workflow has finished running.
+Repeat the same procedure described above to find the structure used to calculate the resulting band structure.
+You can identify this band structure easily as it will be the one with the newest creation time.
+Once you do:
 
-    1. Go to the details page of the ``BandsData`` node.
-    2. Look in the Provenance Browser for the workflow node that corresponds to the outermost ``PwBandStructureWorkChain``.
-       You identify it by hovering over the nodes and checking that the UUID corresponds with the one in your database.
-       Once you click on it and see its details, verify that it is in effect the ``PwBandStructureWorkChain``
-    3. Select the input structure of that workflow node.
-       It is probably hard to identify differences since the changes in vector cells and atomic positions might be just due to rotations, but the relevant questions are: has the distance between atoms changed? has the total volumen changed?
+    1. Go to the `details` view for that ``BandsData`` node.
+    2. Look in the provenance browser for the calculation that created these bands and click on it.
+    3. Verify that this calculation is of type ``PwCalculation`` (look for the ``process_label`` in the `node metadata` subsection).
+    4. Look in the provenance browser for the ``StructureData`` that was used as input for this calculation.
 
 As you can see, the explore tool of the `Materials Cloud <https://www.materialscloud.org/explore/menu>`_ offers a very natural and intuitive interface to use for a light exploration of a database.
 However, you might already imagine that doing a more intensive kind of data mining of specific results this way can quickly become tedious.
