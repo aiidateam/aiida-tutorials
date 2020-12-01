@@ -218,26 +218,17 @@ From calculations to workflows
 
 AiiDA can help you run individual calculations but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
 
-As the final step, we are going to launch the ``PwBandStructure`` workflow of the ``aiida-quantumespresso`` plugin.
-
-.. literalinclude:: include/snippets/demo_bands.py
-
-Download the :download:`demo_bands.py <include/snippets/demo_bands.py>` snippet:
+To see all currently available workflows in your installation, you can run the following command:
 
 .. code-block:: console
 
-    $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2020-bigmap-lab/_downloads/ed78d4494b7eac53786c1b6fe653999d/demo_bands.py
+    $ verdi plugin list aiida.workflows
 
-and replace the ``<CODE LABEL>`` and structure ``<PK>``.
-Then run it using:
 
-.. code-block:: console
+We are going to choose the ``PwBandStructureWorkChain `` workflow of the ``aiida-quantumespresso`` plugin (you can see it on the list as ``quantumespresso.pw.band_structure``).
+This is a fully automated workflow that will:
 
-    $ verdi run demo_bands.py
-
-This workflow will:
-
-    #. Determine the primitive cell of the input structure.
+    #. Determine the primitive cell of a given input structure.
     #. Run a calculation on the primitive cell to relax both the cell and the atomic positions (``vc-relax``).
     #. Refine the symmetry of the relaxed structure, and find a standardised primitive cell using SeeK-path_.
     #. Run a self-consistent field calculation on the refined structure.
@@ -245,11 +236,34 @@ This workflow will:
 
 The workflow uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
 
-.. K-point mesh is selected to have a minimum k-point density of 0.2 Å-1
-   A Marzari-Vanderbilt smearing of 0.02 Ry is used for the electronic occupations
+In order to run it, we will open again the ``verdi shell``.
+We will then load the workflow plugin using the previously identified label and get a builder for the workflow:
 
-The workflow should take about 5 minutes on the AiiDAlab cluster.
-You may notice that ``verdi process list`` now shows more than one entry:
+.. code-block:: ipython
+
+    In [1]: PwBandStructureWorkChain = WorkflowFactory('quantumespresso.pw.band_structure')
+       ...: builder = PwBandStructureWorkChain.get_builder()
+
+The only two inputs that we need to set up now is the code and the initial structure.
+The code we need to provide is the ``pw`` code that we want to use to perform the calculations.
+Replace the following ``<CODE_LABEL>`` and ``<PK>`` with the corresponding values for the code and the structure that we use for the first section.
+
+.. code-block:: ipython
+
+    In [2]: builder.code = load_code(label='<CODE_LABEL>') # REPLACE <CODE_LABEL>
+       ...: builder.structure = load_node(<PK>) # REPLACE <PK>
+
+
+Finally, we just need to submit the builder in the same as we did before for the calculation:
+
+.. code-block:: ipython
+
+    In [3]: from aiida.engine import submit
+       ...: results = submit(builder)
+
+And done!
+Just like that, we have prepared and submitted the whole automated process to finally obtain the band structure of our initial material.
+If you want to check the status of the calculation, you can just exit the ``verdi shell`` and run:
 
 .. code-block:: console
 
@@ -266,7 +280,10 @@ You may notice that ``verdi process list`` now shows more than one entry:
 
     Info: last time an entry changed state: 3m ago (at 16:30:24 on 2020-11-29)
 
-While you wait for the workflow to complete, let's start exploring its provenance.
+You may notice that ``verdi process list`` now shows more than one entry: indeed, there are a couple of calculations and sub-workflows that will need to run.
+The total workflow should take about 5 minutes to finish on the AiiDAlab cluster.
+
+While we wait for the workflow to complete, we can start learning about how to explore the provenance of an AiiDA database.
 
 Exploring the database
 ----------------------
@@ -316,6 +333,12 @@ then the URL you should provide the provenance browser is ``https://bb84d27809e0
     The provenance browser is a Javascript application that connects to the AiiDA REST API.
     Your data never leaves your computer.
 
+.. note::
+
+    In the following section, we will show an example of how to browse your database using the `Materials Cloud explore <https://www.materialscloud.org/explore/menu>`_ interface.
+    Since this interface is highly dependent on the particulars of your own database, you will most likely don't have the exact nodes or structures we are showing in the example.
+    The instructions below serve more as a general guideline on how to interact with the interface in order to do the final exercise.
+
 For a quick example on how to browse the database, you can do the following.
 First, notice the content of the main page in the `grid` view: all your nodes are listed in the center, while the lateral bar offers the option of filtering according to node type.
 
@@ -361,8 +384,19 @@ This time we will look for the ``StructureData`` node (green circle) that has an
 
      The `details` view of the ``StructureData`` node that corresponds to the original ``BandsData`` node.
 
-We can see in this case that the original ``BandsData`` corresponds to a Silica structure.
+We can see in this particular case that the original ``BandsData`` corresponds to a Silica structure (your final structure might be different).
 You can look at the structure here, explore the details of the cell, etc.
+
+**Exercise:**
+By now it is likely that your workflow has finished running.
+Repeat the same procedure described above to find the structure used to calculate the resulting band structure.
+You can identify this band structure easily as it will be the one with the newest creation time.
+Once you do:
+
+    1. Go to the `details` view for that ``BandsData`` node.
+    2. Look in the provenance browser for the calculation that created these bands and click on it.
+    3. Verify that this calculation is of type ``PwCalculation`` (look for the ``process_label`` in the `node metadata` subsection).
+    4. Look in the provenance browser for the ``StructureData`` that was used as input for this calculation.
 
 As you can see, the explore tool of the `Materials Cloud <https://www.materialscloud.org/explore/menu>`_ offers a very natural and intuitive interface to use for a light exploration of a database.
 However, you might already imagine that doing a more intensive kind of data mining of specific results this way can quickly become tedious.
