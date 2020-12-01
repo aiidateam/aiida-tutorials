@@ -225,7 +225,7 @@ To see all currently available workflows in your installation, you can run the f
     $ verdi plugin list aiida.workflows
 
 
-We are going to choose the ``PwBandStructure`` workflow of the ``aiida-quantumespresso`` plugin (you can see it on the list as ``quantumespresso.pw.band_structure``).
+We are going to choose the ``PwBandStructureWorkChain `` workflow of the ``aiida-quantumespresso`` plugin (you can see it on the list as ``quantumespresso.pw.band_structure``).
 This is a fully automated workflow that will:
 
     #. Determine the primitive cell of a given input structure.
@@ -241,12 +241,12 @@ We will then load the workflow plugin using the previously identified label and 
 
 .. code-block:: ipython
 
-    In [1]: PwBandStructureWorkChain = WorkflowFactory('<PLUGIN_LABEL>') # REPLACE <PLUGIN_LABEL>
+    In [1]: PwBandStructureWorkChain = WorkflowFactory('quantumespresso.pw.band_structure')
        ...: builder = PwBandStructureWorkChain.get_builder()
 
 The only two inputs that we need to set up now is the code and the initial structure.
 The code we need to provide is the ``pw`` code that we want to use to perform the calculations.
-Replace the following <CODE_LABEL> and <PK> with the corresponding values for the code and the structure that we use for the first section.
+Replace the following ``<CODE_LABEL>`` and ``<PK>`` with the corresponding values for the code and the structure that we use for the first section.
 
 .. code-block:: ipython
 
@@ -254,7 +254,7 @@ Replace the following <CODE_LABEL> and <PK> with the corresponding values for th
        ...: builder.structure = load_node(<PK>) # REPLACE <PK>
 
 
-Finally, we just need to run it the same way we did before with our calculation:
+Finally, we just need to submit the builder in the same as we did before for the calculation:
 
 .. code-block:: ipython
 
@@ -337,8 +337,7 @@ then the URL you should provide the provenance browser is ``https://bb84d27809e0
 
     In the following section, we will show an example of how to browse your database using the `Materials Cloud explore <https://www.materialscloud.org/explore/menu>`_ interface.
     Since this interface is highly dependent on the particulars of your own database, you will most likely don't have the exact nodes or structures we are showing in the example.
-    This is not relevant because, even if you had them, it would be non-trivial to unequivocally identify them here and make sure you get to the same results.
-    Just use this as a general guideline on how to interact with the interface in order to do the final exercise.
+    The instructions below serve more as a general guideline on how to interact with the interface in order to do the final exercise.
 
 For a quick example on how to browse the database, you can do the following.
 First, notice the content of the main page in the `grid` view: all your nodes are listed in the center, while the lateral bar offers the option of filtering according to node type.
