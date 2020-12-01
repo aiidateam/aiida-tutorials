@@ -35,19 +35,6 @@ The green ellipses are ``Data`` nodes, the blue ellipse is a ``Code`` node, and 
 The provenance graph allows us to not only see what data we have, but also how it was produced.
 During this tutorial we will be using AiiDA to generate the provenance graph in :numref:`fig_intro_workchain_graph` step by step.
 
-.. note::
-
-  Throughout this tutorial we will be using the ``verdi`` command line interface.
-  Here's couple of tricks that will make your life easier:
-
-  * The ``verdi`` command supports **tab-completion**:
-    In the terminal, type ``verdi``, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
-  * For help on ``verdi`` or any of its subcommands, simply append the ``--help/-h`` flag:
-
-    .. code-block:: console
-
-        $ verdi -h
-
 .. _BIGMAP_2020_Basics:data_nodes:
 
 Data nodes

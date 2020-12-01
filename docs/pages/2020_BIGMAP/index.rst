@@ -6,20 +6,17 @@ BIG-MAP meeting AiiDA tutorial
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 | Related resources                                                                                                           |
 +=================+===========================================================================================================+
-| Virtual Machine | `Quantum Mobile v20.06.1 <https://github.com/marvel-nccr/quantum-mobile/releases/tag/20.06.1>`_           |
+| python packages | `aiida-core 1.4.2`_, `aiida-quantumespresso 3.2.1`_                                                       |
 +-----------------+-----------------------------------------------------------------------------------------------------------+
-| python packages | `aiida-core 1.3.0`_, `aiida-quantumespresso 3.0.0`_                                                       |
-+-----------------+-----------------------------------------------------------------------------------------------------------+
-| codes           | `Quantum ESPRESSO 6.5`_                                                                                   |
+| codes           | `Quantum ESPRESSO 6.0`_                                                                                   |
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 
 .. _Quantum Mobile 20.03.1: https://github.com/marvel-nccr/quantum-mobile/releases/tag/20.03.1
-.. _aiida-core 1.3.0: https://pypi.org/project/aiida-core/1.3.0
-.. _aiida-quantumespresso 3.0.0: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0
-.. _Quantum ESPRESSO 6.5: https://github.com/QEF/q-e/releases/tag/qe-6.5
+.. _aiida-core 1.4.2: https://pypi.org/project/aiida-core/1.4.2/
+.. _aiida-quantumespresso 3.2.1: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.2.1
+.. _Quantum ESPRESSO 6.0: https://github.com/QEF/q-e/releases/tag/qe-6.0.0
 
 This is the content of the AiiDA tutorial organised for the BIG-MAP meeting on 2 December 2020.
-
 
 Setup
 -----
@@ -35,7 +32,7 @@ It will take a few minutes for your server to start up on first login, after tha
 
 We will begin with a short demonstration on AiiDAlab, where you will set up a code for Quantum ESPRESSO, install a family of pseudopotentials and calculate the band structure of silicon.
 Then we will go under the hood and run some Quantum ESPRESSO calculations and workflows via the Python API.
-The final (optional) section is a step by step tutorial that helps to understand the basic concepts of AiiDA.
+The final (optional) section is a step by step tutorial that helps to understand the basic concepts of AiiDA in more detail.
 
 .. |AiiDAlab tutorials cluster| raw:: html
 
@@ -60,10 +57,22 @@ If you want to learn more, you can check the :ref:`2020 AiiDA virtual tutorial <
 Acknowledgements
 ----------------
 
-.. todo::
+This event was made possible by support from BIG-MAP, the MaX European Centre of Excellence, the MARVEL National Centre of Competence in Research and the H2020 MARKETPLACE project.
 
-   Add Acknowledgements.
+.. image:: sponsors/BIG-MAP.png
+   :target: https://www.big-map.eu/
+   :width: 55%
 
-.. .. image:: sponsors/image.png
-..    :target: add link here
-..    :width: 200px
+.. image:: sponsors/max.png
+   :target: http://www.max-centre.eu/
+   :width: 35%
+
+|
+
+.. image:: sponsors/marvel.png
+   :target: http://nccr-marvel.ch
+   :width: 25%
+
+.. image:: sponsors/marketplace.png
+   :target: https://www.the-marketplace-project.eu/
+   :width: 45%
