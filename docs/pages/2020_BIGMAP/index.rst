@@ -24,15 +24,15 @@ This is the content of the AiiDA tutorial organised for the BIG-MAP meeting on 2
 Setup
 -----
 
-The tutorial will be run on the |AiiDAlab tutorials cluster|, just click the link and log in with a username and password of your choosing.
+The tutorial will be run on the |AiiDAlab tutorials cluster|, just click the link and log in with your email address as username and a password of your choosing.
 
 .. important::
 
-  Make a note of your password!
-  If you lose it, you can make a new account, but you will lose your progress.
+    Note down your password so that you can login again in case you get inadvertently logged out.
+    In case your forgot your password, either just create a new account (and lose previous progress) or contact one of the administrators to reset your password.
 
-That's it!
-You're now ready to start with the tutorial.
+It will take a few minutes for your server to start up on first login, after that you are all set and ready to start with the tutorial!
+
 We will begin with a short demonstration on AiiDAlab, where you will set up a code for Quantum ESPRESSO, install a family of pseudopotentials and calculate the band structure of silicon.
 Then we will go under the hood and explain the basic concepts of AiiDA, as well as run some Quantum ESPRESSO calculations and workflows via the Python API.
 

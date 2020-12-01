@@ -89,10 +89,8 @@ Once again download the file to the AiiDAlab cluster by right clicking on the li
 
     .. code-block:: console
 
-        $ mkdir sssp_pseudos
-        $ wget 'https://archive.materialscloud.org/record/file?filename=SSSP_1.1_PBE_efficiency.tar.gz&record_id=23&file_id=d2ce4186-bf76-4e05-8b39-444b4da30273' -O SSSP_1.1_PBE_efficiency.tar.gz
-        $ tar -C sssp_pseudos -zxvf SSSP_1.1_PBE_efficiency.tar.gz
-        $ verdi data upf uploadfamily sssp_pseudos 'SSSP' 'SSSP pseudopotential library'
+        $ verdi import -n http://legacy-archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.aiida
+        $ verdi import -n http://legacy-archive.materialscloud.org/file/2018.0001/v3/SSSP_precision_pseudos.aiida
 
 Finally, submit the calculation using:
 
