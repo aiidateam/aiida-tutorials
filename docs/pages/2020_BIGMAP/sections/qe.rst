@@ -558,8 +558,8 @@ Finishing the workchain
 -----------------------
 
 Let's stop ``ngrok`` using ``Ctrl+C`` and close its terminal, as well as stop the REST API (also using ``Ctrl+C``).
-The workchain we started earlier should be finished by now, let's use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
-Use this to produce a PDF of the band structure:
+Let's use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
+Instead of relying on the explore tool, we can also plot the band structure using the ``verdi shell``:
 
 .. code-block:: console
 
@@ -570,17 +570,29 @@ Use this to produce a PDF of the band structure:
 
    Band structure computed by the ``PwBandStructureWorkChain``.
 
-.. note::
-   The ``BandsData`` node does contain information about the Fermi energy, so the energy zero in your plot will be arbitrary.
-   You can produce a plot with the Fermi energy set to zero (as above) using the following steps in the ``verdi shell``.
-   Just look for the ``scf_parameters`` and ``band_structure`` output nodes of the ``PwBandStructureWorkChain`` using ``verdi process show`` and replace them in the following code:
+Finally, the ``verdi process status`` command prints a *hierarchical* overview of the processes called by the work chain:
 
-   .. code-block:: ipython
+.. code-block:: console
 
-        In [1]: scf_params = load_node(<PK>)  # PK of the `scf_parameters` node
-           ...: fermi_energy = scf_params.dict.fermi_energy
-           ...: bands = load_node(<PK>)  # PK of the `band_structure` node
-           ...: bands.show_mpl(y_origin=fermi_energy, plot_zero_axis=True)
+    $ verdi process status 186
+    PwBandStructureWorkChain<186> Finished [0] [3:results]
+        └── PwBandsWorkChain<201> Finished [0] [7:results]
+            ├── PwRelaxWorkChain<203> Finished [0] [3:results]
+            │   ├── PwBaseWorkChain<206> Finished [0] [7:results]
+            │   │   ├── create_kpoints_from_distance<208> Finished [0]
+            │   │   └── PwCalculation<212> Finished [0]
+            │   └── PwBaseWorkChain<223> Finished [0] [7:results]
+            │       ├── create_kpoints_from_distance<225> Finished [0]
+            │       └── PwCalculation<229> Finished [0]
+            ├── seekpath_structure_analysis<236> Finished [0]
+            ├── PwBaseWorkChain<243> Finished [0] [7:results]
+            │   ├── create_kpoints_from_distance<245> Finished [0]
+            │   └── PwCalculation<249> Finished [0]
+            └── PwBaseWorkChain<257> Finished [0] [7:results]
+                └── PwCalculation<260> Finished [0]
+
+The bracket ``[3:result]`` indicates the current step in the outline of the ``PwBandStructureWorkChain`` (step 3, with name ``result``).
+The ``process status`` is particularly useful for debugging complex work chains, since it helps pinpoint where a problem occurred.
 
 Querying the database
 ---------------------
