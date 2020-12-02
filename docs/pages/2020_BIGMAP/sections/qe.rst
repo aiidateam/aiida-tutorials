@@ -553,7 +553,6 @@ As you can see, the explore tool of the `Materials Cloud <https://www.materialsc
 However, you might already imagine that doing a more intensive kind of data mining of specific results this way can quickly become tedious.
 For this use cases, AiiDA has a more versatile tool: the ``QueryBuilder``.
 
-
 Finishing the workchain
 -----------------------
 
@@ -720,7 +719,7 @@ Let's have a look at the results:
      ['FeO3Sr', 3.38]]
 
 You can see that we've found 7 magnetic structures for the calculations in the ``tutorial_pbesol`` group, along with their formulas and magnetizations.
-We've set up a little script (:download:`demo_query.py <include/snippets/demo_query.py>`) that performs a similar query to obtain these results for all three groups, and then postprocess the data to make a simple plot.
+We've set up a script (:download:`demo_query.py <include/snippets/demo_query.py>`) that performs a similar query to obtain the magnetization and smearing energy for all results in the three groups, and then postprocess the data to visualize it.
 You can find it in the dropdown panel below:
 
 .. dropdown:: **Query demo script**
@@ -739,14 +738,14 @@ and use ``verdi run`` to execute it:
 
     $ verdi run demo_query.py
 
-The resulting plot should look something like the one shown in :numref:`BIGMAP_2020_Query_demo`.
+The resulting plot should look like the one shown in :numref:`BIGMAP_2020_Query_demo`.
 
 .. _BIGMAP_2020_Query_demo:
 .. figure:: include/images/demo_query.png
-    :width: 80%
+    :width: 100%
     :align: center
 
-    Comparison of the absolute magnetization of the cell of the perovskite structures, calculated with different functionals.
+    Comparison of the absolute magnetization and smearing energy of the cell of the perovskite structures, calculated with different functionals.
 
 What next?
 ----------
