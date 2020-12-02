@@ -51,7 +51,7 @@ It's a good idea to mark it down, but should you forget, you can always have a l
 
     Total results: 4
 
-The first column (marked `Id`) are the PK's of the ``StructureData`` nodes.
+The first column (marked ``Id``) are the PK's of the ``StructureData`` nodes.
 
 .. important::
 
@@ -166,12 +166,12 @@ You can get more information on an input by adding a question mark ``?``:
 Here you can see that the ``structure`` input is required, needs to be of the ``StructureData`` type and is stored in the database (``"non_db": "False"``).
 
 Next, we'll set up a dictionary with the pseudopotentials.
-This can be done easily with a little utility function
+This can be done easily with the ``get_pseudos_from_structure`` utility function.
 
 .. code-block:: ipython
 
     In [5]: from aiida.orm.nodes.data.upf import get_pseudos_from_structure
-       ...: pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY>')
+       ...: pseudos = get_pseudos_from_structure(structure, 'SSSP_1.1_efficiency')
 
 If we check the content of the ``pseudos`` variable:
 
@@ -283,7 +283,7 @@ To see *all* processes, use the ``--all`` option:
     Info: last time an entry changed state: 28s ago (at 16:20:43 on 2020-11-29)
 
 Notice how the band structure workflow (``PwBandsWorkChain``) you ran in the `Quantum ESPRESSO`_ app of `AiiDAlab`_ is also in the process list!
-Use the PK of the most recent `PwCalculation` (the one you just sent)  to get more information on it:
+Use the PK of the most recent ``PwCalculation`` (the one you just sent)  to get more information on it:
 
 .. code-block:: console
 
@@ -375,8 +375,8 @@ To see all currently available workflows in your installation, you can run the f
 
     $ verdi plugin list aiida.workflows
 
-
-We are going to choose the ``PwBandStructureWorkChain `` workflow of the ``aiida-quantumespresso`` plugin (you can see it on the list as ``quantumespresso.pw.band_structure``).
+We are going to run the ``PwBandStructureWorkChain`` workflow of the ``aiida-quantumespresso`` plugin.
+You can see it on the list as ``quantumespresso.pw.band_structure``, which is the *entry point* of this workflow.
 This is a fully automated workflow that will:
 
     #. Determine the primitive cell of a given input structure.
@@ -387,8 +387,8 @@ This is a fully automated workflow that will:
 
 The workflow uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
 
-In order to run it, we will open again the ``verdi shell``.
-We will then load the workflow plugin using the previously identified label and get a builder for the workflow:
+In order to run it, we will again open the ``verdi shell``.
+We will then load the workflow plugin using the previously identified entry point and get a builder for the workflow:
 
 .. code-block:: ipython
 
@@ -405,7 +405,7 @@ Replace the following ``<CODE_LABEL>`` and ``<PK>`` with the corresponding value
        ...: builder.structure = load_node(<PK>) # REPLACE <PK>
 
 
-Finally, we just need to submit the builder in the same as we did before for the calculation:
+Finally, we just need to submit the builder in the same way as we did before for the calculation:
 
 .. code-block:: ipython
 
