@@ -51,7 +51,7 @@ It's a good idea to mark it down, but should you forget, you can always have a l
 
     Total results: 4
 
-The first column (marked `Id`) are the PK's of the ``StructureData`` nodes.
+The first column (marked ``Id``) are the PK's of the ``StructureData`` nodes.
 
 .. important::
 
@@ -166,12 +166,12 @@ You can get more information on an input by adding a question mark ``?``:
 Here you can see that the ``structure`` input is required, needs to be of the ``StructureData`` type and is stored in the database (``"non_db": "False"``).
 
 Next, we'll set up a dictionary with the pseudopotentials.
-This can be done easily with a little utility function
+This can be done easily with the ``get_pseudos_from_structure`` utility function.
 
 .. code-block:: ipython
 
     In [5]: from aiida.orm.nodes.data.upf import get_pseudos_from_structure
-       ...: pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY>')
+       ...: pseudos = get_pseudos_from_structure(structure, 'SSSP_1.1_efficiency')
 
 If we check the content of the ``pseudos`` variable:
 
@@ -283,7 +283,7 @@ To see *all* processes, use the ``--all`` option:
     Info: last time an entry changed state: 28s ago (at 16:20:43 on 2020-11-29)
 
 Notice how the band structure workflow (``PwBandsWorkChain``) you ran in the `Quantum ESPRESSO`_ app of `AiiDAlab`_ is also in the process list!
-Use the PK of the most recent `PwCalculation` (the one you just sent)  to get more information on it:
+Use the PK of the most recent ``PwCalculation`` (the one you just sent)  to get more information on it:
 
 .. code-block:: console
 
@@ -375,8 +375,8 @@ To see all currently available workflows in your installation, you can run the f
 
     $ verdi plugin list aiida.workflows
 
-
-We are going to choose the ``PwBandStructureWorkChain `` workflow of the ``aiida-quantumespresso`` plugin (you can see it on the list as ``quantumespresso.pw.band_structure``).
+We are going to run the ``PwBandStructureWorkChain`` workflow of the ``aiida-quantumespresso`` plugin.
+You can see it on the list as ``quantumespresso.pw.band_structure``, which is the *entry point* of this workflow.
 This is a fully automated workflow that will:
 
     #. Determine the primitive cell of a given input structure.
@@ -387,8 +387,8 @@ This is a fully automated workflow that will:
 
 The workflow uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
 
-In order to run it, we will open again the ``verdi shell``.
-We will then load the workflow plugin using the previously identified label and get a builder for the workflow:
+In order to run it, we will again open the ``verdi shell``.
+We will then load the workflow plugin using the previously identified entry point and get a builder for the workflow:
 
 .. code-block:: ipython
 
@@ -405,7 +405,7 @@ Replace the following ``<CODE_LABEL>`` and ``<PK>`` with the corresponding value
        ...: builder.structure = load_node(<PK>) # REPLACE <PK>
 
 
-Finally, we just need to submit the builder in the same as we did before for the calculation:
+Finally, we just need to submit the builder in the same way as we did before for the calculation:
 
 .. code-block:: ipython
 
@@ -553,13 +553,12 @@ As you can see, the explore tool of the `Materials Cloud <https://www.materialsc
 However, you might already imagine that doing a more intensive kind of data mining of specific results this way can quickly become tedious.
 For this use cases, AiiDA has a more versatile tool: the ``QueryBuilder``.
 
-
 Finishing the workchain
 -----------------------
 
 Let's stop ``ngrok`` using ``Ctrl+C`` and close its terminal, as well as stop the REST API (also using ``Ctrl+C``).
-The workchain we started earlier should be finished by now, let's use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
-Use this to produce a PDF of the band structure:
+Let's use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
+Instead of relying on the explore tool, we can also plot the band structure using the ``verdi shell``:
 
 .. code-block:: console
 
@@ -570,17 +569,29 @@ Use this to produce a PDF of the band structure:
 
    Band structure computed by the ``PwBandStructureWorkChain``.
 
-.. note::
-   The ``BandsData`` node does contain information about the Fermi energy, so the energy zero in your plot will be arbitrary.
-   You can produce a plot with the Fermi energy set to zero (as above) using the following steps in the ``verdi shell``.
-   Just look for the ``scf_parameters`` and ``band_structure`` output nodes of the ``PwBandStructureWorkChain`` using ``verdi process show`` and replace them in the following code:
+Finally, the ``verdi process status`` command prints a *hierarchical* overview of the processes called by the work chain:
 
-   .. code-block:: ipython
+.. code-block:: console
 
-        In [1]: scf_params = load_node(<PK>)  # PK of the `scf_parameters` node
-           ...: fermi_energy = scf_params.dict.fermi_energy
-           ...: bands = load_node(<PK>)  # PK of the `band_structure` node
-           ...: bands.show_mpl(y_origin=fermi_energy, plot_zero_axis=True)
+    $ verdi process status 186
+    PwBandStructureWorkChain<186> Finished [0] [3:results]
+        └── PwBandsWorkChain<201> Finished [0] [7:results]
+            ├── PwRelaxWorkChain<203> Finished [0] [3:results]
+            │   ├── PwBaseWorkChain<206> Finished [0] [7:results]
+            │   │   ├── create_kpoints_from_distance<208> Finished [0]
+            │   │   └── PwCalculation<212> Finished [0]
+            │   └── PwBaseWorkChain<223> Finished [0] [7:results]
+            │       ├── create_kpoints_from_distance<225> Finished [0]
+            │       └── PwCalculation<229> Finished [0]
+            ├── seekpath_structure_analysis<236> Finished [0]
+            ├── PwBaseWorkChain<243> Finished [0] [7:results]
+            │   ├── create_kpoints_from_distance<245> Finished [0]
+            │   └── PwCalculation<249> Finished [0]
+            └── PwBaseWorkChain<257> Finished [0] [7:results]
+                └── PwCalculation<260> Finished [0]
+
+The bracket ``[3:result]`` indicates the current step in the outline of the ``PwBandStructureWorkChain`` (step 3, with name ``result``).
+The ``process status`` is particularly useful for debugging complex work chains, since it helps pinpoint where a problem occurred.
 
 Querying the database
 ---------------------
@@ -708,7 +719,7 @@ Let's have a look at the results:
      ['FeO3Sr', 3.38]]
 
 You can see that we've found 7 magnetic structures for the calculations in the ``tutorial_pbesol`` group, along with their formulas and magnetizations.
-We've set up a little script (:download:`demo_query.py <include/snippets/demo_query.py>`) that performs a similar query to obtain these results for all three groups, and then postprocess the data to make a simple plot.
+We've set up a script (:download:`demo_query.py <include/snippets/demo_query.py>`) that performs a similar query to obtain the magnetization and smearing energy for all results in the three groups, and then postprocess the data to visualize it.
 You can find it in the dropdown panel below:
 
 .. dropdown:: **Query demo script**
@@ -727,14 +738,14 @@ and use ``verdi run`` to execute it:
 
     $ verdi run demo_query.py
 
-The resulting plot should look something like the one shown in :numref:`BIGMAP_2020_Query_demo`.
+The resulting plot should look like the one shown in :numref:`BIGMAP_2020_Query_demo`.
 
 .. _BIGMAP_2020_Query_demo:
 .. figure:: include/images/demo_query.png
-    :width: 80%
+    :width: 100%
     :align: center
 
-    Comparison of the absolute magnetization of the cell of the perovskite structures, calculated with different functionals.
+    Comparison of the absolute magnetization and smearing energy of the cell of the perovskite structures, calculated with different functionals.
 
 What next?
 ----------
