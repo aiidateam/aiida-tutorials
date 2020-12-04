@@ -36,7 +36,7 @@ The final (optional) section is a step by step tutorial that helps to understand
 
 .. |AiiDAlab tutorials cluster| raw:: html
 
-   <a href="http://aiidalab-tutorials.materialscloud.org/" target="_blank">AiiDAlab tutorials cluster</a>
+   <a href="https://aiidalab-demo.materialscloud.org/" target="_blank">AiiDAlab tutorials cluster</a>
 
 Hands-on materials
 ------------------
