@@ -6,13 +6,13 @@ BIG-MAP meeting AiiDA tutorial
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 | Related resources                                                                                                           |
 +=================+===========================================================================================================+
-| python packages | `aiida-core 1.4.2`_, `aiida-quantumespresso 3.2.1`_                                                       |
+| python packages | `aiida-core 1.4.3`_, `aiida-quantumespresso 3.2.1`_                                                       |
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 | codes           | `Quantum ESPRESSO 6.0`_                                                                                   |
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 
 .. _Quantum Mobile 20.03.1: https://github.com/marvel-nccr/quantum-mobile/releases/tag/20.03.1
-.. _aiida-core 1.4.2: https://pypi.org/project/aiida-core/1.4.2/
+.. _aiida-core 1.4.3: https://pypi.org/project/aiida-core/1.4.3/
 .. _aiida-quantumespresso 3.2.1: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.2.1
 .. _Quantum ESPRESSO 6.0: https://github.com/QEF/q-e/releases/tag/qe-6.0.0
 
