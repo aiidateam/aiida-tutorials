@@ -30,7 +30,8 @@ extensions = [
     'sphinx.ext.ifconfig', 'sphinx.ext.intersphinx', 'sphinx.ext.viewcode',
     'IPython.sphinxext.ipython_console_highlighting',
     'IPython.sphinxext.ipython_directive', 'myst_nb', 'sphinx.ext.extlinks',
-    'sphinx.ext.mathjax', 'sphinx_copybutton', 'sphinx_panels'
+    'sphinx.ext.mathjax', 'sphinx_copybutton', 'sphinx_panels',
+    'jupyter_sphinx'
 ]
 ipython_mplbackend = ""
 
