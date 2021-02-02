@@ -12,7 +12,7 @@ astroid==2.3.3            # via pylint
 async-generator==1.10     # via nbclient
 attrs==20.3.0             # via jsonschema, jupyter-cache, markdown-it-py
 babel==2.9.0              # via sphinx, sphinx-intl
-bleach==3.2.1             # via nbconvert
+bleach==3.3.0             # via nbconvert
 certifi==2020.11.8        # via requests
 cffi==1.14.4              # via argon2-cffi
 cfgv==3.2.0               # via pre-commit
