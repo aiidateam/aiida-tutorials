@@ -7,7 +7,7 @@ Let's start with a quick demo of how AiiDA can make your life easier as a comput
 
 .. note::
 
-  Throughout this tutorial we will be using the ``verdi`` command line interface.
+  Throughout this tutorial we will be using the ``verdi`` command line interface (CLI).
   Here's couple of tricks that will make your life easier:
 
   * The ``verdi`` command supports **tab-completion**:
@@ -84,8 +84,8 @@ The PK and UUID both reference the node with the only difference that the PK is 
 Running a calculation
 ---------------------
 
-We'll start with running a simple SCF calculation with `Quantum ESPRESSO`_ for the structure we just imported.
-First we'll have to set up the code in our database.
+We'll start with running a simple self-consistent field  calculation (SCF) with `Quantum ESPRESSO`_ for the structure we just imported.
+First, we'll have to set up the `Quantum ESPRESSO` code in our database.
 This can be done with the following ``verdi`` CLI command:
 
 .. code-block:: console
@@ -119,7 +119,7 @@ To see if the pseudopotential families have been installed correctly, do:
     Success: * SSSP_1.1_efficiency [85 pseudos]
     Success: * SSSP_1.1_precision [85 pseudos]
 
-Along with the PK of the ``StructureData`` node for the silicon structure we imported in the previous section, we now have everything to set up the calculation step by step.
+Along with the PK of the ``StructureData`` node for the silicon structure that we imported in the previous section, we now have everything to set up the calculation step by step.
 We will do this in the ``verdi shell``, an interactive IPython shell that has many basic AiiDA classes pre-loaded.
 To start the IPython shell, simply type in the terminal:
 
@@ -433,7 +433,8 @@ In most cases, the full provenance graph obtained from ``verdi node graph genera
 To see this for yourself, you can try to generate the one for the work chains ran by the `Quantum ESPRESSO`_ app, or for the workchain script of the last section.
 It therefore becomes very useful to learn how to browse the provenance interactively instead.
 
-To do so, we need first to start the AiiDA REST API:
+To do so, we will use the AiiDA REST API, which is a web-based interface for us to communicate with AiiDA.
+Let's start the AiiDA REST API:
 
 .. code-block:: console
 
