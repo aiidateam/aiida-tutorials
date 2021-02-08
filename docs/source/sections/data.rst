@@ -4,7 +4,11 @@
 Working with data and querying your results
 *******************************************
 
-In this section of the tutorial we will focus on how to organise and explore the data in an AiiDA database, based on a previously created database  for this tutorial.
+.. todo::
+
+   Probably requires update.
+
+In this section of the tutorial, we will focus on how to organise and explore the data in an AiiDA database, based on a previously created database  for this tutorial.
 To follow the tutorial, you first need to import that archive into your database:
 
 .. code-block:: console
@@ -17,7 +21,7 @@ How to group nodes
 
 AiiDA's database is great for automatically storing all your data, but sometimes it can be tricky to navigate this flat data store.
 To create some order in this mass of data, you can *group* sets of nodes together, just as you would with files in folders on your filesystem.
-Each group instance can hold any amount of nodes and any node can be contained in any number of groups.
+Each group can hold any amount of nodes and any node can be contained in any number of groups.
 A typical use case is to store all nodes that share a common property in a single group.
 
 Listing existing groups
@@ -151,7 +155,7 @@ and finally to remove the group entirely:
 Organising groups in hierarchies
 --------------------------------
 
-Earlier we mentioned that groups are like files in folders on your filesystem.
+Earlier, we mentioned that groups are like files in folders on your filesystem.
 As with folders and sub-folders then, as the amount of groups we have grows, we may also wish to structure our groups in a hierarchy.
 Groups in AiiDA are inherently "flat", in that groups may only contain nodes and not other groups.
 However it is possible to construct *virtual* group hierarchies based on delimited group labels, using the ``grouppath`` utility.
@@ -228,6 +232,9 @@ Once you have finished the notebook, you can download a notebook with the soluti
    wget https://aiida-tutorials.readthedocs.io/en/tutorial-2020-intro-week/_downloads/e3aaf77cf1730bdd699fe43ab9cfd5d8/querybuilder-solutions.ipynb
 
 However, try not to use them at first!
+
+.. seealso::
+   Remove the next sentence.
 
 Go to any of the sections below for a rendered version of the notebook:
 
