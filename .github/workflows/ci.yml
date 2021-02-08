@@ -41,7 +41,7 @@ jobs:
         sudo apt update
         sudo apt install \
           texlive-base \
-          texlive-generic-recommended \
+          texlive-plain-generic \
           texlive-fonts-recommended \
           fonts-freefont-otf \
           texlive-latex-base \
