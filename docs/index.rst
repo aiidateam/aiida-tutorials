@@ -26,7 +26,7 @@ The tutorial will be run on the |AiiDAlab tutorials cluster|, just click the lin
 .. important::
 
     Note down your password so that you can login again in case you get inadvertently logged out.
-    In case your forgot your password, either just create a new account (and lose previous progress) or contact one of the administrators to reset your password.
+    In case you forgot your password, either just create a new account (and lose previous progress) or contact one of the administrators to reset your password.
 
 It will take a few minutes for your server to start up on first login, after that you are all set and ready to start with the tutorial!
 
