@@ -59,12 +59,12 @@ If you want to learn more, you can check the `2020 AiiDA virtual tutorial <https
 Acknowledgements
 ----------------
 
-.. todo::
-
-   Update Acknowledgements
-
-This event was made possible by support from XXXX.
+This event was made possible by support from the MaX European Centre of Excellence, the MARVEL National Centre of Competence in Research and the H2020 INTERSECT project.
 
 .. image:: source/sponsors/max.png
    :target: http://www.max-centre.eu/
    :width: 35%
+
+.. image:: source/sponsors/INTERSECT_logo.png
+   :target: https://intersect-project.eu/
+   :width: 7%
