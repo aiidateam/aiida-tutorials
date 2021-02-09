@@ -4,10 +4,6 @@
 Working with data and querying your results
 *******************************************
 
-.. todo::
-
-   Probably requires update.
-
 In this section of the tutorial, we will focus on how to organise and explore the data in an AiiDA database, based on a previously created database  for this tutorial.
 To follow the tutorial, you first need to import that archive into your database:
 
