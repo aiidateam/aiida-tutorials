@@ -229,24 +229,6 @@ Once you have finished the notebook, you can download a notebook with the soluti
 
 However, try not to use them at first!
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-.. seealso::
-   Remove the next sentence.
-=======
-.. .. seealso::
-..    Remove the next sentence.
->>>>>>> Removing rendered version
-
-.. Go to any of the sections below for a rendered version of the notebook:
-
-.. .. toctree::
-..    :maxdepth: 2
-
-..    QueryBuilder Notebook <../notebooks/querybuilder-tutorial>
-
->>>>>>> small improvements
 What next?
 ----------
 
