@@ -11,7 +11,7 @@ AiiDA ABC tutorial
 | codes           | `Quantum ESPRESSO 6.5`_                                                                                   |
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 
-.. _Quantum Mobile 20.03.1: https://github.com/marvel-nccr/quantum-mobile/releases/tag/20.03.1
+.. _Quantum Mobile 20.03.1: https://quantum-mobile.readthedocs.io/en/latest/releases/desktop/20.03.1.html
 .. _aiida-core 1.3.0: https://pypi.org/project/aiida-core/1.3.0/
 .. _aiida-quantumespresso 3.0.0: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.0.0
 .. _Quantum ESPRESSO 6.5: https://github.com/QEF/q-e/releases/tag/qe-6.5
