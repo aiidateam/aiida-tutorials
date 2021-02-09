@@ -4,13 +4,15 @@
 Working with data and querying your results
 *******************************************
 
-In this section of the tutorial, we will focus on how to organise and explore the data in an AiiDA database, based on a previously created database  for this tutorial.
+In this section of the tutorial, we will focus on how to organise and explore the data in an AiiDA database.
+We will use a previously created database for this tutorial.
 To follow the tutorial, you first need to import that archive into your database:
 
 .. code-block:: console
 
    $ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 
+The import can take several minutes. 
 
 How to group nodes
 ------------------
@@ -206,6 +208,14 @@ This feature is also particularly useful in the verdi shell:
 .. seealso::
 
    Please see the :ref:`corresponding section in the documentation <aiida:how-to:data:organize>` for more details on groups and how to use them.
+
+Before we continue, let us delete these paths:
+
+.. code-block:: console
+
+   $ verdi group delete  --clear tutorial_lda tutorial/lda/basic
+   $ verdi group delete  --clear tutorial_pbe tutorial/gga/pbe
+   $ verdi group delete  --clear tutorial_pbesol tutorial/gga/pbesol
 
 Querying for data
 -----------------
