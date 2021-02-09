@@ -47,7 +47,9 @@ If you have time left after going through the first two sections, you can have a
 
    ./source/sections/qe
    ./source/sections/data
+   ./source/sections/install
    ./source/sections/basics
+   
 
 In-depth tutorial
 -----------------
