@@ -1,9 +1,9 @@
-.. _BIGMAP_2020_QE:
+.. _quantum_espresso_intro:
 
 Quantum ESPRESSO
 ================
 
-Let's start with a quick demo of how AiiDA can make your life easier as a computational scientist.
+We'll start with a quick demo of how AiiDA can make your life easier as a computational scientist.
 
 .. note::
 
@@ -22,18 +22,18 @@ Importing a structure and inspecting it
 ---------------------------------------
 
 First, download the Si structure file: :download:`Si.cif <include/Si.cif>`.
-You can download the file to the `AiiDAlab`_ cluster using ``wget``:
+You can download the file to the `AiiDAlab`_ cluster easily using ``wget``:
 
 .. code-block:: console
 
-    $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2020-bigmap-lab/_downloads/a40ce5fed92027564ab551dcc3e51774/Si.cif
+    $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2021-abc/_downloads/1383def58ffe702e2911585fea20e33d/Si.cif
 
-Next, you can import it with the ``verdi`` CLI.
+Next, you can import it into your database with the ``verdi`` CLI.
 
 .. code-block:: console
 
     $ verdi data structure import ase Si.cif
-      Successfully imported structure Si2 (PK = 171)
+      Successfully imported structure Si2 (PK = 1)
 
 Each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
 This is printed out on the screen by the ``verdi data structure import`` command.
@@ -44,34 +44,30 @@ It's a good idea to mark it down, but should you forget, you can always have a l
     $ verdi data structure list
       Id  Label    Formula
     ----  -------  ---------
-     105           Si2
-     111           Si2
-     112           Si8
-     171           Si2
-
-    Total results: 4
+       1           Si2
 
 The first column (marked ``Id``) are the PK's of the ``StructureData`` nodes.
 
 .. important::
 
-    It is likely that the PK numbers shown throughout this tutorial are different for your database!
+    If you are starting this tutorial with an empty database, as in this example, the Si structure node PK will also be 1.
+    If not, the PK numbers shown throughout this tutorial will be different for your database!
     Throughout this section, replace the string ``<PK>`` with the appropriate PK number.
 
 Let us first inspect the node you just created:
 
 .. code-block:: console
 
-    $ verdi node show <PK>
+    $ verdi node show 1
     Property     Value
     -----------  ------------------------------------
     type         StructureData
-    pk           171
-    uuid         ac3626d2-60ec-4e54-953f-7b7cf3716b16
+    pk           1
+    uuid         ddb8c21c-2d3f-4374-aa86-44f8bb84aa3f
     label
     description
-    ctime        2020-11-29 16:11:39.900886+00:00
-    mtime        2020-11-29 16:11:40.025347+00:00
+    ctime        2021-02-09 20:57:03.304174+00:00
+    mtime        2021-02-09 20:57:03.421210+00:00
 
 You can see some information on the node, including its type (``StructureData``, the AiiDA data type for storing crystal structures), a label and a description (empty for now, can be changed), a creation time (``ctime``) and a last modification time (``mtime``), the PK of the node and its UUID (universally unique identifier).
 The PK and UUID both reference the node with the only difference that the PK is unique *for your local database only*, whereas the UUID is a globally unique identifier and can therefore be used between *different* databases.
@@ -79,18 +75,19 @@ The PK and UUID both reference the node with the only difference that the PK is 
 .. important::
 
     The UUIDs are generated randomly and are therefore **guaranteed** to be different from the ones shown here.
-    In the commands that follow, replace ``<PK>``, or ``<UUID>`` by the appropriate identifier.
+    In the commands that follow, remember to replace ``<PK>``, or ``<UUID>`` by the appropriate identifier.
 
 Running a calculation
 ---------------------
 
-We'll start with running a simple self-consistent field  calculation (SCF) with `Quantum ESPRESSO`_ for the structure we just imported.
-First, we'll have to set up the `Quantum ESPRESSO` code in our database.
+We'll start with running a simple self-consistent field calculation (SCF) with `Quantum ESPRESSO`_ for the structure we just imported.
+First, we'll have to set up the `Quantum ESPRESSO`_ code in our database.
 This can be done with the following ``verdi`` CLI command:
 
 .. code-block:: console
 
     $ verdi code setup --label pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
+    Success: Code<2> pw@localhost created
 
 Let's now look at the codes in our database with the ``verdi shell``:
 
@@ -99,28 +96,60 @@ Let's now look at the codes in our database with the ``verdi shell``:
     $ verdi code list
     # List of configured codes:
     # (use 'verdi code show CODEID' to see the details)
-    * pk 1 - pw@localhost
+    * pk 2 - pw@localhost
 
 We can see the code you just set up, with label ``pw``, set up on the ``localhost`` computer.
 
 To run the SCF calculation, we'll also need to provide the family of pseudopotentials.
-These can be installed via the following set of commands:
+These can be installed easily using the ``aiida-pseudo`` package:
 
 .. code-block:: console
 
-    $ verdi import -n http://legacy-archive.materialscloud.org/file/2018.0001/v3/SSSP_efficiency_pseudos.aiida
-    $ verdi import -n http://legacy-archive.materialscloud.org/file/2018.0001/v3/SSSP_precision_pseudos.aiida
+    $ aiida-pseudo install sssp
+    Info: downloading selected pseudo potentials archive...  [OK]
+    Info: downloading selected pseudo potentials metadata...  [OK]
+    Info: unpacking archive and parsing pseudos...  [OK]
+    Success: installed `SSSP/1.1/PBE/efficiency` containing 85 pseudo potentials
 
+This command will install the `SSSP library version 1.1`_.
 To see if the pseudopotential families have been installed correctly, do:
 
 .. code-block:: console
 
-    $ verdi data upf listfamilies
-    Success: * SSSP_1.1_efficiency [85 pseudos]
-    Success: * SSSP_1.1_precision [85 pseudos]
+    $ aiida-pseudo list
+    Label                    Type string         Count
+    -----------------------  ------------------  -------
+    SSSP/1.1/PBE/efficiency  pseudo.family.sssp  85
 
 Along with the PK of the ``StructureData`` node for the silicon structure that we imported in the previous section, we now have everything to set up the calculation step by step.
-We will do this in the ``verdi shell``, an interactive IPython shell that has many basic AiiDA classes pre-loaded.
+Before doing so we will first shut down the AiiDA *daemon*.
+The daemon is a program that runs in the background and manages submitted calculations until they are *terminated*.
+Check the status of the daemon using the ``verdi`` CLI:
+
+.. code-block:: console
+
+    $ verdi daemon status
+
+If the daemon is running, the output will be something like the following:
+
+.. code-block:: bash
+
+    Profile: default
+    Daemon is running as PID 1033 since 2020-11-29 14:37:59
+    Active workers [1]:
+    PID    MEM %    CPU %  started
+    -----  -------  -------  -------------------
+    1036    0.415        0  2020-11-29 14:38:00
+
+In this case, let's stop it for now:
+
+.. code-block:: console
+
+    $ verdi daemon stop
+    Profile: default
+    Waiting for the daemon to shut down... OK
+
+We will set up the calculation in the ``verdi shell``, an interactive IPython shell that has many basic AiiDA classes pre-loaded.
 To start the IPython shell, simply type in the terminal:
 
 .. code-block:: console
@@ -164,30 +193,41 @@ You can get more information on an input by adding a question mark ``?``:
 
 Here you can see that the ``structure`` input is required, needs to be of the ``StructureData`` type and is stored in the database (``"non_db": "False"``).
 
-Next, we'll set up a dictionary with the pseudopotentials.
-This can be done easily with the ``get_pseudos_from_structure`` utility function.
+Next, we'll need a dictionary that maps the elements to the pseudopotentials we want to use.
+Let's first load the pseudopotential family we installed before with ``aiida-pseudo``:
 
 .. code-block:: ipython
 
-    In [5]: from aiida.orm.nodes.data.upf import get_pseudos_from_structure
-       ...: pseudos = get_pseudos_from_structure(structure, 'SSSP_1.1_efficiency')
+    In [5]: pseudo_family = load_group('SSSP/1.1/PBE/efficiency')
 
-If we check the content of the ``pseudos`` variable:
+.. note::
+
+    Notice how we use the ``load_group`` command here.
+    An AiiDA ``Group`` is a convenient way of organizing your data.
+    We'll see more on how to use groups in the section on :ref:`Working with data <data>`.
+
+The required pseudos for any structure can be easily obtained using the ``get_pseudos()`` method of the ``pseudo_family``:
+
+.. code-block:: ipython
+
+    In [6]: pseudos = pseudo_family.get_pseudos(structure=structure)
+
+If we check the contents of the ``pseudos`` variable:
 
 .. code-block:: ipython
 
     In [6]: pseudos
-    Out[6]: {'Si': <UpfData: uuid: 5600890b-a2f3-4210-8c7e-d54839ade0e0 (pk: 79)>}
+    Out[6]: {'Si': <UpfData: uuid: afa12680-efd3-4e9a-b4a7-b7a69ee2da51 (pk: 69)>}
 
 We can see that it is a simple dictionary that maps the ``'Si'`` element to a ``UpfData`` node, which contains the pseudopotential for silicon in the database.
-Let's pass it to the builder:
+Let's pass the ``pseudos`` to the builder:
 
 .. code-block:: ipython
 
     In [7]: builder.pseudos = pseudos
 
 Of course, we also have to set some computational parameters.
-We'll first set up a dictionary with the input parameters for Quantum ESPRESSO:
+We'll first set up a dictionary with a simple set of input parameters for Quantum ESPRESSO:
 
 .. code-block:: ipython
 
@@ -238,42 +278,50 @@ Now all that is left to do is to *submit* the builder to the daemon.
     In [13]: from aiida.engine import submit
         ...: calcjob = submit(builder)
 
-From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
-
-In order to be able to do this, the AiiDA daemon must of course be running: to check this, you can run the command:
+Let's exit the ``verdi shell`` using the ``exit()`` command and check the list of processes stored in your database with ``verdi process list``:
 
 .. code-block:: console
 
-    $ verdi daemon status
+    $ verdi process list
+      PK  Created    Process label    Process State    Process status
+    ----  ---------  ---------------  ---------------  ----------------
+      90  36s ago    PwCalculation    ⏹ Created
 
-and, if the daemon is not running, you can start it with
+    Total results: 1
+
+    Info: last time an entry changed state: 36s ago (at 23:14:25 on 2021-02-09)
+    Warning: the daemon is not running
+
+We can see the ``PwCalculation`` we have just set up, i.e. the process that runs a Quantum ESPRESSO ``pw.x`` calculation.
+It's currently in the ``Created`` state.
+In order to run the calculation, we have to start the daemon:
 
 .. code-block:: console
 
     $ verdi daemon start
 
+From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
 The calculation should take less than one minute to complete.
 
 Analyzing the outputs of a calculation
 --------------------------------------
 
 Let's have a look how your calculation is doing!
-You can list the processes stored in your database with ``verdi process list``.
-However, by default the command only shows the *active* processes.
+By default ``verdi process list`` only shows the *active* processes.
 To see *all* processes, use the ``--all`` option:
 
 .. code-block:: console
 
     $ verdi process list --all
-      PK  Created    Process label                 Process State    Process status
-    ----  ---------  ----------------------------  ---------------  ----------------
-     179  21s ago    PwCalculation                 ⏹ Finished [0]
+      PK  Created    Process label    Process State    Process status
+    ----  ---------  ---------------  ---------------  ----------------
+      90  8m ago     PwCalculation    ⏹ Finished [0]
 
-    Total results: 9
+    Total results: 1
 
-    Info: last time an entry changed state: 28s ago (at 16:20:43 on 2020-11-29)
+    Info: last time an entry changed state: 22s ago (at 23:22:07 on 2021-02-09)
 
-Use the PK of the most recent ``PwCalculation`` (the one you just sent)  to get more information on it:
+Use the PK of the ``PwCalculation`` to get more information on it:
 
 .. code-block:: console
 
@@ -282,30 +330,30 @@ Use the PK of the most recent ``PwCalculation`` (the one you just sent)  to get 
     -----------  ------------------------------------
     type         PwCalculation
     state        Finished [0]
-    pk           179
-    uuid         e3cd88d9-d47c-4599-adb4-7ab5010de614
+    pk           90
+    uuid         85e38ed3-bb42-4a4b-bd28-d8031736193e
     label
     description
-    ctime        2020-11-29 16:20:06.685655+00:00
-    mtime        2020-11-29 16:20:43.282874+00:00
+    ctime        2021-02-09 23:14:24.899458+00:00
+    mtime        2021-02-09 23:22:07.100611+00:00
     computer     [1] localhost
 
     Inputs      PK    Type
     ----------  ----  -------------
     pseudos
-        Si      79    UpfData
-    code        1     Code
-    kpoints     178   KpointsData
-    parameters  177   Dict
-    structure   171   StructureData
+        Si      69    UpfData
+    code        2     Code
+    kpoints     89    KpointsData
+    parameters  88    Dict
+    structure   1     StructureData
 
     Outputs              PK  Type
     -----------------  ----  --------------
-    output_band         182  BandsData
-    output_parameters   184  Dict
-    output_trajectory   183  TrajectoryData
-    remote_folder       180  RemoteData
-    retrieved           181  FolderData
+    output_band          93  BandsData
+    output_parameters    95  Dict
+    output_trajectory    94  TrajectoryData
+    remote_folder        91  RemoteData
+    retrieved            92  FolderData
 
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
 AiiDA's record of a calculation is best displayed in the form of a provenance graph:
@@ -322,7 +370,7 @@ To reproduce the figure using the PK of your calculation, you can use the follow
   $ verdi node graph generate <PK>
 
 The command will write the provenance graph to a ``.pdf`` file.
-If you open a *file manager* on the start page of the JupyterHub, you should be able to see and open the PDF.
+If you open a *file manager* on the start page of the AiiDA JupyterHub, you should be able to navigate to and open the PDF.
 
 Let's have a look at one of the outputs, i.e. the ``output_parameters``.
 You can get the contents of this dictionary easily using the ``verdi shell``:
@@ -352,7 +400,7 @@ Moreover, you can also easily access the input and output files of the calculati
     * How long did `Quantum ESPRESSO`_ actually run (wall time)?
 
 
-.. _BIGMAP_2020_QE:workflows:
+.. _quantum_espresso_intro:workflows:
 
 From calculations to workflows
 ------------------------------
@@ -365,61 +413,63 @@ To see all currently available workflows in your installation, you can run the f
 
     $ verdi plugin list aiida.workflows
 
-We are going to run the ``PwBandStructureWorkChain`` workflow of the ``aiida-quantumespresso`` plugin.
-You can see it on the list as ``quantumespresso.pw.band_structure``, which is the *entry point* of this workflow.
+We are going to run the ``PwBandsWorkChain`` workflow of the ``aiida-quantumespresso`` plugin.
+You can see it on the list as ``quantumespresso.pw.bands``, which is the *entry point* of this workflow.
 This is a fully automated workflow that will:
 
-    #. Determine the primitive cell of a given input structure.
-    #. Run a calculation on the primitive cell to relax both the cell and the atomic positions (``vc-relax``).
-    #. Refine the symmetry of the relaxed structure, and find a standardised primitive cell using SeeK-path_.
+    #. Run a calculation on the cell to relax both the cell and the atomic positions (``vc-relax``).
+    #. Refine the symmetry of the relaxed structure, and find a standardized cell using SeeK-path_.
     #. Run a self-consistent field calculation on the refined structure.
     #. Run a band structure calculation at fixed Kohn-Sham potential along a standard path between high-symmetry k-points determined by SeeK-path_.
 
-The workflow uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the `SSSP library version 1.1 <https://www.materialscloud.org/discover/sssp/table/efficiency>`_.
-
 In order to run it, we will again open the ``verdi shell``.
-We will then load the workflow plugin using the previously identified entry point and get a builder for the workflow:
+We will then load the workflow plugin using its entry point and the ``WorkflowFactory``:
 
 .. code-block:: ipython
 
-    In [1]: PwBandStructureWorkChain = WorkflowFactory('quantumespresso.pw.band_structure')
-       ...: builder = PwBandStructureWorkChain.get_builder()
+    In [1]: PwBandsWorkChain = WorkflowFactory('quantumespresso.pw.bands')
 
-The only two inputs that we need to set up now is the code and the initial structure.
-The code we need to provide is the ``pw`` code that we want to use to perform the calculations.
-Replace the following ``<CODE_LABEL>`` and ``<PK>`` with the corresponding values for the code and the structure that we use for the first section.
+Setting up the inputs one by one as we did for the pw.x calculation in the previous section can be quite tedious.
+Instead, we are going to use one of the protocols that has been set up for the workflow.
+To do this, all we need to provide is the code and initial structure we are going to run:
+
+.. code-block::
+
+    In [2]: code = load_code(label='pw')
+       ...: structure = load_node(<PK>) # REPLACE <PK>
+
+Be sure to replace the ``<PK>`` with that of the structure that we used for the first section.
+Next, we use the `get_builder_from_protocol()` method to obtain a prepopulated builder for the workflow:
 
 .. code-block:: ipython
 
-    In [2]: builder.code = load_code(label='<CODE_LABEL>') # REPLACE <CODE_LABEL>
-       ...: builder.structure = load_node(<PK>) # REPLACE <PK>
+    In [3]: builder = PwBandsWorkChain.get_builder_from_protocol(code=code, structure=structure)
 
-
+The default protocol uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the `SSSP library version 1.1`_ we installed earlier.
 Finally, we just need to submit the builder in the same way as we did before for the calculation:
 
 .. code-block:: ipython
 
-    In [3]: from aiida.engine import submit
-       ...: results = submit(builder)
+    In [4]: from aiida.engine import submit
+       ...: workchain_node = submit(builder)
 
 And done!
-Just like that, we have prepared and submitted the whole automated process to finally obtain the band structure of our initial material.
+Just like that, we have prepared and submitted the whole automated process to obtain the band structure of our initial material.
 If you want to check the status of the calculation, you can just exit the ``verdi shell`` and run:
 
 .. code-block:: console
 
     $ verdi process list
-      PK  Created    Process label             Process State    Process status
-    ----  ---------  ------------------------  ---------------  ---------------------------------------
-     186  3m ago     PwBandStructureWorkChain  ⏵ Waiting        Waiting for child processes: 201
-     201  3m ago     PwBandsWorkChain          ⏵ Waiting        Waiting for child processes: 203
-     203  3m ago     PwRelaxWorkChain          ⏵ Waiting        Waiting for child processes: 206
-     206  3m ago     PwBaseWorkChain           ⏵ Waiting        Waiting for child processes: 212
-     212  3m ago     PwCalculation             ⏵ Waiting        Monitoring scheduler:job state RUNNING
+      PK  Created    Process label     Process State    Process status
+    ----  ---------  ----------------  ---------------  ---------------------------------------
+     113  19s ago    PwBandsWorkChain  ⏵ Waiting        Waiting for child processes: 115
+     115  15s ago    PwRelaxWorkChain  ⏵ Waiting        Waiting for child processes: 118
+     118  13s ago    PwBaseWorkChain   ⏵ Waiting        Waiting for child processes: 123
+     123  11s ago    PwCalculation     ⏵ Waiting        Monitoring scheduler: job state RUNNING
 
-    Total results: 5
+    Total results: 4
 
-    Info: last time an entry changed state: 3m ago (at 16:30:24 on 2020-11-29)
+    Info: last time an entry changed state: 8s ago (at 23:32:21 on 2021-02-09)
 
 You may notice that ``verdi process list`` now shows more than one entry: indeed, there are a couple of calculations and sub-workflows that will need to run.
 The total workflow should take about 5 minutes to finish on the `AiiDAlab`_ cluster.
@@ -430,7 +480,7 @@ Exploring the database
 ----------------------
 
 In most cases, the full provenance graph obtained from ``verdi node graph generate`` will be rather complex to follow.
-To see this for yourself, you can try to generate the one for the work chains ran by the `Quantum ESPRESSO`_ app, or for the workchain script of the last section.
+To see this for yourself, you can try to generate the one for the work chains ran by the `Quantum ESPRESSO`_ app, or for the work chain script of the last section.
 It therefore becomes very useful to learn how to browse the provenance interactively instead.
 
 To do so, we will use the AiiDA REST API, which is a web-based interface for us to communicate with AiiDA.
@@ -505,7 +555,7 @@ This will take us to the `details` view of that particular node:
      The `details` view of a specific node of type ``BandsData``.
 
 
-We can see that the Explore Section can visualise the band structure stored in a ``BandsData`` node.
+We can see that the Explore Section can visualize the band structure stored in a ``BandsData`` node.
 It also shows (as it does for all types of nodes) the `AiiDA Provenance Browser` on its right.
 This tool allows us to easily explore the connections between nodes and understand, for example, how these results were obtained.
 For example, go to the ``CalcJob`` node that produced the band structure by finding the red square with the incoming link labeled ``output_band`` and clicking on it.
@@ -543,50 +593,56 @@ Once you do:
 As you can see, the explore tool of the `Materials Cloud <https://www.materialscloud.org/explore/menu>`_ offers a very natural and intuitive interface to use for a light exploration of a database.
 However, you might already imagine that doing a more intensive kind of data mining of specific results this way can quickly become tedious.
 For this use cases, AiiDA has a more versatile tool: the ``QueryBuilder``.
+This will be discussed in the section on :ref:`Working with data <data>`.
 
-Finishing the workchain
------------------------
+Finishing the work chain
+------------------------
 
 Let's stop ``ngrok`` using ``Ctrl+C`` and close its terminal, as well as stop the REST API (also using ``Ctrl+C``).
-Let's use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
+Use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
 Instead of relying on the explore tool, we can also plot the band structure using the ``verdi shell``:
 
 .. code-block:: console
 
    $ verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
 
+Use the JupyterHub file manager to open the ``band_structure.pdf`` file.
+
 .. figure:: include/images/si_bands.png
    :width: 100%
 
-   Band structure computed by the ``PwBandStructureWorkChain``.
+   Band structure computed by the ``PwBandsChain``.
 
 Finally, the ``verdi process status`` command prints a *hierarchical* overview of the processes called by the work chain:
 
 .. code-block:: console
 
     $ verdi process status 186
-    PwBandStructureWorkChain<186> Finished [0] [3:results]
-        └── PwBandsWorkChain<201> Finished [0] [7:results]
-            ├── PwRelaxWorkChain<203> Finished [0] [3:results]
-            │   ├── PwBaseWorkChain<206> Finished [0] [7:results]
-            │   │   ├── create_kpoints_from_distance<208> Finished [0]
-            │   │   └── PwCalculation<212> Finished [0]
-            │   └── PwBaseWorkChain<223> Finished [0] [7:results]
-            │       ├── create_kpoints_from_distance<225> Finished [0]
-            │       └── PwCalculation<229> Finished [0]
-            ├── seekpath_structure_analysis<236> Finished [0]
-            ├── PwBaseWorkChain<243> Finished [0] [7:results]
-            │   ├── create_kpoints_from_distance<245> Finished [0]
-            │   └── PwCalculation<249> Finished [0]
-            └── PwBaseWorkChain<257> Finished [0] [7:results]
-                └── PwCalculation<260> Finished [0]
+    PwBandsWorkChain<113> Finished [0] [7:results]
+        ├── PwRelaxWorkChain<115> Finished [0] [3:results]
+        │   ├── PwBaseWorkChain<118> Finished [0] [7:results]
+        │   │   ├── create_kpoints_from_distance<119> Finished [0]
+        │   │   └── PwCalculation<123> Finished [0]
+        │   └── PwBaseWorkChain<132> Finished [0] [7:results]
+        │       ├── create_kpoints_from_distance<133> Finished [0]
+        │       └── PwCalculation<137> Finished [0]
+        ├── seekpath_structure_analysis<144> Finished [0]
+        ├── PwBaseWorkChain<151> Finished [0] [7:results]
+        │   ├── create_kpoints_from_distance<152> Finished [0]
+        │   └── PwCalculation<156> Finished [0]
+        └── PwBaseWorkChain<164> Finished [0] [7:results]
+            └── PwCalculation<167> Finished [0]
 
-The bracket ``[3:result]`` indicates the current step in the outline of the ``PwBandStructureWorkChain`` (step 3, with name ``result``).
+The bracket ``[7:result]`` indicates the current step in the outline of the ``PwBandsWorkChain`` (step 7, with name ``result``).
 The ``process status`` is particularly useful for debugging complex work chains, since it helps pinpoint where a problem occurred.
+
+Congratulations on finishing the first part of the tutorial!
+In the next section, we'll look at how to organize and query your data.
 
 .. Links
 
 .. _AiiDAlab: https://www.materialscloud.org/work/aiidalab
+.. _SSSP library version 1.1: https://www.materialscloud.org/discover/sssp/table/efficiency
 .. _visualization tools: https://wiki.fysik.dtu.dk/ase/ase/visualize/visualize.html
 .. _XCrySDen: http://www.xcrysden.org/
 .. _Quantum ESPRESSO: https://www.quantum-espresso.org/
