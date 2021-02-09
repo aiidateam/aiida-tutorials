@@ -4,7 +4,7 @@
 AiiDA installation
 *******************************************
 
-To install AiiDA follows the instructions on:
+To install AiiDA, follow the instructions from the AiiDA documentation:
 
    `https://aiida.readthedocs.io/projects/aiida-core/en/latest/intro/get_started.html`_
 
@@ -20,4 +20,4 @@ Now, after installing and compiling quantum ESPRESSO, you can set it up on AiiDA
 
 .. important::
 
-   Please download **today** any file you may want to keep. Tomorrow, the virtual machines will be deleted and, the user files will be lost.
+   Please download **until Friday** any file you may want to keep. Then, the virtual machines will be deleted and, the user files will be lost.
