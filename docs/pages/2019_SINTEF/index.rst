@@ -19,7 +19,7 @@
 .. _aiidalab 19.08.0a1: https://pypi.org/project/aiidalab/19.8.0a1
 .. _Quantum Espresso 6.4.1: https://github.com/QEF/q-e/releases/tag/qe-6.4.1
 
-These are the hands-on materials for the AiiDA tutorial held at the `VASP and AiiDA workshop at SINTEF in Oslo, Norway <https://www.sigma2.no/content/vasp-and-aiida-workshop>`__  from September 23-27, 2019.
+These are the hands-on materials for the AiiDA tutorial held at the `VASP and AiiDA workshop at SINTEF in Oslo, Norway <https://www.sigma2.no/vasp-and-aiida-workshop>`__  from September 23-27, 2019.
 
 While participants of the tutorial used virtual machines on a cloud service, you can follow the tutorial on your own computer using the Quantum Mobile VirtualBox image linked above. The image already contains all the required software.
 
