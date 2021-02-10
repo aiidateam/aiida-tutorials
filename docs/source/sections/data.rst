@@ -213,9 +213,9 @@ Before we continue, let us delete these paths:
 
 .. code-block:: console
 
-   $ verdi group delete  --clear tutorial_lda tutorial/lda/basic
-   $ verdi group delete  --clear tutorial_pbe tutorial/gga/pbe
-   $ verdi group delete  --clear tutorial_pbesol tutorial/gga/pbesol
+   $ verdi group delete  -f tutorial/lda/basic
+   $ verdi group delete  -f tutorial/gga/pbe
+   $ verdi group delete  -f tutorial/gga/pbesol
 
 Querying for data
 -----------------
