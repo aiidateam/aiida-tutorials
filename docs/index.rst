@@ -6,14 +6,17 @@ AiiDA ABC tutorial
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 | Related resources                                                                                                           |
 +=================+===========================================================================================================+
-| python packages | `aiida-core 1.4.3`_, `aiida-quantumespresso 3.2.1`_, `AiiDAlab docker 21.02.1`_                           |
+| AiiDAlab        | `AiiDAlab docker stack 21.02.1`_, `AiiDAlab k8s deployment`_                                              |
++-----------------+-----------------------------------------------------------------------------------------------------------+
+| python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.3.0`_                                                       |
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 | codes           | `Quantum ESPRESSO 6.0.0`_                                                                                 |
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 
-.. _AiiDAlab docker 21.02.1: https://github.com/aiidalab/aiidalab-docker-stack/releases/tag/v21.02.1
-.. _aiida-core 1.4.3: https://pypi.org/project/aiida-core/1.4.3/
-.. _aiida-quantumespresso 3.2.1: https://github.com/aiidateam/aiida-quantumespresso/releases/tag/v3.2.1
+.. _AiiDAlab docker stack 21.02.1: https://github.com/aiidalab/aiidalab-docker-stack/releases/tag/v21.02.1
+.. _AiiDAlab k8s deployment: https://github.com/aiidalab/aiidalab-k8s
+.. _aiida-core 1.5.2: https://pypi.org/project/aiida-core/1.5.2/
+.. _aiida-quantumespresso 3.3.0: https://pypi.org/project/aiida-quantumespresso/3.3.0/
 .. _Quantum ESPRESSO 6.0.0: https://github.com/QEF/q-e/releases/tag/qe-6.0.0
 
 This is the content of the virtual AiiDA tutorial organised for the University of ABC on the 10th of February 2021.
@@ -48,6 +51,12 @@ If you have time left after going through the first two sections, you can have a
    ./source/sections/qe
    ./source/sections/data
    ./source/sections/install
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Appendices
+   :numbered:
+
    ./source/sections/basics
 
 In-depth tutorial

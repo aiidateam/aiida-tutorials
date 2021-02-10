@@ -1,4 +1,4 @@
-.. _BIGMAP_2020_Basics:
+.. _basics:
 
 *******************
 Provenance Tutorial
@@ -12,7 +12,7 @@ At the end of it you will know how to:
 * Run and monitor the status of processes.
 * Explore and visualize the provenance graph.
 
-.. _BIGMAP_2020_Basics:provenance:
+.. _basics:provenance:
 
 Provenance
 ==========
@@ -35,7 +35,7 @@ The green ellipses are ``Data`` nodes, the blue ellipse is a ``Code`` node, and 
 The provenance graph allows us to not only see what data we have, but also how it was produced.
 During this tutorial we will be using AiiDA to generate the provenance graph in :numref:`fig_intro_workchain_graph` step by step.
 
-.. _BIGMAP_2020_Basics:data_nodes:
+.. _basics:data_nodes:
 
 Data nodes
 ==========
@@ -139,7 +139,7 @@ Besides this information, the ``verdi node show`` command also shows the (empty)
 
   Try to use again ``verdi node show`` on the ``Int`` node above, just with the first part of the UUID (that you got from the first call to ``verdi node show`` above).
 
-.. _BIGMAP_2020_Basics:calcfunction:
+.. _basics:calcfunction:
 
 Calculation functions
 =====================
@@ -234,7 +234,7 @@ As a final step, let's have a look at the provenance of this simple calculation.
 The provenance graph can be automatically generated using the verdi CLI.
 Let's generate the provenance graph for the ``multiply`` calculation function we have just run:
 
-.. _BIGMAP_2020_Basics:calcfunction:graph:
+.. _basics:calcfunction:graph:
 
 .. code-block:: console
 
@@ -454,7 +454,7 @@ You can see more details on any process, including its inputs and outputs, using
     retrieved       154  FolderData
     sum             155  Int
 
-.. _BIGMAP_2020_Basics:submit:
+.. _basics:submit:
 
 Submitting to the daemon
 ========================
@@ -550,7 +550,7 @@ Let's wait for the ``CalcJob`` to complete and then use ``verdi process list --a
 
     Info: last time an entry changed state: 7s ago (at 15:05:31 on 2020-11-29)
 
-.. _BIGMAP_2020_Basics:workflow:
+.. _basics:workflow:
 
 Workflows
 =========
