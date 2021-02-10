@@ -276,7 +276,7 @@ Now all that is left to do is to *submit* the builder to the daemon.
 .. code-block:: ipython
 
     In [13]: from aiida.engine import submit
-        ...: calcjob = submit(builder)
+        ...: calcjob_node = submit(builder)
 
 Let's exit the ``verdi shell`` using the ``exit()`` command and check the list of processes stored in your database with ``verdi process list``:
 
@@ -414,16 +414,16 @@ To see all currently available workflows in your installation, you can run the f
     $ verdi plugin list aiida.workflows
 
 We are going to run the ``PwBandsWorkChain`` workflow of the ``aiida-quantumespresso`` plugin.
-You can see it on the list as ``quantumespresso.pw.bands``, which is the *entry point* of this workflow.
+You can see it on the list as ``quantumespresso.pw.bands``, which is the *entry point* of this work chain.
 This is a fully automated workflow that will:
 
     #. Run a calculation on the cell to relax both the cell and the atomic positions (``vc-relax``).
     #. Refine the symmetry of the relaxed structure, and find a standardized cell using SeeK-path_.
     #. Run a self-consistent field calculation on the refined structure.
-    #. Run a band structure calculation at fixed Kohn-Sham potential along a standard path between high-symmetry k-points determined by SeeK-path_.
+    #. Run a band structure calculation at a fixed Kohn-Sham potential along a standard path between high-symmetry k-points determined by SeeK-path_.
 
 In order to run it, we will again open the ``verdi shell``.
-We will then load the workflow plugin using its entry point and the ``WorkflowFactory``:
+We will then load the work chain using its entry point and the ``WorkflowFactory``:
 
 .. code-block:: ipython
 
@@ -436,17 +436,17 @@ To do this, all we need to provide is the code and initial structure we are goin
 .. code-block::
 
     In [2]: code = load_code(label='pw')
-       ...: structure = load_node(<PK>) # REPLACE <PK>
+       ...: structure = load_node(<STRUCTURE_PK>)
 
-Be sure to replace the ``<PK>`` with that of the structure that we used for the first section.
-Next, we use the `get_builder_from_protocol()` method to obtain a prepopulated builder for the workflow:
+Be sure to replace the ``<STRUCTURE_PK>`` with that of the structure we used in the first section.
+Next, we use the ``get_builder_from_protocol()`` method to obtain a prepopulated builder for the workflow:
 
 .. code-block:: ipython
 
     In [3]: builder = PwBandsWorkChain.get_builder_from_protocol(code=code, structure=structure)
 
 The default protocol uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the `SSSP library version 1.1`_ we installed earlier.
-Finally, we just need to submit the builder in the same way as we did before for the calculation:
+Finally, we just need to submit the builder in the same way as we did for the calculation:
 
 .. code-block:: ipython
 
@@ -454,8 +454,8 @@ Finally, we just need to submit the builder in the same way as we did before for
        ...: workchain_node = submit(builder)
 
 And done!
-Just like that, we have prepared and submitted the whole automated process to obtain the band structure of our initial material.
-If you want to check the status of the calculation, you can just exit the ``verdi shell`` and run:
+Just like that, we have prepared and submitted an automated process to obtain the band structure of silicon.
+If you want to check the status of the calculation, you can exit the ``verdi shell`` and run:
 
 .. code-block:: console
 
@@ -471,7 +471,7 @@ If you want to check the status of the calculation, you can just exit the ``verd
 
     Info: last time an entry changed state: 8s ago (at 23:32:21 on 2021-02-09)
 
-You may notice that ``verdi process list`` now shows more than one entry: indeed, there are a couple of calculations and sub-workflows that will need to run.
+You may notice that ``verdi process list`` now shows more than one entry: indeed, there are a couple of calculations and sub-workflows that need to be run.
 The total workflow should take about 5 minutes to finish on the `AiiDAlab`_ cluster.
 
 While we wait for the workflow to complete, we can start learning about how to explore the provenance of an AiiDA database.
@@ -611,13 +611,13 @@ Use the JupyterHub file manager to open the ``band_structure.pdf`` file.
 .. figure:: include/images/si_bands.png
    :width: 100%
 
-   Band structure computed by the ``PwBandsChain``.
+   Band structure computed by the ``PwBandsWorkChain``.
 
 Finally, the ``verdi process status`` command prints a *hierarchical* overview of the processes called by the work chain:
 
 .. code-block:: console
 
-    $ verdi process status 186
+    $ verdi process status <PK>
     PwBandsWorkChain<113> Finished [0] [7:results]
         ├── PwRelaxWorkChain<115> Finished [0] [3:results]
         │   ├── PwBaseWorkChain<118> Finished [0] [7:results]
