@@ -247,9 +247,7 @@ Here are some options for how to continue:
 
 * Get a more detailed view of how to manipulate AiiDA objects in the :ref:`extra section<basics>` of this tutorial.
 * Continue with the `in-depth tutorial`_.
-* Download the `Quantum Mobile`_ virtual machine and try running the tutorial on your laptop instead.
 * Try `setting up AiiDA`_ directly on your laptop.
 
 .. _in-depth tutorial: https://aiida-tutorials.readthedocs.io/en/tutorial-2020-intro-week/index.html
-.. _Quantum Mobile: https://github.com/marvel-nccr/quantum-mobile/releases/tag/20.03.1
 .. _setting up AiiDA: https://aiida.readthedocs.io/projects/aiida-core/en/latest/intro/install_system.html#intro-get-started-system-wide-install
