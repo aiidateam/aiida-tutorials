@@ -28,9 +28,9 @@ The official home of AiiDA tutorial materials and videos.
    -------
    :column: col-lg-6 col-xs-12 pl-0 pr-0
 
-   .. link-button:: Ljubljana 2019 Homepage
-      :type: ref
-      :text: Quantum ESPRESSO: Ljubljana 2019 tutorial
+   .. link-button:: https://aiida-tutorials.readthedocs.io/en/tutorial-qe-short/
+      :type: url
+      :text: Quantum ESPRESSO introductory tutorial
       :classes: btn-link btn-block stretched-link
 
    -------
