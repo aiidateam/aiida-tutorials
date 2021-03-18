@@ -1,11 +1,17 @@
-AiiDA ABC tutorial
-==================
+AiiDA Quantum ESPRESSO tutorial
+===============================
 
-.. _ABC_2021_Homepage:
+.. todo::
+
+   Update Quantum Mobile version + links
+
+.. _Homepage:
 
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 | Related resources                                                                                                           |
 +=================+===========================================================================================================+
+| Quantum Mobile  | ADD QUANTUM MOBILE VERSION WHEN RELEASED                                                                  |
++-----------------+-----------------------------------------------------------------------------------------------------------+
 | AiiDAlab        | `AiiDAlab docker stack 21.02.1`_, `AiiDAlab k8s deployment`_                                              |
 +-----------------+-----------------------------------------------------------------------------------------------------------+
 | python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.3.0`_                                                       |
@@ -19,23 +25,31 @@ AiiDA ABC tutorial
 .. _aiida-quantumespresso 3.3.0: https://pypi.org/project/aiida-quantumespresso/3.3.0/
 .. _Quantum ESPRESSO 6.0.0: https://github.com/QEF/q-e/releases/tag/qe-6.0.0
 
-This is the content of the virtual AiiDA tutorial organised for the University of ABC on the 10th of February 2021.
+This tutorial is a short introduction to some of the features of AiiDA based on Quantum ESPRESSO.
 
 Setup
 -----
 
-The tutorial will be run on the |AiiDAlab tutorials cluster|, just click the link and log in with a username and a password of your choosing.
+The tutorial can either be run in the Quantum Mobile virtual machine, or on the AiiDAlab demo cluster.
 
-.. important::
+.. tabs::
 
-    Note down your password so that you can login again in case you get inadvertently logged out.
-    In case you forgot your password, the admin can make a new account, **but you will lose your progress!**
+   .. tab:: Quantum Mobile
 
-It will take a few minutes for your server to start up on first login, after that you are all set and ready to start with the tutorial!
+      Quantum Mobile is a virtual machine that provides a ready-to-run environment for computational materials science.
 
-.. |AiiDAlab tutorials cluster| raw:: html
+      .. todo::
 
-   <a href="https://aiidalab-abc-tutorial-2021.materialscloud.org" target="_blank">AiiDAlab tutorials cluster</a>
+         Add more instructions once image is released.
+
+   .. tab:: AiiDAlab cluster
+
+      The |AiiDAlab demo cluster| is a Jupyter-based web platform installed on a cluster that can run some basic calculations for demonstration and tutorial purposes.
+      Simply click the link and log in with the EGI check-in.
+
+.. |AiiDAlab demo cluster| raw:: html
+
+   <a href="https://aiidalab-demo.materialscloud.org" target="_blank">AiiDAlab demo cluster</a>
 
 Hands-on materials
 ------------------
@@ -68,7 +82,11 @@ If you want to learn more, you can check the `2020 AiiDA virtual tutorial <https
 Acknowledgements
 ----------------
 
-This event was made possible by support from the MaX European Centre of Excellence, the MARVEL National Centre of Competence in Research and the H2020 INTERSECT project.
+.. todo::
+
+   Update Acknowledgements
+
+This tutorial was made possible by support from the MaX European Centre of Excellence, the MARVEL National Centre of Competence in Research and the H2020 INTERSECT project.
 
 .. image:: source/sponsors/max.png
    :target: http://www.max-centre.eu/

@@ -22,7 +22,7 @@ Importing a structure and inspecting it
 ---------------------------------------
 
 First, download the Si structure file: :download:`Si.cif <include/Si.cif>`.
-You can download the file to the `AiiDAlab`_ cluster easily using ``wget``:
+You can download the file easily using ``wget``:
 
 .. code-block:: console
 
@@ -81,24 +81,64 @@ Running a calculation
 ---------------------
 
 We'll start with running a simple self-consistent field calculation (SCF) with `Quantum ESPRESSO`_ for the structure we just imported.
-First, we'll have to set up the `Quantum ESPRESSO`_ code in our database.
-This can be done with the following ``verdi`` CLI command:
+First, we'll need to make sure we have set up the `Quantum ESPRESSO`_ code in our database.
+This will depend on whether you are running the tutorial in the Quantum Mobile or the AiiDAlab cluster:
 
-.. code-block:: console
+.. tabs::
 
-    $ verdi code setup --label pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
-    Success: Code<2> pw@localhost created
+    .. tab:: Quantum Mobile
 
-Let's now look at the codes in our database with the ``verdi shell``:
+        Let's have a look at the codes in our database with the ``verdi shell``:
 
-.. code-block:: console
+        .. code-block:: console
 
-    $ verdi code list
-    # List of configured codes:
-    # (use 'verdi code show CODEID' to see the details)
-    * pk 2 - pw@localhost
+            $ verdi code list
+            # List of configured codes:
+            # (use 'verdi code show CODEID' to see the details)
+            * pk 1 - qe-3.4.0-pw@localhost
+            * pk 2 - qe-3.4.0-cp@localhost
+            * pk 3 - qe-3.4.0-pp@localhost
+            * pk 4 - qe-3.4.0-ph@localhost
+            * pk 5 - qe-3.4.0-neb@localhost
+            * pk 6 - qe-3.4.0-projwfc@localhost
+            * pk 7 - qe-3.4.0-pw2wannier90@localhost
+            * pk 8 - qe-3.4.0-q2r@localhost
+            * pk 9 - qe-3.4.0-dos@localhost
+            * pk 10 - qe-3.4.0-matdyn@localhost
 
-We can see the code you just set up, with label ``pw``, set up on the ``localhost`` computer.
+        As you can see, this Quantum Mobile virtual machine already comes with all of the Quantum ESPRESSO codes set up in the AiiDA database.
+        The code we will be running is the ``pw.x`` code, set up under the label ``qe-3.4.0-pw`` on the ``localhost`` computer.
+        Make a note of the PK or label of the code, since you'll need to replace it in code snippets later in this tutorial.
+
+    .. tab:: AiiDAlab cluster
+
+        Let's have a look at the codes in our database with the ``verdi shell``:
+
+        .. code-block:: console
+
+            $ verdi code list
+            # List of configured codes:
+            # (use 'verdi code show CODEID' to see the details)
+            # No codes found matching the specified criteria.
+
+        We can see that no code has been installed yet.
+        To install the Quantum ESPRESSO ``pw.x`` code, we can use the following ``verdi`` CLI command:
+
+        .. code-block:: console
+
+            $ verdi code setup --label pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
+            Success: Code<2> pw@localhost created
+
+        You now should see the code we have just set up when you execute ``verdi code list``:
+
+        .. code-block:: console
+
+            $ verdi code list
+            # List of configured codes:
+            # (use 'verdi code show CODEID' to see the details)
+            * pk 2 - pw@localhost
+
+        Make a note of the PK or label of the code, since you'll need to replace it in code snippets later in this tutorial.
 
 To run the SCF calculation, we'll also need to provide the family of pseudopotentials.
 These can be installed easily using the ``aiida-pseudo`` package:
