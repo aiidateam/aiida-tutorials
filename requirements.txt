@@ -3,6 +3,7 @@ sphinx-rtd-theme~=0.5
 sphinx-copybutton~=0.2.12
 sphinx-panels~=0.4.1
 sphinx-tabs~=2.1.0
+sphinxemoji==0.1.8
 jupyter-sphinx~=0.3.2
 myst-nb~=0.10.1
 jupytext~=1.7.1

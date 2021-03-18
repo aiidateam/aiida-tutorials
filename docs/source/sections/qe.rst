@@ -28,6 +28,12 @@ You can download the file easily using ``wget``:
 
     $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2021-abc/_downloads/1383def58ffe702e2911585fea20e33d/Si.cif
 
+.. note::
+
+    You may have noticed that on the top right of each code block there a button for copying the contents of the block.
+    This nifty feature will only copy the commands that needs to be executed, but note that in some code snippets you might still have to replace some of the content!
+    On the AiiDAlab cluster you will be able to use the usual short-key of your operating system to paste the contents (Ctrl+V or Command+V), but in the terminal of the Quantum Mobile machine you will need to add Shift (Shift+Ctrl+V).
+
 Next, you can import it into your database with the ``verdi`` CLI.
 
 .. code-block:: console
@@ -58,7 +64,7 @@ Let us first inspect the node you just created:
 
 .. code-block:: console
 
-    $ verdi node show 1
+    $ verdi node show <PK>
     Property     Value
     -----------  ------------------------------------
     type         StructureData
@@ -196,12 +202,13 @@ To start the IPython shell, simply type in the terminal:
 
     $ verdi shell
 
-First, we'll load the code from the database using its label:
+First, we'll load the code from the database using its ``PK``:
 
 .. code-block:: ipython
 
-    In [1]: code = load_code(label='pw')
+    In [1]: code = load_code(<CODE_PK>)
 
+Be sure to replace ``<CODE_PK>`` with the primary key of the ``pw.x`` code in your database!
 Every code has a convenient tool for setting up the required input, called the *builder*.
 It can be obtained by using the ``get_builder`` method:
 
@@ -410,7 +417,26 @@ To reproduce the figure using the PK of your calculation, you can use the follow
   $ verdi node graph generate <PK>
 
 The command will write the provenance graph to a ``.pdf`` file.
-If you open a *file manager* on the start page of the AiiDA JupyterHub, you should be able to navigate to and open the PDF.
+How you can open this file will depend on the platform you are running the tutorial on:
+
+.. tabs::
+
+    .. tab:: Quantum Mobile
+
+        You can simply use the ``evince`` command to open the ``.pdf`` that contains the provenance graph:
+
+        .. code-block::
+
+            $ evince <PK>.dot.pdf
+
+    .. tab:: AiiDAlab cluster
+
+        If you open a *file manager* on the starting page of the AiiDA JupyterHub:
+
+        .. figure:: include/images/AiiDAlab_header-file_manager.png
+            :width: 100%
+
+        You should be able to use the file manager to navigate to and open the PDF.
 
 Let's have a look at one of the outputs, i.e. the ``output_parameters``.
 You can get the contents of this dictionary easily using the ``verdi shell``:
@@ -420,7 +446,9 @@ You can get the contents of this dictionary easily using the ``verdi shell``:
     In [1]: node = load_node(<PK>)
        ...: d = node.get_dict()
        ...: d['energy']
-    Out[1]: -310.56885928359
+    Out[1]: -310.56907438957
+
+.. -310.56885928359
 
 Moreover, you can also easily access the input and output files of the calculation using the ``verdi`` CLI:
 
@@ -445,7 +473,7 @@ Moreover, you can also easily access the input and output files of the calculati
 From calculations to workflows
 ------------------------------
 
-AiiDA can help you run individual calculations but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
+AiiDA can help you run individual calculations, but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
 
 To see all currently available workflows in your installation, you can run the following command:
 
@@ -475,10 +503,10 @@ To do this, all we need to provide is the code and initial structure we are goin
 
 .. code-block::
 
-    In [2]: code = load_code(label='pw')
+    In [2]: code = load_code(<CODE_PK>)
        ...: structure = load_node(<STRUCTURE_PK>)
 
-Be sure to replace the ``<STRUCTURE_PK>`` with that of the structure we used in the first section.
+Be sure to replace the ``<CODE_PK>`` and ``<STRUCTURE_PK>`` with those of the code and structure we used in the first section.
 Next, we use the ``get_builder_from_protocol()`` method to obtain a prepopulated builder for the workflow:
 
 .. code-block:: ipython
@@ -512,7 +540,7 @@ If you want to check the status of the calculation, you can exit the ``verdi she
     Info: last time an entry changed state: 8s ago (at 23:32:21 on 2021-02-09)
 
 You may notice that ``verdi process list`` now shows more than one entry: indeed, there are a couple of calculations and sub-workflows that need to be run.
-The total workflow should take about 5 minutes to finish on the `AiiDAlab`_ cluster.
+The total workflow should take about 5-10 minutes to finish.
 
 While we wait for the workflow to complete, we can start learning about how to explore the provenance of an AiiDA database.
 
@@ -520,7 +548,6 @@ Exploring the database
 ----------------------
 
 In most cases, the full provenance graph obtained from ``verdi node graph generate`` will be rather complex to follow.
-To see this for yourself, you can try to generate the one for the work chains ran by the `Quantum ESPRESSO`_ app, or for the work chain script of the last section.
 It therefore becomes very useful to learn how to browse the provenance interactively instead.
 
 To do so, we will use the AiiDA REST API, which is a web-based interface for us to communicate with AiiDA.
@@ -530,35 +557,48 @@ Let's start the AiiDA REST API:
 
   $ verdi restapi
 
-If you were working on your local machine, you would be automatically be able to access your exposed data via ``http://127.0.0.1:5000/api/v4`` (this would also work from inside a virtual machine).
-Since these virtual machines are remote and we need to access the information locally in your workstation, we will need an extra step.
-Open a new terminal from the start page and run `ngrok`_, a tool that allows us to expose the REST API to a public URL:
+How you can access the REST API web-interface will depend on where you are executing this tutorial:
 
-.. code-block:: console
+.. tabs::
 
-    $ ngrok http 5000 --region eu --bind-tls true
+    .. tab:: Quantum Mobile
 
+        Open the |provenance browser| **in a browser inside the virtual machine** and copy the following URL into the text box:
 
-Now you will be able to open the |provenance browser| and enter the public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
+        .. code-block::
+
+            http://127.0.0.1:5000/api/v4
+
+        Then simply click "Go!" to start exploring your data!
+
+    .. tab:: AiiDAlab cluster
+
+        Since this AiiDAlab instance is running on a remote machine, we need to expose the REST API to a public URL.
+        Open a **new** terminal from the starting page and run `ngrok`_, a tool that allows us to do exactly this:
+
+        .. code-block:: console
+
+            $ ngrok http 5000 --region eu --bind-tls true
+
+        Now you will be able to open the |provenance browser| and enter the public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
+
+        .. code-block:: console
+
+            ngrok by @inconshreveable                                                                                  (Ctrl+C to quit)
+
+            Session Status                online
+            Session Expires               7 hours, 52 minutes
+            Version                       2.3.35
+            Region                        Europe (eu)
+            Web Interface                 http://127.0.0.1:4040
+            Forwarding                    https://bb84d27809e0.eu.ngrok.io -> http://localhost:5000
+
+        then the URL you should provide the provenance browser is ``https://bb84d27809e0.eu.ngrok.io/api/v4`` (see the last ``Forwarding`` line).
+        Then simply click "Go!" to start exploring your data!
 
 .. |provenance browser| raw:: html
 
     <a href="https://www.materialscloud.org/explore/connect" target="_blank">Materials Cloud Explore section</a>
-
-
-.. code-block:: console
-
-    ngrok by @inconshreveable                                                                                  (Ctrl+C to quit)
-
-    Session Status                online
-    Session Expires               7 hours, 52 minutes
-    Version                       2.3.35
-    Region                        Europe (eu)
-    Web Interface                 http://127.0.0.1:4040
-    Forwarding                    https://bb84d27809e0.eu.ngrok.io -> http://localhost:5000
-
-
-then the URL you should provide the provenance browser is ``https://bb84d27809e0.eu.ngrok.io/api/v4`` (see the last ``Forwarding`` line).
 
 .. note::
 
@@ -638,7 +678,7 @@ This will be discussed in the section on :ref:`Working with data <data>`.
 Finishing the work chain
 ------------------------
 
-Let's stop ``ngrok`` using ``Ctrl+C`` and close its terminal, as well as stop the REST API (also using ``Ctrl+C``).
+Let's stop the REST API using ``Ctrl+C`` and close its terminal, as well as stop ``ngrok`` (also using ``Ctrl+C``) if you are running on the AiiDAlab cluster.
 Use ``verdi process show <PK>`` to inspect the ``PwBandsWorkChain`` and find the PK of its ``band_structure`` output.
 Instead of relying on the explore tool, we can also plot the band structure using the ``verdi shell``:
 
@@ -646,7 +686,8 @@ Instead of relying on the explore tool, we can also plot the band structure usin
 
    $ verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
 
-Use the JupyterHub file manager to open the ``band_structure.pdf`` file.
+Use the ``evince`` command or the JupyterHub file manager to open the ``band_structure.pdf`` file.
+It should look similar to the one shown here:
 
 .. figure:: include/images/si_bands.png
    :width: 100%
