@@ -230,6 +230,14 @@ Download the notebook using:
 The notebook will show you how the ``QueryBuilder`` can be used to query your database for specific data.
 It will demonstrate certain concepts and then ask you to use those to perform certain queries on your own database.
 Some of these question cells will have partial solutions that you will have to complete.
+On the AiiDAlab cluster, simply use the file manager to navigate to the notebook and open it.
+When running this tutorial on the Quantum Mobile, simply start the notebook server with:
+
+.. code-block:: console
+
+   $ jupyter notebook
+
+And likewise use the file manager to open the Jupyter notebook.
 
 Once you have finished the notebook, you can download a notebook with the solutions using:
 
