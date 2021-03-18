@@ -3,25 +3,6 @@ AiiDA Quantum ESPRESSO tutorial
 
 .. _Homepage:
 
-+-----------------+-----------------------------------------------------------------------------------------------------------+
-| Related resources                                                                                                           |
-+=================+===========================================================================================================+
-| Quantum Mobile  | Custom `Quantum Mobile`_ version                                                                          |
-+-----------------+-----------------------------------------------------------------------------------------------------------+
-| AiiDAlab        | `AiiDAlab docker stack 21.02.1`_, `AiiDAlab k8s deployment`_                                              |
-+-----------------+-----------------------------------------------------------------------------------------------------------+
-| python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.3.0`_                                                       |
-+-----------------+-----------------------------------------------------------------------------------------------------------+
-| codes           | `Quantum ESPRESSO 6.0.0`_                                                                                 |
-+-----------------+-----------------------------------------------------------------------------------------------------------+
-
-.. _`Quantum Mobile`: https://quantum-mobile.readthedocs.io/en/latest/index.html
-.. _AiiDAlab docker stack 21.02.1: https://github.com/aiidalab/aiidalab-docker-stack/releases/tag/v21.02.1
-.. _AiiDAlab k8s deployment: https://github.com/aiidalab/aiidalab-k8s
-.. _aiida-core 1.5.2: https://pypi.org/project/aiida-core/1.5.2/
-.. _aiida-quantumespresso 3.3.0: https://pypi.org/project/aiida-quantumespresso/3.3.0/
-.. _Quantum ESPRESSO 6.0.0: https://github.com/QEF/q-e/releases/tag/qe-6.0.0
-
 This tutorial is a short introduction to some of the features of AiiDA where you will run some Quantum ESPRESSO calculations and workflows, as well as learn how to organize and query your data.
 
 Setup
@@ -33,6 +14,16 @@ Note that since the AiiDAlab demo cluster can only handle a limited number of co
 .. tabs::
 
    .. tab:: Quantum Mobile
+
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | Related resources                                                                                                           |
+      +=================+===========================================================================================================+
+      | Quantum Mobile  | Custom `Quantum Mobile`_ version                                                                          |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.4.0`_                                                       |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | codes           | `Quantum ESPRESSO 6.5`_                                                                                   |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
 
       Quantum Mobile is a virtual machine that provides a ready-to-run environment for computational materials science.
       We have prepared a custom VirtualBox image for this tutorial, you can find it via |Quantum Mobile image link|.
@@ -64,6 +55,16 @@ Note that since the AiiDAlab demo cluster can only handle a limited number of co
 
    .. tab:: AiiDAlab cluster
 
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | Related resources                                                                                                           |
+      +=================+===========================================================================================================+
+      | AiiDAlab        | `AiiDAlab docker stack 21.02.1`_, `AiiDAlab k8s deployment`_                                              |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.3.0`_                                                       |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | codes           | `Quantum ESPRESSO 6.0.0`_                                                                                 |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+
       The |AiiDAlab demo cluster| is a Jupyter-based web platform installed on a cluster that can run some basic calculations for demonstration and tutorial purposes.
       Simply click the link and log in with the EGI check-in.
 
@@ -74,18 +75,6 @@ Note that since the AiiDAlab demo cluster can only handle a limited number of co
          :width: 100%
 
       Once the terminal is opened, you're all set to get started with the tutorial!
-
-.. |AiiDAlab demo cluster| raw:: html
-
-   <a href="https://aiidalab-demo.materialscloud.org" target="_blank">AiiDAlab demo cluster</a>
-
-.. |Quantum Mobile image link| raw:: html
-
-   <a href="https://u.pcloud.link/publink/show?code=XZMvUBXZ2zughxF5dkQItIzW5pikxLx3JEwV" target="_blank">this link</a>
-
-.. |VirtualBox| raw:: html
-
-   <a href="https://www.virtualbox.org/" target="_blank">VirtualBox</a>
 
 Hands-on materials
 ------------------
@@ -132,3 +121,24 @@ This tutorial was made possible by support from the MaX European Centre of Excel
 .. image:: source/sponsors/INTERSECT_logo.png
    :target: https://intersect-project.eu/
    :width: 30%
+
+.. |AiiDAlab demo cluster| raw:: html
+
+   <a href="https://aiidalab-demo.materialscloud.org" target="_blank">AiiDAlab demo cluster</a>
+
+.. |Quantum Mobile image link| raw:: html
+
+   <a href="https://u.pcloud.link/publink/show?code=XZMvUBXZ2zughxF5dkQItIzW5pikxLx3JEwV" target="_blank">this link</a>
+
+.. |VirtualBox| raw:: html
+
+   <a href="https://www.virtualbox.org/" target="_blank">VirtualBox</a>
+
+.. _`Quantum Mobile`: https://quantum-mobile.readthedocs.io/en/latest/index.html
+.. _AiiDAlab docker stack 21.02.1: https://github.com/aiidalab/aiidalab-docker-stack/releases/tag/v21.02.1
+.. _AiiDAlab k8s deployment: https://github.com/aiidalab/aiidalab-k8s
+.. _aiida-core 1.5.2: https://pypi.org/project/aiida-core/1.5.2/
+.. _aiida-quantumespresso 3.3.0: https://pypi.org/project/aiida-quantumespresso/3.3.0/
+.. _aiida-quantumespresso 3.4.0: https://pypi.org/project/aiida-quantumespresso/3.4.0/
+.. _Quantum ESPRESSO 6.0.0: https://github.com/QEF/q-e/releases/tag/qe-6.0.0
+.. _Quantum ESPRESSO 6.5: https://github.com/QEF/q-e/releases/tag/qe-6.5
