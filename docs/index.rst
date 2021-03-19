@@ -18,7 +18,7 @@ Note that since the AiiDAlab demo cluster can only handle a limited number of co
       +-----------------+-----------------------------------------------------------------------------------------------------------+
       | Related resources                                                                                                           |
       +=================+===========================================================================================================+
-      | Quantum Mobile  | Custom `Quantum Mobile`_ version                                                                          |
+      | Quantum Mobile  | `Quantum Mobile v21.03.18-qe`_                                                                            |
       +-----------------+-----------------------------------------------------------------------------------------------------------+
       | python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.4.0`_                                                       |
       +-----------------+-----------------------------------------------------------------------------------------------------------+
@@ -127,13 +127,13 @@ This tutorial was made possible by support from the MaX European Centre of Excel
 
 .. |Quantum Mobile image link| raw:: html
 
-   <a href="https://u.pcloud.link/publink/show?code=XZMvUBXZ2zughxF5dkQItIzW5pikxLx3JEwV" target="_blank">this link</a>
+   <a href="http://bit.ly/2OLjz2o" target="_blank">this link</a>
 
 .. |VirtualBox| raw:: html
 
    <a href="https://www.virtualbox.org/" target="_blank">VirtualBox</a>
 
-.. _`Quantum Mobile`: https://quantum-mobile.readthedocs.io/en/latest/index.html
+.. _`Quantum Mobile v21.03.18-qe`: https://quantum-mobile.readthedocs.io/en/latest/releases/both/21.03.18-qe.html
 .. _AiiDAlab docker stack 21.02.1: https://github.com/aiidalab/aiidalab-docker-stack/releases/tag/v21.02.1
 .. _AiiDAlab k8s deployment: https://github.com/aiidalab/aiidalab-k8s
 .. _aiida-core 1.5.2: https://pypi.org/project/aiida-core/1.5.2/
