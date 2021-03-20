@@ -37,7 +37,7 @@ ipython-genutils==0.2.0   # via nbformat, notebook, traitlets
 ipython==5.10.0           # via ipykernel, ipywidgets, jupyter-sphinx, myst-nb
 ipywidgets==7.5.1         # via jupyter-sphinx, myst-nb
 isort==4.3.21             # via pylint
-jinja2==2.11.2            # via nbconvert, nbdime, notebook, sphinx
+jinja2==2.11.3            # via nbconvert, nbdime, notebook, sphinx
 jsonschema==3.2.0         # via nbformat
 jupyter-cache==0.4.1      # via myst-nb
 jupyter-client==6.1.7     # via ipykernel, nbclient, notebook
