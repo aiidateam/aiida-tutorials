@@ -1,0 +1,32 @@
+.badge-qe {
+    background-color: #AE111F;
+    color: #fff;
+}
+
+.badge-vasp {
+    background-color: #67296E;
+    color: #fff;
+}
+
+.panel-header-text {
+    font-size: 18px !important;
+}
+
+.btn {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    color: #212529;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    padding: .375rem .75rem;
+    text-align: center;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    vertical-align: middle
+}

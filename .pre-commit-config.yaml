@@ -1,34 +1,22 @@
 exclude: >
     (?x)^(
-      docs/pages/.*/snippets/.*|
-      docs/pages/2019_molsim_school_Amsterdam/assets/raspa_loading.py|
-      docs/pages/2019_molsim_school_Amsterdam/assets/multiply_unitcell.py|
-      docs/assets/2018_PRACE_MaX/latex/de-macro.py|
       .*xsf|
       .*agr|
       .*tex
     )$
 repos:
   - repo: git://github.com/pre-commit/pre-commit-hooks
-    rev: v2.2.3
+    rev: v4.0.0
     hooks:
     - id: check-yaml
     - id: end-of-file-fixer
     - id: trailing-whitespace
 
-  - repo: https://github.com/pre-commit/mirrors-yapf
-    rev: v0.27.0
-    hooks:
-    - id: yapf
-      name: yapf
-      types: [python]
-      args: ['-i']
-
-  - repo: https://github.com/PyCQA/pylint
-    rev: pylint-2.4.4
-    hooks:
-    - id: pylint
-      language: system
+  -   repo: https://github.com/ambv/black
+      rev: stable
+      hooks:
+      - id: black
+        language_version: python3.8
 
   - repo: https://github.com/myint/rstcheck
     rev: 'master'
@@ -36,14 +24,3 @@ repos:
     - id: rstcheck
       additional_dependencies:
         - sphinx==2.4.4
-
-  - repo: https://github.com/markdownlint/markdownlint
-    rev: 'v0.9.0'
-    hooks:
-    - id: markdownlint
-      # currently mistaking comment lines in code cells for headers!?
-      exclude: >
-        (?x)^(
-          docs/pages/2020_Intro_Week/notebooks/querybuilder-template.md|
-          docs/pages/2020_Intro_Week/notebooks/bandstructure.md
-        )$
