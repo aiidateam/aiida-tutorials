@@ -443,7 +443,7 @@ Default units for crystal structure cell and coordinates in AiiDA are Å (Ångst
 In order to store a structure in the AiiDA database, we need to create an instance of the `StructureData` class.
 We can load this class using the `DataFactory`:
 
-```{code-block}} ipython
+```{code-block} ipython
 
 In [2]: StructureData = DataFactory('structure')
 
