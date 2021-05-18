@@ -28,7 +28,13 @@ Fundamentals
         The basic AiiDA tutorial covers the concept of provenance, and gives a short introduction to data nodes, calculations and workflows.
 
         +++++++++++++
-        |time| 30 min
+        .. list-table::
+            :widths: 50 50
+            :class: footer-table
+            :header-rows: 0
+
+            * - |time| 30 min
+              - Basic
 
 
 .. panels::
@@ -51,7 +57,13 @@ Fundamentals
     One of the main features of AiiDA is that all your data is stored in a linked graph via the provenance. Here we explain how to query your database using the links in this graph, as well as other ticks and tips.
 
     +++
-    |time| 45 min
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 45 min
+          - Basic
 
     ---
     :column: col-lg-6
@@ -68,7 +80,13 @@ Fundamentals
     Entry points are the identifier of each node or calculation type, and are a very important concept for understanding how to use the extensibility of AiiDA.
 
     +++++++++++++
-    |time| 20 min
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 30 min
+          - Basic
 
     ---
     :column: col-lg-6

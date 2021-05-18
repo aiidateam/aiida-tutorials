@@ -17,7 +17,7 @@ Materials Science
 
         .. link-button:: pseudos
             :type: ref
-            :text: pseudopotentials
+            :text: Pseudopotentials
             :classes: btn-light text-left stretched-link font-weight-bold
         ^^^^^^^^^^^^
 

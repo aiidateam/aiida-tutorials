@@ -1,7 +1,8 @@
 AiiDA Tutorials
 ===============
 
-Welcome to the official home of AiiDA tutorial materials and videos.
+Welcome to the official home of the AiiDA tutorial materials and videos.
+The tutorials are organised by topic in *sections*, which are listed in the left sidebar or at the bottom of this page.
 
 .. panels::
    :body: bg-light text-center
@@ -9,9 +10,9 @@ Welcome to the official home of AiiDA tutorial materials and videos.
    ------
    :column: col-lg-12 pl-0 pr-0
 
-   .. link-button:: https://aiida-tutorials.readthedocs.io/en/tutorial-2020-intro-week/#presentations
-      :type: url
-      :text: In-Depth: 2020 Introductory Virtual tutorial
+   .. link-button:: sections/fundamentals/index
+      :type: ref
+      :text: Getting started: AiiDA fundamentals
       :classes: btn-link btn-block stretched-link
 
    -------
@@ -22,7 +23,15 @@ Welcome to the official home of AiiDA tutorial materials and videos.
    :column: col-lg-12 pl-0 pr-0
    :body: + font-weight-bold
 
-   Short Demonstrations
+   Previously organised tutorials
+
+   -------
+   :column: col-lg-6 col-xs-12 pl-0 pr-0
+
+   .. link-button:: https://aiida-tutorials.readthedocs.io/en/tutorial-2020-intro-week/
+      :type: url
+      :text: In-Depth: 2020 Introductory Virtual tutorial
+      :classes: btn-link btn-block stretched-link
 
    -------
    :column: col-lg-6 col-xs-12 pl-0 pr-0
@@ -30,14 +39,6 @@ Welcome to the official home of AiiDA tutorial materials and videos.
    .. link-button:: https://aiida-tutorials.readthedocs.io/en/tutorial-qe-short/
       :type: url
       :text: Quantum ESPRESSO introductory tutorial
-      :classes: btn-link btn-block stretched-link
-
-   -------
-   :column: col-lg-6 col-xs-12 pl-0 pr-0
-
-   .. link-button:: sections/fundamentals/index
-      :type: ref
-      :text: Test MyST notebook
       :classes: btn-link btn-block stretched-link
 
 Videos

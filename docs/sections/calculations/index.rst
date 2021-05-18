@@ -27,7 +27,13 @@ Calculation processes
         The basic module on calculations covers the two different types of calculation processes, and when to use which.
 
         +++++++++++++
-        |time| 30 min
+        .. list-table::
+            :widths: 50 50
+            :class: footer-table
+            :header-rows: 0
+
+            * - |time| 30 min
+              - Basic
 
 .. panels::
     :header: header-text
@@ -49,7 +55,13 @@ Calculation processes
     The ``calcfunction`` decorator is an easy way of converting regular Python functions into *calculation functions* that are tracked in the provenance.
 
     +++
-    |time| 15 min
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 15 min
+          - Basic
 
     ---
     :column: col-lg-6
@@ -67,7 +79,13 @@ Calculation processes
     The ``CalcJob`` serves this purpose.
 
     +++++++++++++
-    |time| 20 min
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 20 min
+          - Intermediate
 
     ---
     :column: col-lg-6
