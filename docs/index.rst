@@ -8,7 +8,26 @@ This tutorial is a short introduction to some of the features of AiiDA where you
 Setup
 -----
 
-The tutorial can either be run in the Quantum Mobile virtual machine, or on the AiiDAlab demo cluster.
+The hands-on for the `"MaX School on Advanced Materials and Molecular Modelling with Quantum ESPRESSO" <http://indico.ictp.it/event/9616/>`_ will be run on a dedicated JupyterHub cluster that can be accessed via the following link:
+
+https://qe-school.aiida-tutorials.net/
+
+Simply log in with a username and password of your choosing, your account will be created automatically.
+The first log in might take a few minutes, but subsequent logins will be much faster.
+
+.. important::
+
+   Note down your password so that you can login again in case you get inadvertently logged out. In case you forgot your password, the admin can make a new account, **but you will lose your progress!**
+
+This cluster will be taken down on **Saturday 29 May at 12:00 CEST**.
+Be sure to download any data you want to keep before this time.
+
+.. note::
+
+   At certain points in the hands-on, there will be two tabs with different explanations for the "Quantum Mobile" virtual machine and "AiiDAlab cluster".
+   When running the hands-on via the link above, the instructions can be found in the "**AiiDAlab cluster**" tab.
+
+Once the cluster is down, the material can still be run in the Quantum Mobile virtual machine, or on the AiiDAlab demo cluster.
 Note that since the AiiDAlab demo cluster can only handle a limited number of consecutive users, using Quantum Mobile can offer a more reliable experience.
 
 .. tabs::

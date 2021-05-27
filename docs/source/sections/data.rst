@@ -140,7 +140,7 @@ and finally to remove the group entirely:
 
 .. code-block:: console
 
-   $ verdi group delete --clear my_group
+   $ verdi group delete my_group
    Are you sure to delete Group<my_group>? [y/N]: y
    Success: Group<my_group> deleted.
 
