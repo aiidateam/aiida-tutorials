@@ -22,13 +22,17 @@ The first log in might take a few minutes, but subsequent logins will be much fa
 This cluster will be taken down on **Saturday 29 May at 12:00 CEST**.
 Be sure to download any data you want to keep before this time.
 
+Afterwards, the material can still be run on the `Quantum Mobile <https://quantum-mobile.readthedocs.io/en/latest/>`_ virtual machine.
+You could also use the AiiDAlab demo cluster, but since it can only handle a limited number of simultaneous users, the Quantum Mobile can offer a more reliable experience.
+
+
 .. note::
 
-   At certain points in the hands-on, there will be two tabs with different explanations for the "Quantum Mobile" virtual machine and "AiiDAlab cluster".
-   When running the hands-on via the link above, the instructions can be found in the "**AiiDAlab cluster**" tab.
+   Some of the procedures might be slightly different depending on whether you are using the "Quantum Mobile" virtual machine or the "AiiDAlab cluster".
+   We have included the instructions for both, so at certain points in the hands-on you will find boxes like the one below, with different tabs for each case.
 
-Once the cluster is down, the material can still be run in the Quantum Mobile virtual machine, or on the AiiDAlab demo cluster.
-Note that since the AiiDAlab demo cluster can only handle a limited number of consecutive users, using Quantum Mobile can offer a more reliable experience.
+   When running the hands-on via the link above, you need to follow the instructions in the "**AiiDAlab cluster**" tab.
+
 
 .. tabs::
 
