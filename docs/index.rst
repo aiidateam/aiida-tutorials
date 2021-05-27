@@ -36,6 +36,29 @@ You could also use the AiiDAlab demo cluster, but since it can only handle a lim
 
 .. tabs::
 
+   .. tab:: AiiDAlab cluster
+
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | Related resources                                                                                                           |
+      +=================+===========================================================================================================+
+      | AiiDAlab        | `AiiDAlab docker stack 21.02.1`_, `AiiDAlab k8s deployment`_                                              |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.3.0`_                                                       |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | codes           | `Quantum ESPRESSO 6.0.0`_                                                                                 |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+
+      The |AiiDAlab demo cluster| is a Jupyter-based web platform installed on a cluster that can run some basic calculations for demonstration and tutorial purposes.
+      Simply click the link and log in with the EGI check-in.
+
+      The first part of the tutorial will be run in the terminal.
+      Just click on the "Terminal" icon in the header to open one in a new tab.
+
+      .. figure:: source/images/AiiDAlab_header-terminal.png
+         :width: 100%
+
+      Once the terminal is opened, you're all set to get started with the tutorial!
+
    .. tab:: Quantum Mobile
 
       +-----------------+-----------------------------------------------------------------------------------------------------------+
@@ -75,29 +98,6 @@ You could also use the AiiDAlab demo cluster, but since it can only handle a lim
          $ verdi status
 
       If you see all green check marks, you're ready to start with the tutorial!
-
-   .. tab:: AiiDAlab cluster
-
-      +-----------------+-----------------------------------------------------------------------------------------------------------+
-      | Related resources                                                                                                           |
-      +=================+===========================================================================================================+
-      | AiiDAlab        | `AiiDAlab docker stack 21.02.1`_, `AiiDAlab k8s deployment`_                                              |
-      +-----------------+-----------------------------------------------------------------------------------------------------------+
-      | python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.3.0`_                                                       |
-      +-----------------+-----------------------------------------------------------------------------------------------------------+
-      | codes           | `Quantum ESPRESSO 6.0.0`_                                                                                 |
-      +-----------------+-----------------------------------------------------------------------------------------------------------+
-
-      The |AiiDAlab demo cluster| is a Jupyter-based web platform installed on a cluster that can run some basic calculations for demonstration and tutorial purposes.
-      Simply click the link and log in with the EGI check-in.
-
-      The first part of the tutorial will be run in the terminal.
-      Just click on the "Terminal" icon in the header to open one in a new tab.
-
-      .. figure:: source/images/AiiDAlab_header-terminal.png
-         :width: 100%
-
-      Once the terminal is opened, you're all set to get started with the tutorial!
 
 Hands-on materials
 ------------------
