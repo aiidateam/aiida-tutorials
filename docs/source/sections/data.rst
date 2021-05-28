@@ -372,8 +372,8 @@ You now have a first taste of the type of problems AiiDA tries to solve.
 Here are some options for how to continue:
 
 * Get a more detailed view of how to manipulate AiiDA objects in the :ref:`extra section<basics>` of this tutorial.
-* Continue with the `in-depth tutorial`_.
+* Register for the `in-depth tutorial`_ organised July 5-9 2021.
 * Try `setting up AiiDA`_ directly on your laptop.
 
-.. _in-depth tutorial: https://aiida-tutorials.readthedocs.io/en/tutorial-2020-intro-week/index.html
+.. _in-depth tutorial: https://www.aiida.net/aiida-virtual-tutorial-july-2021/
 .. _setting up AiiDA: https://aiida.readthedocs.io/projects/aiida-core/en/latest/intro/install_system.html#intro-get-started-system-wide-install
