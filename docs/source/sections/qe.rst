@@ -92,6 +92,30 @@ This will depend on whether you are running the tutorial in the Quantum Mobile o
 
 .. tabs::
 
+    .. tab:: Quantum Mobile
+
+        Let's have a look at the codes in our database with the ``verdi shell``:
+
+        .. code-block:: console
+
+            $ verdi code list
+            # List of configured codes:
+            # (use 'verdi code show CODEID' to see the details)
+            * pk 1 - qe-3.4.0-pw@localhost
+            * pk 2 - qe-3.4.0-cp@localhost
+            * pk 3 - qe-3.4.0-pp@localhost
+            * pk 4 - qe-3.4.0-ph@localhost
+            * pk 5 - qe-3.4.0-neb@localhost
+            * pk 6 - qe-3.4.0-projwfc@localhost
+            * pk 7 - qe-3.4.0-pw2wannier90@localhost
+            * pk 8 - qe-3.4.0-q2r@localhost
+            * pk 9 - qe-3.4.0-dos@localhost
+            * pk 10 - qe-3.4.0-matdyn@localhost
+
+        As you can see, this Quantum Mobile virtual machine already comes with all of the Quantum ESPRESSO codes set up in the AiiDA database.
+        The code we will be running is the ``pw.x`` code, set up under the label ``qe-3.4.0-pw`` on the ``localhost`` computer.
+        Make a note of the PK or label of the code, since you'll need to replace it in code snippets later in this tutorial.
+
     .. tab:: AiiDAlab cluster
 
         Let's have a look at the codes in our database with the ``verdi shell``:
@@ -120,30 +144,6 @@ This will depend on whether you are running the tutorial in the Quantum Mobile o
             # (use 'verdi code show CODEID' to see the details)
             * pk 2 - pw@localhost
 
-        Make a note of the PK or label of the code, since you'll need to replace it in code snippets later in this tutorial.
-
-    .. tab:: Quantum Mobile
-
-        Let's have a look at the codes in our database with the ``verdi shell``:
-
-        .. code-block:: console
-
-            $ verdi code list
-            # List of configured codes:
-            # (use 'verdi code show CODEID' to see the details)
-            * pk 1 - qe-3.4.0-pw@localhost
-            * pk 2 - qe-3.4.0-cp@localhost
-            * pk 3 - qe-3.4.0-pp@localhost
-            * pk 4 - qe-3.4.0-ph@localhost
-            * pk 5 - qe-3.4.0-neb@localhost
-            * pk 6 - qe-3.4.0-projwfc@localhost
-            * pk 7 - qe-3.4.0-pw2wannier90@localhost
-            * pk 8 - qe-3.4.0-q2r@localhost
-            * pk 9 - qe-3.4.0-dos@localhost
-            * pk 10 - qe-3.4.0-matdyn@localhost
-
-        As you can see, this Quantum Mobile virtual machine already comes with all of the Quantum ESPRESSO codes set up in the AiiDA database.
-        The code we will be running is the ``pw.x`` code, set up under the label ``qe-3.4.0-pw`` on the ``localhost`` computer.
         Make a note of the PK or label of the code, since you'll need to replace it in code snippets later in this tutorial.
 
 To run the SCF calculation, we'll also need to provide the family of pseudopotentials.
@@ -421,6 +421,14 @@ How you can open this file will depend on the platform you are running the tutor
 
 .. tabs::
 
+    .. tab:: Quantum Mobile
+
+        You can simply use the ``evince`` command to open the ``.pdf`` that contains the provenance graph:
+
+        .. code-block::
+
+            $ evince <PK>.dot.pdf
+
     .. tab:: AiiDAlab cluster
 
         If you open a *file manager* on the starting page of the AiiDA JupyterHub:
@@ -429,14 +437,6 @@ How you can open this file will depend on the platform you are running the tutor
             :width: 100%
 
         You should be able to use the file manager to navigate to and open the PDF.
-
-    .. tab:: Quantum Mobile
-
-        You can simply use the ``evince`` command to open the ``.pdf`` that contains the provenance graph:
-
-        .. code-block::
-
-            $ evince <PK>.dot.pdf
 
 Let's have a look at one of the outputs, i.e. the ``output_parameters``.
 You can get the contents of this dictionary easily using the ``verdi shell``:
@@ -561,16 +561,29 @@ How you can access the REST API web-interface will depend on where you are execu
 
 .. tabs::
 
+    .. tab:: Quantum Mobile
+
+        Open the |provenance browser| **in a browser inside the virtual machine** and copy the following URL into the text box:
+
+        .. code-block::
+
+            http://127.0.0.1:5000/api/v4
+
+        .. figure:: include/images/matcloud_explore_quantum.png
+            :width: 100%
+
+        Then simply click "Go!" to start exploring your data!
+
     .. tab:: AiiDAlab cluster
 
         Since this AiiDAlab instance is running on a remote machine, we need to expose the REST API to a public URL.
-        Open a **new** terminal from the starting page and run `ngrok`_, a tool that allows us to do exactly this:
+        **Open a new terminal** from the starting page and run `ngrok`_, a tool that allows us to do exactly this:
 
         .. code-block:: console
 
             $ ngrok http 5000 --region eu --bind-tls true
 
-        Now you will be able to open the |provenance browser| and enter the public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
+        Now you will be able to open the |provenance browser| (click the link to open the page) and enter the public URL that ``ngrok`` is using, i.e. if the following is the output in your terminal:
 
         .. code-block:: console
 
@@ -584,17 +597,12 @@ How you can access the REST API web-interface will depend on where you are execu
             Forwarding                    https://bb84d27809e0.eu.ngrok.io -> http://localhost:5000
 
         then the URL you should provide the provenance browser is ``https://bb84d27809e0.eu.ngrok.io/api/v4`` (see the last ``Forwarding`` line).
-        Then simply click "Go!" to start exploring your data!
+        Right click on the URL and select "Copy", then paste it in the |provenance browser| in the "Connect to your AiiDA REST API" box:
 
-    .. tab:: Quantum Mobile
+        .. figure:: include/images/matcloud_explore_aiidalab.png
+            :width: 100%
 
-        Open the |provenance browser| **in a browser inside the virtual machine** and copy the following URL into the text box:
-
-        .. code-block::
-
-            http://127.0.0.1:5000/api/v4
-
-        Then simply click "Go!" to start exploring your data!
+        Next, add ``/api/v4`` to the end of the link and then simply click "Go!" to start exploring your data!
 
 .. |provenance browser| raw:: html
 

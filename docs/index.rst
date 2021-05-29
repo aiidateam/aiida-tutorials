@@ -8,56 +8,15 @@ This tutorial is a short introduction to some of the features of AiiDA where you
 Setup
 -----
 
-The hands-on for the `"MaX School on Advanced Materials and Molecular Modelling with Quantum ESPRESSO" <http://indico.ictp.it/event/9616/>`_ will be run on a dedicated JupyterHub cluster that can be accessed via the following link:
-
-https://qe-school.aiida-tutorials.net/
-
-Simply log in with a username and password of your choosing, your account will be created automatically.
-The first log in might take a few minutes, but subsequent logins will be much faster.
-
-.. important::
-
-   Note down your password so that you can login again in case you get inadvertently logged out. In case you forgot your password, the admin can make a new account, **but you will lose your progress!**
-
-This cluster will be taken down on **Saturday 29 May at 12:00 CEST**.
-Be sure to download any data you want to keep before this time.
-
-Afterwards, the material can still be run on the `Quantum Mobile <https://quantum-mobile.readthedocs.io/en/latest/>`_ virtual machine.
-You could also use the AiiDAlab demo cluster, but since it can only handle a limited number of simultaneous users, the Quantum Mobile can offer a more reliable experience.
-
+The tutorial can be run in the `Quantum Mobile <https://quantum-mobile.readthedocs.io/en/latest/>`_ virtual machine or on the |AiiDAlab demo cluster|.
+Note that since the latter can only handle a limited number of simultaneous users, the Quantum Mobile can offer a more reliable experience.
 
 .. note::
 
    Some of the procedures might be slightly different depending on whether you are using the "Quantum Mobile" virtual machine or the "AiiDAlab cluster".
-   We have included the instructions for both, so at certain points in the hands-on you will find boxes like the one below, with different tabs for each case.
-
-   When running the hands-on via the link above, you need to follow the instructions in the "**AiiDAlab cluster**" tab.
-
+   We have included the instructions for both, so at certain points in the hands-on you will find boxes like the one below, with different tabs for each system.
 
 .. tabs::
-
-   .. tab:: AiiDAlab cluster
-
-      +-----------------+-----------------------------------------------------------------------------------------------------------+
-      | Related resources                                                                                                           |
-      +=================+===========================================================================================================+
-      | AiiDAlab        | `AiiDAlab docker stack 21.02.1`_, `AiiDAlab k8s deployment`_                                              |
-      +-----------------+-----------------------------------------------------------------------------------------------------------+
-      | python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.3.0`_                                                       |
-      +-----------------+-----------------------------------------------------------------------------------------------------------+
-      | codes           | `Quantum ESPRESSO 6.0.0`_                                                                                 |
-      +-----------------+-----------------------------------------------------------------------------------------------------------+
-
-      The |AiiDAlab demo cluster| is a Jupyter-based web platform installed on a cluster that can run some basic calculations for demonstration and tutorial purposes.
-      Simply click the link and log in with the EGI check-in.
-
-      The first part of the tutorial will be run in the terminal.
-      Just click on the "Terminal" icon in the header to open one in a new tab.
-
-      .. figure:: source/images/AiiDAlab_header-terminal.png
-         :width: 100%
-
-      Once the terminal is opened, you're all set to get started with the tutorial!
 
    .. tab:: Quantum Mobile
 
@@ -98,6 +57,29 @@ You could also use the AiiDAlab demo cluster, but since it can only handle a lim
          $ verdi status
 
       If you see all green check marks, you're ready to start with the tutorial!
+
+   .. tab:: AiiDAlab cluster
+
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | Related resources                                                                                                           |
+      +=================+===========================================================================================================+
+      | AiiDAlab        | `AiiDAlab docker stack 21.02.1`_, `AiiDAlab k8s deployment`_                                              |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | python packages | `aiida-core 1.5.2`_, `aiida-quantumespresso 3.3.0`_                                                       |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+      | codes           | `Quantum ESPRESSO 6.0.0`_                                                                                 |
+      +-----------------+-----------------------------------------------------------------------------------------------------------+
+
+      The |AiiDAlab demo cluster| is a Jupyter-based web platform installed on a cluster that can run some basic calculations for demonstration and tutorial purposes.
+      Simply click the link and log in with the EGI check-in.
+
+      The first part of the tutorial will be run in the terminal.
+      Just click on the "Terminal" icon in the header to open one in a new tab.
+
+      .. figure:: source/images/AiiDAlab_header-terminal.png
+         :width: 100%
+
+      Once the terminal is opened, you're all set to get started with the tutorial!
 
 Hands-on materials
 ------------------
