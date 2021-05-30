@@ -61,4 +61,5 @@ links inside the respective sections.
    sections/setup/index
    sections/fundamentals/index
    sections/calculations/index
+   sections/data/index
    sections/matsci/index

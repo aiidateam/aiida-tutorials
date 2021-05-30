@@ -1,9 +1,13 @@
 (calculation-calcjobs)=
-
 # Calculation jobs
 
-So far we've covered the AiiDA basics using data nodes and processes involving simple arithmetic.
-In the second part of this session, we'll have a look at some more interesting data structures and calculations, based on some examples using Quantum ESPRESSO.
+In this section we'll be learning how to run external codes with AiiDA through calculation plugins.
+
+We will use the [Quantum ESPRESSO](<https://www.quantum-espresso.org/>) package to launch a simple [density functional theory](<https://en.wikipedia.org/wiki/Density_functional_theory>) calculation of a silicon crystal using the {doi}`PBE exchange-correlation functional <10.1103/PhysRevLett.77.3865>` and check its results.
+In doing so, we will intentionally introduce some bogus input parameters in order to show how to 'manually' debug problems when encountering errors.
+Workflows, which you'll see later in this tutorial, can help you avoid these issues systematically.
+
+Note that besides the [aiida-quantumespresso](<https://github.com/aiidateam/aiida-quantumespresso>) plugin, AiiDA comes with plugins for many other codes, all of which are listed in the [AiiDA plugin registry](<https://aiidateam.github.io/aiida-registry/>).
 
 ## Importing data
 
@@ -311,302 +315,669 @@ While it is also possible to import the `Dict` class directly, it is recommended
 
 ```
 
-(virtual-intro-basic-structure)=
+## The AiiDA daemon
 
-### StructureData
+First of all, check that the AiiDA daemon is actually running.
+The AiiDA daemon is a program that
 
-Next, let's have a look at the `StructureData` node, which represents a crystalline structure.
-We can consider for instance the input structure to the calculation we were considering before (it should have the UUID `3a4b1270`).
-Such objects can be inspected interactively by means of an atomic viewer such as the one provided by `ase`.
-AiiDA however supports several other viewers such as `xcrysden`, `jmol`, and `vmd`.
-Type in the terminal:
+> > * runs continuously in the background
+> * waits for new calculations to be submitted
+> * transfers the inputs of new calculations to your compute resource
+> * checks the status of your calculation on the compute resource, and
+> * retrieves the results from the compute resource
 
-```{code-block} console
-
-$ verdi data structure show --format ase <IDENTIFIER>
-
-```
-
-to show the selected structure, although it will take a few seconds to appear (it has to go over a tunnel on your SSH connection).
-You should be able to rotate the view with the right mouse button.
-
-```{note}
-
-If you receive some errors, make sure your X-forwarding settings have been set up correctly, as explained in (**TODO: FIX LINK**).
-
-```
-
-Alternatively, especially if showing them interactively is too slow over SSH, you can export the content of a structure node in various popular formats such as `xyz`, `xsf` or `cif`.
-This is achieved by typing in the terminal:
+Check the status of the daemon process by typing in the terminal:
 
 ```{code-block} console
 
-$ verdi data structure export --format xsf <IDENTIFIER> > BaTiO3.xsf
+$ verdi daemon status
 
 ```
 
-This outputs the structure in `xsf` format and writes it to a file.
+If the daemon is running, the output should look like
 
-You can open the generated `xsf` file and observe the cell and the coordinates.
-Then, you can then copy `BaTiO3.xsf` from the Amazon machine to your local one and then visualize it, e.g. with [xcrysden](<http://www.xcrysden.org>) (if you have it installed):
+```{code-block} bash
+
+Profile: quicksetup
+Daemon is running as PID 2050 since 2019-04-30 12:37:12
+Active workers [1]:
+  PID    MEM %    CPU %  started
+-----  -------  -------  -------------------
+ 2055    2.147        0  2019-04-30 12:37:12
+Use verdi daemon [incr | decr] [num] to increase / decrease the amount of workers
+
+```
+
+If this is not the case, type in the terminal
 
 ```{code-block} console
 
-$ xcrysden --xsf BaTiO3.xsf
+$ verdi daemon start
 
 ```
 
-The `StructureData` node can also be investigated using the `verdi shell`.
-First, open the `verdi shell` and load the structure node:
+to start the daemon.
+
+## Creating and launching calculations
+
+In the following, we'll be working in the `verdi shell`.
+As you go along, feel free to keep track of your commands by copying them into a python script `test_pw.py`.
+
+::::{note}
+
+The `verdi shell` imports a number of AiiDA internals so that you as the user don't have to.
+You can also make those available to a python script, by running it using
+
+```{code-block} console
+
+$ verdi run <scriptname>
+
+```
+
+::::
+
+Every calculation sent to a cluster is linked to a *code*, which describes the executable file as we saw earlier.
+We also saw how to list all codes available using
+
+```{code-block} console
+
+$ verdi code list
+
+```
+
+In this part of the tutorial we are interested in running the `pw.x` executable of Quantum ESPRESSO, i.e. in codes for the `quantumespresso.pw` plugin. If you have many codes for different executables, you can filter only those using a specific plugin with the command:
+
+```{code-block} console
+
+$ verdi code list -P quantumespresso.pw
+
+```
+
+Pick the correct codename (`qe-6.5-pw@localhost` if you followed the instructions earlier) and load it in the `verdi shell`:
 
 ```{code-block} ipython
 
-In [1]: structure = load_node('3a4b1270')
-In [2]: structure
-Out[2]: <StructureData: uuid: 3a4b1270-82bf-4d66-a51f-982294f6e1b3 (pk: 1161)>
+In [1]: code = load_code("<codename>")
 
 ```
 
-You can display its chemical formula using:
+:::{note}
+
+`load_code` returns an object of type `Code`, which is the general AiiDA class for describing simulation codes.
+
+:::
+
+Let's build the inputs for a new `PwCalculation` (defined by the `quantumespresso.pw` plugin) using a "builder", a class provided by AiiDA that will help you out:
 
 ```{code-block} ipython
 
-In [3]: structure.get_formula()
-Out[3]: 'BaO3Ti'
+In [2]: builder = code.get_builder()
 
 ```
 
-or, to obtain the atomic positions and species:
+As the first step, assign a (short) label or a (long) description to your calculation, that you might find convenient in the future.
 
 ```{code-block} ipython
 
-In [4]: structure.sites
-Out[4]:
-[<Site: kind name 'Ba' @ 0.0,1.78886419607596e-30,0.0>,
- <Site: kind name 'Ti' @ 1.98952035955311,1.98952035955311,1.98952035955311>,
- <Site: kind name 'O' @ 1.98952035955311,1.98952035955311,0.0>,
- <Site: kind name 'O' @ 1.98952035955311,2.33671938655715e-31,1.98952035955311>,
- <Site: kind name 'O' @ 0.0,1.98952035955311,1.98952035955311>]
+In [3]: builder.metadata.label = "PW test"
+   ...: builder.metadata.description = "My first AiiDA calc with Quantum ESPRESSO on Si"
 
 ```
 
-If you are familiar with [ASE](<https://wiki.fysik.dtu.dk/ase/>) and [Pymatgen](<https://pymatgen.org/>), you can convert this structure to those formats by typing either
+This information will be saved in the database for later queries or inspection.
+Note that you can press TAB after writing `builder.` to see all inputs available for this calculation.
+In order to figure out which data type is expected for a particular input, such as `builder.structure`, and whether the input is optional or required, use `builder.structure?`.
+
+Now, specify the number of machines (a.k.a. cluster nodes) you are going to run on and the maximum time allowed for the calculation.
+The general options grouped under `builder.metadata.options` are independent of the code or plugin, and will be passed to the scheduler that handles the queue on your compute resource.
 
 ```{code-block} ipython
 
-In [5]: structure.get_ase()
-Out[5]: Atoms(symbols='BaTiO3', pbc=True, cell=[3.97904071910623, 3.97904071910623, 3.97904071910623], masses=...)
+In [4]: builder.metadata.options.resources = {'num_machines': 1}
+   ...: builder.metadata.options.max_wallclock_seconds = 30 * 60
 
 ```
+
+Again, to see the list of available options, type `builder.metadata.options.` and hit the TAB button.
+
+### Preparation of inputs
+
+A Quantum ESPRESSO calculation needs a number of inputs:
+
+1. [Pseudopotentials](<https://en.wikipedia.org/wiki/Pseudopotential>)
+2. a structure
+3. a mesh in reciprocal space (k-points)
+4. a number of input parameters
+
+These are mirrored in the inputs of the `aiida-quantumespresso` plugin (see [documentation](<https://aiida-quantumespresso.readthedocs.io/en/stable/user_guide/calculation_plugins/pw.html>)).
+We'll start with the structure, k-points, and pseudopotentials and leave the input parameters as the last thing to setup.
+
+:::{admonition} Exercise
+
+Use what you learned in the basics section to load the `structure` and `kpoints` inputs for your calculation:
+
+* Use a silicon crystal {ref}`structure<matsci-structure>`.
+* Define a `2x2x2` mesh of {ref}`k-points<matsci-kpoints>`.
+
+Note: If you just copy and paste code that you executed previously, this may result in duplication of information on your database.
+In fact, you can re-use an existing structure stored in your database [^f1].
+Use a combination of the bash command `verdi data structure list` and the python function `load_node()` to get an object representing the structure created earlier.
+
+:::
+
+### Attaching the input information to the calculation
+
+Once you've created a `structure` node and a `kpoints` node, attach it to the calculation:
 
 ```{code-block} ipython
 
-In [6]: structure.get_pymatgen()
-Out[6]:
-Structure Summary
-Lattice
-    abc : 3.97904071910623 3.97904071910623 3.97904071910623
- angles : 90.0 90.0 90.0
- volume : 62.999216807333035
-      A : 3.97904071910623 0.0 0.0
-      B : 0.0 3.97904071910623 0.0
-      C : 0.0 0.0 3.97904071910623
-PeriodicSite: Ba (0.0000, 0.0000, 0.0000) [0.0000, 0.0000, 0.0000]
-PeriodicSite: Ti (1.9895, 1.9895, 1.9895) [0.5000, 0.5000, 0.5000]
-PeriodicSite: O (1.9895, 1.9895, 0.0000) [0.5000, 0.5000, 0.0000]
-PeriodicSite: O (1.9895, 0.0000, 1.9895) [0.5000, 0.0000, 0.5000]
-PeriodicSite: O (0.0000, 1.9895, 1.9895) [0.0000, 0.5000, 0.5000]
+In [5]: builder.structure = structure
+   ...: builder.kpoints = kpoints
 
 ```
 
-Of course, the structure above is already in our database, after we imported it at the start of this section.
-In order to add new structures to your AiiDA database, you can also define a structure by hand, or import it from an online repository:
+:::{note}
 
-```{dropdown} Defining a structure and storing it in the database
+The builder accepts both *stored* and *unstored* data nodes.
+AiiDA will take care of storing the unstored nodes upon submission.
+If you decide not to submit, nothing will be stored in the database.
 
-Let’s try now to define a new structure to study, specifically a silicon crystal.
-In the `verdi shell`, define a cubic unit cell as a 3 x 3 matrix, with lattice parameter `alat` = 5.4 Å:
+:::
+
+PWscf also needs information on the pseudopotentials, in the form of a dictionary, where keys are the names of the elements and the values are the corresponding `UpfData` objects containing the information on the pseudopotential.
+However, instead of creating the dictionary by hand, we can use a helper function that picks the right pseudopotentials for our structure from a pseudopotential *family*.
+You can list the preconfigured families within the IPython shell using:
 
 ```{code-block} ipython
 
-In [1]: alat = 5.4
-    ...: unit_cell = [[alat/2, alat/2, 0.], [alat/2, 0., alat/2], [0., alat/2, alat/2]]
+In [6]: !verdi data upf listfamilies
 
 ```
 
-```{note}
-
-Default units for crystal structure cell and coordinates in AiiDA are Å (Ångström).
-
-```
-
-In order to store a structure in the AiiDA database, we need to create an instance of the `StructureData` class.
-We can load this class using the `DataFactory`:
+Pick the one you {ref}`configured in the basics hands on<matsci-pseudos>` (the `SSSP` family) and link the correct pseudopotentials to the calculation using the command:
 
 ```{code-block} ipython
 
-In [2]: StructureData = DataFactory('structure')
+In [7]: from aiida.orm.nodes.data.upf import get_pseudos_from_structure
+   ...: builder.pseudos = get_pseudos_from_structure(structure, '<PSEUDO_FAMILY_NAME>')
 
 ```
 
-Now, initialize the class instance using the unit cell you defined:
+Print the content of the `pseudos` namespace with `print(builder.pseudos)` to see what the helper function created.
+
+### Preparing and debugging input parameters
+
+Finally, we need to specify a number of input parameters (i.e. plane wave cutoffs, convergence thresholds, etc.) to launch the Quantum ESPRESSO calculation.
+The structure of the parameter dictionary closely follows the structure of the [PWscf input file](<https://www.quantum-espresso.org/Doc/INPUT_PW.html>).
+
+Since these are often the parameters to tune in a calculation, let's **introduce a few mistakes intentionally** and use this part of the tutorial to learn how to debug problems.
+
+Define a set of input parameters for Quantum ESPRESSO, preparing a dictionary of the form:
 
 ```{code-block} ipython
 
-In [3]: structure = StructureData(cell=unit_cell)
+In [8]: parameters_dict = {
+   ...:     'CONTROL': {
+   ...:         'calculation': 'scf',
+   ...:     },
+   ...:     'SYSTEM': {
+   ...:         'ecutwfc': 30.,
+   ...:         'ecutrho': 200.,
+   ...:         'mickeymouse': 240.,
+   ...:     },
+   ...:     'ELECTRONS': {
+   ...:         'conv_thr': 1.e-14,
+   ...:         'electron_maxstep': 3,
+   ...:     },
+   ...: }
 
 ```
 
-From now on, you can access the cell with the command
+This dictionary is almost a valid input for the Quantum ESPRESSO plugin, except for an invalid key `mickeymouse`. When Quantum ESPRESSO receives an unrecognized key, it will stop.
+By default, the AiiDA plugin will *not* validate your input and simply pass it on to the code.
+
+We have also introduced a combination of a very high accuracy (`'conv_thr': 1.e-14`) coupled with a very low maximum number of self consistent iterations (`'electron_maxstep': 3`).
+This means that even if we eliminate the invalid key, the calculation will not converge and will not be successful, despite there not being any other mistake in the parameters dictionary.
+
+Let's wrap the `parameters_dict` python dictionary in an AiiDA `Dict` node, and set it as the input of name `parameters`. We'll see what happens.
 
 ```{code-block} ipython
 
-In [4]: structure.cell
-Out[4]: [[2.7, 2.7, 0.0], [2.7, 0.0, 2.7], [0.0, 2.7, 2.7]]
+In [9]: builder.parameters = Dict(dict=parameters_dict)
 
 ```
 
-Of course, at this point we only have an empty unit cell.
-So, let's append the 2 Si atoms to the crystal structure, starting with:
+### Simulate submission
+
+At this stage, you have created in memory (it's not yet stored in the database) the input of the graph shown below.
+The outputs will be created by the daemon later on.
+
+:::{figure} include/images/si-graph-full.png
+:alt: true
+
+:::
+
+In order to check which input files AiiDA creates, we can perform a *dry run* of the submission process.
+Let's tell the builder that we want a dry run and that we don't want to store the provenance of the dry run:
 
 ```{code-block} ipython
 
-In [5]: structure.append_atom(position=(alat/4., alat/4., alat/4.), symbols="Si")
+In [10]: builder.metadata.dry_run = True
+    ...: builder.metadata.store_provenance = False
 
 ```
 
-for the first ‘Si’ atom.
-Repeat this command for the other Si site with coordinates (0, 0, 0).
-You can access and inspect the structure sites by accessing the corresponding property:
+It's time to run:
 
 ```{code-block} ipython
 
-In [6]: structure.sites
-Out[6]: [<Site: kind name 'Si' @ 1.35,1.35,1.35>, <Site: kind name 'Si' @ 0.0,0.0,0.0>]
+In [11]: from aiida.engine import run
+    ...: run(builder)
 
 ```
 
-If you make a mistake, start over from
-`structure = StructureData(cell=the_cell)`, or equivalently use `structure.clear_kinds()` to remove all kinds (atomic species) and sites.
+::::{note}
 
-Alternatively, AiiDA structures can also be converted directly from ASE structures [#f1]_ using
-
-```{code-block} ipython
-
-In [7]: from ase.spacegroup import crystal
-    ...: ase_structure = crystal('Si', [(0, 0, 0)], spacegroup=227,
-    ...:             cellpar=[alat, alat, alat, 90, 90, 90], primitive_cell=True)
-    ...: structure = StructureData(ase=ase_structure)
-
-```
-
-Now you can store the new structure object in the database with the command:
-
-```{code-block} ipython
-
-In [8]: structure.store()
-
-```
-
-```{note}
-
-Similarly, a ``StructureData`` instance can also be intialized from a pymatgen structure using ``StructureData(pymatgen=pmg_structure)``.
-
-```
-
-```
-
-```{dropdown} Importing a structure from an online repository
-
-Another way of obtaining the silicon structure is to import it from an external (online)
-repository such as the [Crystallography Open Database (COD)](http://www.crystallography.net/cod/).
-Try executing the following code snippet in the `verdi shell`:
+Instead of using the builder, you can also simply pass the calculation class as the first argument, followed by the inputs as keyword arguments, e.g.:
 
 ```{code-block} python
 
-from aiida.tools.dbimporters.plugins.cod import CodDbImporter
-importer = CodDbImporter()
-for entry in importer.query(formula='Si', spacegroup='F d -3 m'):
-    structure = entry.get_aiida_structure()
-    print("Formula:", structure.get_formula())
-    print("Unit cell volume:", structure.get_cell_volume())
-    print()
+run(PwCalculation, structure=structure, pseudos={'Si': pseudo_node}, ....)
 
 ```
 
-This will connect to the COD database on the web, perform the query for all entries with formula `Si` and space group `Fd-3m`, fetch the results and convert them to AiiDA StructureData objects.
-In this case two structures exist for `Si` in COD and both are shown.
-```
+The builder is simply a convenience wrapper providing tab-completion in the shell and automatic help strings.
 
-(virtual-intro-basic-kpoints)=
+::::
 
-### KpointsData
+This creates a folder of the form `submit_test/[date]-0000[x]` in the current directory.
+Open a second terminal and:
 
-A set of k-points in the Brillouin zone is represented by an instance of the `KpointsData` class.
-Look for an identifier (PK or UUID) of the `KpointsData` input node of the `PwCalculation` whose provenance graph you generated earlier, and load the node in the `verdi shell`:
+> > * open the input file `aiida.in` within this folder
+> * compare it to input data nodes you created earlier
+> * verify that the {}`pseudo` folder contains the needed pseudopotentials
+> * have a look at the submission script `_aiidasubmit.sh`
+
+:::{note}
+
+The files created by a dry run are only intended for  inspection
+and cannot be used to correct the inputs of your calculation.
+
+:::
+
+### Submitting the calculation
+
+Up to now we've just been playing around and our calculation has been kept in memory and not in the database.
+Now that we have inspected the input files and convinced ourselves that Quantum ESPRESSO will have all the information it needs to perform the calculation, we will submit the calculation properly.
+Doing so will make sure that all inputs are stored in the database, will run and store the calculation and link the outputs to it.
+
+Let's revert the following values in our builder to their defaults:
 
 ```{code-block} ipython
 
-In [1]: kpoints = load_node(<IDENTIFIER>)
+In [12]: builder.metadata.dry_run = False
+    ...: builder.metadata.store_provenance = True
 
 ```
 
-You can get the k-points mesh using:
+And then rely on the submit machinery of AiiDA,
 
 ```{code-block} ipython
 
-In [2]: kpoints.get_kpoints_mesh()
-Out[2]: ([6, 6, 6], [0.0, 0.0, 0.0])
+In [13]: from aiida.engine import submit
+    ...: calculation = submit(builder)
 
 ```
 
-To get the full (explicit) list of k-points belonging to this mesh, use:
+As soon as you have executed these lines, the `calculation` variable contains a `PwCalculation` instance, already submitted to the daemon.
+
+:::{note}
+
+You may have noticed that we used `submit` here instead of `run`.
+The difference is that `submit` will hands over the calculation to the daemon running in the background, while `run` will execute all tasks in the current shell.
+
+All processes in AiiDA (you will soon get to know more) can be "launched" using one of available functions:
+
+> > * run
+> * run_get_node
+> * run_get_pk
+> * submit
+
+which are explained in more detail in the [online documentation](<https://aiida.readthedocs.io/projects/aiida-core/en/v1.3.0/topics/processes/usage.html?highlight=run_get_pk#launching-processes>).
+
+:::
+
+The calculation is now stored in the database and was assigned a "database primary key" or `pk` (`calculation.pk`) as well as a UUID (`calculation.uuid`).
+See the {ref}`previous section <2019-aiida-identifiers>` for more details on these identifiers.
+
+To preserve the integrity of the data provenance, AiiDA will prevent you from changing the core content ("attributes") of a stored node.
+There is an "extras" section though, which is writable after storage, to allow you to set additional information, e.g. as a way of labelling nodes and providing information for querying.
+
+For example, let's add an extra attribute called `element`, with value `Si`:
 
 ```{code-block} ipython
 
-In [3]: kpoints.get_kpoints_mesh(print_list=True)
-Out[3]:
-array([[0.        , 0.        , 0.        ],
-       [0.        , 0.        , 0.16666667],
-       ...
-       [0.83333333, 0.83333333, 0.66666667],
-       [0.83333333, 0.83333333, 0.83333333]])
+In [14]: calculation.set_extra("element", "Si")
 
 ```
 
-If this throws an `AttributeError`, it means that the kpoints instance does not represent a regular mesh but rather a list of k-points defined by their crystal coordinates (typically used when plotting a band structure).
-In this case, get the list of k-points coordinates using
+In the mean time, after you submitted your calculation, the daemon picked it up and started to: generate the input files, submit the calculation to the queue, wait for it to run and finish, retrieve the output files, parse them, store them in the database and set the state of the calculation to `Finished`.
+
+:::{note}
+
+If the daemon is not running, the calculation will remain in the `NEW` state until you start the daemon.
+
+:::
+
+### Checking the status of the calculation
+
+You can check the calculation status from the command line in your second terminal:
+
+```{code-block} console
+
+$ verdi process list
+
+```
+
+If you don't see any calculation in the output, the calculation you submitted has already finished.
+
+:::{note}
+
+Since you are running your DFT calculation directly on the VM, `verdi` commands can be a bit slow until the calculation finishes.
+
+:::
+
+By default, the command only prints calculations that are still active [^f2].
+Let's also list your finished calculations (and limit those only to the one created in the past day):
+
+```{code-block} console
+
+$ verdi process list -a -p1
+
+```
+
+as explained in the first section.
+
+Similar to the dry run, we can also inspect the input files of the *actual* calculation:
+
+```{code-block} console
+
+$ verdi calcjob inputls <pk_number> -c
+
+```
+
+for the `pk_number` of your calculation. This will show the contents of the input directory (`-c` prints directories in color).
+Check the content of input files with
+
+```{code-block} console
+
+$ verdi calcjob inputcat <pk_number> | less
+
+```
+
+## Troubleshooting
+
+Your calculation should end up in a finished state, but with some error: this is represented by a non-zero error code in brackets near the "Finished" status of the State:
+
+```{code-block} console
+
+$ verdi process list -a -p1
+  PK  Created    Process label    Process State     Process status
+----  ---------  ---------------  ----------------  ----------------
+2060  5m ago     PwCalculation    ⏹ Finished [305]
+...
+# Anything but [0] after the Finished state signals a failure
+
+```
+
+This was expected, since we used an invalid key in the input parameters.
+Situations like this happen in real life, so AiiDA provides tools to trace back to the source of the problem and correct it.
+
+In general for any calculation (both successful and failed) you can get a more detailed summary by running:
+
+```{code-block} console
+
+$ verdi process show <pk_number>
+Property     Value
+-----------  --------------------------------------------------------------------------------
+type         PwCalculation
+state        Finished [305] Both the stdout and XML output files could not be read or parsed.
+pk           2060
+uuid         95a58902-9c2a-47a7-b858-a058a2ea76e5
+label        PW test
+description  My first AiiDA calc with Quantum ESPRESSO on Si
+ctime        2020-06-30 07:16:45.987116+00:00
+mtime        2020-06-30 07:19:55.964423+00:00
+computer     [2] localhost
+
+Inputs      PK    Type
+----------  ----  -------------
+pseudos
+    Si      2043  UpfData
+code        2056  Code
+kpoints     2058  KpointsData
+parameters  2059  Dict
+structure   2057  StructureData
+
+Outputs              PK  Type
+-----------------  ----  --------------
+output_parameters  2064  Dict
+output_trajectory  2063  TrajectoryData
+remote_folder      2061  RemoteData
+retrieved          2062  FolderData
+
+Log messages
+---------------------------------------------
+There are 4 log messages for this calculation
+Run 'verdi process report 2060' to see them
+
+```
+
+The last part of the output alerts you to the fact that there are some log messages waiting for you, if you run `verdi process report <pk>`.
+
+If you read the report, you will see that it says that the output files could not be parsed.
+In this case you can also try inspecting directly the output file of PWscf.
+
+```{code-block} console
+
+$ verdi calcjob outputcat <pk_number> | less
+
+```
+
+You will see an error message complaining about the `mickeymouse` line in the input.
+
+Let's now correct our input parameters dictionary by leaving out the invalid key and see if our calculation succeeds:
 
 ```{code-block} ipython
 
-In [3]: kpoints.get_kpoints()
+In [15]: parameters_dict = {
+    ...:    "CONTROL": {
+    ...:        "calculation": "scf",
+    ...:    },
+    ...:    "SYSTEM": {
+    ...:        "ecutwfc": 30.,
+    ...:        "ecutrho": 200.,
+    ...:    },
+    ...:    "ELECTRONS": {
+    ...:        "conv_thr": 1.e-14,
+    ...:        'electron_maxstep': 3,
+    ...:    }
+    ...: }
+    ...: builder.parameters = Dict(dict=parameters_dict)
+    ...: calculation = submit(builder)
 
 ```
 
-Conversely, if the `KpointsData` node *does* actually represent a mesh, this method is the one, that when called, will throw an `AttributeError`.
+(Note: If you have been using the separate script approach, modify the script to remove the faulty input and run it again).
 
-If you prefer Cartesian (rather than fractional) coordinates, type:
+Use `verdi process list -a -p1` to verify that the error code is different now.
+You can check again the outputs and the reports with the tools explained in this section and try to fix it yourself before going on to the next.
+
+### Restarting calculations
+
+It turns out that your last calculation did not converge because we stopped the self-consistency iteration cycle before it converged (3).
+In this simple case, you could just re-run the calculation from scratch with a sufficient number of iterations, but for expensive calculations (including a structural relaxation or molecular dynamics), you would like instead to restart your calculation from the previous one to save time.
+
+For this purpose, `CalcJobNode` provides the `get_builder_restart` method.
+Just like the `get_builder` method of the `Code` or of the `Process` class, this creates an instance of the `ProcessBuilder`, but with all inputs already pre-populated from those of the "parent" node.
+
+Let us load the node of the calculation job that we want to restart in a `verdi shell` and create a new builder from it:
 
 ```{code-block} ipython
 
-In [4]: kpoints.get_kpoints(cartesian=True)
+In [1]: failed_calculation = load_node(<PK>)
+   ...: restart_builder = failed_calculation.get_builder_restart()
 
 ```
 
-For later use in this tutorial, let us try now to create a k-points instance, to describe a regular (2 x 2 x 2) mesh of k-points, centered at the Gamma point (i.e. without offset).
-This can be done with the following set of commands:
+Type `restart_builder` and press Enter to verify that all inputs have already been set to those that were used for the original calculation.
+Let's give the new calculation some more steps in the SCF cycle in order to let it converge:
 
 ```{code-block} ipython
 
-In [5]: KpointsData = DataFactory('array.kpoints')
-   ...: kpoints = KpointsData()
-   ...: kpoints.set_kpoints_mesh([2, 2, 2])
+In [2]: parameters = restart_builder.parameters.get_dict()
+   ...: parameters['ELECTRONS']['electron_maxstep'] = 80
 
 ```
 
-Here, we first load the `KpointsData` class using the `DataFactory` and the entry point (`array.kpoints`).
-Then, we create an instance of the `KpointData` class, and use the `set_kpoints_mesh()` method to set the mesh to a regular 2x2x2 Gamma-point centered mesh.
+The `aiida-quantumespresso` plugin supports restarting a calculation by setting the corresponding `restart_mode` and attaching the remote working directory of the previous calculations as the `parent_folder` input [^f3]:
 
-(virtual-intro-basic-pseudopotentials)=
+```{code-block} ipython
 
-[^f1]: We purposefully do not provide advanced commands for crystal structure manipulation in AiiDA, because python packages that accomplish such tasks already exist (such as ASE or pymatgen).
+In [3]: parameters['CONTROL']['restart_mode'] = 'restart'
+   ...: restart_builder.parent_folder = failed_calculation.outputs.remote_folder
+   ...: restart_builder.parameters = Dict(dict=parameters)
+
+```
+
+Note that we've created a new `Dict` node for the modifed parameters since the original input is stored in the database and immutable.
+
+Finally, let's label this calculation as a restarted one and submit the new calculation:
+
+```{code-block} ipython
+
+In [4]: from aiida.engine import submit
+   ...: restart_builder.metadata.label = 'Restart from PwCalculation<{}>'.format(failed_calculation.pk)
+   ...: calculation = submit(restart_builder)
+
+```
+
+Inspect the restarted calculation to verify that, this time, it completes successfully.
+You should see a "finished" status with exit code zero when running `verdi process list -a -p1`.
+
+## Calculation results
+
+The results of a calculation can be accessed directly from the calculation node using the following:
+
+```{code-block} console
+
+$ verdi calcjob res <IDENTIFIER>
+
+```
+
+which will print the output dictionary of the 'scalar' results parsed by AiiDA at the end of the calculation.
+Note that this is actually a shortcut for:
+
+```{code-block} console
+
+$ verdi data dict show <IDENTIFIER>
+
+```
+
+where `IDENTIFIER` refers to the `Dict` node attached as an output of the calculation node, with link name `output_parameters`.
+By looking at the output of the command, what is the total energy (`energy`) of the calculation you have run?
+What are its units?
+
+Similarly to what you did for the calculation inputs, you can access the output files via the commands:
+
+```{code-block} console
+
+$ verdi calcjob outputls <IDENTIFIER>
+
+```
+
+and
+
+```{code-block} console
+
+$ verdi calcjob outputcat <IDENTIFIER>
+
+```
+
+Use the latter to verify that the energy that you have found in the last step has been extracted correctly from the output file.
+
+:::{tip}
+
+Filter the lines containing the string 'energy', e.g. using `grep`, to isolate the relevant lines.
+
+:::
+
+The results of calculations are stored in two ways: `Dict` objects are stored in the database, which makes querying them very convenient, whereas `ArrayData` objects are stored on the disk.
+The choice of what to store in `Dict` and `ArrayData` nodes is made by the parser of `pw.x` implemented in the [aiida-quantumespresso](<https://github.com/aiidateam/aiida-quantumespresso>) plugin.
+
+The `TrajectoryData` output node is a type of `ArrayData`.
+Once more, use the command `verdi data array show <IDENTIFIER>` to determine the energy obtained from calculation you ran.
+This time you will need to use the identifier of the output `TrajectoryData` of the calculation, with link name `output_trajectory`.
+As you might have realized, the difference now is that the whole series of values of the energy calculated after each ionic step are stored.
+Of course, as we simply ran an `scf` calculation, there is only one value here, but as an exercise, you can restart the calculation with:
+
+```{code-block} python
+
+parameters['CONTROL']['calculation'] = 'vc-relax'
+
+```
+
+And once again check the `TrajectoryData` output node with link name `output_trajectory`.
+
+The output of calculation jobs can also be obtained via the `verdi shell`.
+For example, note down the PK of the calculation so that you can load it in the `verdi shell` and check the total energy with the commands:
+
+```{code-block} ipython
+
+In [1]: calculation = load_node(<PK>)
+
+```
+
+Then get the energy of the calculation with the command:
+
+```{code-block} ipython
+
+In [2]: calculation.res.energy
+Out[2]: -308.31214469484
+
+```
+
+You can also type
+
+```{code-block} ipython
+
+In [3]: calculation.res.
+
+```
+
+and then press `TAB` to see all the available results of the calculation.
+
+Besides writing input files, running the software for you, storing the output files, and connecting it all together in your provenance graph, many AiiDA plugins will parse the output of your code and make output values of interest available through an output dictionary node (as depicted in the graph above).
+In the case of the `aiida-quantumespresso` plugin this output node is available at `calculation.outputs.output_parameters` and you can access all the available attributes (not only the energy) using:
+
+```{code-block} ipython
+
+In [4]: calculation.outputs.output_parameters.attributes
+
+```
+
+While the name of this output dictionary node can be chosen by the plugin, AiiDA provides the "results" shortcut `calculation.res` that plugin developers can use to provide what they consider the result of the calculation (so, in this case, `calculation.res.energy` is just a shortcut to `calculation.outputs.output_parameters.attributes['energy']`).
+
+:::{rubric} Footnotes
+
+:::
+
+[^f1]: In order to avoid duplication of KpointsData, you would first need to learn how to query the database, therefore we will ignore this issue for now.
+
+[^f2]: A process is considered active if it is either `Created`, `Running` or `Waiting`. If a process is no longer active, but terminated, it will have a state `Finished`, `Killed` or `Excepted`.
+
+[^f3]: The `parent_folder` input for reusing the remote working folder of a previous calculation is specific to the `aiida-quantumespresso` plugin, but similar patterns are used in other plugins.
+  The `PwCalculation` `CalcJob` plugin will copy the `outdir` of the parent simulation into the appropriate location, where Quantum ESPRESSO's `pw.x` executable looks for wavefunctions, charge densities, etc.
+  This allows to keep the checkpoint files (which may be large) on the remote machine, while still recording the provenance of the new calculation in the AiiDA graph as: `parent_calculation --> remote_folder --> restart_calculation`.
+
+[^f4]: We purposefully do not provide advanced commands for crystal structure manipulation in AiiDA, because python packages that accomplish such tasks already exist (such as ASE or pymatgen).

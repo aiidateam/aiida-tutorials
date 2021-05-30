@@ -100,3 +100,4 @@ Fundamentals
     Basics <basics>
     entry_points
     querying
+    test

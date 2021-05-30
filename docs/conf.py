@@ -46,6 +46,21 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_panels",
 ]
+
+myst_enable_extensions = [
+    # "amsmath",
+    "colon_fence",  # Allow ::: to define directives
+    # "deflist",
+    # "dollarmath",
+    # "html_admonition",
+    # "html_image",
+    # "linkify",
+    # "replacements",
+    # "smartquotes",
+    # "substitution",
+    # "tasklist",
+]
+
 ipython_mplbackend = ""
 
 copybutton_selector = "div:not(.no-copy)>div.highlight pre"

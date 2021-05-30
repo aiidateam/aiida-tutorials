@@ -6,7 +6,7 @@ sphinx-panels~=0.5
 myst-nb~=0.13.0a1
 # jupytext~=1.7.1
 # pre-commit hooks
-pre-commit==2.12.1
+pre-commit
 black
 # transifex
 # sphinx-intl==2.0.0
