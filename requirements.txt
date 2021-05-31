@@ -1,15 +1,8 @@
-sphinx~=2.4.3
-sphinx-rtd-theme~=0.5
-sphinx-copybutton~=0.2.12
-sphinx-panels~=0.4.1
-jupyter-sphinx~=0.3.2
-myst-nb~=0.10.1
-jupytext~=1.7.1
-# pre-commit hooks
-pre-commit>=1.16,<2
-pylint==2.4.4
-yapf==0.27.0
-# transifex
-sphinx-intl==2.0.0
-transifex-client==0.13.7
-six==1.12.0
+sphinx
+sphinx-book-theme
+sphinx-copybutton
+sphinx-panels
+sphinx-tabs
+myst-nb~=0.13.0a1
+pre-commit
+black

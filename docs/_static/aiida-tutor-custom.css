@@ -1,0 +1,19 @@
+div.highlight-console div.highlight {
+    background-color: aliceblue;
+}
+
+div.highlight-bash div.highlight {
+    background-color: aliceblue;
+}
+
+.header-text {
+    font-size: 18px
+}
+
+.text-right {
+    text-align: right;
+}
+
+.footer-low {
+    line-height: 0.5;
+}
