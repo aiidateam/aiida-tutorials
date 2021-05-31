@@ -6,14 +6,6 @@ div.highlight-bash div.highlight {
     background-color: aliceblue;
 }
 
-.center-panel {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 500px;
-    max-width: 100%;
-}
-
 .header-text {
     font-size: 18px
 }

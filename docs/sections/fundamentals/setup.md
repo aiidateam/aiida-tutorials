@@ -9,10 +9,14 @@ jupytext:
 kernelspec:
   display_name: Python 3
   name: python3
+notebookmetadatakey: val
+notebookmetadatakey2: val2
 ---
 
-# Entry points
+(fundamentals-setup)=
 
-This is a footnote [^1].
+# Setup
 
-[^1]: This really clears things up!
+(fundamentals-setup-profile)=
+
+## Profile

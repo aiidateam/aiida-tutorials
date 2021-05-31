@@ -1,32 +1,32 @@
----
-jupytext:
-  text_representation:
-    extension: .md
-    format_name: myst
-    format_version: 0.13
-    jupytext_version: 1.11.2
-kernelspec:
-  display_name: tutor-new
-  language: python
-  name: tutor-new
----
+# Testing
 
-# This is a test
+```{eval-rst}
+.. tabbed:: Tab 1
 
-Let's see if this works
-
-```{code-cell} ipython3
-1+1
+    Tab 1 content
 ```
 
-What an amazing result!
+```{eval-rst}
+.. tabbed:: Tab 2
+    :class-content: pl-1 bg-primary
 
-```{code-cell} ipython3
-!ls
+    Tab 2 content
 ```
 
-Cool!
+```{eval-rst}
+.. tabbed:: Tab 3
+    :new-group:
 
-```{code-cell} ipython3
+    .. code-block:: python
 
+        import pip
+```
+
+```{eval-rst}
+.. tabbed:: Tab 4
+    :selected:
+
+    .. dropdown:: Nested Dropdown
+
+        Some content
 ```

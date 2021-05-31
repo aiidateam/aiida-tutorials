@@ -14,7 +14,6 @@ language_info:
   name: "python"
 ---
 
-
 # Querying for data
 
 The notebook will show you how the `QueryBuilder` can be used to query your

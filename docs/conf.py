@@ -45,6 +45,7 @@ extensions = [
     "sphinx.ext.mathjax",
     "sphinx_copybutton",
     "sphinx_panels",
+    "sphinx_tabs.tabs",
 ]
 
 myst_enable_extensions = [

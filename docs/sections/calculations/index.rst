@@ -5,35 +5,39 @@ Calculation processes
 
     In this section you can find modules that explain the concepts related to running calculations in AiiDA.
 
-.. rst-class:: center-panel
+.. panels::
+    :header: header-text
+    :body: bg-light
+    :footer: bg-light border-0
 
-    .. panels::
-        :header: header-text
-        :body: bg-light
-        :footer: bg-light border-0
+    ------
+    :column: col-lg-12
 
-        ------
-        :column: col-lg-12
+    .. link-button:: basics
+        :type: ref
+        :text: Running your first calculation
+        :classes: btn-light text-left stretched-link font-weight-bold
+    ^^^^^^^^^^^^
 
-        .. link-button:: basics
-            :type: ref
-            :text: Calculation Basics
-            :classes: btn-light text-left stretched-link font-weight-bold
-        ^^^^^^^^^^^^
+    *"All which is beautiful and noble is the result of reason and calculation."* |br|
+    *-- Charles Baudelaire*
 
-        *"All which is beautiful and noble is the result of reason and calculation."* |br|
-        *-- Charles Baudelaire*
+    Start with running your first calculation.
 
-        The basic module on calculations covers the two different types of calculation processes, and when to use which.
+    +++++++++++++
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
 
-        +++++++++++++
-        .. list-table::
-            :widths: 50 50
-            :class: footer-table
-            :header-rows: 0
+        * - |time| 30 min
+          - Basic
 
-            * - |time| 30 min
-              - Basic
+    ---
+    :column: col-lg-12
+
+    :link-badge:`https://aiida-quantumespresso.readthedocs.io/en/latest/user_guide/get_started/examples/pw_tutorial.html, "Quantum ESPRESSO",cls=badge-qe text-white,tooltip=Go to the Quantum ESPRESSO version.`
+    :link-badge:`https://aiida-vasp.readthedocs.io/en/latest/calculations/vasp.html, "VASP",cls=badge-vasp text-white, tooltip=Go to the VASP version.`
 
 .. panels::
     :header: header-text
@@ -41,42 +45,18 @@ Calculation processes
     :footer: bg-light border-0
 
     ------
-    :column: col-lg-6
+    :column: col-lg-12
 
-    .. link-button:: functions
+    .. link-button:: errors
         :type: ref
-        :text: Calculation Functions
-        :classes: btn-light text-left stretched-link font-weight-bold
-    ^^^^^^^^
-
-    *"Form follows function."* |br|
-    *-- Louis Sullivan*
-
-    The ``calcfunction`` decorator is an easy way of converting regular Python functions into *calculation functions* that are tracked in the provenance.
-
-    +++
-    .. list-table::
-        :widths: 50 50
-        :class: footer-table
-        :header-rows: 0
-
-        * - |time| 15 min
-          - Basic
-
-    ---
-    :column: col-lg-6
-
-    .. link-button:: calcjobs
-        :type: ref
-        :text: Calculation Jobs
+        :text: Calculation Errors
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
     *"It's the job that's never started as takes longest to finish."* |br|
     *-- Samwise Gamgee*
 
-    For more serious tasks that might take longer to finish, we want a more powerful tool.
-    The ``CalcJob`` serves this purpose.
+    Calculations can fail! Learn how to deal with this.
 
     +++++++++++++
     .. list-table::
@@ -87,20 +67,8 @@ Calculation processes
         * - |time| 20 min
           - Intermediate
 
-    ---
-    :column: col-lg-6
-
-    :link-badge:`https://www.youtube.com/watch?v=dQw4w9WgXcQ, "Quantum ESPRESSO",cls=badge-qe text-white,tooltip=Go to the Quantum ESPRESSO version.`
-
-    ---
-    :column: col-lg-6
-
-    :link-badge:`https://aiida-quantumespresso.readthedocs.io/en/latest/user_guide/get_started/examples/pw_tutorial.html, "Quantum ESPRESSO",cls=badge-qe text-white,tooltip=Go to the Quantum ESPRESSO version.`
-    :link-badge:`https://aiida-vasp.readthedocs.io/en/latest/calculations/vasp.html, "VASP",cls=badge-vasp text-white, tooltip=Go to the VASP version.`
-
 .. toctree::
     :hidden:
 
     basics
-    functions
-    calcjobs
+    errors

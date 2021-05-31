@@ -1,9 +1,9 @@
-Materials Science
-=================
+Workflows
+=========
 
 .. rst-class:: header-text
 
-    In this section you can find modules that explain some of the tools related to materials science, such as structures, pseudopotentials, etc...
+    Running workflows is the bomb, yo!
 
 .. panels::
     :header: header-text
@@ -11,43 +11,23 @@ Materials Science
     :footer: bg-light border-0
 
     ------
-    :column: col-lg-6
+    :column: col-lg-12
 
-    .. link-button:: structure
+    .. link-button:: running
         :type: ref
-        :text: Structures
-        :classes: btn-light text-left stretched-link font-weight-bold
-    ^^^^^^^^
-
-    In this module we'll learn all about how to work with structures in AiiDA.
-
-    +++
-    .. list-table::
-        :widths: 50 50
-        :class: footer-table
-        :header-rows: 0
-
-        * - |time| 15 min
-          - Basic
-
-    ---
-    :column: col-lg-6
-
-    .. link-button:: pseudos
-        :type: ref
-        :text: Pseudopotentials
+        :text: Running your first workflow
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    The basic module on pseudopotentials and how to manage them.
+    Start with running your first workflow.
 
-    +++
+    +++++++++++++
     .. list-table::
         :widths: 50 50
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 15 min
+        * - |time| 30 min
           - Basic
 
 .. panels::
@@ -55,28 +35,54 @@ Materials Science
     :body: bg-light
     :footer: bg-light border-0
 
-    :column: col-lg-6
+    ------
+    :column: col-lg-12
 
-    .. link-button:: kpoints
+    .. link-button:: writing_basics
         :type: ref
-        :text: Kpoints
+        :text: Writing workflows
         :classes: btn-light text-left stretched-link font-weight-bold
-    ^^^^^^^^
+    ^^^^^^^^^^^^
 
-    In this module we'll learn how to define a set of k-points in AiiDA.
+    The basics of writing workflows in AiiDA.
 
-    +++
+    +++++++++++++
     .. list-table::
         :widths: 50 50
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 15 min
+        * - |time| 30 min
           - Basic
+
+.. panels::
+    :header: header-text
+    :body: bg-light
+    :footer: bg-light border-0
+
+    ------
+    :column: col-lg-12
+
+    .. link-button:: errors
+        :type: ref
+        :text: Error Handling
+        :classes: btn-light text-left stretched-link font-weight-bold
+    ^^^^^^^^^^^^
+
+    How to handle errors in AiiDA.
+
+    +++++++++++++
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 30 min
+          - Intermediate
 
 .. toctree::
     :hidden:
 
-    structure
-    pseudos
-    kpoints
+    running
+    writing_basics
+    errors

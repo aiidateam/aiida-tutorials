@@ -12,7 +12,7 @@ Data
     :footer: bg-light border-0
 
     ------
-    :column: col-lg-6
+    :column: col-lg-12
 
     .. link-button:: groups
         :type: ref
@@ -31,8 +31,13 @@ Data
         * - |time| 15 min
           - Basic
 
+.. panels::
+    :header: header-text
+    :body: bg-light
+    :footer: bg-light border-0
+
     ---
-    :column: col-lg-6
+    :column: col-lg-12
 
     .. link-button:: querying
         :type: ref

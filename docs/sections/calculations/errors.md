@@ -1,230 +1,10 @@
-(calculation-calcjobs)=
-# Calculation jobs
+(calculations-errors)=
+# Dealing with errors
 
-In this section we'll be learning how to run external codes with AiiDA through calculation plugins.
-
-We will use the [Quantum ESPRESSO](<https://www.quantum-espresso.org/>) package to launch a simple [density functional theory](<https://en.wikipedia.org/wiki/Density_functional_theory>) calculation of a silicon crystal using the {doi}`PBE exchange-correlation functional <10.1103/PhysRevLett.77.3865>` and check its results.
-In doing so, we will intentionally introduce some bogus input parameters in order to show how to 'manually' debug problems when encountering errors.
+In this section we we will intentionally introduce some bogus input parameters in order to show how to 'manually' debug problems when encountering errors.
 Workflows, which you'll see later in this tutorial, can help you avoid these issues systematically.
 
-Note that besides the [aiida-quantumespresso](<https://github.com/aiidateam/aiida-quantumespresso>) plugin, AiiDA comes with plugins for many other codes, all of which are listed in the [AiiDA plugin registry](<https://aiidateam.github.io/aiida-registry/>).
-
-## Importing data
-
-Before we start running Quantum ESPRESSO calculations ourselves, which is the topic of the next session, we are going to look at an AiiDA database already created by someone else.
-Let's import one from the web:
-
-```{code-block} console
-
-$ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
-
-```
-
-As mentioned previously, AiiDA databases contain not only *results* of calculations but also their inputs and information on how a particular result was obtained.
-This information, the *data provenance*, is stored in the form of a *directed acyclic graph* (DAG).
-In the following, we are going to introduce you to different ways of browsing this graph and will ask you to find out some information regarding the database you just imported.
-
-(provenance-graph)=
-
-## The provenance graph
-
-{numref}`fig-qe-calc-graph` shows a typical example of a Quantum ESPRESSO calculation represented in an AiiDA graph.
-Have a look to the figure and its caption before moving on.
-
-(fig-qe-calc-graph)=
-
-```{figure} include/images/batio3-graph-full.png
-:width: 100%
-
-Graph with all inputs (data, circles; and code, diamond) to the Quantum ESPRESSO calculation (square) that you will create in this module.
-Besides the inputs, the graph also shows the outputs that the engine will create and connect automatically.
-The `RemoteData` node is created during submission and can be thought as a symbolic link to the remote folder in which the calculation runs on the cluster.
-The other nodes are created when the calculation has finished, after retrieval and parsing.
-The node with linkname `retrieved` contains the relevant raw output files stored in the AiiDA repository; all other nodes are added by the parser.
-Additional nodes (symbolized in gray) can be added by the parser: e.g., an output `StructureData` if you performed a relaxation calculation, a `TrajectoryData` for molecular dynamics, etc.
-
-```
-
-{numref}`fig-qe-calc-graph` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to `verdi node graph generate <IDENTIFIER>`, or using the {ref}`graph's python API <aiida:how-to:data:visualise-provenance>`.
-Remember that identifiers in AiiDA can come in several forms:
-
-* "Primary Key" (PK): An integer, e.g. `723`, that identifies your entity within your database (automatically assigned)
-* [Universally Unique Identifier](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)>) (UUID): A string, e.g. `ce81c420-7751-48f6-af8e-eb7c6a30cec3` that identifies your entity globally (automatically assigned)
-* Label: A human-readable string, e.g. `test_qe_calculation` (manually assigned)
-
-Any `verdi` command that expects an identifier will accept a PK, a UUID or a label (although not all entities have a label by default).
-While PKs are often shorter than UUIDs and can be easier to remember, they are only unique within your database.
-**Whenever you intend to share your data with others, use UUIDs to refer to nodes.**
-
-```{note}
-
-For UUIDs, it is sufficient to specify a subset (starting at the beginning) as long as it can already be uniquely resolved.
-For more information on identifiers in `verdi` and AiiDA in general, see the [documentation](<https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html#topics-cli-identifiers>).
-
-```
-
-Let's generate a graph for the calculation node with UUID `ce81c420-7751-48f6-af8e-eb7c6a30cec3`:
-
-```{code-block} console
-
-$ verdi node graph generate ce81c420
-
-```
-
-This command will create the file `<PK>.dot.pdf` that can be viewed with any PDF document viewer.
-See the (**TODO: FIX LINK**) in case you need a quick reminder on how to do so.
-
-For the remainder of this section, we'll use the `verdi` CLI and the `verdi shell` to explore the properties of the `PwCalculation`, as well as its inputs.
-Understanding these data types will come in handy for the section on running calculations.
-We'll also introduce some new CLI commands and shell features that will be useful for the hands-on sessions that follow.
-
-## Processes
-
-Anything that 'runs' in AiiDA, be it calculations or workflows, is considered a `Process`.
-Let's have another look at the *finished* processes in the database by passing the `-S/--process-state` flag:
-
-```{code-block} console
-
-$ verdi process list -S finished
-
-```
-
-This command will list all the processes that have a process state `Finished` and should contain a list of `PwCalculation` processes that you have just imported:
-
-```{code-block} bash
-
-PK    Created    Process label   Process State    Process status
-----  ---------  --------------  ---------------  ----------------
-...
-1178  1653D ago  PwCalculaton    ⏹ Finished [0]
-1953  1653D ago  PwCalculaton    ⏹ Finished [0]
-1734  1653D ago  PwCalculaton    ⏹ Finished [0]
- 336  1653D ago  PwCalculaton    ⏹ Finished [0]
-1056  1653D ago  PwCalculaton    ⏹ Finished [0]
-1369  1653D ago  PwCalculaton    ⏹ Finished [0]
-...
-
-Total results: 177
-
-Info: last time an entry changed state: 21m ago (at 20:03:00 on 2020-07-03)
-
-```
-
-Note that processes can be in any of the following states:
-
-* `Created`
-* `Waiting`
-* `Running`
-* `Finished`
-* `Excepted`
-* `Killed`
-
-The first three states are 'active' states, meaning the process is not done yet, and the last three are 'terminal' states.
-Once a process is in a terminal state, it will never become active again.
-The {ref}`official documentation <aiida:topics:processes:concepts:state>` contains more details on process states.
-
-Remember that in order to list processes of *all* states, you can use the `-a/--all` flag:
-
-```{code-block} console
-
-$ verdi process list -a
-
-```
-
-This command will list all the processes that have *ever* been launched.
-As your database will grow, so will the output of this command.
-To limit the number of results, you can use the `-p/--past-days <NUM>` option, that will only show processes that were created `NUM` days ago.
-For example, this lists all processes launched since yesterday:
-
-```{code-block} console
-
-$ verdi process list -a -p1
-
-```
-
-(aiida-identifiers)=
-
-This will be useful in the coming days to limit the output from `verdi process list`.
-Each row of the output identifies a process with some basic information about its status.
-For a more detailed list of properties, you can use `verdi process show`, but to address any specific process, you need an identifier for it.
-
-Let's revisit the process with the UUID `ce81c420-7751-48f6-af8e-eb7c6a30cec3`, this time using the CLI:
-
-```{code-block} bash
-
-$ verdi process show ce81c420
-
-```
-
-Producing the output:
-
-```{code-block} bash
-
-Property     Value
------------  ------------------------------------
-type         PwCalculation
-state        Finished [0]
-pk           630
-uuid         ce81c420-7751-48f6-af8e-eb7c6a30cec3
-label
-description
-ctime        2014-10-27 17:51:21.781045+00:00
-mtime        2019-05-09 14:10:09.307986+00:00
-computer     [1] daint
-
-Inputs      PK    Type
-----------  ----  -------------
-pseudos
-    Ba      1092  UpfData
-    O       1488  UpfData
-    Ti      1855  UpfData
-code        631   Code
-kpoints     498   KpointsData
-parameters  629   Dict
-settings    500   Dict
-structure   1133  StructureData
-
-Outputs                    PK  Type
------------------------  ----  -------------
-output_kpoints           1455  KpointsData
-output_parameters         789  Dict
-output_structure          788  StructureData
-output_trajectory_array   790  ArrayData
-remote_folder            1811  RemoteData
-retrieved                 787  FolderData
-
-```
-
-Compare the in- and outputs with those visualized in the provenance graph earlier.
-The PKs shown for the inputs and outputs will come in handy to get more information about those nodes, which we'll do for several inputs below.
-
-You can also use the verdi CLI to obtain the content of the raw input file to Quantum ESPRESSO (that was generated by AiiDA) via the command:
-
-```{code-block} console
-
-$ verdi calcjob inputcat ce81c420
-
-```
-
-where you once again provide the identifier of the `PwCalculation` process, which is a *calculation job* (hence the `calcjob` subcommand).
-This will print the input file of the Quantum ESPRESSO calculation, which when run through AiiDA is written to the default input file `aiida.in`.
-To see a list of all the files used to run a calculation (input file, submission script, etc.) instead type:
-
-```{code-block} console
-
-$ verdi calcjob inputls ce81c420
-
-```
-
-Adding the `--color` flag helps distinguishing files from folders.
-Once you know the name of the file you want to visualize, you can call the `verdi calcjob inputcat [PATH]` command specifying the path of the file to show.
-For instance, to see the submission script, you can use:
-
-```{code-block} console
-
-$ verdi calcjob inputcat ce81c420 _aiidasubmit.sh
-
-```
+> TODO: Clean up this notebook. Remove info that is already in the Computations - Basics section and streamline the main message: How to deal with errors.
 
 ## Inputs
 
@@ -320,11 +100,11 @@ While it is also possible to import the `Dict` class directly, it is recommended
 First of all, check that the AiiDA daemon is actually running.
 The AiiDA daemon is a program that
 
-> > * runs continuously in the background
-> * waits for new calculations to be submitted
-> * transfers the inputs of new calculations to your compute resource
-> * checks the status of your calculation on the compute resource, and
-> * retrieves the results from the compute resource
+* runs continuously in the background
+* waits for new calculations to be submitted
+* transfers the inputs of new calculations to your compute resource
+* checks the status of your calculation on the compute resource, and
+* retrieves the results from the compute resource
 
 Check the status of the daemon process by typing in the terminal:
 
@@ -456,8 +236,8 @@ We'll start with the structure, k-points, and pseudopotentials and leave the inp
 
 Use what you learned in the basics section to load the `structure` and `kpoints` inputs for your calculation:
 
-* Use a silicon crystal {ref}`structure<matsci-structure>`.
-* Define a `2x2x2` mesh of {ref}`k-points<matsci-kpoints>`.
+* Use a silicon crystal.
+* Define a `2x2x2` mesh of k-points.
 
 Note: If you just copy and paste code that you executed previously, this may result in duplication of information on your database.
 In fact, you can re-use an existing structure stored in your database [^f1].
@@ -494,7 +274,7 @@ In [6]: !verdi data upf listfamilies
 
 ```
 
-Pick the one you {ref}`configured in the basics hands on<matsci-pseudos>` (the `SSSP` family) and link the correct pseudopotentials to the calculation using the command:
+Pick the one you pseudos (the `SSSP` family) and link the correct pseudopotentials to the calculation using the command:
 
 ```{code-block} ipython
 
@@ -593,10 +373,10 @@ The builder is simply a convenience wrapper providing tab-completion in the shel
 This creates a folder of the form `submit_test/[date]-0000[x]` in the current directory.
 Open a second terminal and:
 
-> > * open the input file `aiida.in` within this folder
-> * compare it to input data nodes you created earlier
-> * verify that the {}`pseudo` folder contains the needed pseudopotentials
-> * have a look at the submission script `_aiidasubmit.sh`
+* open the input file `aiida.in` within this folder
+* compare it to input data nodes you created earlier
+* verify that the {}`pseudo` folder contains the needed pseudopotentials
+* have a look at the submission script `_aiidasubmit.sh`
 
 :::{note}
 
@@ -638,17 +418,16 @@ The difference is that `submit` will hands over the calculation to the daemon ru
 
 All processes in AiiDA (you will soon get to know more) can be "launched" using one of available functions:
 
-> > * run
-> * run_get_node
-> * run_get_pk
-> * submit
+* run
+* run_get_node
+* run_get_pk
+* submit
 
 which are explained in more detail in the [online documentation](<https://aiida.readthedocs.io/projects/aiida-core/en/v1.3.0/topics/processes/usage.html?highlight=run_get_pk#launching-processes>).
 
 :::
 
 The calculation is now stored in the database and was assigned a "database primary key" or `pk` (`calculation.pk`) as well as a UUID (`calculation.uuid`).
-See the {ref}`previous section <2019-aiida-identifiers>` for more details on these identifiers.
 
 To preserve the integrity of the data provenance, AiiDA will prevent you from changing the core content ("attributes") of a stored node.
 There is an "extras" section though, which is writable after storage, to allow you to set additional information, e.g. as a way of labelling nodes and providing information for querying.
@@ -968,9 +747,157 @@ In [4]: calculation.outputs.output_parameters.attributes
 
 While the name of this output dictionary node can be chosen by the plugin, AiiDA provides the "results" shortcut `calculation.res` that plugin developers can use to provide what they consider the result of the calculation (so, in this case, `calculation.res.energy` is just a shortcut to `calculation.outputs.output_parameters.attributes['energy']`).
 
-:::{rubric} Footnotes
+## Extra stuff
 
-:::
+
+## Processes
+
+Anything that 'runs' in AiiDA, be it calculations or workflows, is considered a `Process`.
+Let's have another look at the *finished* processes in the database by passing the `-S/--process-state` flag:
+
+```{code-block} console
+
+$ verdi process list -S finished
+
+```
+
+This command will list all the processes that have a process state `Finished` and should contain a list of `PwCalculation` processes that you have just imported:
+
+```{code-block} bash
+
+PK    Created    Process label   Process State    Process status
+----  ---------  --------------  ---------------  ----------------
+...
+1178  1653D ago  PwCalculaton    ⏹ Finished [0]
+1953  1653D ago  PwCalculaton    ⏹ Finished [0]
+1734  1653D ago  PwCalculaton    ⏹ Finished [0]
+ 336  1653D ago  PwCalculaton    ⏹ Finished [0]
+1056  1653D ago  PwCalculaton    ⏹ Finished [0]
+1369  1653D ago  PwCalculaton    ⏹ Finished [0]
+...
+
+Total results: 177
+
+Info: last time an entry changed state: 21m ago (at 20:03:00 on 2020-07-03)
+
+```
+
+Note that processes can be in any of the following states:
+
+* `Created`
+* `Waiting`
+* `Running`
+* `Finished`
+* `Excepted`
+* `Killed`
+
+The first three states are 'active' states, meaning the process is not done yet, and the last three are 'terminal' states.
+Once a process is in a terminal state, it will never become active again.
+The {ref}`official documentation <aiida:topics:processes:concepts:state>` contains more details on process states.
+
+Remember that in order to list processes of *all* states, you can use the `-a/--all` flag:
+
+```{code-block} console
+
+$ verdi process list -a
+
+```
+
+This command will list all the processes that have *ever* been launched.
+As your database will grow, so will the output of this command.
+To limit the number of results, you can use the `-p/--past-days <NUM>` option, that will only show processes that were created `NUM` days ago.
+For example, this lists all processes launched since yesterday:
+
+```{code-block} console
+
+$ verdi process list -a -p1
+
+```
+
+(aiida-identifiers)=
+
+This will be useful in the coming days to limit the output from `verdi process list`.
+Each row of the output identifies a process with some basic information about its status.
+For a more detailed list of properties, you can use `verdi process show`, but to address any specific process, you need an identifier for it.
+
+Let's revisit the process with the UUID `ce81c420-7751-48f6-af8e-eb7c6a30cec3`, this time using the CLI:
+
+```{code-block} bash
+
+$ verdi process show ce81c420
+
+```
+
+Producing the output:
+
+```{code-block} bash
+
+Property     Value
+-----------  ------------------------------------
+type         PwCalculation
+state        Finished [0]
+pk           630
+uuid         ce81c420-7751-48f6-af8e-eb7c6a30cec3
+label
+description
+ctime        2014-10-27 17:51:21.781045+00:00
+mtime        2019-05-09 14:10:09.307986+00:00
+computer     [1] daint
+
+Inputs      PK    Type
+----------  ----  -------------
+pseudos
+    Ba      1092  UpfData
+    O       1488  UpfData
+    Ti      1855  UpfData
+code        631   Code
+kpoints     498   KpointsData
+parameters  629   Dict
+settings    500   Dict
+structure   1133  StructureData
+
+Outputs                    PK  Type
+-----------------------  ----  -------------
+output_kpoints           1455  KpointsData
+output_parameters         789  Dict
+output_structure          788  StructureData
+output_trajectory_array   790  ArrayData
+remote_folder            1811  RemoteData
+retrieved                 787  FolderData
+
+```
+
+Compare the in- and outputs with those visualized in the provenance graph earlier.
+The PKs shown for the inputs and outputs will come in handy to get more information about those nodes, which we'll do for several inputs below.
+
+You can also use the verdi CLI to obtain the content of the raw input file to Quantum ESPRESSO (that was generated by AiiDA) via the command:
+
+```{code-block} console
+
+$ verdi calcjob inputcat ce81c420
+
+```
+
+where you once again provide the identifier of the `PwCalculation` process, which is a *calculation job* (hence the `calcjob` subcommand).
+This will print the input file of the Quantum ESPRESSO calculation, which when run through AiiDA is written to the default input file `aiida.in`.
+To see a list of all the files used to run a calculation (input file, submission script, etc.) instead type:
+
+```{code-block} console
+
+$ verdi calcjob inputls ce81c420
+
+```
+
+Adding the `--color` flag helps distinguishing files from folders.
+Once you know the name of the file you want to visualize, you can call the `verdi calcjob inputcat [PATH]` command specifying the path of the file to show.
+For instance, to see the submission script, you can use:
+
+```{code-block} console
+
+$ verdi calcjob inputcat ce81c420 _aiidasubmit.sh
+
+```
+
 
 [^f1]: In order to avoid duplication of KpointsData, you would first need to learn how to query the database, therefore we will ignore this issue for now.
 
