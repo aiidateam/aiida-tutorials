@@ -1,8 +1,8 @@
-sphinx
+Sphinx~=3.5.4
 sphinx-book-theme
 sphinx-copybutton
 sphinx-panels
 sphinx-tabs
-myst-nb~=0.13.0a1
+myst-nb==0.13.0a1
 pre-commit
 black
