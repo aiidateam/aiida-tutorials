@@ -44,7 +44,7 @@ In this section, you will learn to:
 :::{note}
 
 To focus on the AiiDA concepts, the initial examples in this hands-on are purposefully kept very simple.
-At the end of the section you can find a more extensive real-world example.
+At the end of the section, you can find a more extensive real-world example.
 
 :::
 
@@ -58,19 +58,19 @@ For example, let us consider that the workflow consists of three calculations in
 2. Run code 2
 3. Run code 3
 
-When we do this by hand, we are actually doing many more steps than described about.
-For example, we usually check the input parameters and the outputs of each steps.
+When we do this by hand, we are actually doing many more steps than described above.
+For example, we usually check the input parameters and the outputs of each step.
 Therefore, a more realistic description of the workflow could look like:
 
-1. Prapare and check input for code 1
+1. Prepare and check the input for code 1
 2. Run code 1
-3. Check output from code 1
+3. Check the output from code 1
 4. Prepare input for code 2
 5. Run code 2
-6. Check output from code 2
+6. Check the output from code 2
 7. Prepare input for code 3
 8. Run code 3
-9. Check output from code 3
+9. Check the output from code 3
 10. Parse and save selected data
 
 Thus, in general, a careful scientist is doing many steps when performing a workflow by hand.
@@ -87,7 +87,7 @@ Currently, there are two ways of implementing a workflow process:
 * {ref}`work functions<topics:workflows:concepts:workfunctions>`
 * {ref}`work chains<topics:workflows:concepts:workchains>`
 
-The main difference between them is that *work functions* are executed by the AiiDA daemons, while each step in a *work chain* generates a process of their own.
+The main difference between them is that *work functions* are executed by the AiiDA daemons, while each step in a *work chain* generates a process of its own.
 Thus, *work functions* should be used for fast workflows that won't keep the AiiDA daemon very busy, otherwise, a *work chain* is in order.
 
 :::{note}
@@ -117,7 +117,7 @@ Moreover, both calculation and work functions can only accept and return data no
 :::{note}
 
 In the above example, we created a workflow just to add then multiply two numbers.
-Please, keep in mind that in real situations instead of a simple addition or multiplication, we would have complex calculations such as a DFT calculation or a data analysis.
+Please, keep in mind that in real situations instead of simple addition or multiplication, we would have complex calculations such as a DFT calculation or a data analysis.
 
 :::
 
@@ -213,14 +213,14 @@ If you had killed the main python process during this time, the workflow would n
 This is not a significant issue when running these simple examples, but when you start running workflows that take longer to complete, this can become a real problem.
 
 In order to overcome this limitation, in AiiDA we have implemented a way to insert checkpoints, where the main code defining a workflow can be stopped (you can even shut down the machine on which AiiDA is running!).
-We call these workflows with checkpoints `work chains` because, as you will see, they basically amount to splitting a work function in a chain of steps.
+We call these workflows with checkpoints `work chains` because, as you will see, they basically amount to splitting a work function into a chain of steps.
 Each step is then run by the daemon, in a way similar to the remote calculations.
 
 When the workflow you want to run is more complex and takes longer to finish, it is better to write a work chain.
 
 #### Constructing our first work chain
 
-Next, we are going to work, step-by-step, on an example of a work chain that takes three integers as inputs, multiplies the first two and then adds the third to obtain the final result.
+Next, we are going to work, step-by-step, on an example of a work chain that takes three integers as inputs, multiplies the first two, and then adds the third to obtain the final result.
 Let get started by creating a file for our work chain (e.g. `multiply_add_workchain.py`), and adding the following piece of code:
 
 ```{code-block} python
@@ -379,7 +379,7 @@ class MultiplyAddWorkChain(WorkChain):
 Firstly, we defined the `multiply()` method in the class scope.
 This step simply involves running the calculation function `multiplication()` that we declared outside of the work chain scope (we also imported the `calcfunction` method from the aiida engine).
 We used the `x` and `y` **inputs** of the work chain, as inputs for the calculation function.
-Note how we refere to the inputs of the work chain, e.g., `self.inputs.x`.
+Note how we refer to the inputs of the work chain, e.g., `self.inputs.x`.
 Remember, `multiply()` should not (and cannot) generate data by itself.
 It has to rely on *calculation functions* like in the example, or on *calculation jobs*, which will be demonstrated later on.
 Then, there are other two instructions in `multiply()`:
@@ -452,7 +452,7 @@ And that is it.
 We finished our very first and simple work chain.
 
 Let's run it!
-In the terminal, navatage to the folder where you have your work chain file.
+In the terminal, navigate to the folder where you have your work chain file.
 Then, open a `verdi shell` session and execute:
 
 
@@ -482,9 +482,9 @@ MultiplyAddWorkChain<1899> Finished [0] [1:add]
     ├── multiplication<1900> Finished [0]
     └── add<1902> Finished [0]
 ```
-And show some details about the inputs and outpus with:
+And show some details about the inputs and outputs with:
 ```{code-block} console
-$ verdi process process show 1899
+$ verdi process show 1899
 Property     Value
 -----------  ------------------------------------
 type         MultiplyAddWorkChain
@@ -514,7 +514,7 @@ CALL      1902  add
 ```
 
 :::{note}
-There are other aways to run/submit your work chain. ADD LINK.
+There are other ways to run/submit your work chain. ADD LINK.
 :::
 
 #### Work chain with Calculation Jobs
@@ -559,7 +559,7 @@ This final step is to gather and pass the results to the outputs of the work cha
 
 Now, it is time to run our work chain.
 In order that the AiiDA daemon knows where to find the work chain, we need to add its directory to the `PYTHONPATH`.
-Navegate until that directory in the terminal and execute (adjusting the path for your python environment):
+Navigate until that directory in the terminal and execute (adjusting the path for your python environment):
 
 ```{code-block} console
 $ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> /home/max/.virtualenvs/aiida/bin/activate
@@ -582,7 +582,7 @@ In [4]: inputs = {'x': Int(1), 'y': Int(2), 'z': Int(3), 'code': add_code}
 In [5]: workchain_node = submit(MultiplyAddWorkChain, **inputs)
 ```
 
-Now, go and check the last processes, the status of the `MultiplyAddWorkChain` and show some details about the inputs and outputs.
+Now, go and check the last processes, the status of the `MultiplyAddWorkChain`, and show some details about the inputs and outputs.
 
 
 #### Checks and validation
@@ -611,7 +611,7 @@ Note that once an exit code is returned during any step in the outline, the work
 To launch a work chain, you can either use the `run` or `submit` functions.
 For either function, you need to provide the class of the work chain as the first argument, followed by the inputs as keyword arguments.
 To make things a little easier, we have added these basic arithmetic functions to {}`aiida-core`, along with a set of entry points, so they can be loaded using a factory.
-Start up the `verdi shell` and load the `MultiplyAddWorkChain` using the `WorkflowFactory`:
+Start the `verdi shell` up and load the `MultiplyAddWorkChain` using the `WorkflowFactory`:
 
 ```{code-block} ipython
 
@@ -675,7 +675,7 @@ Out[6]: <WorkChainNode: uuid: 17fbe11e-b71b-4ffe-a08e-0d5e3b1ae5ed (pk: 2787) (a
 
 ```
 
-Submitting a work chain instead of directly running it not only makes it easier to execute multiple work chains in parallel, but also ensures that the progress of a workchain is not lost when you restart your computer.
+Submitting a work chain instead of directly running it not only makes it easier to execute multiple work chains in parallel but also ensures that the progress of a work chain is not lost when you restart your computer.
 
 :::{important}
 
@@ -707,7 +707,7 @@ Docstring:   {"name": "x", "required": "True", "valid_type": "<class 'aiida.orm.
 
 ```
 
-Here you can see that the `x` input is required, needs to be of the `Int` type and is stored in the database (`"non_db": "False"`).
+Here you can see that the `x` input is required, needs to be of the `Int` type, and is stored in the database (`"non_db": "False"`).
 
 Using the builder, the inputs of the `WorkChain` can be provided one by one:
 
@@ -738,15 +738,15 @@ For more detail on the process builder, see the {ref}`corresponding topics secti
 ## Equation of state
 
 Now that we've discussed the concepts of workflows in AiiDA using some basic examples, let's move on to something more interesting: calculating the equation of state of silicon.
-An equation of state consists in calculating the total energy (E) as a function of the unit cell volume (V).
+An equation of state consists of calculating the total energy (E) as a function of the unit cell volume (V).
 The minimal energy is reached at the equilibrium volume.
 Equivalently, the equilibrium is defined by a vanishing pressure: {math}`p=-dE/dV`.
 In the vicinity of the minimum, the functional form of the equation of state can be approximated by a parabola.
-Such an approximation greatly simplifies the calculation of the bulk modulus, that is proportional to the second derivative of the energy (a more advanced treatment requires fitting the curve with, e.g., the Birch–Murnaghan expression).
+Such an approximation greatly simplifies the calculation of the bulk modulus, which is proportional to the second derivative of the energy (a more advanced treatment requires fitting the curve with, e.g., the Birch–Murnaghan expression).
 
 First, we'll need the structure of bulk silicon.
 Instead of constructing the structure manually, we'll load it from the Crystallography Open Database (COD).
-Similar to data, calculation and worfklows, a database importer class can be loaded using the corresponding factory and entry point:
+Similar to data, calculation, and worfklows, a database importer class can be loaded using the corresponding factory and entry point:
 
 ```{code-block} ipython
 
