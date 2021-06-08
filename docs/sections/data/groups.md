@@ -1,6 +1,6 @@
 (data-groups)=
 
-# Working with data and querying your results
+# Organising your data
 
 In this section of the tutorial we will focus on how to organise and explore the data in an AiiDA database.
 As in (**TODO FIX LINK**), we will be using the previously created database entries for this tutorial.
@@ -42,23 +42,12 @@ PK    Label            Type string    User
 
 The default table shows us four pieces of information:
 
-PK
-
-: The Primary Key of the group
-
-Label
-
-: The label by which the group has been named
-
-Type string
-
-: This tells us what "sub-class" of group this is.
+* **PK**: The Primary Key of the group
+* **Label**: The label by which the group can be identified
+* **Type string**: This tells us what "sub-class" of group this is.
   Type strings can be used to class certain types of data, for example here we have general groups (`core`), groups containing pseudopotentials (`core.upf`), and an auto-generated group containing the nodes we imported from the archive (`core.import`).
   For advanced use, you can create your own group subclass plugins, with specialised methods.
-
-User
-
-: The email of the user that created this group.
+* **User**: The email of the user that created this group.
 
 :::{tip}
 

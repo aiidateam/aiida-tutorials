@@ -16,7 +16,7 @@ Data
 
     .. link-button:: groups
         :type: ref
-        :text: Groups
+        :text: Organising your data
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^
 
@@ -28,7 +28,7 @@ Data
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 15 min
+        * - |time| 20 min
           - Basic
 
 .. panels::
@@ -41,11 +41,11 @@ Data
 
     .. link-button:: querying
         :type: ref
-        :text: Querying for data
+        :text: Querying
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    Here you can learn all about how to look - or query - for your data using the `QueryBuilder`.
+    Here you can learn all about how to look - or query - for your data using the ``QueryBuilder``.
 
     +++++++++++++
     .. list-table::
@@ -53,7 +53,7 @@ Data
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 20 min
+        * - |time| 40 min
           - Intermediate
 
 .. toctree::
