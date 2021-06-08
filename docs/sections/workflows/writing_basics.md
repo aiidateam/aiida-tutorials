@@ -48,74 +48,38 @@ At the end of the section you can find a more extensive real-world example.
 
 :::
 
-(workflows-writing-basics-process-function)=
-
-## Process functions: a way to generalize provenance in AiiDA
-
-Now that you are familiar with AiiDA, you know that the way to connect two data nodes is through a calculation.
-In order to 'wrap' python functions and automate the generation of the needed links, in AiiDA we provide you with what we call 'process functions'.
-There are two variants of process functions:
-
-* calculation functions
-* work functions
-
-These operate mostly the same, but they should be used for different purposes, which will become clear later.
-You've already seen calculation functions in the {ref}`basic hands-on<fundamentals-basics>`, below is a quick refresher on the topic.
-
-A normal function can be converted to a calculation function by using a [Python decorator](<https://docs.python.org/3/glossary.html#term-decorator>) that takes care of storing the execution as a calculation and adding the links between the input and output data nodes.
-Let's say you want to multiply two `Int` data nodes.
-The following Python function:
-
-```{code-block} python
-
-def multiply(x, y):
-    return x * y
-
-```
-
-will give the desired result when applied to two `Int` nodes, but the calculation will not be stored in the provenance graph.
-However, we can use the `@calcfunction` decorator [^f1] provided by AiiDA to automatically make it part of the provenance graph.
-Start up the AiiDA IPython shell again using `verdi shell` and execute the following code snippet:
-
-```{code-block} ipython
-
-In [1]: from aiida.engine import calcfunction
-   ...:
-   ...: @calcfunction
-   ...: def multiply(x, y):
-   ...:     return x * y
-
-```
-
-Besides adding the `@calcfunction` decorator, it is also necessary to make sure that the process function inputs and outputs are `Data` nodes, so that they can be stored in the database.
-Try executing the `multiply` calculation function with regular integers:
-
-```{code-block} ipython
-
-In [2]: multiply(3, 4)
-
-```
-
-This will return a `ValueError`, as the inputs of the calculation function must be subclasses of the `Data` class.
-If we pass the `multiply` function two `Int` nodes instead:
-
-```{code-block} ipython
-
-In [3]: multiply(Int(3), Int(4))
-Out[3]: <Int: uuid: 627ae988-5bf5-46e9-993c-39e7c195a58b (pk: 2754) value: 12>
-
-```
-
-In this case, the `multiply` calculation function *creates* a new `Int` node, and automatically stores it in the database.
-
-:::{note}
-
-For the simple `multiply` example, the output is guaranteed to be an `Int` node if the inputs are `Int` nodes.
-However, for more complex calculation functions you need to make sure that the function returns a `Data` node.
-
-:::
-
 ## Workflows
+
+Imagine that we often perform a complex procedure (workflow) that involves many steps.
+The workflow is always the same but the inputs may change.
+For example, let us consider that the workflow consists of three calculations in three different codes with the next code using the output of the previous code:
+
+1. Run code 1
+2. Run code 2
+3. Run code 3
+
+When we do this by hand, we are actually doing many more steps than described about.
+For example, we usually check the input parameters and the outputs of each steps.
+Therefore, a more realistic description of the workflow could look like:
+
+1. Prapare and check input for code 1
+2. Run code 1
+3. Check output from code 1
+4. Prepare input for code 2
+5. Run code 2
+6. Check output from code 2
+7. Prepare input for code 3
+8. Run code 3
+9. Check output from code 3
+10. Parse and save selected data
+
+Thus, in general, a careful scientist is doing many steps when performing a workflow by hand.
+Therefore, to automatize this process, we need to write a workflow that tries and mimics these various steps that we would do manually.
+Notice that instead of running a code, some steps could consist of workflows themselves.
+
+Next, we will teach you bit-by-bit how to write workflows in AiiDA.
+
+### Workflow in AiiDA
 
 A workflow in AiiDA is a {ref}`process <topics:processes:concepts>` that calls other workflows and calculations and optionally *returns* data and as such can encode the logic of a typical scientific workflow.
 Currently, there are two ways of implementing a workflow process:
@@ -123,13 +87,16 @@ Currently, there are two ways of implementing a workflow process:
 * {ref}`work functions<topics:workflows:concepts:workfunctions>`
 * {ref}`work chains<topics:workflows:concepts:workchains>`
 
-Here we present a brief introduction on how to write both workflow types.
+The main difference between them is that *work functions* are executed by the AiiDA daemons, while each step in a *work chain* generates a process of their own.
+Thus, *work functions* should be used for fast workflows that won't keep the AiiDA daemon very busy, otherwise, a *work chain* is in order.
 
 :::{note}
 
 For more details on the concept of a workflow, and the difference between a work function and a work chain, please see the corresponding {ref}`topics section<topics:workflows:concepts>` in the AiiDA documentation.
 
 :::
+
+Here we present a brief introduction on how to write both workflow types.
 
 ### Work function
 
@@ -147,13 +114,25 @@ It is important to reiterate here that the {func}`~aiida.engine.processes.functi
 The `add()` and `multiply()` calculation functions create the `Int` data nodes, all the work function does is *return* the results of the `multiply()` calculation function.
 Moreover, both calculation and work functions can only accept and return data nodes, i.e. instances of classes that subclass the {class}`~aiida.orm.nodes.data.data.Data` class.
 
-Copy the code snippet above and execute it in the `verdi shell`, or put it into a Python script (e.g. {download}`add_multiply.py <include/code/add_multiply.py>`) and import the add_multiply work function in the `verdi shell`:
+:::{note}
+
+In the above example, we created a workflow just to add then multiply two numbers.
+Please, keep in mind that in real situations instead of a simple addition or multiplication, we would have complex calculations such as a DFT calculation or a data analysis.
+
+:::
+
+
+Copy the code snippet above and put it into a Python script (e.g. {download}`add_multiply.py <include/code/add_multiply.py>`).
+In the terminal, go inside the folder where you stored the script (`cd \MY\PATH`).
+Next, import the add_multiply work function in the `verdi shell`:
 
 ```{code-block} ipython
 
 In [1]: from add_multiply import add_multiply
 
 ```
+
+COPYING ISN'T WORKING PROPERLY
 
 Once again, running a work function is as simple as calling a typical Python function: simply call it with the required input arguments:
 
@@ -175,6 +154,58 @@ See the {ref}`corresponding topics section for more details <topics:processes:us
 
 :::
 
+
+Go ahead and check the AiiDA list of processes:
+
+```{code-block} console
+$ verdi process list -a -p 1
+  PK  Created    Process label    Process State    Process status
+----  ---------  ---------------  ---------------  ----------------
+...
+1859  1m ago     add_multiply     ⏹ Finished [0]
+1860  1m ago     add              ⏹ Finished [0]
+1862  1m ago     multiply         ⏹ Finished [0]
+```
+
+Grep the PK of the work function "add_multiply" and check its status with `verdi process status <PK>` (in the above example, the PK is 1859):
+```{code-block}
+add_multiply<1859> Finished [0]
+    ├── add<1860> Finished [0]
+    └── multiply<1862> Finished [0]
+```
+
+Finally, also check details of the inputs and outputs of the work function:
+```{code-block} console
+$ verdi process show <PK>
+Property     Value
+-----------  ------------------------------------
+type         add_multiply
+state        Finished [0]
+pk           1859
+uuid         c65df725-6065-40ec-8343-6ee9ef68ca9a
+label        add_multiply
+description
+ctime        2021-06-07 14:48:06.342948+00:00
+mtime        2021-06-07 14:48:06.835870+00:00
+
+Inputs      PK  Type
+--------  ----  ------
+x         1856  Int
+y         1857  Int
+z         1858  Int
+
+Outputs      PK  Type
+---------  ----  ------
+result     1863  Int
+
+Called      PK  Type
+--------  ----  --------
+CALL      1860  add
+CALL      1862  multiply
+```
+
+Notice that each input to the work function `add_multiply` is stored as nodes, and similarly the output.
+
 ### Work chain
 
 The simple work function that we ran in the previous section was launched by a python script that needs to be running for the whole time of the execution.
@@ -182,50 +213,116 @@ If you had killed the main python process during this time, the workflow would n
 This is not a significant issue when running these simple examples, but when you start running workflows that take longer to complete, this can become a real problem.
 
 In order to overcome this limitation, in AiiDA we have implemented a way to insert checkpoints, where the main code defining a workflow can be stopped (you can even shut down the machine on which AiiDA is running!).
-We call these work functions with checkpoints 'work chains' because, as you will see, they basically amount to splitting a work function in a chain of steps.
+We call these workflows with checkpoints `work chains` because, as you will see, they basically amount to splitting a work function in a chain of steps.
 Each step is then run by the daemon, in a way similar to the remote calculations.
 
 When the workflow you want to run is more complex and takes longer to finish, it is better to write a work chain.
-Writing a work chain in AiiDA requires creating a class that inherits from the {class}`~aiida.engine.processes.workchains.workchain.WorkChain` class.
-Below is an example of a work chain that takes three integers as inputs, multiplies the first two and then adds the third to obtain the final result:
 
-```{literalinclude} include/code/multiply_add.py
-:language: python
-:start-after: start-marker
+#### Constructing our first work chain
 
+Next, we are going to work, step-by-step, on an example of a work chain that takes three integers as inputs, multiplies the first two and then adds the third to obtain the final result.
+Let get started by creating a file for our work chain (e.g. `multiply_add_workchain.py`), and adding the following piece of code:
+
+```{code-block} python
+from aiida.orm import Int
+from aiida.engine import WorkChain
+
+class MultiplyAddWorkChain(WorkChain):
+    """WorkChain to multiply two numbers and add a third, for testing and demonstration purposes."""
+
+    @classmethod
+    def define(cls, spec):
+        """Specify inputs and outputs."""
+        super().define(spec)
+
+        spec.input("x", valid_type=Int)
+        spec.input("y", valid_type=Int)
+        spec.input("z", valid_type=Int)
+
+        ...
 ```
 
+Writing a work chain in AiiDA requires creating a class that inherits from the {class}`~aiida.engine.processes.workchains.workchain.WorkChain` class, as shown above.
 You can give the work chain any valid Python class name, but the convention is to have it end in {class}`~aiida.engine.processes.workchains.workchain.WorkChain` so that it is always immediately clear what it references.
-Let's go over the methods of the `MultiplyAddWorkChain` one by one:
-
-(workflows-writing-basics-define)=
-
-```{literalinclude} include/code/multiply_add.py
-:language: python
-:pyobject: MultiplyAddWorkChain.define
-:dedent: 4
-
-```
+Hence the chosen name `MultiplyAddWorkChain`.
 
 The most important method to implement for every work chain is the `define()` method.
-This class method must always start by calling the `define()` method of its parent class.
-Next, the `define()` method should be used to define the specifications of the work chain, which are contained in the work chain `spec`:
+This class method must always start by calling the `define()` method of its parent class (the `super()` function referes to the parent class).
+The `define()` method should be used to define the specifications of the work chain, which are contained in the work chain `spec`:
 
 * the **inputs**, specified using the `spec.input()` method.
   The first argument of the `input()` method is a string that specifies the label of the input, e.g. `'x'`.
   The `valid_type` keyword argument allows you to specify the required node type of the input.
   Other keyword arguments allow the developer to set a default for the input, or indicate that an input should not be stored in the database, see {ref}`the process topics section <topics:processes:usage:spec>` for more details.
-* the **outline** or logic of the workflow, specified using the `spec.outline()` method.
+
+:::{note}
+
+All inputs and outputs of a work chain must be of AiiDA data types because only then they can be stored as Nodes in the AiiDA database.
+
+:::
+
+Next, let us add an outline to our work chain, i.e., a sequence of steps and the logic of the work chain (please modify your script along):
+
+```{code-block} python
+from aiida.orm import Int
+from aiida.engine import WorkChain
+
+class MultiplyAddWorkChain(WorkChain):
+    """WorkChain to multiply two numbers and add a third, for testing and demonstration purposes."""
+
+    @classmethod
+    def define(cls, spec):
+        """Specify inputs and outputs."""
+        super().define(spec)
+
+        spec.input("x", valid_type=Int)
+        spec.input("y", valid_type=Int)
+        spec.input("z", valid_type=Int)
+
+        spec.outline(
+            cls.multiply,
+            cls.add
+        )
+
+        ...
+```
+
+* the **outline** is specified using the `spec.outline()` method.
   The outline of the workflow is constructed from the methods of the {class}`~aiida.engine.processes.workchains.workchain.WorkChain` class.
   For the `MultiplyAddWorkChain`, the outline is a simple linear sequence of steps, but it's possible to include actual logic, directly in the outline, in order to define more complex workflows as well.
   See the {ref}`work chain outline section <topics:workflows:usage:workchains:define_outline>` for more details.
+
+Similarly to the inputs, we also need to declare the outputs:
+
+```{code-block} python
+from aiida.orm import Int
+from aiida.engine import WorkChain
+
+class MultiplyAddWorkChain(WorkChain):
+    """WorkChain to multiply two numbers and add a third, for testing and demonstration purposes."""
+
+    @classmethod
+    def define(cls, spec):
+        """Specify inputs and outputs."""
+        super().define(spec)
+
+        spec.input("x", valid_type=Int)
+        spec.input("y", valid_type=Int)
+        spec.input("z", valid_type=Int)
+
+        spec.outline(
+            cls.multiply,
+            cls.add
+        )
+
+        spec.output("product", valid_type=Int)
+        spec.output("final_result", valid_type=Int)
+
+    ...
+```
+
 * the **outputs**, specified using the `spec.output()` method.
-  This method is very similar in its usage to the `input()` method.
-* the **exit codes** of the work chain, specified using the `spec.exit_code()` method.
-  Exit codes are used to clearly communicate known failure modes of the work chain to the user.
-  The first and second arguments define the `exit_status` of the work chain in case of failure (`400`) and the string that the developer can use to reference the exit code (`ERROR_NEGATIVE_NUMBER`).
-  A descriptive exit message can be provided using the `message` keyword argument.
-  For the `MultiplyAddWorkChain`, we demand that the final result is not a negative number, which is checked in the `validate_result` step of the outline.
+  This method is very similar in its usage to the `input()` method, and obviously, you can have many outputs.
 
 :::{note}
 
@@ -233,45 +330,269 @@ For more information on the `define()` method and the process spec, see the {ref
 
 :::
 
-The `multiply` method is the first step in the outline of the `MultiplyAddWorkChain` work chain.
+With that, we finished the `define()` method.
+Now, we should construct the instructions for each step of the outline.
+Let's define the first step:
 
-```{literalinclude} include/code/multiply_add.py
-:language: python
-:pyobject: MultiplyAddWorkChain.multiply
-:dedent: 4
+```{code-block} python
+from aiida.orm import Int
+from aiida.engine import WorkChain, calcfunction
 
+@calcfunction
+def multiplication(x, y):
+    return x * y
+
+class MultiplyAddWorkChain(WorkChain):
+    """WorkChain to multiply two numbers and add a third, for testing and demonstration purposes."""
+
+    @classmethod
+    def define(cls, spec):
+        """Specify inputs and outputs."""
+        super().define(spec)
+
+        spec.input("x", valid_type=Int)
+        spec.input("y", valid_type=Int)
+        spec.input("z", valid_type=Int)
+
+        spec.outline(
+            cls.multiply,
+            cls.add
+        )
+
+        spec.output("product", valid_type=Int)
+        spec.output("final_result", valid_type=Int)
+
+    def multiply(self):
+        """Multiply two integers."""
+
+        product = multiplication(self.inputs.x, self.inputs.y)
+
+        # Passing to context to be used by other functions
+        self.ctx.product = product
+
+        # Declaring one of the outputs
+        self.out("product", product)
+
+    ...
 ```
 
-This step simply involves running the calculation function `multiply()`, on the `x` and `y` **inputs** of the work chain.
-To store the result of this function and use it in the next step of the outline, it is added to the *context* of the work chain using `self.ctx`.
+Firstly, we defined the `multiply()` method in the class scope.
+This step simply involves running the calculation function `multiplication()` that we declared outside of the work chain scope (we also imported the `calcfunction` method from the aiida engine).
+We used the `x` and `y` **inputs** of the work chain, as inputs for the calculation function.
+Note how we refere to the inputs of the work chain, e.g., `self.inputs.x`.
+Remember, `multiply()` should not (and cannot) generate data by itself.
+It has to rely on *calculation functions* like in the example, or on *calculation jobs*, which will be demonstrated later on.
+Then, there are other two instructions in `multiply()`:
+the first stores the `product` into the *context* of the work chain using `self.ctx` such that it can be used in the next step of the outline; and the second declares one of the outputs.
 
-```{literalinclude} include/code/multiply_add.py
+When we use the `self.out()`, the first argument (`'product'`) specifies the label of the output, which corresponds to the label provided to the spec in the `define()` method.
+The second argument is the result of the calc function.
+Note that we can only output Nodes, and `product` is one because it is the output of the calcfunction `multiplication`.
+
+The next step is to declare the `add()` method, which corresponds to the second step in the outline:
+
+```{code-block} python
+from aiida.orm import Int
+from aiida.engine import WorkChain, calcfunction
+
+@calcfunction
+def multiplication(x, y):
+    return x * y
+
+@calcfunction
+def add(x, y):
+    return x + y
+
+
+class MultiplyAddWorkChain(WorkChain):
+    """WorkChain to multiply two numbers and add a third, for testing and demonstration purposes."""
+
+    @classmethod
+    def define(cls, spec):
+        """Specify inputs and outputs."""
+        super().define(spec)
+
+        spec.input("x", valid_type=Int)
+        spec.input("y", valid_type=Int)
+        spec.input("z", valid_type=Int)
+
+        spec.outline(
+            cls.multiply,
+            cls.add
+        )
+
+        spec.output("product", valid_type=Int)
+        spec.output("final_result", valid_type=Int)
+
+    def multiply(self):
+        """Multiply two integers."""
+
+        product = multiplication(self.inputs.x, self.inputs.y)
+
+        # Passing to context to be used by other functions
+        self.ctx.product = product
+
+        # Declaring one of the outputs
+        self.out("product", product)
+
+
+    def add(self):
+        """Add two integers."""
+
+        # Call `add` using a variable from the context and one of the inputs
+        result = add( self.ctx.product, self.inputs.z )
+
+        # Parsing the output
+        self.out("final_result", result)
+```
+
+In `add()`, we called the `addition()` calculation function (declared outside of the class) using a variable from the context and one of the inputs.
+Then, we declared the last output of the work chain.
+And that is it.
+We finished our very first and simple work chain.
+
+Let's run it!
+In the terminal, navatage to the folder where you have your work chain file.
+Then, open a `verdi shell` session and execute:
+
+
+```{code-block} ipython
+In [1]: from aiida.engine import run
+In [2]: from multiply_add_workchain import MultiplyAddWorkChain
+In [3]: result = run(MultiplyAddWorkChain, Int(2), Int(3), Int(5) )
+In [4]: result
+Out[2]:
+{'product': <Int: uuid: 9c5c29de-6176-41fe-a051-672a5348e631 (pk: 1909) value: 6>,
+ 'final_result': <Int: uuid: 3dbebeb3-7ed4-4331-976c-94099a305622 (pk: 1911) value: 11>}
+```
+Check the list with last processes:
+
+```{code-block} console
+$ verdi process list -a -p 1
+...
+1899  7s ago     MultiplyAddWorkChain  ⏹ Finished [0]
+1900  7s ago     multiplication        ⏹ Finished [0]
+1902  7s ago     add                   ⏹ Finished [0]
+
+```
+Also check the status of the process that corresponds to the work chain `MultiplyAddWorkChain`:
+```{code-block} console
+$ verdi process process status 1899
+MultiplyAddWorkChain<1899> Finished [0] [1:add]
+    ├── multiplication<1900> Finished [0]
+    └── add<1902> Finished [0]
+```
+And show some details about the inputs and outpus with:
+```{code-block} console
+$ verdi process process show 1899
+Property     Value
+-----------  ------------------------------------
+type         MultiplyAddWorkChain
+state        Finished [0]
+pk           1899
+uuid         d15bff43-1e03-4e21-adc3-6065e6bd205f
+label
+description
+ctime        2021-06-08 13:37:12.256669+00:00
+mtime        2021-06-08 13:37:13.260633+00:00
+
+Inputs      PK  Type
+--------  ----  ------
+x         1896  Int
+y         1897  Int
+z         1898  Int
+
+Outputs         PK  Type
+------------  ----  ------
+final_result  1903  Int
+product       1901  Int
+
+Called      PK  Type
+--------  ----  --------------
+CALL      1900  multiplication
+CALL      1902  add
+```
+
+:::{note}
+There are other aways to run/submit your work chain. ADD LINK.
+:::
+
+#### Work chain with Calculation Jobs
+
+Here, we demonstrate how to include calculation jobs in our work chain.
+Calculation jobs represent external codes in AiiDA.
+We are going to use the example in Section {ref}`Constructing our first work chain<Constructing our first work chain>` and replace the addition calculation function:
+
+```{literalinclude} include/code/new_scripts/multiply_add_workchain_calcjob.py
+:language: python
+```
+
+Let us break down what we did.
+First, we imported the {class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob` that we plan on using with the help of the `CalculationFactory`:
+
+```{literalinclude} include/code/new_scripts/multiply_add_workchain_calcjob.py
+:language: python
+:lines: 5
+```
+Then, we declared the `add()` method, which is the second step in the outline of the work chain.
+Here, instead of a calculation function, we are submitting the {class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob`  `ArithmeticAddCalculation`:
+
+```{literalinclude} include/code/new_scripts/multiply_add_workchain_calcjob.py
 :language: python
 :pyobject: MultiplyAddWorkChain.add
 :dedent: 4
-
 ```
 
-The `add()` method is the second step in the outline of the work chain.
-As this step uses the `ArithmeticAddCalculation` calculation job, we start by setting up the inputs for this {class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob` in a dictionary.
-Next, when submitting this calculation job to the daemon, it is important to use the submit method from the work chain instance via `self.submit()`.
+Next, when submitting this calculation job to the daemon, it is **essential** to use the submit method from the work chain instance via `self.submit()`.
 Since the result of the addition is only available once the calculation job is finished, the `submit()` method returns the {class}`~aiida.orm.nodes.process.calculation.calcjob.CalcJobNode` of the *future* `ArithmeticAddCalculation` process.
-To tell the work chain to wait for this process to finish before continuing the workflow, we return the `ToContext` class, where we have passed a dictionary to specify that the future calculation job node should be assigned to the `'addition'` context key.
+To tell the work chain to wait for this process to finish before continuing the workflow, we return the `ToContext` class, where we have passed a dictionary to specify that the future calculation job node `calc_job_node` should be assigned to the `'addition'` context key.
 
-:::{warning}
+We added a new step in the outline:
 
-Never use the global `submit()` function to submit calculations to the daemon within a {class}`~aiida.engine.processes.workchains.workchain.WorkChain`.
-Doing so will raise an exception during runtime.
-See the {ref}`topics section on work chains<topics:workflows:usage:workchains:submitting_sub_processes>` for more details.
+```{literalinclude} include/code/new_scripts/multiply_add_workchain_calcjob.py
+:language: python
+:pyobject: MultiplyAddWorkChain.gather_results
+:dedent: 4
+```
 
-:::
+This final step is to gather and pass the results to the outputs of the work chain using the `self.out()` method.
 
-:::{note}
+Now, it is time to run our work chain.
+In order that the AiiDA daemon knows where to find the work chain, we need to add its directory to the `PYTHONPATH`.
+Navegate until that directory in the terminal and execute (adjusting the path for your python environment):
 
-Instead of passing a dictionary, you can also initialize a `ToContext` instance by passing the future process as a keyword argument, e.g. `ToContext(addition=calcjob_node)`.
-More information on the `ToContext` class can be found in {ref}`the topics section on submitting sub processes<topics:workflows:usage:workchains:submitting_sub_processes>`.
+```{code-block} console
+$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> /home/max/.virtualenvs/aiida/bin/activate
+$ verdi daemon restart --reset
+```
 
-:::
+Setup the computer and code if needed:
+
+```{code-block} console
+$ verdi computer setup --config computer.yml
+$ verdi computer configure local localhost
+$ verdi code setup --config code_add.yml
+```
+In the `verdi shell`, run:
+```{code-block} console
+In [1]: from aiida.engine import submit
+In [2]: from multiply_add_workchain_calcjob import MultiplyAddWorkChain
+In [3]: add_code = load_code(label='add@localhost')
+In [4]: inputs = {'x': Int(1), 'y': Int(2), 'z': Int(3), 'code': add_code}
+In [5]: workchain_node = submit(MultiplyAddWorkChain, **inputs)
+```
+
+Now, go and check the last processes, the status of the `MultiplyAddWorkChain` and show some details about the inputs and outputs.
+
+
+#### Checks and validation
+
+
+* the **exit codes** of the work chain, specified using the `spec.exit_code()` method.
+  Exit codes are used to clearly communicate known failure modes of the work chain to the user.
+  The first and second arguments define the `exit_status` of the work chain in case of failure (`400`) and the string that the developer can use to reference the exit code (`ERROR_NEGATIVE_NUMBER`).
+  A descriptive exit message can be provided using the `message` keyword argument.
+  For the `MultiplyAddWorkChain`, we demand that the final result is not a negative number, which is checked in the `validate_result` step of the outline.
 
 ```{literalinclude} include/code/multiply_add.py
 :language: python
@@ -284,17 +605,6 @@ Once the `ArithmeticAddCalculation` calculation job is finished, the next step i
 After the `addition` node has been extracted from the context, we take the `sum` node from the `ArithmeticAddCalculation` outputs and store it in the `result` variable.
 In case the value of this `Int` node is negative, the `ERROR_NEGATIVE_NUMBER` exit code - defined in the `define()` method - is returned.
 Note that once an exit code is returned during any step in the outline, the work chain will be terminated and no further steps will be executed.
-
-```{literalinclude} include/code/multiply_add.py
-:language: python
-:pyobject: MultiplyAddWorkChain.result
-:dedent: 4
-
-```
-
-The final step in the outline is to pass the result to the outputs of the work chain using the `self.out()` method.
-The first argument (`'result'`) specifies the label of the output, which corresponds to the label provided to the spec in the `define()` method.
-The second argument is the result of the work chain, extracted from the `Int` node stored in the context under the `'addition'` key.
 
 ### Launching a work chain
 
