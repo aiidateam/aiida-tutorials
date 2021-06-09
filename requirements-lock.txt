@@ -74,7 +74,7 @@ pyrsistent==0.17.3        # via jsonschema
 python-dateutil==2.8.1    # via jupyter-client
 python-slugify==1.2.6     # via transifex-client
 pytz==2020.4              # via babel
-pyyaml==5.3.1             # via aspy.yaml, jupytext, myst-nb, myst-parser, pre-commit
+pyyaml==5.4             # via aspy.yaml, jupytext, myst-nb, myst-parser, pre-commit
 pyzmq==20.0.0             # via jupyter-client, notebook
 requests==2.25.0          # via nbdime, sphinx, transifex-client
 send2trash==1.5.0         # via notebook
