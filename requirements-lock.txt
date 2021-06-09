@@ -67,7 +67,7 @@ prometheus-client==0.9.0  # via notebook
 prompt-toolkit==1.0.18    # via ipython
 ptyprocess==0.6.0         # via pexpect, terminado
 pycparser==2.20           # via cffi
-pygments==2.5.2           # via ipython, nbconvert, nbdime, sphinx
+pygments==2.7.4           # via ipython, nbconvert, nbdime, sphinx
 pylint==2.4.4             # via -r requirements.txt
 pyparsing==2.4.7          # via packaging
 pyrsistent==0.17.3        # via jsonschema
