@@ -67,8 +67,34 @@ Calculation processes
         * - |time| 20 min
           - Intermediate
 
+.. panels::
+    :header: header-text
+    :body: bg-light
+    :footer: bg-light border-0
+
+    ------
+    :column: col-lg-12
+
+    .. link-button:: workflows
+        :type: ref
+        :text: Running your first workflow
+        :classes: btn-light text-left stretched-link font-weight-bold
+    ^^^^^^^^^^^^
+
+    Start with running your first workflow.
+
+    +++++++++++++
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 30 min
+          - Basic
+
 .. toctree::
     :hidden:
 
     basics
     errors
+    workflows
