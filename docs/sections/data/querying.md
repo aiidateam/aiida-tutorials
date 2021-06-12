@@ -438,7 +438,7 @@ Image(filename='query1.png')
 
 The `with_incoming` keyword is only one of many potential relationships that exist between the various `AiiDA` nodes and that are implemented in the `QueryBuilder`.
 The table below gives an overview of the implemented relationships, which nodes they are defined for and what relation it implicates.
-The full documentation can be found [on this page of the AiiDA documentation](https://aiida-core.readthedocs.io/en/latest/querying/querybuilder/append.html#joining-entities).
+The full list of relations can be found {ref}`on this page of the AiiDA documentation<aiida:topics:database:advancedquery:tables:relationships>`.
 
 +++
 
