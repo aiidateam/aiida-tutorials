@@ -224,7 +224,7 @@ First, we will write a very simple work chain, from there, we will modify it int
 Our first mission is to write a work chain that receives a single input and passes it as the output.
 Let's get started by creating a file for our work chain (e.g. `my_first_workchain.py`), and adding the following piece of code:
 
-```{literalinclude} include/code/new_scripts/add_workchain_1_output_input.py
+```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
 :language: python
 :lines: 1-14
 
@@ -236,7 +236,7 @@ Hence the chosen name is `OutputInputWorkChain`.
 
 The most important method to implement for every work chain is the `define()` method.
 
-```{literalinclude} include/code/new_scripts/add_workchain_1_output_input.py
+```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
 :language: python
 :pyobject: OutputInputWorkChain.define
 :dedent: 4
@@ -277,7 +277,7 @@ Of course, we still have to instruct the work chain what to actually do for each
 This is done by adding them as methods to the work chain class.
 Let's do this for our single step, i.e. `result`:
 
-```{literalinclude} include/code/new_scripts/add_workchain_1_output_input.py
+```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
 :language: python
 
 ```
@@ -344,15 +344,33 @@ There are other ways to run/submit your work chain. ADD LINK.
 
 #### How not to create data
 
+```{literalinclude} include/code/new_scripts/my_first_workchain_2_wrong_add.py
+:language: python
+```
+
 #### Creating data with calcfunction
+
+```{literalinclude} include/code/new_scripts/my_first_workchain_3_add_calcfuc.py
+:language: python
+```
 
 #### Context
 
+```{literalinclude} include/code/new_scripts/my_first_workchain_4_pass_context.py
+:language: python
+```
+
 #### Another calcfunction
+
+```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+:language: python
+```
 
 #### More outputs
 
-
+```{literalinclude} include/code/new_scripts/my_first_workchain_6_another_output.py
+:language: python
+```
 
 As you can see, we defined the `multiply()` method in the class scope.
 This step simply involves running the calculation function `multiplication()` that we declared outside of the work chain scope (we also imported the `calcfunction` method from the aiida engine).
