@@ -3,12 +3,12 @@ from aiida.engine import WorkChain, calcfunction
 
 
 @calcfunction
-def add(x, y):
+def addition(x, y):
     return x + y
 
 
 class AddWorkChain(WorkChain):
-    """WorkChain to multiply two numbers and add a third, for testing and demonstration purposes."""
+    """WorkChain to add two integers."""
 
     @classmethod
     def define(cls, spec):
@@ -23,15 +23,8 @@ class AddWorkChain(WorkChain):
     def result(self):
         """Sum the inputs and parse the result."""
 
-        # Call `add` using a variable from the context and one of the inputs
-        summation = add(self.inputs.x, self.inputs.y)
+        # Call `addition` using the two inputs
+        addition_result = addition(self.inputs.x, self.inputs.y)
 
         # Declaring the output
-        self.out("workchain_result", summation)
-
-
-# The output this time has a new id, it is a new node
-
-# from aiida.engine import run
-# from add_workchain_3 import MultiplyAddWorkChain
-# result = run(MultiplyAddWorkChain, x=Int(2), y=Int(3) )
+        self.out("workchain_result", addition_result)

@@ -3,7 +3,7 @@ from aiida.engine import WorkChain
 
 
 class OutputInputWorkChain(WorkChain):
-    """WorkChain to multiply two numbers and add a third, for testing and demonstration purposes."""
+    """WorkChain to output the input."""
 
     @classmethod
     def define(cls, spec):

@@ -1,10 +1,8 @@
-from aiida.orm import Int
-from aiida.engine import WorkChain, calcfunction
+from aiida.orm import Int, Code
+from aiida.engine import WorkChain, calcfunction, ToContext
+from aiida.plugins.factories import CalculationFactory
 
-
-@calcfunction
-def addition(x, y):
-    return x + y
+ArithmeticAddCalculation = CalculationFactory("arithmetic.add")
 
 
 @calcfunction
@@ -23,6 +21,7 @@ class MultiplyAddWorkChain(WorkChain):
         spec.input("x", valid_type=Int)
         spec.input("y", valid_type=Int)
         spec.input("z", valid_type=Int)
+        spec.input("code", valid_type=Code)
         spec.outline(cls.multiply, cls.add, cls.result)
         spec.output("workchain_result", valid_type=Int)
         spec.output("product", valid_type=Int)
@@ -36,17 +35,21 @@ class MultiplyAddWorkChain(WorkChain):
         self.ctx.product = multiplication_result
 
     def add(self):
-        """Add two numbers."""
+        """Add two numbers using the `ArithmeticAddCalculation` calculation job plugin."""
 
-        # Call `addition` using a variable from the context and one of the inputs
-        addition_result = addition(self.ctx.product, self.inputs.z)
+        # Submitting the calculation job `ArithmeticAddCalculation`
+        calc_job_node = self.submit(
+            ArithmeticAddCalculation,
+            x=self.ctx.product,
+            y=self.inputs.z,
+            code=self.inputs.code,
+        )
 
-        # Passing to context to be used by other functions
-        self.ctx.summation = addition_result
+        return ToContext(summation_calc_job=calc_job_node)
 
     def result(self):
         """Parse the result."""
 
         # Declaring the output
-        self.out("workchain_result", self.ctx.summation)
+        self.out("workchain_result", self.ctx.summation_calc_job.outputs.sum)
         self.out("product", self.ctx.product)
