@@ -409,20 +409,20 @@ The code might look like this:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_3_add_calcfunc.py
 :language: python
-:emphasize-lines: 2, 5-7, 26-27
+:emphasize-lines: 2, 5-7, 27
 ```
 Here, we first imported the `calcfunction` method from the aiida engine.
 Then, we defined the `addition()` function outside the work chain scope, then we decorated it with `@calcfunction`:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_3_add_calcfunc.py
 :language: python
-:lines: 5-7
+:pyobject: addition
 ```
 And finally, we added the two inputs using the `calculation function` that we have just declared:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_3_add_calcfunc.py
 :language: python
-:lines: 26-27
+:lines: 27
 ```
 
 Thus, AiiDA will know how the data that we are outputing was generated.
@@ -515,7 +515,7 @@ Then, we defined the new `add()` method:
 :language: python
 :pyobject: AddWorkChain.add
 ```
-Instead of declaring the `calculation function` result (`summation`) directly as an output, we passed it to the work chain *context* using `self.ctx`:
+Instead of declaring the `calculation function` result (`summation`) directly as an output, we passed it to the work chain **context** using `self.ctx`:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_4_pass_context.py
 :language: python
@@ -539,14 +539,14 @@ Our code may seem like this:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
 :language: python
-:emphasize-lines: 22-23, 25, 8-10, 49, 39, 27, 12
+:emphasize-lines: 10-12, 15, 25-26, 28, 30, 42, 52
 ```
 
 This work chain above, we first defined a `calculation function` to receive and multiply two inputs using the `@calcfunction` decorator:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
 :language: python
-:lines: 8-10
+:pyobject: multiplication
 ```
 
 We gave an appropriate name to our work chain, i.e., `MultiplyAddWorkChain()`.
@@ -554,18 +554,18 @@ Then, we declared one more input labelled `z`  (to make three in total), and ano
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
 :language: python
-:lines: 22
+:lines: 25
 ```
 ```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
 :language: python
-:lines: 25
+:lines: 28
 ```
 
 Then, we added another step in the outline, i.e., `multiply`, to be executed before the `add` step:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
 :language: python
-:lines: 23
+:lines: 26
 ```
 
 Next, we defined the method that corresponds to this new step:
@@ -580,20 +580,20 @@ Then, in the second step of the outline, `add`, we used the result stored in the
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
 :language: python
-:lines: 39
+:lines: 42
 ```
 whose result was also stored in the context:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
 :language: python
-:lines: 42
+:lines: 45
 ```
 
 Finally, in the method `result()`, we declared the two outputs, the product that resulted from the multiplication of the first two inputs, and the final result that consists of the product added of the third input:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
 :language: python
-:lines: 48-49
+:lines: 51-52
 ```
 
 Now, run your work chain and examine the results to see if they are equivalent to that of the section {ref}`Creating data with calculation function<Creating data with calculation function>`.
@@ -612,7 +612,7 @@ The resulting code looks like this:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
 :language: python
-:emphasize-lines: 1-5, 22, 39, 41, 47
+:emphasize-lines: 1-5, 24, 41-46, 48, 54
 ```
 
 Let us break down what we did.
@@ -627,7 +627,7 @@ We also declared a new input, which is a code:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
 :language: python
-:lines: 22
+:lines: 24
 ```
 
 (**TODO: Somebody needs to try and explain this idea of passing a code as an input, then running a calc job process which executes the code...**)
@@ -650,7 +650,7 @@ Among the outputs of the calculation job, we want the one labbed `sum` to declar
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
 :language: python
-:lines: 47
+:lines: 54
 ```
 
 ##### Run the work chain
