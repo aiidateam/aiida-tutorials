@@ -282,7 +282,7 @@ For more information on the `define()` method and the process spec, see the {ref
 
 ##### Defining the steps in the outline
 
-Hopefully you now understand how to _define_ your work chain using the `define()` method.
+Hopefully, you now understand how to _define_ your work chain using the `define()` method.
 Of course, we still have to instruct the work chain what to actually do for each _step_ in the `outline`.
 This is done by adding them as methods to the work chain class.
 Let's do this for our single step, i.e., `result`:
