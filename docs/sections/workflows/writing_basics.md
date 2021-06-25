@@ -88,6 +88,7 @@ Currently, there are two ways of implementing a workflow process:
 * {ref}`work chains<topics:workflows:concepts:workchains>`
 
 The main difference between them is that *work functions* are completely executed by the AiiDA daemon, whereas  a *work chain* can submit calculation jobs that can be e.g. run through a scheduler that is periodically monitored by the daemon.
+Furthermore, a work chain is split into steps which have checkpoints in between from which a work chain can be restarted in case the daemon is shut down.
 Thus, *work functions* should be used for fast workflows that won't keep the AiiDA daemon very busy, otherwise, a *work chain* is in order.
 
 :::{note}
@@ -248,7 +249,7 @@ The **inputs** are specified using the `spec.input()` method:
 
   The first argument of the `input()` method is a string that specifies the label of the input, in this case `'x'`.
   The `valid_type` keyword argument allows you to specify the required node type of the input.
-  Other keyword arguments allow the developer to set a default for the input, or indicate that an input should not be stored in the database, see {ref}`the process topics section <topics:processes:usage:spec>` for more details.
+  <!-- Other keyword arguments allow the developer to set a default for the input, or indicate that an input should not be stored in the database, see {ref}`the process topics section <topics:processes:usage:spec>` for more details. -->
 
 :::{note}
 
