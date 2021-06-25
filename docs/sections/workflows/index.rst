@@ -55,6 +55,33 @@ Workflows
         * - |time| 30 min
           - Basic
 
+
+.. panels::
+    :header: header-text
+    :body: bg-light
+    :footer: bg-light border-0
+
+    ------
+    :column: col-lg-12
+
+    .. link-button:: debugging
+        :type: ref
+        :text: Debugging work chains
+        :classes: btn-light text-left stretched-link font-weight-bold
+    ^^^^^^^^^^^^
+
+    Debugging common mistakes in AiiDA work chains.
+
+    +++++++++++++
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 30 min
+          - Basic
+
+
 .. panels::
     :header: header-text
     :body: bg-light
@@ -85,4 +112,5 @@ Workflows
 
     running
     writing_basics
+    debugging
     errors
