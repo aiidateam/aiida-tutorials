@@ -234,6 +234,8 @@ Writing a work chain in AiiDA requires creating a class that inherits from the {
 You can give the work chain any valid Python class name, but the convention is to have it end in {class}`~aiida.engine.processes.workchains.workchain.WorkChain` so that it is always immediately clear what it references.
 For this most basic example, we chose `OutputInputWorkChain`, since it simply passes the input `Int` node as an output.
 
+(workflows-writing-basics-define)=
+
 ##### Define method
 
 The most important method to implement for every work chain is the `define()` method.
@@ -404,6 +406,8 @@ As the error message explains, the work chain is trying to create new `Data`.
 However, in order to preserve the _data_ provenance, data can only be created by `calculation functions` or `calculation jobs`.
 So, to correctly create the new data inside the work chain, we'll have to add a calculation function to our script.
 
+(workflows-writing-basics-creating-data)=
+
 #### Creating data with calculation function
 
 Here, we demonstrate how to process and create new data in a work chain using a `calculation function`.
@@ -533,6 +537,8 @@ In our example, the `self.ctx.summation` is passed as the `workchain_result` out
 :pyobject: AddWorkChain.result
 ```
 
+(workflows-writing-basics-adding-complexity)=
+
 #### Adding more complexity
 
 Increasing the level of complexity, we want to write a work chain which receives three inputs, multiply the first two inputs and add to that result the value of the third input.
@@ -599,7 +605,7 @@ Finally, in the method `result()`, we declared the two outputs, the product that
 :lines: 51-52
 ```
 
-Now, run your work chain and examine the results to see if they are equivalent to that of the section {ref}`Creating data with calculation function<Creating data with calculation function>`.
+Now, run your work chain and examine the results to see if they are equivalent to that of the section {ref}`Creating data with calculation function<workflows-writing-basics-creating-data>`.
 
 #### Work chain with Calculation Jobs
 
@@ -610,7 +616,7 @@ This is achieved through an AiiDA process called `calculation job` ({class}`~aii
 The execusion of the calculation jobs are managed and controlled by the AiiDA **daemons**.
 
 Here, we demonstrate how to include calculation jobs in our work chain.
-We are going to use the example in Section {ref}`Two calculation functions and more outputs<Two calculation functions and more outputs>` and replace the `addition` calculation function.
+We are going to use the example in Section {ref}`Two calculation functions and more outputs<workflows-writing-basics-adding-complexity>` and replace the `addition` calculation function.
 The resulting code looks like this:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
