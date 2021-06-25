@@ -87,7 +87,7 @@ Currently, there are two ways of implementing a workflow process:
 * {ref}`work functions<topics:workflows:concepts:workfunctions>`
 * {ref}`work chains<topics:workflows:concepts:workchains>`
 
-The main difference between them is that *work functions* are executed by the AiiDA daemons, while each step in a *work chain* generates a process of its own.
+The main difference between them is that *work functions* are completely executed by the AiiDA daemon, whereas  a *work chain* can submit calculation jobs that can be e.g. run through a scheduler that is periodically monitored by the daemon.
 Thus, *work functions* should be used for fast workflows that won't keep the AiiDA daemon very busy, otherwise, a *work chain* is in order.
 
 :::{note}
@@ -297,7 +297,7 @@ As you can see, we defined the `result()` method in the class scope.
 In this step, we are simply declaring the output labeled `workchain_result`, and passing to it the input label `x`.
 As the work chain input is an `Int` node, the output also satisfies this condition.
 
-Just like, we should be ready to run our first work chain!
+Now we should be ready to run our first work chain!
 
 ##### Run the work chain
 
