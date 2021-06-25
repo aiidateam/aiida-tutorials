@@ -6,3 +6,8 @@
 .. # Define a time icon
 .. |time| image:: /_static/time.png
     :width: 15px
+
+.. # define level colors
+.. role:: aiida-green
+.. role:: aiida-blue
+.. role:: aiida-orange

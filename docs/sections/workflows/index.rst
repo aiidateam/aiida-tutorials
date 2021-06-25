@@ -3,23 +3,26 @@ Workflows
 
 .. rst-class:: header-text
 
-    Running workflows is the bomb, yo!
+    A workflow in AiiDA is a process that can call other workflows and calculations to encode the logic of a typical scientific workflow.
+    Currently, there are two ways of implementing a workflow process: work *functions* and work *chains*.
+    In this section you will learn how to write both, as well as deal with more advanced topics such as debugging, input validation and error handling.
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
     ------
     :column: col-lg-12
 
-    .. link-button:: running
+    .. link-button:: workfunction
         :type: ref
-        :text: Running your first workflow
+        :text: Work functions
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    Start with running your first workflow.
+    A short module on how to write the basic type of workflows in AiiDA: work functions.
+    The module also revises the usage of calculation functions to add simple Python functions to the provenance.
 
     +++++++++++++
     .. list-table::
@@ -27,24 +30,25 @@ Workflows
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 30 min
-          - Basic
+        * - |time| 20 min
+          - :aiida-green:`Basic`
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
     ------
     :column: col-lg-12
 
-    .. link-button:: writing_basics
+    .. link-button:: workchain
         :type: ref
-        :text: Writing workflows
+        :text: Work chains
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    The basics of writing workflows in AiiDA.
+    A step-by-step introduction to the basics of writing work chains in AiiDA.
+    After completing this module, you will be ready to start writing your own scientific workflows!
 
     +++++++++++++
     .. list-table::
@@ -52,17 +56,16 @@ Workflows
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 30 min
-          - Basic
-
+        * - |time| 60 min
+          - :aiida-green:`Basic`
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
     ------
-    :column: col-lg-12
+    :column: col-lg-6
 
     .. link-button:: debugging
         :type: ref
@@ -79,24 +82,18 @@ Workflows
         :header-rows: 0
 
         * - |time| 30 min
-          - Basic
-
-
-.. panels::
-    :header: header-text
-    :body: bg-light
-    :footer: bg-light border-0
+          - :aiida-blue:`Intermediate`
 
     ------
-    :column: col-lg-12
+    :column: col-lg-6
 
-    .. link-button:: errors
+    .. link-button:: realworld
         :type: ref
-        :text: Error Handling
+        :text: A Real-world example - Equation of state
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    How to handle errors in AiiDA.
+    A fully explained real-world work chain implemented in AiiDA, that can be used an example to start writing your own work chain.
 
     +++++++++++++
     .. list-table::
@@ -105,12 +102,59 @@ Workflows
         :header-rows: 0
 
         * - |time| 30 min
-          - Intermediate
+          - :aiida-blue:`Intermediate`
+
+.. panels::
+    :header: panel-header-text
+    :body: bg-light
+    :footer: bg-light border-0
+
+    ------
+    :column: col-lg-6
+
+    .. link-button:: validation
+        :type: ref
+        :text: Input validation
+        :classes: btn-light text-left stretched-link font-weight-bold
+    ^^^^^^^^^^^^
+
+    Here we explain how to write a *validator* that can check inputs before running a calculation or workflow.
+
+    +++++++++++++
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 20 min
+          - :aiida-blue:`Intermediate`
+
+    ------
+    :column: col-lg-6
+
+    .. link-button:: errors
+        :type: ref
+        :text: Dealing with errors
+        :classes: btn-light text-left stretched-link font-weight-bold
+    ^^^^^^^^^^^^
+
+    This module explains how to deal with errors in AiiDA workflows, and how to automatically recover from issues that occur for your calculations.
+
+    +++++++++++++
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 30 min
+          - :aiida-orange:`Advanced`
 
 .. toctree::
     :hidden:
 
-    running
-    writing_basics
+    workfunction
+    workchain
     debugging
+    realworld
+    validation
     errors
