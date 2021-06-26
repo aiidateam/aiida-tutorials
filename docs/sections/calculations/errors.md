@@ -5,23 +5,23 @@
 In this section we will intentionally introduce some bad input parameters when setting up our calculation.
 This will allow us to illustrate how to 'manually' debug problems that might arise while managing your computations with AiiDA.
 You will learn where to look for the information of the errors and the steps you need to take to correct the issue.
-In other tutorial sections you can then learn how to systematize this error handling when designing complex workflows.
+In subsequent tutorial sections you can then learn how to systematize this error handling when designing complex workflows.
 
 :::{attention}
 
 In the next subsection, you will need to set up a `calcjob` and then `run`/`submit` it to explore its results.
 You will have to do some parts of this procedure on your own, including the creation/manipulation of `StructureData`, `UpfData` ([pseudopotentials](<https://en.wikipedia.org/wiki/Pseudopotential>)), and `KpointsData` nodes.
 
-Moreover, you are assumed to already have installed and configured a `pw.x` code from Quantum ESPRESSO and its corresponding AiiDA plugin (`aiida-quantumespresso`).
+Moreover, you are assumed to already have installed and configured the `pw.x` code from Quantum ESPRESSO and its corresponding AiiDA plugin (`aiida-quantumespresso`).
 
-If you are not sure how to do this, please review the following tutorial section on {ref}`running computations<calculations-basics>` and use it as a reference.
+If you are not sure how to do this, please first go through the previous tutorial section on {ref}`running computations<calculations-basics>`.
 
 :::
 
 ## Calculation setup
 
 The first step for this will be to set up a calculation for the `pw.x` code of the Quantum ESPRESSO package.
-We will do so by loading and configuring the builder for the corresponding plugin (`quantumespresso.pw`).
+We will do so by loading and configuring the builder for the corresponding plugin.
 Remember that you can run `verdi code list` to check what codes you have available and their information.
 
 ```{code-block} ipython
@@ -31,7 +31,8 @@ In [1]: code_pw = load_code(<CODE_PK>)
 
 ```
 
-You will need to set the rest of the inputs by yourself, the most critical being the following:
+You will need to set the rest of the inputs by yourself, the most critical being `structure`, `kpoints`, `pseudos` and the `resources` options under the builder's `metadata`.
+An incomplete example of how to set these parameters are shown below.
 
 ```{code-block} ipython
 
@@ -43,11 +44,11 @@ In [2]: builder.structure = ...
 ```
 
 For the `structure` you can download the following {download}`silicon crystal<include/data/Si.cif>` and import it into your database.
-If you have already loaded this structure in your database (as it is used in other tutorial modules), you may want to use that pre-existing node instead of saving a new node with repeated information.
-To do so you may search for its pk by running `verdi data structure list` and then use the python function `load_node()` to retrieve it into a variable.
+If you have already done so previously (as it is used in other tutorial sections), you may want to use that pre-existing Node instead of saving a new Node with repeated information.
+To do so you may search for its `PK` by running `verdi data structure list` and then use the function `load_node()` to retrieve it, storing it in a variable.
 
 For the `pseudos` (or [pseudopotentials](<https://en.wikipedia.org/wiki/Pseudopotential>)), you can use the `SSSP/1.1/PBE/efficiency` family of the `aiida-pseudo` package.
-If you already have it installed, it is enough to use the `load_group` function and then the `get_pseudos` method of the pseudo group.
+If you already have it installed, it is enough to use the `load_group()` function and then the `get_pseudos()` method of the loaded pseudo group.
 
 The set of `kpoints` can be simply created by using the `KpointsData` plugin methods to define a `2x2x2` mesh and store it in a new node.
 The `resources` provided above will work for a locally hosted code (which should be the case for these tutorial modules), but if you are running these tests in a cluster, you may need to set up account permissions or other options.
@@ -74,7 +75,7 @@ In [3]: parameters_dict = {
 ```
 
 This dictionary is almost a valid input for Quantum ESPRESSO, except for an invalid key `mickeymouse`.
-By default, the AiiDA plugin will simply pass your input to the code *without* doing any validation, but when Quantum ESPRESSO receives the unrecognized keyword it will stop.
+By default, the AiiDA plugin will simply pass your input to the code *without* doing any validation, but when Quantum ESPRESSO receives the unrecognized keyword it will stop and throw an error.
 
 We have also introduced a combination of a very high accuracy (`'conv_thr': 1.e-14`) coupled with a very low maximum number of self consistent iterations (`'electron_maxstep': 3`).
 This means that even if we eliminate the invalid key, the calculation will not converge and will not be successful, despite there not being any other mistake in the parameters dictionary.
@@ -99,7 +100,7 @@ In [5]: builder.metadata.dry_run = True
 
 ```
 
-It's time to run:
+It is time to run the calculation through the created builder:
 
 ```{code-block} ipython
 
@@ -112,7 +113,7 @@ This creates a folder of the form `submit_test/[date]-0000[x]` in the current di
 Open a second terminal and:
 
 * open the input file `aiida.in` within this folder
-* compare it to input data nodes you created earlier
+* compare it to the input Data Nodes you created earlier
 * verify that the `pseudo` folder contains the needed pseudopotentials
 * have a look at the submission script `_aiidasubmit.sh`
 
@@ -157,7 +158,7 @@ $ verdi process list -a -p1
 ```
 
 Your calculation should end up in a finished state, but with some error: this was expected in this case, since we used an invalid key in the input parameters.
-You will see this represented by a non-zero error code in brackets near the "Finished" status of the State.
+You will see this represented by a non-zero error code in brackets near the "Finished" status of the Process State.
 
 :::{note}
 
@@ -235,7 +236,7 @@ $ verdi calcjob inputls <pk_number> -c
 
 ```
 
-where the `pk_number` corresponds to the one of your calculation.
+where `<pk_number>` corresponds to the `PK` number of your calculation.
 This will list the files and subfolders inside of the input directory (`-c` prints folders in color).
 You can also check the content of the input file with:
 
@@ -322,7 +323,7 @@ In [13]: from aiida.engine import submit
 ```
 
 Inspect the restarted calculation to verify that, this time, it completes successfully.
-You should see a "finished" status with exit code zero when running `verdi process list -a -p1`.
+You should see a "Finished" status with exit code zero (`0`) when running `verdi process list - a -p1`.
 
 [^f1]: The `parent_folder` input for reusing the remote working folder of a previous calculation is specific to the `aiida-quantumespresso` plugin, but similar patterns are used in other plugins.
   The `PwCalculation` `CalcJob` plugin will copy the `outdir` of the parent simulation into the appropriate location, where Quantum ESPRESSO's `pw.x` executable looks for wavefunctions, charge densities, etc.
