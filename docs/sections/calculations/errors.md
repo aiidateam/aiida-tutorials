@@ -279,7 +279,7 @@ It turns out that your last calculation did not converge because we stopped the 
 In this simple case, you could just re-run the calculation from scratch with a sufficient number of iterations, but for expensive calculations (including a structural relaxation or molecular dynamics), you would like instead to restart your calculation from the previous one to save time.
 
 For this purpose, `CalcJobNode` provides the `get_builder_restart` method.
-Just like the `get_builder` method of the `Code` or of the `Process` class, this creates an instance of the `ProcessBuilder`, but with all inputs already pre-populated from those of the "parent" node.
+This is similar to the `get_builder` method of the `Code` or of the `Process` class used above, but with all inputs already pre-populated from the latest output of the calculation.
 
 Let us load the node of the calculation job that we want to restart in a `verdi shell` and create a new builder from it:
 
