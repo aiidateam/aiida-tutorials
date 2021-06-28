@@ -14,123 +14,161 @@ In this module, you will learn step-by-step how to write work chains in AiiDA.
 :::{note}
 
 To focus on the AiiDA concepts, the examples in this module are purposefully kept very simple.
-In a later module of this section, you will see a real-world example of a work chain that calculates the equation of state of a material.
+In a later module on writing workflows, you will see a real-world example of a work chain that calculates the equation of state of a material.
 
 :::
 
 ## Constructing our first work chain
 
 We will start with a very simple work chain which we then modify step by step to introduce new features.
-Our first mission is to write a work chain that receives a single input and passes it as the output.
-Let's get started by creating a file for our work chain (e.g. `my_first_workchain.py`), and adding the following piece of code:
+A very basic example to start with is a work chain that receives a single input and passes it as the output.
+To get started, create a Python file for the work chain (e.g. `my_first_workchain.py`), and add the following piece of code:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
 :language: python
 :lines: 1-15
 ```
 
-Writing a work chain in AiiDA requires creating a class that inherits from the {class}`~aiida.engine.processes.workchains.workchain.WorkChain` class, as shown above.
+Writing a work chain in AiiDA requires creating a class that inherits from the {class}`~aiida.engine.processes.workchains.workchain.WorkChain` class, as shown in the code snippet above.
 You can give the work chain any valid Python class name, but the convention is to have it end in {class}`~aiida.engine.processes.workchains.workchain.WorkChain` so that it is always immediately clear what it references.
-For this most basic example, we chose `OutputInputWorkChain`, since it simply passes the input `Int` node as an output.
+For this basic example, we chose `OutputInputWorkChain`, since it simply passes the input `Int` node as an output.
+We will now explain the basic components of this toy example in detail.
 
 (workflows-workchain-define)=
 
 ### Define method
 
-The most important method to implement for every work chain is the `define()` method.
-This class method must always start by calling the `define()` method of its parent class (the [`super()`](https://realpython.com/python-super/) function referes to the parent class).
-The `define()` method is used to _define_ the specifications of the work chain, which are contained in the work chain `spec`:
+:::{margin} {{ python }} **Class methods**
+A class method can be called from the class itself, as well as all instances of that class.
+You can find more information and a basic example [here](https://pythonbasics.org/classmethod/).
+:::
 
-The **inputs** are specified using the `spec.input()` method:
+The most important method to implement for every work chain is the `define()` _class method_:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
 :language: python
-:lines: 13
+:lines: 8-11
+:dedent: 4
 ```
+
+:::{margin} {{ python }} **The `super()` function**
+In simple terms, the `super()` function returns a temporary instance of the parent class (in this case {class}`~aiida.engine.processes.workchains.workchain.WorkChain`) that allows you to call its methods.
+If you're curious, an in-depth explanation of `super()` can be found [here](https://realpython.com/python-super/).
+:::
+
+This _class method_ must always start by calling the `define()` method of its parent class using the `super()` function.
+The `define()` method is used to define the _specifications_ of the work chain, which are contained in the work chain `spec`.
+In the `define()` method, we can see three aspects of the work chain are specified:
+
+* The **inputs** are specified using the `spec.input()` method:
+
+  ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+  :language: python
+  :lines: 13
+  :dedent: 8
+  ```
 
   The first argument of the `input()` method is a string that specifies the label of the input, in this case `'x'`.
   The `valid_type` keyword argument allows you to specify the required node type of the input.
-  <!-- Other keyword arguments allow the developer to set a default for the input, or indicate that an input should not be stored in the database, see {ref}`the process topics section <topics:processes:usage:spec>` for more details. -->
+  For the `'x'` input of this work chain, only `Int` nodes are accepted. <br/><br/>
 
-:::{note}
+* The **outline** is specified using the `spec.outline()` method:
 
-All inputs and outputs of a work chain must be [AiiDA data types](https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/data_types.html) so they can be stored as a `Node` in the AiiDA database.
+  ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+  :language: python
+  :lines: 14
+  :dedent: 8
+  ```
 
-:::
-
-The **outline** is specified using the `spec.outline()` method:
-```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
-:language: python
-:lines: 14
-```
   The outline of the workflow is constructed from the methods of the work chain class.
-  For the `OutputInputWorkChain`, the outline is a single step.
-  As we will see later, it's possible of course to include multiple steps and add logic directly in the outline in order to define more complex workflows as well.
-  See the {ref}`work chain outline section <topics:workflows:usage:workchains:define_outline>` for more details.
+  For the `OutputInputWorkChain`, the outline is a single step: `result`.
+  Later in this module we'll be adding more steps to the outline. <br/><br/>
 
-:::{margin} **Further reading**
+* The **outputs** are specified using the `spec.output()` method:
+
+  ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+  :language: python
+  :lines: 15
+  :dedent: 8
+  ```
+
+  This method is very similar in its usage to the `input()` method, and just like the inputs you can have several outputs.
+  For now, you can see that our work chain will output a single `Int` node with the label `'workchain_result'`.
+
+:::{margin} {{ aiida }} **Further reading**
 For more information on the `define()` method and the process spec, see the {ref}`corresponding section in the topics <topics:processes:usage:defining>`.
 :::
 
-The **outputs** are specified using the `spec.output()` method:
-```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
-:language: python
-:lines: 15
-```
-This method is very similar in its usage to the `input()` method, and just like the inputs you can have many outputs.
+:::{note}
+All inputs and outputs of a work chain must be [AiiDA data types](https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/data_types.html) so they can be stored as a `Node` in the AiiDA database.
+:::
 
-### Defining the steps in the outline
+### Adding the steps in the outline
 
-Hopefully, you now understand how to _define_ your work chain using the `define()` method.
-Of course, we still have to instruct the work chain what to actually do for each _step_ in the `outline`.
-This is done by adding them as methods to the work chain class.
-Let's do this for our single step, i.e., `result`:
+Now that we've seen how to define the `spec` of the work chain using the `define()` method, let's instruct the work chain on what to actually do for the `result` _step_ in the `outline`.
+This is done by adding each step as a method to the work chain class.
+Let's do this for our single `result` step:
+
+:::{margin}
+{{ download }} **{download}`Download the script! <include/code/new_scripts/my_first_workchain_1_output_input.py>`**
+:::
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
 :language: python
 :emphasize-lines: 17-21
 ```
 
-As you can see, we defined the `result()` method in the class scope.
-In this step, we are simply declaring the output labeled `workchain_result`, and passing to it the input label `x`.
-As the work chain input is an `Int` node, the output also satisfies this condition.
+As you can see, we defined `result()` as a method of the `OutputInputWorkChain` class.
+In this step, we are simply passing the input, stored in `self.inputs.x`, to the output labeled `workchain_result`:
 
-Now we should be ready to run our first work chain!
+```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+:language: python
+:lines: 21
+:dedent: 8
+```
+
+Two things are happening in this line:
+
+* The `x` input is obtained from the inputs using `self.inputs.x`, i.e. as an _attribute_ from `self.inputs`.
+* Using the `out()` method, this input is attached as an output of the work chain with link label `workchain_result`.
+  As the `x` work chain input is already an `Int` node, the `valid_type` condition is immediately satisfied.
+
+Add the `result` method to the `OutputInputWorkChain` class in your `my_first_workchain.py` file.
+Now you should be ready to run your first work chain!
 
 ### Run the work chain
 
-In the terminal, navigate to the folder where you saved the script with your first work chain and open a `verdi shell`:
+In the terminal, navigate to the folder where you saved the `my_first_workchain.py` file with the `OutputInputWorkChain` work chain and open a `verdi shell`.
+Then run the work chain as you have seen in the **TODO ADD LINK**:
 
 ```{code-block} ipython
 In [1]: from aiida.engine import run
 In [2]: from my_first_workchain import OutputInputWorkChain
 In [3]: result = run(OutputInputWorkChain, x=Int(4) )
-In [4]: result
-Out[2]:
-{'product': <Int: uuid: 9c5c29de-6176-41fe-a051-672a5348e631 (pk: 1909) value: 4>}
 ```
 
-Note that, if you had tried to pass as input an integer, for example with:
+This should complete almost instantaneously, we're just passing an input after all!
+Let's see what's stored in the `result` variable:
+
 ```{code-block} ipython
-...
-In [3]: result = run(OutputInputWorkChain, x=4 )
+In [4]: result
+Out[4]:
+{'workchain_result': <Int: uuid: ed5106ef-8eff-4e87-b2e9-ce6770a6b9a3 (pk: 4665) value: 4>}
 ```
-that would have raised an error as a Python integer is not an AiiDA data type.
 
-Exit the `verdi shell` and check the list of processes with `verdi process list`, using `-a/--all` to also see _terminated_ processes and `-p/--past-days 1` to only see processes _created_ in the past day:
+You can see that the `run()` method has returned a dictionary whose _key_ corresponds to the output link label (`'workchain_result'`) and whose _value_ is the `Int` node that has been passed as an output in the work chain.
+
+Exit the `verdi shell` and check the list of processes with `verdi process list`, using `-a/--all` to also see all _terminated_ processes and `-p/--past-days 1` to only see processes _created_ in the past day:
 ```{code-block} console
 $ verdi process list -a -p 1
 ...
 1982  2m ago     OutputInputWorkChain  ⏹ Finished [0]
 ```
-Also check the status of the process that corresponds to the work chain `OutputInputWorkChain`:
+
+Grab the PK of the `OutputInputWorkChain` and show some details about the inputs and outputs using `verdi process show`:
+
 ```{code-block} console
-$ verdi process process status 1982
-OutputInputWorkChain<1982> Finished [0] [None]
-```
-And show some details about the inputs and outputs with:
-```{code-block} console
-$ verdi process show 1982
+$ verdi process show <PK>
 Property     Value
 -----------  ------------------------------------
 type         OutputInputWorkChain
@@ -150,53 +188,96 @@ Outputs             PK  Type
 ----------------  ----  ------
 workchain_result  1981  Int
 ```
+
 Observe that the PK of the input is the same as the output.
 That is because our first work chain did not create any data, but just passed the input as the output.
 
+### Exercises
+
+(1) Generate the provenance graph of the `OutputInputWorkChain`.
+Is it what you would expect?
+
+(2) Try to pass an integer for the `x` input when running the `OutputInputWorkChain`, instead of an `Int` _node_.
+What happens?
+
+:::{dropdown} **Solution**
+
+Running the following in the `verdi shell`:
+
+```{code-block} ipython
+In [1]: from aiida.engine import run
+In [2]: from my_first_workchain import OutputInputWorkChain
+In [3]: result = run(OutputInputWorkChain, x=4 )
+```
+
+Will result in a rather large error message.
+Don't read the entire thing!
+The important part is at the bottom:
+
+```{code-block} ipython
+ValueError: Error occurred validating port 'inputs.x': value 'x' is not of the right type.
+Got '<class 'int'>', expected '<class 'aiida.orm.nodes.data.int.Int'>'
+```
+
+We can see that an error is raised that indicates that the Python integer (`<class 'int'>`) is not of the right type (`<class 'aiida.orm.nodes.data.int.Int'>`).
+
+:::
+
 ## How **not** to create data
 
-Our next goal is to write a work chain that receives two inputs, adds them together, and outputs the sum.
-For that, let's update the work chain in the `my_first_workchain.py` file that we have just created.
-We will make the following changes (highlighted):
+Our next goal is to try and write a work chain that receives two inputs, adds them together, and outputs the sum.
+In a first attempt do this, open the `my_first_workchain.py` file and make the following changes (highlighted):
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_2_wrong_add.py
 :language: python
 :emphasize-lines: 5,14,21,23
 ```
 
-Here, the first thing we did was to update the name of the work chain to `AddWorkChain` to better represent its new functionality.
+As you can see, the first change is to update the name of the work chain to `AddWorkChain` to better represent its new functionality.
 Next, we declared a new input in the `define()` method:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_2_wrong_add.py
 :language: python
 :lines: 14
 ```
-After that, in the `result()` method, we added the two inputs and declared the sum as the output:
+
+The `y` input is simply a second `Int` node that we will add to `x`.
+This is now done in the `result()` method, where we added the two inputs and attached the sum (`summation`) as the new output of the work chain:
 
 ```{literalinclude} include/code/new_scripts/my_first_workchain_2_wrong_add.py
 :language: python
 :lines: 21-23
 ```
 
+Note that the summation of two `Int` nodes results in a new (and _unstored_) `Int` node (try it in the `verdi shell`!).
+
 ### Run the work chain
 
-We can now try to run the work chain as we have done before for the `OutputInputWorkChain`.
-For example, navigate to the folder where you have the work chain Python script, open a `verdi shell` session and execute:
+Let's see what happens when we try to run the work chain as we have done before for the `OutputInputWorkChain`.
+Navigate to the folder where you have the work chain Python file (`my_first_workchain.py`) and open a `verdi shell` session to execute:
 
 ```{code-block} ipython
 In [1]: from aiida.engine import run
 In [2]: from my_first_workchain import AddWorkChain
-In [3]: result = run(AddWorkChain, x=Int(4), y=Int(3) )
-
+In [3]: result = run(AddWorkChain, x=Int(4), y=Int(3))
 ```
-If everything went according to plan, you must have got a `ValueError` like this:
 
-```{code-block} ipython
+Unfortunately, the command fails!
+The `ValueError` at the end of the stack trace explains what went wrong:
+
+```{code-block} python
 ...
 ----> 3 result = run(AddWorkChain, x=Int(4), y=Int(3) )
 ...
-ValueError: Workflow<AddWorkChain> tried returning an unstored `Data` node. This likely means new `Data` is being created inside the workflow. In order to preserve data provenance, use a `calcfunction` to create this node and return its output from the workflow
+ValueError: Workflow<AddWorkChain> tried returning an unstored `Data` node.
+This likely means new `Data` is being created inside the workflow.
+In order to preserve data provenance, use a `calcfunction` to create this node and return its output from the workflow
 ```
+
+:::{margin} {{ aiida }} **Further reading**
+For more information on the difference between _data_ and _logical_ provenance, see the {ref}`corresponding section in the topics <topics:provenance:concepts>`.
+:::
+
 As the error message explains, the work chain is trying to create new `Data`.
 However, in order to preserve the _data_ provenance, data can only be created by `calculation functions` or `calculation jobs`.
 So, to correctly create the new data inside the work chain, we'll have to add a calculation function to our script.
@@ -292,6 +373,14 @@ CALL      1989  addition
 
 Note that the output has its own `PK`, which is different of both inputs.
 That is because it is a new data node that was created by the calculation function called by the work chain.
+
+### Exercises
+
+Got back and check the status of the process that corresponds to the work chain `OutputInputWorkChain`:
+```{code-block} console
+$ verdi process process status 1982
+OutputInputWorkChain<1982> Finished [0] [None]
+```
 
 ## Context
 
