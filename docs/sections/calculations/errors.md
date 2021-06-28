@@ -21,7 +21,7 @@ If you are not sure how to do this, please first go through the previous tutoria
 ## Calculation setup
 
 The first step for this will be to set up a calculation for the `pw.x` code of the Quantum ESPRESSO package.
-We will do so by loading and configuring the builder for the corresponding plugin.
+You will do so by loading and configuring the builder for the corresponding plugin.
 Remember that you can run `verdi code list` to check what codes you have available and their information.
 
 ```{code-block} ipython
@@ -43,21 +43,26 @@ In [2]: builder.structure = ...
 
 ```
 
+:::{attention}
+
+The `resources` provided above will work for a locally hosted code (which should tipically be the case for these tutorial), but if you are running these tests in a cluster, you may need to set up account permissions or other options (you can consult the section for [schedulers](https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/schedulers.html) of the AiiDA documentation).
+
+:::
+
 For the `structure` you can download the following {download}`silicon crystal<include/data/Si.cif>` and import it into your database.
-If you have already done so previously (as it is used in other tutorial sections), you may want to use that pre-existing Node instead of saving a new Node with repeated information.
-To do so you may search for its `PK` by running `verdi data structure list` and then use the function `load_node()` to retrieve it, storing it in a variable.
+If you have already done so previously (as it is used in other tutorial sections), you may want to use that pre-existing node instead of saving a new node with repeated information.
+To do so you may search for its `PK` by running `verdi data structure list` and then use the function `load_node()` to retrieve it.
 
 For the `pseudos` (or [pseudopotentials](<https://en.wikipedia.org/wiki/Pseudopotential>)), you can use the `SSSP/1.1/PBE/efficiency` family of the `aiida-pseudo` package.
 If you already have it installed, it is enough to use the `load_group()` function and then the `get_pseudos()` method of the loaded pseudo group.
 
-The set of `kpoints` can be simply created by using the `KpointsData` plugin methods to define a `2x2x2` mesh and store it in a new node.
-The `resources` provided above will work for a locally hosted code (which should be the case for these tutorial modules), but if you are running these tests in a cluster, you may need to set up account permissions or other options.
+The set of `kpoints` can be simply created by using the methods of the `KpointsData` node class to define a `2x2x2` mesh and store it in a new node.
 
-Finally, we need to specify the input parameters, for which we'll use the following content:
+The last thing you need to specify are the input parameters, for which you will be using use the following content:
 
 ```{code-block} ipython
 
-In [3]: parameters_dict = {
+In [3]: parameters_dictionary = {
    ...:     'CONTROL': {
    ...:         'calculation': 'scf',
    ...:     },
@@ -78,13 +83,13 @@ This dictionary is almost a valid input for Quantum ESPRESSO, except for an inva
 By default, the AiiDA plugin will simply pass your input to the code *without* doing any validation, but when Quantum ESPRESSO receives the unrecognized keyword it will stop and throw an error.
 
 We have also introduced a combination of a very high accuracy (`'conv_thr': 1.e-14`) coupled with a very low maximum number of self consistent iterations (`'electron_maxstep': 3`).
-This means that even if we eliminate the invalid key, the calculation will not converge and will not be successful, despite there not being any other mistake in the parameters dictionary.
+This means that even if you eliminate the invalid key, the calculation will not converge and will not be successful, despite there not being any other mistake in the `parameters_dictionary`.
 
-Let's wrap the `parameters_dict` python dictionary in an AiiDA `Dict` node, and set it as the input of name `parameters`. We'll see what happens .
+Finally, wrap the standard Python dictionary `parameters_dictionary` in an AiiDA `Dict` node, and set it as the builder's `parameters` input:
 
 ```{code-block} ipython
 
-In [4]: builder.parameters = Dict(dict=parameters_dict)
+In [4]: builder.parameters = Dict(dict=parameters_dictionary)
 
 ```
 
@@ -110,17 +115,18 @@ In [6]: from aiida.engine import run
 ```
 
 This creates a folder of the form `submit_test/[date]-0000[x]` in the current directory.
-Open a second terminal and:
+The folder contains all the inputs as they would be used by AiiDA to run the code in the target computer.
+You can open a second terminal and do the following quick checks before continuing:
 
 * open the input file `aiida.in` within this folder
-* compare it to the input Data Nodes you created earlier
+* compare it to the input data nodes you created earlier
 * verify that the `pseudo` folder contains the needed pseudopotentials
 * have a look at the submission script `_aiidasubmit.sh`
 
 :::{note}
 
 The files created by a dry run are only intended for inspection and there is no point in applying any correction to them directly.
-AiiDA will re-create the input files from the input nodes at the time of any subsequent submission, so you have to make sure that those input nodes have the correct content.
+AiiDA will re-create the input files from the input nodes at the time of any subsequent submission, so you have to make sure that it is those input nodes that have the correct content.
 
 :::
 
@@ -247,11 +253,11 @@ $ verdi calcjob inputcat <pk_number> | less
 ```
 
 Again we see that, in effect, the `mickeymouse` keyword is effectively being used inside of the input file.
-Having verified this in mutiple ways, let's now correct our input parameters dictionary by leaving out the invalid key and see if our calculation succeeds:
+Having verified this in mutiple ways, let's now correct our input `parameters_dictionary` by leaving out the invalid key and see if our calculation succeeds:
 
 ```{code-block} ipython
 
-In [9]: parameters_dict = {
+In [9]: parameters_dictionary = {
    ...:    "CONTROL": {
    ...:        "calculation": "scf",
    ...:    },
@@ -264,7 +270,7 @@ In [9]: parameters_dict = {
    ...:        'electron_maxstep': 3,
    ...:    }
    ...: }
-   ...: builder.parameters = Dict(dict=parameters_dict)
+   ...: builder.parameters = Dict(dict=parameters_dictionary)
    ...: calculation = submit(builder)
 
 ```
@@ -276,10 +282,10 @@ You can check again the outputs and the reports with the tools explained in this
 ## Restarting calculations
 
 It turns out that your last calculation did not converge because we stopped the self-consistency iteration cycle before it converged (by only setting a max of 3 cycles).
-In this simple case, you could just re-run the calculation from scratch with a sufficient number of iterations, but for expensive calculations (including a structural relaxation or molecular dynamics), you would like instead to restart your calculation from the previous one to save time.
+In this simple case, you could just re-run the calculation from scratch with a sufficient number of iterations and it would solve the problem, but for expensive procedures (including a structural relaxation or molecular dynamics) you may instead want to run a restart from the previous calculation to save time.
 
 For this purpose, `CalcJobNode` provides the `get_builder_restart` method.
-This is similar to the `get_builder` method of the `Code` or of the `Process` class used above, but with all inputs already pre-populated from the latest output of the calculation.
+This is similar to the `get_builder` method of the `Code` or of the `Process` class used above, but with all inputs already pre-populated from those of the original calculation.
 
 Let us load the node of the calculation job that we want to restart in a `verdi shell` and create a new builder from it:
 
@@ -300,7 +306,14 @@ In [11]: parameters = restart_builder.parameters.get_dict()
 
 ```
 
-The `aiida-quantumespresso` plugin supports restarting a calculation by setting the corresponding `restart_mode` and attaching the remote working directory of the previous calculations as the `parent_folder` input [^f1]:
+:::{important}
+
+Remember that nodes are immutable: once they are stored in the database, their content can no longer be modified.
+If you need to do a correction like this one, you can't do it directly on the node: you have to take its content, modify that, and then use that to create a new corrected node.
+
+:::
+
+The `aiida-quantumespresso` plugin supports restarting a calculation by setting the corresponding `restart_mode` and attaching the remote working directory of the previous calculations as the `parent_folder` input:
 
 ```{code-block} ipython
 
@@ -310,7 +323,13 @@ In [12]: parameters['CONTROL']['restart_mode'] = 'restart'
 
 ```
 
-Note that we've created a new `Dict` node for the modifed parameters since the original input is already stored in the database and is therefore immutable.
+:::{note}
+
+The `parent_folder` input for reusing the remote working folder of a previous calculation is specific to the `aiida-quantumespresso` plugin, but similar patterns are used in other plugins.
+The `PwCalculation` `CalcJob` plugin will copy the `outdir` of the parent simulation into the appropriate location, where Quantum ESPRESSO's `pw.x` executable looks for wavefunctions, charge densities, etc.
+This allows to keep the checkpoint files (which may be large) on the remote machine, while still recording the provenance of the new calculation in the AiiDA graph as: `parent_calculation --> remote_folder --> restart_calculation`.
+
+:::
 
 Finally, let's label this calculation as a restarted one and submit the new calculation:
 
@@ -324,7 +343,3 @@ In [13]: from aiida.engine import submit
 
 Inspect the restarted calculation to verify that, this time, it completes successfully.
 You should see a "Finished" status with exit code zero (`0`) when running `verdi process list - a -p1`.
-
-[^f1]: The `parent_folder` input for reusing the remote working folder of a previous calculation is specific to the `aiida-quantumespresso` plugin, but similar patterns are used in other plugins.
-  The `PwCalculation` `CalcJob` plugin will copy the `outdir` of the parent simulation into the appropriate location, where Quantum ESPRESSO's `pw.x` executable looks for wavefunctions, charge densities, etc.
-  This allows to keep the checkpoint files (which may be large) on the remote machine, while still recording the provenance of the new calculation in the AiiDA graph as: `parent_calculation --> remote_folder --> restart_calculation`.
