@@ -3,7 +3,7 @@
 # Organising your data
 
 In this section of the tutorial we will focus on how to organise and explore the data in an AiiDA database.
-We will be using the previously created database entries for this tutorial.
+You will be using the previously created database entries for this tutorial.
 To follow the tutorial, you can use the profile into which you have previously imported this data, or you may wish to create a fresh profile and import the archive into that.
 To do so, you can copy-paste the following code into a terminal after activating your AiiDA virtual environment:
 
@@ -52,7 +52,7 @@ The `-a` and `-A` flags used above ensure that groups for *all* type strings and
 
 :::
 
-We can then inspect the content of a group by its label (if it is unique) or the PK:
+You can then inspect the content of a group by its label (if it is unique) or the PK:
 
 ```{code-block} console
 $ verdi group show tutorial_pbesol
@@ -88,21 +88,21 @@ $ verdi group create a_group
 Success: Group created with PK = 8 and name 'a_group'
 ```
 
-If we want to change the name of the group at any time:
+If you want to change the name of the group at any time try:
 
 ```{code-block} console
 $ verdi group relabel a_group my_group
 Success: Label changed to my_group
 ```
 
-Now we can add one or more nodes to it by listing any number of node PKs:
+Now you can add one or more nodes to it by listing any number of node PKs:
 
 ```{code-block} console
 $ verdi group add-nodes -G my_group 380 1273
 Do you really want to add 2 nodes to Group<my_group>? [y/N]: y
 ```
 
-We can also copy the nodes from an existing group to another group:
+You can also copy the nodes from an existing group to another group:
 
 ```{code-block} console
 $ verdi group copy tutorial_pbesol my_group
@@ -149,7 +149,7 @@ The same happens if you remove nodes from the group -- they will remain in the d
 ## Organising groups in hierarchies
 
 Earlier we mentioned that groups are like files in folders on your filesystem.
-Then as with folders and sub-folders, as the amount of groups we have grows, we may also wish to structure our groups in a hierarchy.
+Then as with folders and sub-folders, as the amount of groups you have grows, you may also wish to structure your groups in a hierarchy.
 Groups in AiiDA are inherently "flat", meaning groups may only contain nodes and not other groups.
 However, it is possible to construct *virtual* group hierarchies based on delimited group labels, using the `grouppath` utility.
 
@@ -162,7 +162,7 @@ verdi group copy tutorial_pbe tutorial/gga/pbe
 verdi group copy tutorial_pbesol tutorial/gga/pbesol
 ```
 
-We can now list the groups in a new way:
+You can now list the groups in a new way:
 
 ```{code-block} console
 $ verdi group path ls -l
@@ -180,8 +180,8 @@ In the terminal, paths that contain nodes are listed in bold.
 
 :::
 
-You can see that the actual groups that we create do not appear, only the initial part of the "path", and how many sub-groups that path contains.
-We can then step into a path:
+You can see that the actual groups that are created do not appear, only the initial part of the "path", and how many sub-groups that path contains.
+You can then step into a path:
 
 ```{code-block} console
 $ verdi group path ls -l tutorial
