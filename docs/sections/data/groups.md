@@ -3,14 +3,15 @@
 # Organising your data
 
 In this section of the tutorial we will focus on how to organise and explore the data in an AiiDA database.
-As in (**TODO FIX LINK**), we will be using the previously created database entries for this tutorial.
-To follow the tutorial then, you can use the profile in to which you have previously imported this data, or you may wish to create a fresh profile and import the archive into that:
+We will be using the previously created database entries for this tutorial.
+To follow the tutorial, you can use the profile into which you have previously imported this data, or you may wish to create a fresh profile and import the archive into that.
+To do so, you can copy-paste the following code into a terminal after activating your AiiDA virtual environment:
 
 ```{code-block} console
 
-$ verdi quicksetup --profile data
-$ verdi profile setdefault data
-$ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
+verdi quicksetup --profile data
+verdi profile setdefault data
+verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 
 ```
 
@@ -42,16 +43,16 @@ PK    Label            Type string    User
 
 The default table shows us four pieces of information:
 
-* **PK**: The Primary Key of the group
-* **Label**: The label by which the group can be identified
-* **Type string**: This tells us what "sub-class" of group this is.
+* **PK**: The Primary Key of the group.
+* **Label**: The label by which the group can be identified.
+* **Type string**: This tells us what type of group this is.
   Type strings can be used to class certain types of data, for example here we have general groups (`core`), groups containing pseudopotentials (`core.upf`), and an auto-generated group containing the nodes we imported from the archive (`core.import`).
-  For advanced use, you can create your own group subclass plugins, with specialised methods.
+  For advanced use, you can create your own group type plugins, with specialised methods by sub-classing the general `Group` class.
 * **User**: The email of the user that created this group.
 
 :::{tip}
 
-The `-a` and `-A` flags we used above ensure that groups for all type strings and users are shown respectively.
+The `-a` and `-A` flags used above ensure that groups for *all* type strings and users are shown, respectively.
 
 :::
 
@@ -74,7 +75,7 @@ PK    Type         Created
 
 ```
 
-Conversely, if you want to see all the groups a node belongs to, you can run:
+Conversely, if you want to see all the groups a node belongs to, you can use its PK and run:
 
 ```{code-block} console
 
@@ -106,7 +107,7 @@ Success: Label changed to my_group
 
 ```
 
-Now we can add one or more nodes to it:
+Now we can add one or more nodes to it by listing any number of node PKs:
 
 ```{code-block} console
 
@@ -138,7 +139,7 @@ PK    Type         Created
 
 ```
 
-To remove nodes from the group run:
+To remove nodes from the group is similar to adding them, try:
 
 ```{code-block} console
 
@@ -159,7 +160,7 @@ Success: Group<my_group> deleted.
 
 :::{important}
 
-Any deletion operation related to groups won't affect the nodes themselves.
+Any deletion operation related to groups will not affect the nodes themselves.
 For example if you delete a group, the nodes that belonged to the group will remain in the database.
 The same happens if you remove nodes from the group -- they will remain in the database but won't belong to the group any more.
 
@@ -168,18 +169,18 @@ The same happens if you remove nodes from the group -- they will remain in the d
 ## Organising groups in hierarchies
 
 Earlier we mentioned that groups are like files in folders on your filesystem.
-As with folders and sub-folders then, as the amount of groups we have grows, we may also wish to structure our groups in a hierarchy.
-Groups in AiiDA are inherently "flat", in that groups may only contain nodes and not other groups.
-However it is possible to construct *virtual* group hierarchies based on delimited group labels, using the `grouppath` utility.
+Then as with folders and sub-folders, as the amount of groups we have grows, we may also wish to structure our groups in a hierarchy.
+Groups in AiiDA are inherently "flat", meaning groups may only contain nodes and not other groups.
+However, it is possible to construct *virtual* group hierarchies based on delimited group labels, using the `grouppath` utility.
 
-Like folder paths grouppath requires delimitation by `/` (forward slash) characters.
+Like folder paths on Unix systems `grouppath` requires delimitation by forward slash (`/`) characters.
 Lets copy and rename the three tutorial groups:
 
 ```{code-block} console
 
-$ verdi group copy tutorial_lda tutorial/lda/basic
-$ verdi group copy tutorial_pbe tutorial/gga/pbe
-$ verdi group copy tutorial_pbesol tutorial/gga/pbesol
+verdi group copy tutorial_lda tutorial/lda/basic
+verdi group copy tutorial_pbe tutorial/gga/pbe
+verdi group copy tutorial_pbesol tutorial/gga/pbesol
 
 ```
 
@@ -199,11 +200,11 @@ tutorial_pbesol             0
 
 :::{note}
 
-In the terminal, paths that contain nodes are listed in bold
+In the terminal, paths that contain nodes are listed in bold.
 
 :::
 
-You can see that the actual groups that we create do not show, only the initial part of the "path", and how many sub-groups that path contains.
+You can see that the actual groups that we create do not appear, only the initial part of the "path", and how many sub-groups that path contains.
 We can then step into a path:
 
 ```{code-block} console
@@ -216,7 +217,7 @@ tutorial/lda             1
 
 ```
 
-This feature is also particularly useful in the verdi shell:
+This feature is also particularly useful in the `verdi shell`:
 
 ```{code-block} ipython
 
