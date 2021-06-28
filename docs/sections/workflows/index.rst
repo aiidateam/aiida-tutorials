@@ -31,7 +31,7 @@ Workflows
         :header-rows: 0
 
         * - |time| 20 min
-          - :aiida-green:`Basic`
+          - |aiida| :aiida-green:`Basic`
 
 .. panels::
     :header: panel-header-text
@@ -57,7 +57,7 @@ Workflows
         :header-rows: 0
 
         * - |time| 60 min
-          - :aiida-green:`Basic`
+          - |aiida| :aiida-green:`Basic`
 
 .. panels::
     :header: panel-header-text
@@ -82,7 +82,7 @@ Workflows
         :header-rows: 0
 
         * - |time| 30 min
-          - :aiida-blue:`Intermediate`
+          - |aiida| :aiida-blue:`Intermediate`
 
     ------
     :column: col-lg-6
@@ -102,7 +102,7 @@ Workflows
         :header-rows: 0
 
         * - |time| 30 min
-          - :aiida-blue:`Intermediate`
+          - |aiida| :aiida-blue:`Intermediate`
 
 .. panels::
     :header: panel-header-text
@@ -127,7 +127,7 @@ Workflows
         :header-rows: 0
 
         * - |time| 20 min
-          - :aiida-blue:`Intermediate`
+          - |aiida| :aiida-blue:`Intermediate`
 
     ------
     :column: col-lg-6
@@ -147,7 +147,7 @@ Workflows
         :header-rows: 0
 
         * - |time| 30 min
-          - :aiida-orange:`Advanced`
+          - |aiida| :aiida-orange:`Advanced`
 
 .. toctree::
     :hidden:
