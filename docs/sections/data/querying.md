@@ -16,10 +16,9 @@ language_info:
 
 # Querying for data
 
-The notebook will show you how the `QueryBuilder` can be used to query your
-database for specific data. It will demonstrate certain concepts and then ask
-you to use those to perform certain queries on your own database. Some of these
-question cells will have partial solutions that you will have to complete.
+The notebook will show you how the `QueryBuilder` can be used to query your database for specific data.
+It will demonstrate certain concepts and then ask you to use those to perform certain queries on your own database.
+Some of these question cells will have partial solutions that you will have to complete.
 
 ```{important}
 Make sure to execute the cell below this one (it may be hidden)
@@ -171,7 +170,8 @@ store_formula_in_extra()
 As you will use `AiiDA` to run your calculations, the database that stores all the data and the provenance will quickly grow to be very large.
 To help you find the needle that you might be looking for in this big haystack, we need an efficient search tool.
 `AiiDA` provides a tool to do exactly this: the {class}`~aiida.orm.querybuilder.QueryBuilder`.
-The `QueryBuilder` acts as the gatekeeper to your database, to whom you can ask questions about the contents of your database (also referred to as queries), by specifying what are looking for. In this part of the tutorial, we will focus on how to use the `QueryBuilder` to make these queries and understand/use the results.
+The `QueryBuilder` acts as the gatekeeper to your database, to whom you can ask questions about the contents of your database (also referred to as queries), by specifying what are looking for.
+In this part of the tutorial, we will focus on how to use the `QueryBuilder` to make these queries and understand/use the results.
 
 In order to use the `QueryBuilder`, we first need to import it.
 We can accomplish this by executing the `import` statement in the following cell.
@@ -395,14 +395,16 @@ As an exercise, try to write a query below that will retrieve all `Group` nodes 
 So far we have seen how we can use the `QueryBuilder` to search the database for entries of a specific node type, potentially projecting only specific properties and filtering for certain property values.
 However, our nodes do not live in a vacuum, but they are part of a graph and thus are linked one another.
 Therefore, we typically want to be able to search for nodes based on a certain relationship that they might have with other nodes.
-Consider for example that you have a `StructureData` node that was produced by some calculation. How would we be able to retrieve that calculation?
+Consider for example that you have a `StructureData` node that was produced by some calculation.
+How would we be able to retrieve that calculation?
 
 To accomplish this, we need to be able to tell the `QueryBuilder` what the relationship is between the nodes that we are interested in.
 With the `QueryBuilder`, we can do the following to find all the structure nodes that have been created as an output by a `PwCalculation` process.
 
 ```{important}
 In the graph, we are not looking for a `PwCalculation` process (since processes do not live in the graph, as you have learnt).
-We are actually looking for a `CalcJobNode` whose `process_type` column indicates that it was run by a `PwCalculation` process. Since this is a very common pattern, the `QueryBuilder` allows to directly append the `PwCalculation` process class as a short-cut, but it internally unwraps this into a query for a `CalcJobNode` with the appropriate filter on the `process_type`.
+We are actually looking for a `CalcJobNode` whose `process_type` column indicates that it was run by a `PwCalculation` process.
+Since this is a very common pattern, the `QueryBuilder` allows to directly append the `PwCalculation` process class as a short-cut, but it internally unwraps this into a query for a `CalcJobNode` with the appropriate filter on the `process_type`.
 ```
 
 ```{code-cell} ipython3
@@ -471,9 +473,11 @@ Image(filename='query2.png')
 In [the section above](query/project), we showed you how you can `project` specific properties of a `Node` and gave a list of properties that a `Node` instance possesses.
 Since then, we have come across a lot of different `AiiDA` data nodes, such as `StructureData` and `UpfData`, that were secretly `Node`'s in disguise.
 Or to put it correctly, as `AiiDA` employs the object-oriented programming paradigm, both `StructureData` and `UpfData` are examples of subclasses of the `Node` class and therefore inherit its properties.
-That means that whatever property a `Node` has, both `StructureData` and `UpfData` will have too. However, there is a semantic difference between a `StructureData` node and a `UpfData`, and so we may want to add a property to one that would not make sense for the other.
+That means that whatever property a `Node` has, both `StructureData` and `UpfData` will have too.
+However, there is a semantic difference between a `StructureData` node and a `UpfData`, and so we may want to add a property to one that would not make sense for the other.
 To solve this, `AiiDA` introduces the concept of `attributes`.
-These are similar to properties, except that they are specific to the `Node` type that they are attached to. This allows you to add an `attribute` to a certain node, without having to change the implementation of all the others.
+These are similar to properties, except that they are specific to the `Node` type that they are attached to.
+This allows you to add an `attribute` to a certain node, without having to change the implementation of all the others.
 
 For example, the `Dict` nodes that are generated as output of `PwCalculation`'s may have an attribute named `wfc_cutoff`.
 To project for this particular `attribute`, one can use exactly the same syntax as shown in [the section above](query/project) for the regular `Node` properties, and one has to only prepend `attributes.` to the attribute name.
@@ -555,13 +559,15 @@ graph.graphviz
 
 For further information on using `Graph` to generate provenance graphs, please see [this section](https://aiida.readthedocs.io/projects/aiida-core/en/latest/howto/visualising_graphs/visualising_graphs.html) in the documentation.
 
-You can also explore the provenance in other ways. If you have time, please work through [this appendix](https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/appendices/exploring_provenance.html) on exploring provenance.
+You can also explore the provenance in other ways.
+If you have time, please work through [this appendix](https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/appendices/exploring_provenance.html) on exploring provenance.
 
 +++
 
 ## A small high-throughput study
 
-The following section assumes that a specific dataset is present in your current AiiDA profile. If you are not running this script on the Virtual Machine of the AiiDA tutorial, this script will not produce the desired output.
+The following section assumes that a specific dataset is present in your current AiiDA profile.
+If you are not running this script on the Virtual Machine of the AiiDA tutorial, this script will not produce the desired output.
 You can download the Virtual Machine image from [https://aiida-tutorials.readthedocs.io](https://aiida-tutorials.readthedocs.io) along with the tutorial text (choose the correct version of the tutorial, depending on which version of AiiDA you want to try).
 
 ````{note}
@@ -575,13 +581,13 @@ $ verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/m
 
 +++
 
-In this part of the tutorial, we will focus on how to systematically retrieve, parse and analyze the results of
-multiple calculations using AiiDA. We know you’re able to do this yourself, but to save time, a set of calculations
-have already been done with AiiDA for you on 57 perovskites, using three different pseudopotential families (LDA,
-PBE and PBESOL, all from GBRV 1.2).
+In this part of the tutorial, we will focus on how to systematically retrieve, parse and analyze the results of multiple calculations using AiiDA.
+We know you’re able to do this yourself, but to save time, a set of calculations have already been done with AiiDA for you on 57 perovskites, using three different pseudopotential families (LDA, PBE and PBESOL, all from GBRV 1.2).
 
 These calculations are spin-polarized (without spin-orbit coupling), use a Gaussian smearing and perform a variable-cell relaxation of the full unit cell.
-The idea of this part of the tutorial is to “screen” for magnetic and metallic perovskites in a “high-throughput” way. As you learned in the first part of the tutorial, AiiDA allows to organize calculations in groups. Once more check the list of groups in your database by typing:
+The idea of this part of the tutorial is to “screen” for magnetic and metallic perovskites in a “high-throughput” way.
+As you learned in the first part of the tutorial, AiiDA allows to organize calculations in groups.
+Once more check the list of groups in your database by typing:
 
 ```{code-cell} ipython3
 !verdi group list -A
@@ -594,7 +600,8 @@ The main task is to make a plot showing, for all perovskites and for each pseudo
 
 ### Start building the query
 
-So we first of all need to instantiate a QueryBuilder instance. We `append` the groups of interest, which means that we select only groups that start with the string `tutorial_`.
+So we first of all need to instantiate a QueryBuilder instance.
+We `append` the groups of interest, which means that we select only groups that start with the string `tutorial_`.
 We can execute the query after this append (this will not affect the final results) and check whether we have retrieved 3 groups.
 
 ```{code-cell} ipython3
@@ -624,7 +631,8 @@ We extend the query to include the structures that are input of the calculations
 This means that we `append` StructureData, and defining the relationship with the calculation with corresponding keyword.
 
 For simplicity the formulas have been added in the extras of each structure node under the key `formula`.
-(The function that does this is called `store_formula_in_extra` and can be found in the top cell of this notebook. It also uses the QueryBuilder!)
+(The function that does this is called `store_formula_in_extra` and can be found in the top cell of this notebook.
+It also uses the QueryBuilder!)
 
 Project the formula, stored in the extras under the key `formula`.
 
@@ -638,9 +646,12 @@ Image(filename='query5.png')
 
 ### Append the output of the calculation
 
-Every successful PwCalculation outputs a `Dict` node that stores the parsed results as key-value pairs. You can find these pairs among the attributes of the `Dict` node. To facilitate querying, the parser takes care of storing values always in the same units, and these are documented. For convenience, the units are also added as key/value pairs (with the same key name, but with `_units` appended).
-Extend the query so that also the output `Dict` of each calculation is returned. Project only
-the attributes relevant to your analysis.
+Every successful PwCalculation outputs a `Dict` node that stores the parsed results as key-value pairs.
+You can find these pairs among the attributes of the `Dict` node.
+To facilitate querying, the parser takes care of storing values always in the same units, and these are documented.
+For convenience, the units are also added as key/value pairs (with the same key name, but with `_units` appended).
+Extend the query so that also the output `Dict` of each calculation is returned.
+Project only the attributes relevant to your analysis.
 
 In particular, project (in this order):
 
