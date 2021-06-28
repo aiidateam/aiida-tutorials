@@ -8,11 +8,9 @@ To follow the tutorial, you can use the profile into which you have previously i
 To do so, you can copy-paste the following code into a terminal after activating your AiiDA virtual environment:
 
 ```{code-block} console
-
 verdi quicksetup --profile data
 verdi profile setdefault data
 verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
-
 ```
 
 ## How to group nodes
@@ -27,7 +25,6 @@ A typical use case is to store all nodes that share a common property in a singl
 Lets explore the groups already present in the imported archive:
 
 ```{code-block} console
-
 $ verdi group list -a -A
 PK    Label            Type string    User
 ----  ---------------  -------------  ---------------
@@ -38,7 +35,6 @@ PK    Label            Type string    User
    5  GBRV_pbesol      core.upf       aiida@localhost
    6  GBRV_lda         core.upf       aiida@localhost
    7  20200705-071658  core.import    aiida@localhost
-
 ```
 
 The default table shows us four pieces of information:
@@ -59,7 +55,6 @@ The `-a` and `-A` flags used above ensure that groups for *all* type strings and
 We can then inspect the content of a group by its label (if it is unique) or the PK:
 
 ```{code-block} console
-
 $ verdi group show tutorial_pbesol
 -----------------  ----------------
 Group label        tutorial_pbesol
@@ -72,19 +67,16 @@ PK    Type         Created
  380  CalcJobNode  2078D:17h:46m ago
 1273  CalcJobNode  2078D:18h:03m ago
 ...
-
 ```
 
 Conversely, if you want to see all the groups a node belongs to, you can use its PK and run:
 
 ```{code-block} console
-
 $ verdi group list -a -A --node 380
 PK    Label            Type string    User
 ----  ---------------  -------------  ---------------
    1  tutorial_pbesol  core           aiida@localhost
    7  20200705-071658  core.import    aiida@localhost
-
 ```
 
 ### Creating and manipulating groups
@@ -92,34 +84,27 @@ PK    Label            Type string    User
 Lets make a new group:
 
 ```{code-block} console
-
 $ verdi group create a_group
 Success: Group created with PK = 8 and name 'a_group'
-
 ```
 
 If we want to change the name of the group at any time:
 
 ```{code-block} console
-
 $ verdi group relabel a_group my_group
 Success: Label changed to my_group
-
 ```
 
 Now we can add one or more nodes to it by listing any number of node PKs:
 
 ```{code-block} console
-
 $ verdi group add-nodes -G my_group 380 1273
 Do you really want to add 2 nodes to Group<my_group>? [y/N]: y
-
 ```
 
 We can also copy the nodes from an existing group to another group:
 
 ```{code-block} console
-
 $ verdi group copy tutorial_pbesol my_group
 Warning: Destination group<my_group> already exists and is not empty.
 Do you wish to continue anyway? [y/N]: y
@@ -136,26 +121,21 @@ PK    Type         Created
 74  CalcJobNode  2078D:17h:51m ago
 76  CalcJobNode  2078D:17h:57m ago
 ...
-
 ```
 
 To remove nodes from the group is similar to adding them, try:
 
 ```{code-block} console
-
 $ verdi group remove-nodes -G my_group 74
 Do you really want to remove 1 nodes from Group<my_group>? [y/N]: y
-
 ```
 
 and finally to remove the group entirely:
 
 ```{code-block} console
-
 $ verdi group delete --clear my_group
 Are you sure to delete Group<my_group>? [y/N]: y
 Success: Group<my_group> deleted.
-
 ```
 
 :::{important}
@@ -177,17 +157,14 @@ Like folder paths on Unix systems `grouppath` requires delimitation by forward s
 Lets copy and rename the three tutorial groups:
 
 ```{code-block} console
-
 verdi group copy tutorial_lda tutorial/lda/basic
 verdi group copy tutorial_pbe tutorial/gga/pbe
 verdi group copy tutorial_pbesol tutorial/gga/pbesol
-
 ```
 
 We can now list the groups in a new way:
 
 ```{code-block} console
-
 $ verdi group path ls -l
 Path             Sub-Groups
 ---------------  ------------
@@ -195,7 +172,6 @@ tutorial                    3
 tutorial_lda                0
 tutorial_pbe                0
 tutorial_pbesol             0
-
 ```
 
 :::{note}
@@ -208,26 +184,22 @@ You can see that the actual groups that we create do not appear, only the initia
 We can then step into a path:
 
 ```{code-block} console
-
 $ verdi group path ls -l tutorial
 Path          Sub-Groups
 ------------  ------------
 tutorial/gga             2
 tutorial/lda             1
-
 ```
 
 This feature is also particularly useful in the `verdi shell`:
 
 ```{code-block} ipython
-
 In [1]: from aiida.tools.groups import GroupPath
 In [2]: for subpath in GroupPath("tutorial/gga").walk(return_virtual=False):
    ...:     print(subpath.get_group())
    ...:
 "tutorial/gga/pbesol" [type core], of user aiida@localhost
 "tutorial/gga/pbe" [type core], of user aiida@localhost
-
 ```
 
 :::{seealso}
