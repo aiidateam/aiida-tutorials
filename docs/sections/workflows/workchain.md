@@ -48,7 +48,6 @@ The most important method to implement for every work chain is the `define()` _c
 ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
 :language: python
 :lines: 8-11
-:dedent: 4
 ```
 
 :::{margin} {{ python }} **The `super()` function**
@@ -65,7 +64,6 @@ In the `define()` method, we can see three aspects of the work chain are specifi
   ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
   :language: python
   :lines: 13
-  :dedent: 8
   ```
 
   The first argument of the `input()` method is a string that specifies the label of the input, in this case `'x'`.
@@ -77,7 +75,6 @@ In the `define()` method, we can see three aspects of the work chain are specifi
   ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
   :language: python
   :lines: 14
-  :dedent: 8
   ```
 
   The outline of the workflow is constructed from the methods of the work chain class.
@@ -89,7 +86,6 @@ In the `define()` method, we can see three aspects of the work chain are specifi
   ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
   :language: python
   :lines: 15
-  :dedent: 8
   ```
 
   This method is very similar in its usage to the `input()` method, and just like the inputs you can have several outputs.
@@ -124,7 +120,6 @@ In this step, we are simply passing the input, stored in `self.inputs.x`, to the
 ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
 :language: python
 :lines: 21
-:dedent: 8
 ```
 
 Two things are happening in this line:
@@ -167,8 +162,17 @@ $ verdi process list -a -p 1
 
 Grab the PK of the `OutputInputWorkChain` and show some details about the inputs and outputs using `verdi process show`:
 
+:::{margin}
+Don't forget to replace the `<PK>` with that of your work chain!
+:::
+
 ```{code-block} console
 $ verdi process show <PK>
+```
+
+This results in the following output:
+
+```{code-block} console
 Property     Value
 -----------  ------------------------------------
 type         OutputInputWorkChain
@@ -189,7 +193,7 @@ Outputs             PK  Type
 workchain_result  1981  Int
 ```
 
-Observe that the PK of the input is the same as the output.
+Observe that the `PK` of the input is the same as the output.
 That is because our first work chain did not create any data, but just passed the input as the output.
 
 ### Exercises
