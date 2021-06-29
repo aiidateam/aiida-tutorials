@@ -9,8 +9,8 @@ In subsequent tutorial sections you can then learn how to systematize this error
 
 :::{attention}
 
-In the next subsection, you will need to set up a `calcjob` and then `run`/`submit` it to explore its results.
-You will have to do some parts of this procedure on your own, including the creation/manipulation of `StructureData`, `UpfData` ([pseudopotentials](<https://en.wikipedia.org/wiki/Pseudopotential>)), and `KpointsData` nodes.
+In the next subsection, you will need to set up a `calcjob` and then `run` or `submit` it to explore its results.
+You will have to do some parts of this procedure on your own, including the creation and manipulation of `StructureData`, `UpfData` ([pseudopotentials](<https://en.wikipedia.org/wiki/Pseudopotential>)), and `KpointsData` nodes.
 
 Moreover, you are assumed to already have installed and configured the `pw.x` code from Quantum ESPRESSO and its corresponding AiiDA plugin (`aiida-quantumespresso`).
 
@@ -45,13 +45,14 @@ In [2]: builder.structure = ...
 
 :::{attention}
 
-The `resources` provided above will work for a locally hosted code (which should tipically be the case for these tutorial), but if you are running these tests in a cluster, you may need to set up account permissions or other options (you can consult the section for [schedulers](https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/schedulers.html) of the AiiDA documentation).
+The `resources` provided above will work for a locally hosted code, which should typically be the case for this tutorial.
+If you are running these tests on a cluster, you may need to set up account permissions or other options (you can consult the section for [schedulers](https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/schedulers.html) of the AiiDA documentation for further information).
 
 :::
 
 For the `structure` you can download the following {download}`silicon crystal<include/data/Si.cif>` and import it into your database.
 If you have already done so previously (as it is used in other tutorial sections), you may want to use that pre-existing node instead of saving a new node with repeated information.
-To do so you may search for its `PK` by running `verdi data structure list` and then use the function `load_node()` to retrieve it.
+To do so you may search for its PK by running `verdi data structure list` and then use the function `load_node()` to retrieve it.
 
 For the `pseudos` (or [pseudopotentials](<https://en.wikipedia.org/wiki/Pseudopotential>)), you can use the `SSSP/1.1/PBE/efficiency` family of the `aiida-pseudo` package.
 If you already have it installed, it is enough to use the `load_group()` function and then the `get_pseudos()` method of the loaded pseudo group.
@@ -93,10 +94,12 @@ In [4]: builder.parameters = Dict(dict=parameters_dictionary)
 
 ```
 
+This wrapping is necessary for AiiDA to include it in the database and therefore the provenance graph.
+
 ## Simulating submissions
 
 In order to check which input files AiiDA creates, we can perform a *dry run* of the submission process.
-Let's tell the builder that we want a dry run and that we don't want to store the provenance of the dry run:
+Let's tell the builder that we want a dry run and that we do not want to store the provenance of the dry run:
 
 ```{code-block} ipython
 
@@ -132,7 +135,7 @@ AiiDA will re-create the input files from the input nodes at the time of any sub
 
 ## Troubleshooting calculations
 
-Now that we have inspected the input files and convinced ourselves that Quantum ESPRESSO will have all the information it needs, let's revert the following values in our builder to their defaults:
+Now that we have inspected the input files and convinced ourselves that Quantum ESPRESSO will have all the information it needs, let's revert the following values in the builder to their defaults:
 
 ```{code-block} ipython
 
@@ -282,10 +285,10 @@ You can check again the outputs and the reports with the tools explained in this
 ## Restarting calculations
 
 It turns out that your last calculation did not converge because we stopped the self-consistency iteration cycle before it converged (by only setting a max of 3 cycles).
-In this simple case, you could just re-run the calculation from scratch with a sufficient number of iterations and it would solve the problem, but for expensive procedures (including a structural relaxation or molecular dynamics) you may instead want to run a restart from the previous calculation to save time.
+In this simple case, you could just re-run the calculation from scratch with a sufficient number of iterations and it would solve the problem, but for expensive procedures (including a structural relaxation or molecular dynamics) you may instead want to run a restart from the latest calculation to save time.
 
-For this purpose, `CalcJobNode` provides the `get_builder_restart` method.
-This is similar to the `get_builder` method of the `Code` or of the `Process` class used above, but with all inputs already pre-populated from those of the original calculation.
+For this purpose, `CalcJobNode` provides the `get_builder_restart()` method.
+This is similar to the `get_builder()` method of the `Code` or of the `Process` class used above, but with all inputs already pre-populated from those of the original calculation.
 
 Let us load the node of the calculation job that we want to restart in a `verdi shell` and create a new builder from it:
 
