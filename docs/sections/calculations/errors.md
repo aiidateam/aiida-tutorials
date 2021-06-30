@@ -245,7 +245,7 @@ $ verdi calcjob inputls <pk_number> -c
 
 ```
 
-where `<pk_number>` corresponds to the `PK` number of your calculation.
+where `<pk_number>` corresponds to the PK number of your calculation.
 This will list the files and subfolders inside of the input directory (`-c` prints folders in color).
 You can also check the content of the input file with:
 
