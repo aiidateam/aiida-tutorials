@@ -49,7 +49,7 @@ Running processes
 
     .. link-button:: errors
         :type: ref
-        :text: Troubleshooting errors
+        :text: Troubleshooting
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
