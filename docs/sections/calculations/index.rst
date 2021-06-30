@@ -1,5 +1,5 @@
-Processes
-=========
+Running processes
+=================
 
 .. rst-class:: header-text
 
@@ -51,7 +51,7 @@ Processes
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    This module will take you trough some of the common errors that can happen when submitting calculations and how to deal with them.
+    This module will highlight some of the common issues that can happen when submitting calculations and how to deal with them.
 
     +++++++++++++
     .. list-table::
@@ -71,7 +71,7 @@ Processes
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    Once you have know how to submit calculations, this module will teach you how to extend that to workflows.
+    Once you know how to submit calculations, you can learn how to launch workflows in this module.
 
     +++++++++++++
     .. list-table::
