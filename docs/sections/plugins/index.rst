@@ -7,7 +7,7 @@ Plugins
 
     If you haven't done so already, please **first** watch the `introduction to the AiiDA plugin system <https://www.youtube.com/watch?v=bjTUnHXZ6oY&list=PL19kfLn4sO_-e_A9lVYb_NBNcwoVvUP6V>`_ (~20 minutes).
 
-    For this session, we suggest two options depending on your interests and experience -- please post in the chat which of the two (A/B) you are going to follow:
+    For this session, pick one of two options depending on your interests and experience:
 
 .. panels::
     :header: header-text
@@ -32,7 +32,8 @@ Plugins
         :header-rows: 0
 
         * - |time| 1h30m
-          - Intermediate
+          - |aiida| :aiida-blue:`Intermediate`
+
 
 .. panels::
     :header: header-text
@@ -57,7 +58,7 @@ Plugins
         :header-rows: 0
 
         * - |time| 2h+
-          - Advanced
+          - |aiida| :aiida-orange:`Advanced`
 
 .. toctree::
     :hidden:
