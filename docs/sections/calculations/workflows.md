@@ -2,7 +2,7 @@
 
 # Running workflows
 
-AiiDA can help you run individual calculations, but it is really designed to help you run workflows that involve several calculations, while automatically keeping track of the provenance for full reproducibility.
+AiiDA can help you run individual calculations, but it is really designed to help you run workflows that involve several of them, while automatically keeping track of the provenance for full reproducibility.
 
 To see all currently available workflows in your installation, you can run the following command:
 
@@ -21,7 +21,10 @@ This is a fully automated workflow that will:
 3. Run a self-consistent field calculation on the refined structure.
 4. Run a band structure calculation at a fixed Kohn-Sham potential along a standard path between high-symmetry k-points determined by [SeeK-path][seek-path].
 
-In order to run it, we will again open the `verdi shell`.
+
+## Submitting a work chain
+
+In order to run this work chain, we will again open the `verdi shell`.
 We will then load the work chain using its entry point and the `WorkflowFactory`:
 
 ```{code-block} ipython
@@ -34,14 +37,17 @@ Setting up the inputs one by one as we did for the pw.x calculation in the previ
 Instead, we are going to use one of the protocols that has been set up for the workflow.
 To do this, all we need to provide is the code and initial structure we are going to run:
 
-```{code-block}
+:::{margin}
+Replace `<CODE_PK>` and `<STRUCTURE_PK>` with those of the code and structure you used in the base module of this section.
+:::
+
+```{code-block} ipython
 
 In [2]: code = load_code(<CODE_PK>)
    ...: structure = load_node(<STRUCTURE_PK>)
 
 ```
 
-Be sure to replace the `<CODE_PK>` and `<STRUCTURE_PK>` with those of the code and structure we used in the first section.
 Next, we use the `get_builder_from_protocol()` method to obtain a prepopulated builder for the workflow:
 
 ```{code-block} ipython
@@ -62,7 +68,11 @@ In [4]: from aiida.engine import submit
 
 And done!
 Just like that, we have prepared and submitted an automated process to obtain the band structure of silicon.
-If you want to check the status of the calculation, you can exit the `verdi shell` and run:
+We will now see how to follow its execution and check the results.
+
+## Monitoring the process
+
+If you want to check the status of the workflow, you can exit the `verdi shell` and run `verdi process list` just like you did for calculations:
 
 ```{code-block} console
 
@@ -83,30 +93,8 @@ Info: last time an entry changed state: 8s ago (at 23:32:21 on 2021-02-09)
 You may notice that `verdi process list` now shows more than one entry: indeed, there are a couple of calculations and sub-workflows that need to be run.
 The total workflow should take about 5-10 minutes to finish.
 
-While we wait for the workflow to complete, we can start learning about how to explore the provenance of an AiiDA database.
-
-## Inspecting the work chain
-
-Use `verdi process show <PK>` to inspect the `PwBandsWorkChain` and find the PK of its `band_structure` output.
-Instead of relying on the explore tool, we can also plot the band structure using the `verdi shell`:
-
-```{code-block} console
-
-$ verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
-
-```
-
-Use the `evince` command or the JupyterHub file manager to open the `band_structure.pdf` file.
-It should look similar to the one shown here:
-
-:::{figure} include/images/si_bands.png
-:width: 100%
-
-Band structure computed by the `PwBandsWorkChain`.
-
-:::
-
-Finally, the `verdi process status` command prints a *hierarchical* overview of the processes called by the work chain:
+Another way of getting information on the processes of a workchain in a way that shows the *hierarchical* overview of the calls is by running `verdi process status`.
+If your workchain is still running, you will get a partial output compared to the one shown below:
 
 ```{code-block} console
 
@@ -131,5 +119,32 @@ PwBandsWorkChain<113> Finished [0] [7:results]
 The bracket `[7:result]` indicates the current step in the outline of the `PwBandsWorkChain` (step 7, with name `result`).
 The `process status` is particularly useful for debugging complex work chains, since it helps pinpoint where a problem occurred.
 
-Congratulations on finishing the first part of the tutorial!
-In the next section, we'll look at how to organize and query your data.
+
+## Displaying the results
+
+Once the work chain has finished running, use `verdi process show <PK>` to inspect the `PwBandsWorkChain` and find the PK of its `band_structure` output.
+We can also plot the band structure using the `verdi shell`:
+
+```{code-block} console
+
+$ verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
+
+```
+
+Use the `evince` command or the JupyterHub file manager to open the `band_structure.pdf` file.
+It should look similar to the one shown here:
+
+:::{figure} include/images/si_bands.png
+:width: 100%
+
+Band structure computed by the `PwBandsWorkChain`.
+
+:::
+
+:::{important} **What we learnt**
+
+ - Work chains can be prepared from a builder and submitted just like calculations.
+ - The method `get_builder_from_protocol()` can return a pre-populated builder from minimal inputs.
+ - In addition to `verdi process list`, you can see a hierarchical overview of a workflow by using `verdi process status`
+
+:::
