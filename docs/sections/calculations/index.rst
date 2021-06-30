@@ -21,7 +21,7 @@ Processes
 
     This base module will take you through the procedures for running your first calcjob.
     You will learn how to prepare the inputs for the calculation, submit it to the engine, follow its status, and analyze its results.
-    
+
     +++++++++++++
     .. list-table::
         :widths: 50 50
@@ -71,7 +71,7 @@ Processes
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    Once you have learnt how to submit calculations, this module will teach you how to extend that to workflows.
+    Once you have know how to submit calculations, this module will teach you how to extend that to workflows.
 
     +++++++++++++
     .. list-table::
