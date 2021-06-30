@@ -1,12 +1,12 @@
-Calculation processes
-=====================
+Processes
+=========
 
 .. rst-class:: header-text
 
-    In this section you can find modules that explain the concepts related to running calculations in AiiDA.
+    In this section you can find modules that explain the concepts and steps related to running processes (calculations and workflows) in AiiDA.
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
@@ -15,23 +15,21 @@ Calculation processes
 
     .. link-button:: basics
         :type: ref
-        :text: Running your first calculation
+        :text: Running calculations
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    *"All which is beautiful and noble is the result of reason and calculation."* |br|
-    *-- Charles Baudelaire*
-
-    Start with running your first calculation.
-
+    This base module will take you through the procedures for running your first calcjob.
+    You will learn how to prepare the inputs for the calculation, submit it to the engine, follow its status, and analyze its results.
+    
     +++++++++++++
     .. list-table::
         :widths: 50 50
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 30 min
-          - Basic
+        * - |time| 60 min
+          - |aiida| :aiida-green:`Basic`
 
     ---
     :column: col-lg-12
@@ -40,23 +38,20 @@ Calculation processes
     :link-badge:`https://aiida-vasp.readthedocs.io/en/latest/calculations/vasp.html, "VASP",cls=badge-vasp text-white, tooltip=Go to the VASP version.`
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
     ------
-    :column: col-lg-12
+    :column: col-lg-6
 
     .. link-button:: errors
         :type: ref
-        :text: Calculation Errors
+        :text: Troubleshooting errors
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    *"It's the job that's never started as takes longest to finish."* |br|
-    *-- Samwise Gamgee*
-
-    Calculations can fail! Learn how to deal with this.
+    This module will take you trough some of the common errors that can happen when submitting calculations and how to deal with them.
 
     +++++++++++++
     .. list-table::
@@ -64,24 +59,19 @@ Calculation processes
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 20 min
-          - Intermediate
-
-.. panels::
-    :header: header-text
-    :body: bg-light
-    :footer: bg-light border-0
+        * - |time| 15 min
+          - |aiida| :aiida-blue:`Intermediate`
 
     ------
-    :column: col-lg-12
+    :column: col-lg-6
 
     .. link-button:: workflows
         :type: ref
-        :text: Running your first workflow
+        :text: Running workflows
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    Start with running your first workflow.
+    Once you have learnt how to submit calculations, this module will teach you how to extend that to workflows.
 
     +++++++++++++
     .. list-table::
@@ -89,8 +79,8 @@ Calculation processes
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 30 min
-          - Basic
+        * - |time| 15 min
+          - |aiida| :aiida-blue:`Intermediate`
 
 .. toctree::
     :hidden:

@@ -1,5 +1,6 @@
 (calculations-errors)=
-# Dealing with errors
+
+# Troubleshooting errors
 
 In this section we we will intentionally introduce some bogus input parameters in order to show how to 'manually' debug problems when encountering errors.
 Workflows, which you'll see later in this tutorial, can help you avoid these issues systematically.
