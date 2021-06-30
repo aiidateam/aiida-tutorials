@@ -22,6 +22,7 @@ Running processes
     This base module will take you through the procedures for running your first calcjob.
     You will learn how to prepare the inputs for the calculation, submit it to the engine, follow its status, and analyze its results.
 
+
     +++++++++++++
     .. list-table::
         :widths: 50 50
@@ -34,7 +35,8 @@ Running processes
     ---
     :column: col-lg-12
 
-    :link-badge:`https://aiida-quantumespresso.readthedocs.io/en/latest/user_guide/get_started/examples/pw_tutorial.html, "Quantum ESPRESSO",cls=badge-qe text-white,tooltip=Go to the Quantum ESPRESSO version.`
+    :badge:`Quantum ESPRESSO,badge-qe text-white`
+    || Alternatives:
     :link-badge:`https://aiida-vasp.readthedocs.io/en/latest/calculations/vasp.html, "VASP",cls=badge-vasp text-white, tooltip=Go to the VASP version.`
 
 .. panels::
