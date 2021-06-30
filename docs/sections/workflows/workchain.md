@@ -509,10 +509,13 @@ Based on the concepts you've learned so far, add an extra multiplication step by
 * Write a calculation function called `multiplication`, that takes two `Int` nodes and returns their product.
 * Add a new `Int` input to the `MultiplyAddWorkChain` `spec`, labeled `'z'`.
 * Add a new step to the _outline_ of the work chain called `multipy`.
+  Make it the first step of the _outline_.
   When defining the method, use the `multiplication` calculation function to multiply the `x` and `y` inputs.
   Then pass the results to the `add` step using the context.
 * In the `add()` method, sum the result of the multiplication with the third input `z`.
-* In the `result()` method, also attach the result of the multiplication as an output.
+  Pass the result to the context.
+* In the `result()` method, output the result of step `add()`.
+  Also, attach the result of the multiplication as an output (you need to declare another output for this in the `define` method).
   You can use `product` as the label for the output link, for example.
 
 Try to adapt the `AddWorkChain` into the `MultiplyAddWorkChain` yourself, and run the final work chain to see if it works.
