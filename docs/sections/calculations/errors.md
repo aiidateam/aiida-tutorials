@@ -54,7 +54,7 @@ For the `structure` you can download the following {download}`silicon crystal<in
 If you have already done so previously (as it is used in other tutorial sections), you may want to use that pre-existing node instead of saving a new node with repeated information.
 To do so you may search for its PK by running `verdi data structure list` and then use the function `load_node()` to retrieve it.
 
-For the `pseudos` (or [pseudopotentials](<https://en.wikipedia.org/wiki/Pseudopotential>)), you can use the `SSSP/1.1/PBE/efficiency` family of the `aiida-pseudo` package.
+For the `pseudos` (or [pseudopotentials](https://en.wikipedia.org/wiki/Pseudopotential)), you can use the `SSSP/1.1/PBE/efficiency` family of the `aiida-pseudo` package.
 If you already have it installed, it is enough to use the `load_group()` function and then the `get_pseudos()` method of the loaded pseudo group.
 
 The set of `kpoints` can be simply created by using the methods of the `KpointsData` node class to define a `2x2x2` mesh and store it in a new node.
