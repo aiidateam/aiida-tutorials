@@ -1,6 +1,6 @@
 (calculations-basics)=
 
-# Running your first calculation
+# Running calculations
 
 In this section we'll be learning how to run external codes with AiiDA through calculation plugins.
 
