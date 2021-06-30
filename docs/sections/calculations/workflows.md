@@ -2,7 +2,7 @@
 
 # Running workflows
 
-AiiDA can help you run individual calculations, but it is really designed to help you run workflows that involve several of them, while automatically keeping track of the provenance for full reproducibility.
+AiiDA can help you run individual calculations, but it is really designed to help you run workflows that involve several sub-processes, while automatically keeping track of the provenance for full reproducibility.
 
 To see all currently available workflows in your installation, you can run the following command:
 
