@@ -306,6 +306,10 @@ As the error message explains, the work chain is trying to create new `Data`.
 However, in order to preserve the _data_ provenance, data can only be created by `calculation functions` or `calculation jobs`.
 So, to correctly create the new data inside the work chain, we'll have to add a calculation function to our script.
 
+### Cleaning up
+
+**TODO: Add example on how to kill/delete a process to clean up erroneous `AddWorkChain` run.**
+
 (workflows-workchain-creating-data)=
 
 ## Creating data with calculation function
@@ -454,6 +458,8 @@ Maybe also use the command to show more details for the `addition()` calculation
 
 :::
 
+(workflows-workchain-context)=
+
 ## Multiple work chain steps - Context
 
 So far, we have only had a single step in the outline of our work chain.
@@ -526,6 +532,8 @@ MultiplyAddWorkChain<203> Finished [0] [2:result]
     ├── multiplication<204> Finished [0]
     └── addition<206> Finished [0]
 ```
+
+You can then also generate the provenance graph and once again compare it with the details shown by `verdi process show`.
 
 If you get stuck, we've added our solution to the exercise in the dropdown below.
 As always, try to solve the exercise yourself before looking at the solution!
@@ -613,101 +621,149 @@ Out[3]:
 
 :::
 
-## Work chain with Calculation Jobs
+## Submitting calculation jobs
 
-Until now, we have written work chains that create data via `calculation function` processes.
-These processes are executed by the same machine process that is executing the work chain.
-The full potential of a work chain is only accessed when it creates independent processes to execute the varios steps of the outline, such as running an external code.
-This is achieved through an AiiDA process called `calculation job` ({class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob`).
-The execusion of the calculation jobs are managed and controlled by the AiiDA **daemons**.
+All work chains we have seen up to this point rely on calculation _functions_ to create data.
+When running the work chain, these processes are executed by the same Python process that is executing the code in the work chain methods.
+All the functionality of the work chains above could have been implemented in a work _function_.
+In fact, this would be much more simple, similar to the `add_multiply` work function shown in the {ref}`work function module <workflows-workfunction>`.
 
-Here, we demonstrate how to include calculation jobs in our work chain.
-We are going to use the example in Section {ref}`Two calculation functions and more outputs<workflows-workchain-adding-complexity>` and replace the `addition` calculation function.
-The resulting code looks like this:
+Of course, the power of a work chain lies in its ability to _submit_ other processes that can run independently while the work chain waits for them to complete.
+Doing so also releases the daemon to do other tasks, which is vital when running many workflows in high-throughput.
+These processes often don't run Python code - think for example of a remote binary running on a supercomputer.
 
-```{literalinclude} include/code/workchain/my_first_workchain_6_calcjob.py
+Although a work chain can also submit other work chains, in this section we'll see how to submit a _calculation job_ ({class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob`) inside a work chain. Starting from the `AddWorkChain` in the {ref}`section on work chain context <workflows-workchain-context>` the code below replaces the `addition` calculation function by the `ArithmeticAdd` calculation job, which ships with `aiida-core`:
+
+:::{margin}
+{{ download }} **{download}`Download the script! <include/code/workchain/addcalcjobworkchain.py>`**
+:::
+
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
 :language: python
-:emphasize-lines: 1-5, 24, 41-46, 48, 54
+:emphasize-lines: 1-5, 17, 24-30, 32, 38
 ```
 
-Let us break down what we did.
-First, we imported the {class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob` that we plan on using with the help of the `CalculationFactory`:
+Let's have a closer look at each change in the code.
+First, we imported the `ArithmeticAddCalculation` calculation job that we plan on using with the help of the `CalculationFactory`:
 
-```{literalinclude} include/code/workchain/my_first_workchain_6_calcjob.py
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
 :language: python
-:lines: 5
+:lines: 3-5
 ```
 
-We also declared a new input, which is a code:
+However, it is possible to set up multiple codes in the AiiDA database that run the _same_ calculation job (a local and remote one, for example).
+Hence, the user must also be able to specify _which code_ the work chain should run.
+To allow this, we have added a `code` input to the work chain `spec`, which must be of type `Code`:
 
-```{literalinclude} include/code/workchain/my_first_workchain_6_calcjob.py
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
 :language: python
-:lines: 24
+:lines: 17
 ```
 
-(**TODO: Somebody needs to try and explain this idea of passing a code as an input, then running a calc job process which executes the code...**)
+In the `add()` method we now _submit_ the `ArithmeticAddCalculation` calculation _job_ instead of _running_ the `addition()` calculation _function_:
 
-
-In the `add()` method, which is the second step in the outline of the work chain, instead of a calculation function, we are submitting the {class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob` named `ArithmeticAddCalculation`:
-
-```{literalinclude} include/code/workchain/my_first_workchain_6_calcjob.py
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
 :language: python
-:pyobject: MultiplyAddWorkChain.add
+:pyobject: AddCalcjobWorkChain.add
 ```
 
-When submitting this calculation job to the daemon, it is **essential** to use the submit method from the work chain instance via `self.submit()`.
-Since the result of the addition is only available once the calculation job is finished, the `submit()` method returns the {class}`~aiida.orm.nodes.process.calculation.calcjob.CalcJobNode` of the *future* `ArithmeticAddCalculation` process.
-To tell the work chain to wait for this process to finish before continuing the workflow, we return the `ToContext` class, where we have passed a dictionary to specify that the future calculation job node `calc_job_node` should be assigned to the `'summation_calc_job'` context key.
+:::{important}
+When submitting a calculation job or work chain inside a work chain, it is **essential** to use the submit method of the work chain via `self.submit()`.
+:::
 
-Once the `add` step is complete, the work chain will execute the `result` step.
-The result of the addition performed by the `ArithmeticAddCalculation` calculation job is found in the dictionary under the key `outputs`.
-Among the outputs of the calculation job, we want the one labbed `sum` to declare it as the work chain output:
+Since the result of the addition is only available once the calculation job is finished, the `submit()` method returns the {class}`~aiida.orm.nodes.process.calculation.calcjob.CalcJobNode` of the `ArithmeticAddCalculation` process.
+To make sure the work chain waits for this process to finish before continuing, we return the `ToContext` container.
+Here, we have specified that the calculation job node stored in `calc_job_node` should be assigned to the `'summation_calc_job'` context key.
 
-```{literalinclude} include/code/workchain/my_first_workchain_6_calcjob.py
+Once the `ArithmeticAddCalculation` calculation job is finished, the work chain will execute the `result` step.
+The outputs of the calculation job are stored in the `outputs` attribute of the calculation job node.
+In case of the `ArithmeticAddCalculation`, the result of the addition is attached as an output using the `sum` link label, and hence can be accessed using `<calculation_job_node>.outputs.sum`.
+Since we have added the calculation job node to the context under the `add_node` key, we obtain the sum using `self.ctx.add_node.outputs.sum`.
+This result is then attached as the `workchain_result` output:
+
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
 :language: python
-:lines: 54
+:lines: 38
 ```
 
-### Run the work chain
+And that's all!
+Copy the _full_ code snippet for the work chain to a Python file, for example `addcalcjobworkchain.py`.
+Now we're ready to launch our work chain.
 
-Now, it is time to run our work chain.
-In order that the AiiDA daemon knows where to find the work chain, we need to add its directory to the `PYTHONPATH`.
-Navigate until that directory in the terminal and execute (adjusting the path for your python environment):
+### Submit the work chain
+
+When _submitting_ work chains to the AiiDA daemon, it's important that it knows where to find the work chain module, i.e. the `.py` file that contains the work chain code.
+To do this, we need to add the directory that contains this file to the `PYTHONPATH`.
+Make sure you are in the directory that contains the `addcalcjobworkchain.py` file and execute:
 
 ```{code-block} console
-$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> /home/max/.virtualenvs/aiida/bin/activate
+$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> **TODO FIX THIS PATH**
 $ verdi daemon restart --reset
 ```
 
-Check if you have setup the `add` code:
+:::{important}
+The code snippet above only works for the `base` environment on the AiiDAlab JupyterHub cluster.
+If you are working in a different environment, or on your local machine, you have to replace the path of the `activate` script to that of your environment.
+:::
+
+Also double check that you have set up the `add` code used in the `ref`{AiiDA basics module <fundamentals-basics-calcjobs>}:
 
 ```{code-block} console
 $ verdi code list
-# List of configured codes:
-# (use 'verdi code show CODEID' to see the details)
+...
 * pk 1912 - add@localhost
-
 ```
 
-Setup the computer and code if needed:
+If not, you can set it up with the instructions in the dropdown below.
+
+:::{dropdown} Set up the `add` code
+
+Setting up the `add` code on the `localhost` computer can be done with the following command:
 
 ```{code-block} console
-$ verdi computer setup --config computer.yml
-$ verdi computer configure local localhost
-$ verdi code setup --config code_add.yml
+$ verdi code setup -L add --on-computer --computer=tutor -P arithmetic.add --remote-abs-path=/bin/bash -n
 ```
 
-In the `verdi shell`, run:
-```{code-block} console
+See the {ref}`calculation jobs section <fundamentals-basics-calcjobs>` in the AiiDA basics module for mode details.
+
+:::
+
+Then open a `verdi shell` and import the `submit()` function and work chain:
+
+```{code-block} ipython
 In [1]: from aiida.engine import submit
-In [2]: from multiply_add_workchain_calcjob import MultiplyAddWorkChain
-In [3]: add_code = load_code(label='add@localhost')
-In [4]: inputs = {'x': Int(1), 'y': Int(2), 'z': Int(3), 'code': add_code}
-In [5]: workchain_node = submit(MultiplyAddWorkChain, **inputs)
+   ...: from addcalcjobworkchain import AddCalcjobWorkChain
 ```
 
-Now, go and check the last processes, the status of the `MultiplyAddWorkChain`, and show some details about the inputs and outputs.
+We'll also need the `add` code set up on the `localhost`.
+Load it using its label:
 
-## Cleaning up
+```{code-block} ipython
+In [2]: add_code = load_code(label='add@localhost')
+```
 
-**TODO: Add example on how to kill/delete a process to clean up erroneous `AddWorkChain` run.**
+Then we can submit the work chain:
+
+```{code-block} ipython
+In [3]: workchain_node = submit(AddWorkChain, x=Int(1), y=Int(2), code=add_code)
+```
+
+Note that just like for the `self.submit()` method executed _inside_ the work chain, the bare `submit()` function also returns the process _node_:
+
+```{code-block} ipython
+In [4]: workchain_node
+Out[4]: <WorkChainNode: uuid: 0936f2b4-01af-46bb-98f8-da828ce706eb (pk: 324) (addcalcjobworkchain.AddCalcjobWorkChain)>
+```
+
+In this case it is the node of the `AddCalcjobWorkChain` we have just submitted.
+
+### Exercises
+
+(1) As before, generate the provenance graph of the `AddCalcjobWorkChain` and check the details of `verdi process show`.
+Do you see any differences with the `AddWorkChain`?
+
+(2) Try loading the `ArithmeticAddCalculation` node in the `verdi shell`, and browse its outputs via the `outputs` attribute and tab-completion.
+Basically, after loading the node in e.g. `add_node`, type `add_node.outputs.` and then press Tab.
+Do you find the `sum` output?
+
+(3) To practice the concepts of this final section, adapt the `MultiplyAddWorkChain` so it uses the `ArithmeticAddCalculation` calculation _job_ instead of the `addition()` calculation process.
