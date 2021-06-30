@@ -24,8 +24,8 @@ This is a fully automated workflow that will:
 
 ## Submitting a work chain
 
-In order to run this work chain, we will again open the `verdi shell`.
-We will then load the work chain using its entry point and the `WorkflowFactory`:
+In order to run this work chain, you should again open the `verdi shell`.
+You should then load the work chain using its entry point and the `WorkflowFactory`:
 
 ```{code-block} ipython
 
@@ -38,7 +38,7 @@ Instead, we are going to use one of the protocols that has been set up for the w
 To do this, all we need to provide is the code and initial structure we are going to run:
 
 :::{margin}
-Replace `<CODE_PK>` and `<STRUCTURE_PK>` with those of the code and structure you used in the base module of this section.
+Replace `<CODE_PK>` and `<STRUCTURE_PK>` with the respective PKs of the code and structure you used in the base module of this section.
 :::
 
 ```{code-block} ipython
@@ -123,7 +123,7 @@ The `process status` is particularly useful for debugging complex work chains, s
 ## Displaying the results
 
 Once the work chain has finished running, use `verdi process show <PK>` to inspect the `PwBandsWorkChain` and find the PK of its `band_structure` output.
-We can also plot the band structure using the `verdi shell`:
+You can also plot the band structure using the `verdi shell`:
 
 ```{code-block} console
 
@@ -141,10 +141,10 @@ Band structure computed by the `PwBandsWorkChain`.
 
 :::
 
-:::{important} **What we learnt**
+:::{important} **Key takeaways**
 
- - Work chains can be prepared from a builder and submitted just like calculations.
+ - Work chains can be prepared from a builder and submitted similar to calculations.
  - The method `get_builder_from_protocol()` can return a pre-populated builder from minimal inputs.
- - In addition to `verdi process list`, you can see a hierarchical overview of a workflow by using `verdi process status`
+ - In addition to `verdi process list`, you can see a hierarchical overview of a workflow by using `verdi process status`.
 
 :::
