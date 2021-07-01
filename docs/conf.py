@@ -93,9 +93,9 @@ master_doc = "index"
 project = u"AiiDA Tutorials"
 # pylint: disable=redefined-builtin
 copyright = u"\
-2019, ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (Theory and Simulation of Materials (THEOS) \
-and National Centre for Computational Design and Discovery of Novel Materials (NCCR MARVEL)), Switzerland \
-and ROBERT BOSCH LLC, USA. All rights reserved"
+2021, ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (Theory and Simulation of Materials (THEOS) \
+and National Centre for Computational Design and Discovery of Novel Materials (NCCR MARVEL)), Switzerland. \
+All rights reserved"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -121,7 +121,7 @@ author = "The AiiDA team."
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 exclude_patterns = ["build/*", "assets/*", "**/.ipynb_checkpoints/", "**/clipboard.md"]
-exclude_patterns.append("sections/calculations/reference.md")
+exclude_patterns.append("sections/running_processes/reference.md")
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 # default_role = None
@@ -154,7 +154,7 @@ html_css_files = [
     "panels-custom.css",
 ]
 html_theme_options = {
-    "home_page_in_toc": True,
+    "home_page_in_toc": False,
     "repository_url": "https://github.com/aiidateam/aiida-pseudo",
     "repository_branch": "master",
     "use_repository_button": True,

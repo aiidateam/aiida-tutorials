@@ -1,5 +1,5 @@
-Workflows
-=========
+Writing workflows
+=================
 
 .. rst-class:: header-text
 

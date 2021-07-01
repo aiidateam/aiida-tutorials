@@ -1,5 +1,5 @@
-Data
-====
+Managing data
+=============
 
 .. rst-class:: header-text
 

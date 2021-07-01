@@ -1,5 +1,5 @@
-Plugins
-=======
+Creating plugins
+================
 
 .. rst-class:: header-text
 
