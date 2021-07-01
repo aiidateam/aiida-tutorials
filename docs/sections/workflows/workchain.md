@@ -13,7 +13,7 @@ In this module, you will learn step-by-step how to write work chains in AiiDA.
 
 :::{note}
 
-To focus on the AiiDA concepts, the examples in this module are purposefully kept very simple.
+To focus on the AiiDA concepts, the examples in this module are toy work chains that are purposefully kept very simple.
 In a later module on writing workflows, you will see a real-world example of a work chain that calculates the equation of state of a material.
 
 :::
@@ -24,7 +24,7 @@ We will start with a very simple work chain which we then modify step by step to
 A very basic example to start with is a work chain that receives a single input and passes it as the output.
 To get started, create a Python file for the work chain (e.g. `my_first_workchain.py`), and add the following piece of code:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+```{literalinclude} include/code/workchain/my_first_workchain_1_output_input.py
 :language: python
 :lines: 1-15
 ```
@@ -45,7 +45,7 @@ You can find more information and a basic example [here](https://pythonbasics.or
 
 The most important method to implement for every work chain is the `define()` _class method_:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+```{literalinclude} include/code/workchain/my_first_workchain_1_output_input.py
 :language: python
 :lines: 8-11
 ```
@@ -61,7 +61,7 @@ In the `define()` method, we can see three aspects of the work chain are specifi
 
 * The **inputs** are specified using the `spec.input()` method:
 
-  ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+  ```{literalinclude} include/code/workchain/my_first_workchain_1_output_input.py
   :language: python
   :lines: 13
   ```
@@ -72,7 +72,7 @@ In the `define()` method, we can see three aspects of the work chain are specifi
 
 * The **outline** is specified using the `spec.outline()` method:
 
-  ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+  ```{literalinclude} include/code/workchain/my_first_workchain_1_output_input.py
   :language: python
   :lines: 14
   ```
@@ -83,7 +83,7 @@ In the `define()` method, we can see three aspects of the work chain are specifi
 
 * The **outputs** are specified using the `spec.output()` method:
 
-  ```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+  ```{literalinclude} include/code/workchain/my_first_workchain_1_output_input.py
   :language: python
   :lines: 15
   ```
@@ -106,10 +106,10 @@ This is done by adding each step as a method to the work chain class.
 Let's do this for our single `result` step:
 
 :::{margin}
-{{ download }} **{download}`Download the script! <include/code/new_scripts/my_first_workchain_1_output_input.py>`**
+{{ download }} **{download}`Download the script! <include/code/workchain/my_first_workchain_1_output_input.py>`**
 :::
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+```{literalinclude} include/code/workchain/my_first_workchain_1_output_input.py
 :language: python
 :emphasize-lines: 17-21
 ```
@@ -117,7 +117,7 @@ Let's do this for our single `result` step:
 As you can see, we defined `result()` as a method of the `OutputInputWorkChain` class.
 In this step, we are simply passing the input, stored in `self.inputs.x`, to the output labeled `workchain_result`:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_1_output_input.py
+```{literalinclude} include/code/workchain/my_first_workchain_1_output_input.py
 :language: python
 :lines: 21
 ```
@@ -201,6 +201,26 @@ That is because our first work chain did not create any data, but just passed th
 (1) Generate the provenance graph of the `OutputInputWorkChain`.
 Is it what you would expect?
 
+:::{margin}
+Try to solve the exercises yourself before looking at the solution!
+You'll learn much more that way. 🙃
+:::
+
+:::{dropdown} **Solution**
+
+The provenance graph should look something like this:
+
+```{figure} include/images/workchain/outputinputworkchain.png
+:width: 400px
+
+Provenance graph of the `OutputInputWorkChain`.
+
+```
+
+Notice how the _same_ `Int` node is both the input and output of the work chain, as expected.
+Also note that labels of the _links_ (i.e. the arrows connecting the nodes) correspond to those we defined in the `spec` using the `spec.input()` and `spec.output()` methods.
+:::
+
 (2) Try to pass an integer for the `x` input when running the `OutputInputWorkChain`, instead of an `Int` _node_.
 What happens?
 
@@ -232,7 +252,7 @@ We can see that an error is raised that indicates that the Python integer (`<cla
 Our next goal is to try and write a work chain that receives two inputs, adds them together, and outputs the sum.
 In a first attempt do this, open the `my_first_workchain.py` file and make the following changes (highlighted):
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_2_wrong_add.py
+```{literalinclude} include/code/workchain/my_first_workchain_2_wrong_add.py
 :language: python
 :emphasize-lines: 5,14,21,23
 ```
@@ -240,7 +260,7 @@ In a first attempt do this, open the `my_first_workchain.py` file and make the f
 As you can see, the first change is to update the name of the work chain to `AddWorkChain` to better represent its new functionality.
 Next, we declared a new input in the `define()` method:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_2_wrong_add.py
+```{literalinclude} include/code/workchain/my_first_workchain_2_wrong_add.py
 :language: python
 :lines: 14
 ```
@@ -248,7 +268,7 @@ Next, we declared a new input in the `define()` method:
 The `y` input is simply a second `Int` node that we will add to `x`.
 This is now done in the `result()` method, where we added the two inputs and attached the sum (`summation`) as the new output of the work chain:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_2_wrong_add.py
+```{literalinclude} include/code/workchain/my_first_workchain_2_wrong_add.py
 :language: python
 :lines: 21-23
 ```
@@ -286,49 +306,67 @@ As the error message explains, the work chain is trying to create new `Data`.
 However, in order to preserve the _data_ provenance, data can only be created by `calculation functions` or `calculation jobs`.
 So, to correctly create the new data inside the work chain, we'll have to add a calculation function to our script.
 
+### Cleaning up
+
+**TODO: Add example on how to kill/delete a process to clean up erroneous `AddWorkChain` run.**
+
 (workflows-workchain-creating-data)=
 
 ## Creating data with calculation function
 
-Here, we demonstrate how to process and create new data in a work chain using a `calculation function`.
-To do this, we'll define a calculation function that adds the two numbers together and call this function inside a work chain step.
+Let's fix the issue with our work chain by creating the new data using a _calculation function_.
+To do this, define a calculation function that adds the two numbers together and call this function inside a work chain step.
 You can see the highlighted changes below:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_3_add_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_3_add_calcfunc.py
 :language: python
 :emphasize-lines: 2, 5-7, 27
 ```
+
+:::{margin} {{ python }} **Decorators**
+A decorator can be used to add functionality to an existing function.
+You can read more about them [here](https://pythonbasics.org/decorators/).
+:::
+
 We first imported the `calcfunction` _decorator_ from the aiida engine.
 Then, we defined the `addition()` function outside the work chain scope, then we decorated it with `@calcfunction`:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_3_add_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_3_add_calcfunc.py
 :language: python
 :pyobject: addition
 ```
-And finally, we added the two inputs using the _calculation function_ that we have just declared:
+And finally, we added the two inputs using the `addition()` _calculation function_ that we defined above:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_3_add_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_3_add_calcfunc.py
 :language: python
 :lines: 27
 ```
 
-This will ensure that the `Int` node created by the addition is part of the data provenance.
+This will ensure that the `Int` node created by the addition is stored as a part of the data provenance.
 
 ### Run the work chain
 
-Let's run the work chain that uses the `addition` calculation function.
+Let's run the work chain that uses the `addition()` calculation function.
 Once again make sure you are in the folder where you have the work chain Python script, open the `verdi shell` and execute:
 
 ```{code-block} ipython
 In [1]: from aiida.engine import run
 In [2]: from my_first_workchain import AddWorkChain
-In [3]: result = run(AddWorkChain, x=Int(4), y=Int(3) )
-In [4]: result
-Out[4]: {'workchain_result': <Int: uuid: 21cf16e9-58dc-4566-bbd7-b170fcd628ee (pk: 1990) value: 7>}
-
+In [3]: result = run(AddWorkChain, x=Int(4), y=Int(3))
 ```
 
-You can now close the `verdi shell` session and check the information about the work chain that we just ran:
+This time the run should have completed without issue!
+Let's see what result was returned by the `run()` call:
+
+```{code-block} ipython
+In [4]: result
+Out[4]: {'workchain_result': <Int: uuid: 21cf16e9-58dc-4566-bbd7-b170fcd628ee (pk: 1990) value: 7>}
+```
+
+Similar to the first work chain you ran, the result is a dictionary that contains the output label and output `Int` node as a key/value pair.
+However, now the `Int` node is a _new_ node that was _created_ by the `addition()` calculation function.
+
+Close the `verdi shell` session and look for the work chain you just ran:
 
 ```{code-block} console
 $ verdi process list -a -p 1
@@ -337,19 +375,23 @@ $ verdi process list -a -p 1
 1989  49s ago    addition         ⏹ Finished [0]
 ```
 
-Also check the status of the process that corresponds to the work chain `AddWorkChain`:
+Next, check the _status_ of the process that corresponds to the `AddWorkChain`:
 
 ```{code-block} console
 $ verdi process process status 1988
 AddWorkChain<1988> Finished [0] [None]
     └── addition<1989> Finished [0]
 ```
-Notice that now we see a branch in the work chain tree, which indicates that a process (the `addition` _calculation function_) was called by the `AddWorkChain`.
-Next, you can obtain some details about the in- and outputs with:
+
+Notice how there is a branch in the work chain tree, which shows that a process (the `addition()` _calculation function_) was called by the `AddWorkChain`.
+Finally, you can obtain some details about the in- and outputs with:
 
 ```{code-block} console
-:emphasize-lines: 15-16,20
-$ verdi process show 1988
+$ verdi process show <PK>
+```
+
+```{code-block} console
+:emphasize-lines: 14-15,19
 Property     Value
 -----------  ------------------------------------
 type         AddWorkChain
@@ -380,39 +422,76 @@ That is because it is a new data node that was created by the calculation functi
 
 ### Exercises
 
-Got back and check the status of the process that corresponds to the work chain `OutputInputWorkChain`:
+(1) Go back and check the status of the process that corresponds to the work chain `OutputInputWorkChain`.
+How is it different from the `AddWorkChain`?
+
+:::{dropdown} **Solution**
+
+The `OutputInputWorkChain` status is just a single line:
+
 ```{code-block} console
-$ verdi process process status 1982
+$ verdi process process status <PK>
 OutputInputWorkChain<1982> Finished [0] [None]
 ```
 
-## Context
+Since in this case, no _call_ to a calculation function was made.
+By contrast, the `AddWorkChain` _does_ call the `addition()` function, which automatically becomes a part of the hierarchical overview shown by `verdi process status`.
 
-When writing your work chain, you may need to pass data between different steps in the outline.
-This can be achieved using the context dictionary.
-Our new work chain will have the same goal as before, adding its two inputs.
-But this time, we will create two steps in the `outline`, one to actually add the inputs and thus creating new data, and another step just to pass the result as an output.
-The code will look like this:
+:::
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_4_pass_context.py
+(2) Generate the provenance graph of the `AddWorkChain`, and compare it to that of the `OutputInputWorkChain`.
+
+:::{dropdown} **Solution**
+
+The provenance graph should look something like this:
+
+```{figure} include/images/workchain/addworkchain.png
+:width: 400px
+
+Provenance graph of the `AddWorkChain`.
+
+```
+
+Notice how there now is a new `Int` node, _created_ by the `addition()` calculation function (note the `CREATE` link), but _returned_ by the `AddWorkChain` (note the `RETURN` link).
+Take a bit of time to compare the information shown by `verdi process show` with the provenance graph.
+Maybe also use the command to show more details for the `addition()` calculation function.
+
+:::
+
+(workflows-workchain-context)=
+
+## Multiple work-chain steps - Context
+
+So far, we have only had a single step in the outline of our work chain.
+When writing work chains with multiple steps, you may need to pass data between them.
+This can be achieved using the _context_.
+
+Our new work chain will have the same goal as before, simply adding two inputs.
+But this time, we will create two steps in the `outline()` call, one to actually add the inputs and thus creating new data, and another step just to pass the result as an output.
+The code looks like this:
+
+```{literalinclude} include/code/workchain/my_first_workchain_4_pass_context.py
 :language: python
 :emphasize-lines: 20, 23, 30, 36
 ```
+
 We added an extra step called `add` in the `outline` to be executed before `result`:
-```{literalinclude} include/code/new_scripts/my_first_workchain_4_pass_context.py
+
+```{literalinclude} include/code/workchain/my_first_workchain_4_pass_context.py
 :language: python
 :lines: 20
 ```
 
-Then, we defined the new `add()` method:
+Which means we also have to define the `add()` method for the work chain class:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_4_pass_context.py
+```{literalinclude} include/code/workchain/my_first_workchain_4_pass_context.py
 :language: python
 :pyobject: AddWorkChain.add
 ```
-Instead of passing the result of the addition (`summation`) directly as an output, we added it to the work chain **context** using `self.ctx`:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_4_pass_context.py
+This method is essentially the same as the `result()` method from the previous version, but instead of passing the result of the addition (`summation`) directly as an output, we added it to the work chain **context** using `self.ctx`:
+
+```{literalinclude} include/code/workchain/my_first_workchain_4_pass_context.py
 :language: python
 :lines: 30
 ```
@@ -420,54 +499,82 @@ Instead of passing the result of the addition (`summation`) directly as an outpu
 By doing so, the information stored in the context can now be used by another step of the outline.
 In our example, the `self.ctx.summation` is passed as the `workchain_result` output in the `result()` step:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_4_pass_context.py
+```{literalinclude} include/code/workchain/my_first_workchain_4_pass_context.py
 :language: python
 :pyobject: AddWorkChain.result
 ```
 
 (workflows-workchain-adding-complexity)=
 
-## Adding more complexity
+## Exercise: Adding multiplication
 
-Increasing the level of complexity, we want to write a work chain which receives three inputs, multiply the first two inputs and add to that result the value of the third input.
-Also, we want the work chain to output both the product of the first two inputs and the final result.
-Keep in mind that in real-life examples, in the steps where we are doing mere arithmetic, one shoudl expect complex tasks such as running an external code.
-Our code may seem like this:
+Alright, now it's your turn!
+Based on the concepts you've learned so far, add an extra multiplication step by doing the following:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
-:language: python
-:emphasize-lines: 10-12, 15, 25-26, 28, 30, 42, 52
+* Rename the work chain to `MultiplyAddWorkChain`, since we'll be adding an extra multiplication step.
+* Write a calculation function called `multiplication`, that takes two `Int` nodes and returns their product.
+* Add a new `Int` input to the `MultiplyAddWorkChain` `spec`, labeled `'z'`.
+* Add a new step to the _outline_ of the work chain called `multipy`, making sure it is the first step of the outline.
+  When defining the method, use the `multiplication` calculation function to multiply the `x` and `y` inputs.
+  Then pass the results to the `add` step using the context.
+* In the `add()` method, sum the result of the multiplication with the third input `z` and pass the result to the context.
+* In the `result()` method, output the result of the `add` step as the `'workchain_result'`.
+  Also, attach the result of the multiplication as an output.
+  Note that you need to declare another output for this in the `define` method.
+  You can use `product` as the label for the output link, for example.
+
+Try to adapt the `AddWorkChain` into the `MultiplyAddWorkChain` yourself, and run the final work chain to see if it works.
+Once you managed to run the work chain, the `status` should have both the `multiply` and `add` calculation functions in the hierarchy:
+
+```{code-block} console
+$ verdi process status 203
+MultiplyAddWorkChain<203> Finished [0] [2:result]
+    ├── multiplication<204> Finished [0]
+    └── addition<206> Finished [0]
 ```
 
-This work chain above, we first defined a `calculation function` to receive and multiply two inputs using the `@calcfunction` decorator:
+You can then also generate the provenance graph and once again compare it with the details shown by `verdi process show`.
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+If you get stuck, we've added our solution to the exercise in the dropdown below.
+As always, try to solve the exercise yourself before looking at the solution!
+
+:::{dropdown} **Solution**
+
+Here is the full code for the `MultiplyAddWorkChain`, with changes highlighted:
+
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
+:language: python
+:emphasize-lines: 10-12, 15, 25-26, 28, 30, 33, 36, 42, 52
+```
+
+We first defined a `calculation function` to receive and multiply two inputs using the `@calcfunction` decorator:
+
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
 :language: python
 :pyobject: multiplication
 ```
 
-We gave an appropriate name to our work chain, i.e., `MultiplyAddWorkChain()`.
-Then, we declared one more input labelled `z`  (to make three in total), and another output labelled `product` (totalizing two outputs) :
+Next, we gave a more appropriate name to our work chain (`MultiplyAddWorkChain`), and declared one more input labelled `z` (now three in total), and another output labelled `product` (totalizing two outputs):
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
 :language: python
 :lines: 25
 ```
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
 :language: python
 :lines: 28
 ```
 
-Then, we added another step in the outline, i.e., `multiply`, to be executed before the `add` step:
+We also added the `multiply` step in the outline, which is executed before the `add` step:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
 :language: python
 :lines: 26
 ```
 
-Next, we defined the method that corresponds to this new step:
+and defined the method that corresponds to this new step:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
 :pyobject: MultiplyAddWorkChain.multiply
 ```
 
@@ -475,123 +582,188 @@ Here, the actual processing of data is performed by the `calculation function` t
 The output of `multiplication()` was passed to the context as `self.ctx.product`.
 Then, in the second step of the outline, `add`, we used the result stored in the context and the third input of the work chain as inputs for the calculation function `addition()`:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
 :language: python
 :lines: 42
 ```
+
 whose result was also stored in the context:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
 :language: python
 :lines: 45
 ```
 
 Finally, in the method `result()`, we declared the two outputs, the product that resulted from the multiplication of the first two inputs, and the final result that consists of the product added of the third input:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_5_multiply_calcfunc.py
+```{literalinclude} include/code/workchain/my_first_workchain_5_multiply_calcfunc.py
 :language: python
 :lines: 51-52
 ```
 
-Now, run your work chain and examine the results to see if they are equivalent to that of the section {ref}`Creating data with calculation function<workflows-workchain-creating-data>`.
+That's it!
+Running the work chain is similar as before, but now you must also provide an input for `z`:
 
-## Work chain with Calculation Jobs
-
-Until now, we have written work chains that create data via `calculation function` processes.
-These processes are executed by the same machine process that is executing the work chain.
-The full potential of a work chain is only accessed when it creates independent processes to execute the varios steps of the outline, such as running an external code.
-This is achieved through an AiiDA process called `calculation job` ({class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob`).
-The execusion of the calculation jobs are managed and controlled by the AiiDA **daemons**.
-
-Here, we demonstrate how to include calculation jobs in our work chain.
-We are going to use the example in Section {ref}`Two calculation functions and more outputs<workflows-workchain-adding-complexity>` and replace the `addition` calculation function.
-The resulting code looks like this:
-
-```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
-:language: python
-:emphasize-lines: 1-5, 24, 41-46, 48, 54
+```{code-block} ipython
+In [1]: from aiida.engine import run
+   ...: from my_first_workchain import MultiplyAddWorkChain
+   ...: result = run(MultiplyAddWorkChain, x=Int(4), y=Int(3), z=Int(4))
 ```
 
-Let us break down what we did.
-First, we imported the {class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob` that we plan on using with the help of the `CalculationFactory`:
+and the `result` dictionary has _two_ outputs:
 
-```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
-:language: python
-:lines: 5
+```{code-block} ipython
+In [3]: result
+Out[3]:
+{'workchain_result': <Int: uuid: 8e0f6355-3c8a-4a4f-bea6-97132c9c6c89 (pk: 207) value: 16>,
+ 'product': <Int: uuid: bb7620f8-7b07-4518-ac78-dcca2e7014a3 (pk: 205) value: 12>}
 ```
-
-We also declared a new input, which is a code:
-
-```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
-:language: python
-:lines: 24
-```
-
-(**TODO: Somebody needs to try and explain this idea of passing a code as an input, then running a calc job process which executes the code...**)
-
-
-In the `add()` method, which is the second step in the outline of the work chain, instead of a calculation function, we are submitting the {class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob` named `ArithmeticAddCalculation`:
-
-```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
-:language: python
-:pyobject: MultiplyAddWorkChain.add
-```
-
-When submitting this calculation job to the daemon, it is **essential** to use the submit method from the work chain instance via `self.submit()`.
-Since the result of the addition is only available once the calculation job is finished, the `submit()` method returns the {class}`~aiida.orm.nodes.process.calculation.calcjob.CalcJobNode` of the *future* `ArithmeticAddCalculation` process.
-To tell the work chain to wait for this process to finish before continuing the workflow, we return the `ToContext` class, where we have passed a dictionary to specify that the future calculation job node `calc_job_node` should be assigned to the `'summation_calc_job'` context key.
-
-Once the `add` step is complete, the work chain will execute the `result` step.
-The result of the addition performed by the `ArithmeticAddCalculation` calculation job is found in the dictionary under the key `outputs`.
-Among the outputs of the calculation job, we want the one labbed `sum` to declare it as the work chain output:
-
-```{literalinclude} include/code/new_scripts/my_first_workchain_6_calcjob.py
-:language: python
-:lines: 54
-```
-
-### Run the work chain
-
-Now, it is time to run our work chain.
-In order that the AiiDA daemon knows where to find the work chain, we need to add its directory to the `PYTHONPATH`.
-Navigate until that directory in the terminal and execute (adjusting the path for your python environment):
-
-```{code-block} console
-$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> /home/max/.virtualenvs/aiida/bin/activate
-$ verdi daemon restart --reset
-```
-
-Check if you have setup the `add` code:
-
-```{code-block} console
-$ verdi code list
-# List of configured codes:
-# (use 'verdi code show CODEID' to see the details)
-* pk 1912 - add@localhost
-
-```
-
-Setup the computer and code if needed:
-
-```{code-block} console
-$ verdi computer setup --config computer.yml
-$ verdi computer configure local localhost
-$ verdi code setup --config code_add.yml
-```
-
-In the `verdi shell`, run:
-```{code-block} console
-In [1]: from aiida.engine import submit
-In [2]: from multiply_add_workchain_calcjob import MultiplyAddWorkChain
-In [3]: add_code = load_code(label='add@localhost')
-In [4]: inputs = {'x': Int(1), 'y': Int(2), 'z': Int(3), 'code': add_code}
-In [5]: workchain_node = submit(MultiplyAddWorkChain, **inputs)
-```
-
-Now, go and check the last processes, the status of the `MultiplyAddWorkChain`, and show some details about the inputs and outputs.
-
-:::{rubric} Footnotes
 
 :::
 
-[^f1]: In simple words, a decorator is a function that modifies the behavior of another function. In python, a function can be decorated by adding a line of the form `@decorating_function_name` on the line just before the `def` line of the decorated function. If you want to know more, there are many online resources explaining python decorators.
+## Submitting calculation jobs
+
+All work chains we have seen up to this point rely on calculation _functions_ to create data.
+When running the work chain, these processes are executed by the same Python process that is executing the code in the work-chain methods.
+All the functionality of the work chains above could have been implemented in a work _function_.
+In fact, this would be much more simple, similar to the `add_multiply` work function shown in the {ref}`work function module <workflows-workfunction>`.
+
+Of course, the power of a work chain lies in its ability to _submit_ other processes that can run independently while the work chain waits for them to complete.
+Doing so also releases the daemon to do other tasks, which is vital when running many workflows in high-throughput.
+These processes often don't run Python code - think for example of a remote code installed on a supercomputer.
+
+Although a work chain can also submit other work chains, in this section we'll see how to submit a _calculation job_ ({class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob`) inside a work chain. Starting from the `AddWorkChain` in the {ref}`section on work chain context <workflows-workchain-context>` the code below replaces the `addition` calculation function by the `ArithmeticAdd` calculation job, which ships with `aiida-core`:
+
+:::{margin}
+{{ download }} **{download}`Download the script! <include/code/workchain/addcalcjobworkchain.py>`**
+:::
+
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
+:language: python
+:emphasize-lines: 1-5, 17, 24-30, 32, 38
+```
+
+Let's have a closer look at each change in the code.
+First, we imported the `ArithmeticAddCalculation` calculation job that we plan on using with the help of the `CalculationFactory`:
+
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
+:language: python
+:lines: 3-5
+```
+
+However, it is possible to set up multiple codes in the AiiDA database that run the _same_ calculation job (a local and remote one, for example).
+Hence, the user must also be able to specify _which code_ the work chain should run.
+To allow this, we have added a `code` input to the work chain `spec`, which must be of type `Code`:
+
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
+:language: python
+:lines: 17
+```
+
+In the `add()` method, we now _submit_ the `ArithmeticAddCalculation` calculation _job_ instead of _running_ the `addition()` calculation _function_:
+
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
+:language: python
+:pyobject: AddCalcjobWorkChain.add
+```
+
+:::{important}
+When submitting a calculation job or work chain inside a work chain, it is **essential** to use the submit method of the work chain via `self.submit()`.
+:::
+
+Since the result of the addition is only available once the calculation job is finished, the `submit()` method returns the {class}`~aiida.orm.nodes.process.calculation.calcjob.CalcJobNode` of the `ArithmeticAddCalculation` process.
+To make sure the work chain waits for this process to finish before continuing, we return the `ToContext` container.
+Here, we have specified that the calculation job node stored in `calc_job_node` should be assigned to the `'summation_calc_job'` context key.
+
+Once the `ArithmeticAddCalculation` calculation job is finished, the work chain will execute the `result` step.
+The outputs of the calculation job are stored in the `outputs` attribute of the calculation job node.
+In case of the `ArithmeticAddCalculation`, the result of the addition is attached as an output using the `sum` link label, and hence can be accessed using `<calculation_job_node>.outputs.sum`.
+Since we have added the calculation job node to the context under the `add_node` key, we obtain the sum using `self.ctx.add_node.outputs.sum`.
+This result is then attached as the `workchain_result` output:
+
+```{literalinclude} include/code/workchain/addcalcjobworkchain.py
+:language: python
+:lines: 38
+```
+
+And that's all!
+Copy the _full_ code snippet for the work chain to a Python file, for example `addcalcjobworkchain.py`.
+Now we're ready to launch our work chain.
+
+### Submit the work chain
+
+When _submitting_ work chains to the AiiDA daemon, it's important that it knows where to find the work chain module, i.e. the `.py` file that contains the work chain code.
+To do this, we need to add the directory that contains this file to the `PYTHONPATH`.
+Make sure you are in the directory that contains the `addcalcjobworkchain.py` file and execute:
+
+```{code-block} console
+$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> **TODO FIX THIS PATH**
+$ verdi daemon restart --reset
+```
+
+:::{important}
+The code snippet above only works for the `base` environment on the AiiDAlab JupyterHub cluster.
+If you are working in a different environment, or on your local machine, you have to replace the path of the `activate` script to that of your environment.
+:::
+
+Also double check that you have set up the `add` code used in the `ref`{AiiDA basics module <fundamentals-basics-calcjobs>}:
+
+```{code-block} console
+$ verdi code list
+...
+* pk 1912 - add@localhost
+```
+
+If not, you can set it up with the instructions in the dropdown below.
+
+:::{dropdown} Set up the `add` code
+
+Setting up the `add` code on the `localhost` computer can be done with the following command:
+
+```{code-block} console
+$ verdi code setup -L add --on-computer --computer=tutor -P arithmetic.add --remote-abs-path=/bin/bash -n
+```
+
+See the {ref}`calculation jobs section <fundamentals-basics-calcjobs>` in the AiiDA basics module for mode details.
+
+:::
+
+Then open a `verdi shell` and import the `submit()` function and work chain:
+
+```{code-block} ipython
+In [1]: from aiida.engine import submit
+   ...: from addcalcjobworkchain import AddCalcjobWorkChain
+```
+
+We'll also need the `add` code set up on the `localhost`.
+Load it using its label:
+
+```{code-block} ipython
+In [2]: add_code = load_code(label='add@localhost')
+```
+
+Then we can submit the work chain:
+
+```{code-block} ipython
+In [3]: workchain_node = submit(AddWorkChain, x=Int(1), y=Int(2), code=add_code)
+```
+
+Note that just like for the `self.submit()` method executed _inside_ the work chain, the bare `submit()` function also returns the process _node_:
+
+```{code-block} ipython
+In [4]: workchain_node
+Out[4]: <WorkChainNode: uuid: 0936f2b4-01af-46bb-98f8-da828ce706eb (pk: 324) (addcalcjobworkchain.AddCalcjobWorkChain)>
+```
+
+In this case it is the node of the `AddCalcjobWorkChain` we have just submitted.
+
+### Exercises
+
+(1) As before, generate the provenance graph of the `AddCalcjobWorkChain` and check the details of `verdi process show`.
+Do you see any differences with the `AddWorkChain`?
+
+(2) Try loading the `ArithmeticAddCalculation` node in the `verdi shell`, and browse its outputs via the `outputs` attribute and tab-completion.
+Basically, after loading the node in e.g. `add_node`, type `add_node.outputs.` and then press Tab.
+Do you find the `sum` output?
+
+(3) To practice the concepts of this final section, adapt the `MultiplyAddWorkChain` so it uses the `ArithmeticAddCalculation` calculation _job_ instead of the `addition()` calculation process.
