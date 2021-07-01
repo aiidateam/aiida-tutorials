@@ -1,4 +1,5 @@
-# Work functions
+ (workflows-workfunction)=
+ # Work functions
 
 A *work function* is the simplest of the two types of workflows in AiiDA.
 It can call one or more calculation functions and *return* data that has been *created* by the calculation functions it has called.

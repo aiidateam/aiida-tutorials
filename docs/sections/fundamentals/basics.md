@@ -303,6 +303,8 @@ Provenance graph of the `multiply` calculation function.
 
 ```
 
+(fundamentals-basics-calcjobs)=
+
 ## CalcJobs
 
 When running calculations that require an external code or run on a remote machine, a simple calculation function is no longer sufficient.
