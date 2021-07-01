@@ -10,7 +10,7 @@ Plugins
     For this session, pick one of two options depending on your interests and experience:
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
@@ -36,7 +36,7 @@ Plugins
 
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
