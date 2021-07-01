@@ -460,7 +460,7 @@ Maybe also use the command to show more details for the `addition()` calculation
 
 (workflows-workchain-context)=
 
-## Multiple work chain steps - Context
+## Multiple work-chain steps - Context
 
 So far, we have only had a single step in the outline of our work chain.
 When writing work chains with multiple steps, you may need to pass data between them.
@@ -624,13 +624,13 @@ Out[3]:
 ## Submitting calculation jobs
 
 All work chains we have seen up to this point rely on calculation _functions_ to create data.
-When running the work chain, these processes are executed by the same Python process that is executing the code in the work chain methods.
+When running the work chain, these processes are executed by the same Python process that is executing the code in the work-chain methods.
 All the functionality of the work chains above could have been implemented in a work _function_.
 In fact, this would be much more simple, similar to the `add_multiply` work function shown in the {ref}`work function module <workflows-workfunction>`.
 
 Of course, the power of a work chain lies in its ability to _submit_ other processes that can run independently while the work chain waits for them to complete.
 Doing so also releases the daemon to do other tasks, which is vital when running many workflows in high-throughput.
-These processes often don't run Python code - think for example of a remote binary running on a supercomputer.
+These processes often don't run Python code - think for example of a remote code installed on a supercomputer.
 
 Although a work chain can also submit other work chains, in this section we'll see how to submit a _calculation job_ ({class}`~aiida.engine.processes.calcjobs.calcjob.CalcJob`) inside a work chain. Starting from the `AddWorkChain` in the {ref}`section on work chain context <workflows-workchain-context>` the code below replaces the `addition` calculation function by the `ArithmeticAdd` calculation job, which ships with `aiida-core`:
 
@@ -660,7 +660,7 @@ To allow this, we have added a `code` input to the work chain `spec`, which must
 :lines: 17
 ```
 
-In the `add()` method we now _submit_ the `ArithmeticAddCalculation` calculation _job_ instead of _running_ the `addition()` calculation _function_:
+In the `add()` method, we now _submit_ the `ArithmeticAddCalculation` calculation _job_ instead of _running_ the `addition()` calculation _function_:
 
 ```{literalinclude} include/code/workchain/addcalcjobworkchain.py
 :language: python
