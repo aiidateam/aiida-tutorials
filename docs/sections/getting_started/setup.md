@@ -56,6 +56,13 @@ To download your data from the server prior to its destruction:
 ```{tip} You do not have to download the whole home directory of course, you can just download the files or directories that you would like to preserve.
 ```
 
+```{figure} include/images/download-data.gif
+:align: center
+
+Demonstration of the data download procedure.
+
+```
+
 # Setup on your own machine
 
 ```{warning} The tutorial was tested on the AiiDAlab server introduced above.
