@@ -571,9 +571,6 @@ graph.graphviz
 
 For further information on using `Graph` to generate provenance graphs, please see [this section](https://aiida.readthedocs.io/projects/aiida-core/en/latest/howto/visualising_graphs/visualising_graphs.html) in the documentation.
 
-You can also explore the provenance in other ways.
-If you have time, please work through [this appendix](https://aiida-tutorials.readthedocs.io/en/latest/pages/2020_Intro_Week/appendices/exploring_provenance.html) on exploring provenance.
-
 +++
 
 ## A small high-throughput study
@@ -582,11 +579,13 @@ The following section assumes that a specific dataset is present in your AiiDA d
 If you are not running this script on the virtual machine of the AiiDA tutorial, this script will not produce the desired output.
 You can download the virtual machine image from [aiida-tutorials.readthedocs.io](https://aiida-tutorials.readthedocs.io) along with the tutorial text (choose the correct version of the tutorial, depending on which version of AiiDA you want to try).
 
-````{note}
-If you are not following the tutorial on the official virtual machine that comes with this data, but you are working with your own database, you first have to import the database:
+````{important}
+This section relies on a specific dataset of previously run calculations.
+If you have already imported the data set from the "Organising your data" module, you should be good to go!
+If not, you can use the following command to import the required calculations:
 
 ```{code-block} console
-verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
+verdi archive import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 ```
 
 ````
