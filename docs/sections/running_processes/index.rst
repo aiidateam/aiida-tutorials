@@ -1,3 +1,5 @@
+.. _processes:
+
 Running processes
 =================
 
@@ -21,7 +23,6 @@ Running processes
 
     This base module will take you through the procedures for running your first calcjob.
     You will learn how to prepare the inputs for the calculation, submit it to the engine, follow its status, and analyze its results.
-
 
     +++++++++++++
     .. list-table::
