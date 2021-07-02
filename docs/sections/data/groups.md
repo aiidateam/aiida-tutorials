@@ -4,7 +4,7 @@
 
 In this section of the tutorial we will focus on how to organise and explore the data in an AiiDA database.
 For this tutorial you will be loading and using the information of an external pre-existing database.
-To follow the tutorial, you can use the profile into which you have previously imported this data, or you may wish to create a fresh profile and import the archive into that.
+To follow the tutorial, you can use the profile into which you have previously imported this data or import the archive now.
 To do so, you can copy-paste the following code into a terminal after activating your AiiDA virtual environment:
 
 ```{code-block} console
@@ -69,10 +69,10 @@ PK    Type         Created
 ...
 ```
 
-Conversely, if you want to see all the groups a node belongs to, you can use its PK and run:
+Conversely, if you want to see all the groups a node belongs to, you can use its PK and run, (where `<PK>` should be the PK of the node):
 
 ```{code-block} console
-$ verdi group list -a -A --node 380
+$ verdi group list -a -A --node <PK>
 PK    Label            Type string    User
 ----  ---------------  -------------  ---------------
    1  tutorial_pbesol  core           aiida@localhost
