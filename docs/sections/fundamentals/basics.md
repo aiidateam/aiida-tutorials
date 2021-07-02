@@ -173,6 +173,10 @@ In [1]: from aiida.engine import calcfunction
 This converts the `multiply` function into an AiIDA *calculation function*, the most basic execution unit in AiiDA.
 Next, load the `Int` node you have created in the previous section using the `load_node` function and the PK of the data node:
 
+:::{margin}
+**Remember:** the PK of the data node can be different for your database.
+:::
+
 ```{code-block} ipython
 
 In [2]: x = load_node(pk=1)
@@ -255,43 +259,32 @@ $ verdi node graph generate 3
 
 ```
 
-```{note}
-
-Remember that the PK of the calculation function can be different for your database.
-
-```
-
 The command will write the provenance graph to a `.pdf` file.
-You can open this file on the Amazon virtual machine by using `evince`:
+The name of said file will start with the PK of your calculation node and have an intermediate `.dot` extension (in this case it would be `3.dot.pdf`).
 
-```{code-block} console
+```{eval-rst}
+.. tabs::
 
-$ evince 3.dot.pdf
+    .. tab:: Quantum Mobile
 
-```
+        You can simply use the ``evince`` command to open the ``.pdf`` that contains the provenance graph:
 
-If X-forwarding has been setup correctly, the provenance graph should appear on your local machine.
-In case the ssh connection is too slow, copy the file via `scp` to your local machine.
-To do so, if you are using Linux/Mac OS X, you can type in your *local* machine:
+        .. code-block::
 
-```{code-block} console
+            $ evince <PK>.dot.pdf
 
-$ scp aiidatutorial:<path_to_the_graph_pdf> <local_folder>
+    .. tab:: AiiDAlab cluster
 
-```
+        If you open a *file manager* on the starting page of the AiiDA JupyterHub:
 
-and then open the file.
+        .. figure:: include/images/AiiDAlab_header-file_manager.png
+            :width: 100%
 
-```{note}
-
-You can also use the `jupyter notebook` setup explained (**TODO: FIX LINK**) to download files.
-Note that while Firefox will display the PDF directly in the browser [Chrome and Safari block viewing PDFs from jupyter notebook servers](<https://stackoverflow.com/a/55264795/1069467>) - with these browsers, you will need to tick the checkbox next to the PDF and download the file.
-
-Alternatively, you can use graphical software to achieve the same, for instance: on Windows: WinSCP; on a Mac: Cyberduck; on Linux Ubuntu: using the 'Connect to server' option in the main menu after clicking on the desktop.
+        You should be able to use the file manager to navigate to and open the PDF.
 
 ```
 
-It should look something like the graph shown in {numref}`fig-calcfun-graph`.
+The result should look something like the graph shown in {numref}`fig-calcfun-graph`.
 
 (fig-calcfun-graph)=
 
@@ -303,11 +296,76 @@ Provenance graph of the `multiply` calculation function.
 
 ```
 
+(fundamentals-basics-calcjobs)=
+
 ## CalcJobs
 
 When running calculations that require an external code or run on a remote machine, a simple calculation function is no longer sufficient.
 For this purpose, AiiDA provides the `CalcJob` process class.
-To run a `CalcJob`, you need to set up two things: a `code` that is going to implement the desired calculation and a `computer` for the calculation to run on.
+
+To see all calculations available from the AiiDA packages installed in your environment you can use the `verdi plugin` command:
+
+:::{margin}
+If you just run `verdi plugin list`, you will get a list of all possible groups of plugins.
+:::
+
+```{code-block} console
+
+$ verdi plugin list aiida.calculations
+Registered entry points for aiida.calculations:
+(...)
+* arithmetic.add
+(...)
+
+Info: Pass the entry point as an argument to display detailed information
+
+```
+
+This will show you a long list of _entry points_: strings that are used to identify each plugin within AiiDA.
+In this list you should be able to see the `arithmetic.add` entry point, which identifies the calculation job we want to run.
+
+To get more information about the inputs, outputs, etc. of this calculation job, just follow the instructions at the end of the output and pass the `arithmetic.add` entry point as an additional argument for the command:
+
+```{code-block} console
+
+$ verdi plugin list aiida.calculations arithmetic.add
+Description:
+
+	`CalcJob` implementation to add two numbers using bash for testing and demonstration purposes.
+
+Inputs:
+           code:  required  Code             The `Code` to use for this job.
+              x:  required  Int, Float       The left operand.
+              y:  required  Int, Float       The right operand.
+       metadata:  optional
+Outputs:
+  remote_folder:  required  RemoteData       Input files necessary to run the process will be stored in this folder node ...
+      retrieved:  required  FolderData       Files that are retrieved by the daemon will be stored in this node. By defa ...
+            sum:  required  Int, Float       The sum of the left and right operand.
+   remote_stash:  optional  RemoteStashData  Contents of the `stash.source_list` option are stored in this remote folder ...
+Exit codes:
+              1:  The process has failed with an unspecified error.
+              2:  The process failed with legacy failure mode.
+             11:  The process did not register a required output.
+            100:  The process did not have the required `retrieved` output.
+            110:  The job ran out of memory.
+            120:  The job ran out of walltime.
+            310:  The output file could not be read.
+            320:  The output file contains invalid output.
+            410:  The sum of the operands is a negative number.
+
+```
+
+There are several important things we can learn from the obtained output.
+The first is description of the calculation, which explains that it adds two numbers together.
+Then there are the inputs, of which 3 are required: the code to be used to add the numbers up, and the two numbers to be added up.
+Finally, among the outputs, you can see the `sum` which contains the result of the addition.
+
+Now that we understand what our `CalcJob` does and what it needs, let us see what we need to do to actually execute it.
+
+### Preliminary setups
+
+Before you run a `CalcJob`, you need to have two things: a `code` that is going to implement the desired calculation and a `computer` for the calculation to run on.
 Let's begin by setting up the computer using the `verdi computer` subcommand:
 
 ```{code-block} console
@@ -351,8 +409,8 @@ $ verdi code list
 
 ```
 
-You can see a single code `add@tutor`, with PK = 5, in the printed list.
-This code allows us to add two integers together.
+In the output above you can see a single code `add@tutor`, with PK = 5, in the printed list.
+Again, in your output you may have other codes listed or a different PK depending on your specific setup, but you should still be able to identify the code by its label.
 The `add@tutor` identifier indicates that the code with label `add` is run on the computer with label `tutor`.
 To see more details about the computer, you can use the following `verdi` command:
 
@@ -387,62 +445,66 @@ So, the PKs for each entity type are unique for each database, but entities of d
 
 ```
 
-Let's now start up the `verdi shell` again and load the `add@tutor` code using its label:
+### Running the CalcJob
+
+Let's now start up the `verdi shell` again and load the `arithmetic.add` calculations using the `CalculationFactory`:
 
 ```{code-block} ipython
 
-In [1]: code = load_code(label='add')
+In [1]: ArithmeticAdd = CalculationFactory('arithmetic.add')
 
 ```
 
-Every code has a convenient tool for setting up the required input, called the *builder*.
-It can be obtained by using the `get_builder` method:
+Now you need to gather the actual nodes that will be used as inputs for the calculation.
+If you remember from before, there are three inputs we need to define:
+
+1. **code** (the `Code` to use for the job)
+2. **x** (the left operand, of type `Int` or `Float`)
+3. **y** (the right operand, of type `Int` or `Float`)
+
+For the code, you will use the `add@tutor` code using its label:
 
 ```{code-block} ipython
 
-In [2]: builder = code.get_builder()
+In [2]: code = load_code(label='add@tutor')
 
 ```
 
-Using the builder, you can easily set up the calculation by directly providing the input arguments.
 Let's use the `Int` node that was created by our previous `calcfunction` as one of the inputs and a new node as the second input:
 
 ```{code-block} ipython
 
-In [3]: builder.x = load_node(pk=4)
-   ...: builder.y = Int(5)
+In [3]: x = load_node(pk=4)
+   ...: y = Int(5)
 
 ```
+
+:::{note}
 
 In case that your nodes' PKs are different and you don't remember the PK of the output node from the previous calculation, check the provenance graph you generated earlier and use the UUID of the output node instead:
 
 ```{code-block} ipython
 
-In [3]: builder.x = load_node(uuid='42541d38')
-   ...: builder.y = Int(5)
+In [3]: x = load_node(uuid='42541d38')
+   ...: y = Int(5)
 
 ```
 
 Note that you don't have to provide the entire UUID to load the node.
 As long as the first part of the UUID is unique within your database, AiiDA will find the node you are looking for.
 
-```{note}
+:::
 
-One nifty feature of the builder is the ability to use tab completion for the inputs.
-Try it out by typing `builder.` + `<TAB>` in the verdi shell.
-
-```
-
-To execute the `CalcJob`, we use the `run` function provided by the AiiDA engine:
+To execute the `CalcJob`, you need to feed it (together with the inputs) to the `run` function provided by the AiiDA engine:
 
 ```{code-block} ipython
 
 In [4]: from aiida.engine import run
-   ...: run(builder)
+   ...: run(ArithmeticAdd, code=code, x=x, y=y)
 
 ```
 
-Wait for the process to complete.
+Wait for the process to complete, as it may take a couple of seconds.
 Once it is done, it will return a dictionary with the output nodes:
 
 ```{code-block} ipython
@@ -493,12 +555,13 @@ $ verdi process show 7
 
 ```
 
-## Submitting to the daemon
+### Submitting to the daemon
 
 When we used the `run` command in the previous section, the IPython shell was blocked while it was waiting for the `CalcJob` to finish.
 This is not a problem when we're simply multiplying two numbers, but if we want to run multiple calculations that take hours or days, this is no longer practical.
 Instead, we are going to *submit* the `CalcJob` to the AiiDA *daemon*.
 The daemon is a program that runs in the background and manages submitted calculations until they are *terminated*.
+
 Let's first check the status of the daemon using the `verdi` CLI:
 
 ```{code-block} console
@@ -537,12 +600,12 @@ This follows all the steps we did previously, but now uses the `submit` function
 
 In [1]: from aiida.engine import submit
    ...:
-   ...: code = load_code(label='add')
-   ...: builder = code.get_builder()
-   ...: builder.x = load_node(pk=4)
-   ...: builder.y = Int(5)
+   ...: ArithmeticAdd = CalculationFactory('arithmetic.add')
+   ...: code = load_code(label='add@tutor')
+   ...: x = load_node(pk=4)
+   ...: y = Int(5)
    ...:
-   ...: submit(builder)
+   ...: submit(ArithmeticAdd, code=code, x=x, y=y)
 
 ```
 
@@ -625,8 +688,37 @@ These are ideal for workflows that are not very computationally intensive and ca
 
 ```
 
+Just like we did for `aiida.calculations`, to see all available workflows you can run `verdi plugin list aiida.workflows`.
+You should be able to see the `arithmetic.multiply_add` entry point, among others.
+Once again, to get the specific information for this `WorkChain` you just need to run:
+
+```{code-block} console
+
+$ verdi plugin list aiida.workflows arithmetic.multiply_add
+Description:
+
+	WorkChain to multiply two numbers and add a third, for testing and demonstration purposes.
+
+Inputs:
+      code:  required  Code
+         x:  required  Int
+         y:  required  Int
+         z:  required  Int
+  metadata:  optional
+Outputs:
+    result:  required  Int
+Exit codes:
+         1:  The process has failed with an unspecified error.
+         2:  The process failed with legacy failure mode.
+        10:  The process returned an invalid output.
+        11:  The process did not register a required output.
+       400:  The result is a negative number.
+
+```
+
 Let's run the `WorkChain` above!
-Start up the `verdi shell` and load the `MultiplyAddWorkChain` using the `WorkflowFactory`:
+Just as we did before with the `CalculationFactory`, we will load the `MultiplyAddWorkChain` using the `WorkflowFactory` (which works in the same way but is used for workflows instead of calculations).
+Start up the `verdi shell` and run:
 
 ```{code-block} ipython
 
@@ -634,25 +726,23 @@ In [1]: MultiplyAddWorkChain = WorkflowFactory('arithmetic.multiply_add')
 
 ```
 
-The `WorkflowFactory` is a useful and robust tool for loading workflows based on their *entry point*, e.g. `'arithmetic.multiply_add'` in this case.
-Similar to a `CalcJob`, the `WorkChain` input can be set up using a builder:
+We will now load the necessary nodes for each of the inputs required by the `WorkChain` (see the specifications above):
 
 ```{code-block} ipython
 
-In [2]: builder = MultiplyAddWorkChain.get_builder()
-   ...: builder.code = load_code(label='add')
-   ...: builder.x = Int(2)
-   ...: builder.y = Int(3)
-   ...: builder.z = Int(5)
+In [2]: code = load_code(label='add@tutor')
+   ...: x = Int(2)
+   ...: y = Int(3)
+   ...: z = Int(5)
 
 ```
 
-Once the `WorkChain` input has been set up, we submit it to the daemon using the `submit` function from the AiiDA engine:
+And finally we will submit it to the daemon using the `submit` function from the AiiDA engine:
 
 ```{code-block} ipython
 
 In [3]: from aiida.engine import submit
-   ...: submit(builder)
+   ...: submit(MultiplyAddWorkChain, code=code, x=x, y=x, z=z)
 
 ```
 
@@ -695,7 +785,7 @@ $ verdi node graph generate 19
 
 ```
 
-Open the generated pdf file using `evince`.
+Open the generated pdf file.
 Look familiar?
 The provenance graph should be similar to the one we showed at the start of this tutorial ({numref}`fig-workchain-graph`).
 
