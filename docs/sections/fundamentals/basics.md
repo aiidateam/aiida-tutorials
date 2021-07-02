@@ -112,10 +112,6 @@ The UUIDs are generated randomly and are therefore **guaranteed** to be differen
 Next, let's leave the IPython shell by typing `exit()` and then enter.
 Back in the terminal, use the `verdi` command line interface (CLI) to check the data node we have just created:
 
-:::{margin}
-**Remember:** the PK of the data node can be different for your database.
-:::
-
 ```{code-block} console
 
 $ verdi node show 1
@@ -257,10 +253,6 @@ As a final step, let's have a look at the provenance of this simple calculation.
 The provenance graph can be automatically generated using the verdi CLI.
 Let's generate the provenance graph for the `multiply` calculation function we have just run with PK = 3:
 
-:::{margin}
-**Remember:** the PK of the calculation node can be different for your database.
-:::
-
 ```{code-block} console
 
 $ verdi node graph generate 3
@@ -275,20 +267,20 @@ The name of said file will start with the PK of your calculation node and have a
 
     .. tab:: Quantum Mobile
 
-        Opening files inside of the Quantum Mobile VM is easy!
-        All you need to do is open an explorer windows and go to the working directory in which you generated the file.
-        Then you can simply open it by double clicking on it.
-        Alternatively, you can open the file directly from the terminal by running:
+        You can simply use the ``evince`` command to open the ``.pdf`` that contains the provenance graph:
 
-        .. code-block:: console
+        .. code-block::
 
-            $ evince 3.dot.pdf
+            $ evince <PK>.dot.pdf
 
     .. tab:: AiiDAlab cluster
 
-        Opening files when working with the AiiDAlab cluster is easy!
-        All you need to do is go to the main page and open an explorer windows.
-        You can then just go to the working directory in which you generated the file and double click on it so that it will simply open in a new browser tab.
+        If you open a *file manager* on the starting page of the AiiDA JupyterHub:
+
+        .. figure:: include/images/AiiDAlab_header-file_manager.png
+            :width: 100%
+
+        You should be able to use the file manager to navigate to and open the PDF.
 
 ```
 
@@ -311,35 +303,11 @@ Provenance graph of the `multiply` calculation function.
 When running calculations that require an external code or run on a remote machine, a simple calculation function is no longer sufficient.
 For this purpose, AiiDA provides the `CalcJob` process class.
 
-To see all calculations available from the AiiDA packages installed in your environment you can use the `verdi plugin` command.
-This command can be used for all types of plugins, so running `verdi plugin list` will just list all possible groups of plugins.
+To see all calculations available from the AiiDA packages installed in your environment you can use the `verdi plugin` command:
 
-```{code-block} console
-
-$ verdi plugin list
-Info: Available entry point groups:
-* aiida.calculations
-* aiida.cmdline.computer.configure
-* aiida.cmdline.data
-* aiida.cmdline.data.structure.import
-* aiida.data
-* aiida.groups
-* aiida.node
-* aiida.parsers
-* aiida.schedulers
-* aiida.tools.calculations
-* aiida.tools.data.orbitals
-* aiida.tools.dbexporters
-* aiida.tools.dbimporters
-* aiida.transports
-* aiida.workflows
-
-Info: Pass one of the groups as an additional argument to show the registered plugins
-
-```
-
-If you want to list all calculations, you can follow the instructions at the end of the output: specify the `aiida.calculations` group as an argument of the command.
-This will output a long list of _entry points_, strings that are used to identify each plugin within AiiDA. In this list you should be able to see the `arithmetic.add` entry point identifier, which identifies the calculation job we want to run:
+:::{margin}
+If you just run `verdi plugin list`, you will get a list of all possible groups of plugins.
+:::
 
 ```{code-block} console
 
@@ -353,8 +321,10 @@ Info: Pass the entry point as an argument to display detailed information
 
 ```
 
+This will show you a long list of _entry points_: strings that are used to identify each plugin within AiiDA.
+In this list you should be able to see the `arithmetic.add` entry point, which identifies the calculation job we want to run.
 
-To get more information about the inputs, outputs, etc. of this calculation job, once again follow the instructions and pass the `arithmetic.add` entry point as an additional argument for the command:
+To get more information about the inputs, outputs, etc. of this calculation job, just follow the instructions at the end of the output and pass the `arithmetic.add` entry point as an additional argument for the command:
 
 ```{code-block} console
 
@@ -477,15 +447,13 @@ So, the PKs for each entity type are unique for each database, but entities of d
 
 ### Running the CalcJob
 
-Let's now start up the `verdi shell` again and load the `ArithmeticAdd` using the `CalculationFactory`:
+Let's now start up the `verdi shell` again and load the `arithmetic.add` calculations using the `CalculationFactory`:
 
 ```{code-block} ipython
 
 In [1]: ArithmeticAdd = CalculationFactory('arithmetic.add')
 
 ```
-
-The `CalculationFactory` is a useful and robust tool for loading calculations based on their *entry point*, e.g. `'arithmetic.add'` in this case.
 
 Now you need to gather the actual nodes that will be used as inputs for the calculation.
 If you remember from before, there are three inputs we need to define:
