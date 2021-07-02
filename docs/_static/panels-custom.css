@@ -43,14 +43,37 @@
     padding-bottom:  .75rem;
 }
 
-.table td {
+.footer-table td {
     padding: 0rem;
     margin-bottom: 0rem;
     border-top: 0px solid #dee2e6;
 }
 
-.table td:last-child {
+.footer-table td:last-child {
     text-align: right
+}
+
+.skinny-table th {
+    padding-bottom: 0rem;
+    padding-top: 0rem;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+    border-top: 0px solid #dee2e6;
+}
+
+.skinny-table tr {
+    padding-bottom: 0rem;
+    padding-top: 0rem;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+}
+
+.skinny-table td {
+    padding-bottom: 0rem;
+    padding-top: 0rem;
+    margin-bottom: 0rem;
+    border-top: 0px solid #dee2e6;
+    margin-top: 0rem;
 }
 
 .bd-content .section table {

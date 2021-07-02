@@ -26,6 +26,10 @@ div.highlight-bash div.highlight {
     margin-bottom: 30px;
 }
 
+.large-text {
+    font-size: 18px;
+}
+
 .text-right {
     text-align: right;
 }
