@@ -26,7 +26,7 @@ If you have a question, feel free to just [open an issue](https://github.com/aii
 
 ### Prerequisites
 
-* python 3.5 or greater
+* Python 3.7/3.8
 
 ### Build instructions
 
