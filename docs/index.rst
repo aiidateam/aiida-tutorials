@@ -10,7 +10,7 @@ The tutorials are organised by topic in *sections*, which are listed in the left
    ------
    :column: col-lg-12 pl-0 pr-0
 
-   .. link-button:: sections/fundamentals/index
+   .. link-button:: sections/getting_started/index
       :type: ref
       :text: Getting started: AiiDA fundamentals
       :classes: btn-link btn-block stretched-link
@@ -54,8 +54,8 @@ links inside the respective sections.
  .. toctree::
    :hidden:
 
-   sections/fundamentals/index
-   sections/calculations/index
-   sections/data/index
-   sections/workflows/index
-   sections/plugins/index
+   sections/getting_started/index
+   sections/running_processes/index
+   sections/managing_data/index
+   sections/writing_workflows/index
+   sections/creating_plugins/index

@@ -1,5 +1,5 @@
-Fundamentals
-============
+Getting started
+===============
 
 .. rst-class:: header-text
 
