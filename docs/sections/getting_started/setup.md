@@ -17,8 +17,8 @@ notebookmetadatakey2: val2
 
 # Setup on AiiDAlab
 
-It is assumed that most users will find it easiest to follow the tutorial on the dedicated AiiDAlab instance accessible at [https://aiida-intro-tutorial-2021.aiidalab.net](https://aiida-intro-tutorial-2021.aiidalab.net).
-This instance of AiiDAlab is pre-configured with all the software needed for the tutorial and is the fastest way to get started for anyone who does not already have AiiDA installed and configured on their own machine.
+We recommend that participants run the tutorial material on the dedicated AiiDAlab instance accessible at [https://aiida-intro-tutorial-2021.aiidalab.net](https://aiida-intro-tutorial-2021.aiidalab.net).
+This instance of AiiDAlab is pre-configured with all the software and versions needed for the tutorial and is the fastest way to get started for anyone who does not already have AiiDA installed and configured on their own machine.
 
 This is how you access the server:
 
@@ -39,8 +39,8 @@ Demonstration of the (first) login procedure.
 
 ```
 
-```{important} The tutorial server will be kept online for a few more days after the tutorial has eneded.
-After that it will be shut down and **all data will be removed**.
+```{important} The tutorial server will be shut down on **Friday July 9 at 23:59 CEST**.
+This means that at that time **all data will be removed**.
 Please see the instructions below to download your data from the server.
 ```
 
@@ -66,7 +66,7 @@ Demonstration of the data download procedure.
 # Setup on your own machine
 
 ```{warning} The tutorial was tested on the AiiDAlab server introduced above.
-It might be advisable to follow the tutorial on the AiiDAlab instance even after installing AiiDA on your own machine.
+It might be advisable to follow the tutorial on the AiiDAlab instance even if you have AiiDA installed on your own machine.
 ```
 
 To run the tutorial on your own machine, you need to install
