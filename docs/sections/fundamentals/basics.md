@@ -311,8 +311,8 @@ Provenance graph of the `multiply` calculation function.
 When running calculations that require an external code or run on a remote machine, a simple calculation function is no longer sufficient.
 For this purpose, AiiDA provides the `CalcJob` process class.
 
-To see all calculations available from your AiiDA packages and get information about them you can use the `verdi plugin` command.
-This tool is used for all plugin, so running `verdi plugin list` will just list all possible groups of plugins.
+To see all calculations available from the AiiDA packages installed in your environment you can use the `verdi plugin` command.
+This command can be used for all types of plugins, so running `verdi plugin list` will just list all possible groups of plugins.
 
 ```{code-block} console
 
@@ -338,8 +338,8 @@ Info: Pass one of the groups as an additional argument to show the registered pl
 
 ```
 
-If you want to list calculation in particular you can follow the indications present at the end of the output: specify the `aiida.calculations` group as an argument of the command.
-If you do, you will get a long list of *entry points* (the official label that univocally identifies a plugin within AiiDA), among which you should be able to see the `arithmetic.add`:
+If you want to list all calculations, you can follow the instructions at the end of the output: specify the `aiida.calculations` group as an argument of the command.
+This will output a long list of _entry points_, strings that are used to identify each plugin within AiiDA. In this list you should be able to see the `arithmetic.add` entry point identifier, which identifies the calculation job we want to run:
 
 ```{code-block} console
 
@@ -353,9 +353,8 @@ Info: Pass the entry point as an argument to display detailed information
 
 ```
 
-The `arithmetic.add` shown explicitly above is the `CalcJob` we will be using in what follows.
 
-To get more information about the inputs, outputs, etc. of this calculation, we can just do as indicated again and pass the specific entry point as an additional argument for the command:
+To get more information about the inputs, outputs, etc. of this calculation job, once again follow the instructions and pass the `arithmetic.add` entry point as an additional argument for the command:
 
 ```{code-block} console
 
@@ -387,8 +386,8 @@ Exit codes:
 
 ```
 
-There are several important things to note from the obtained output.
-The first is description of the calculation, which explains that it adds up two numbers together.
+There are several important things we can learn from the obtained output.
+The first is description of the calculation, which explains that it adds two numbers together.
 Then there are the inputs, of which 3 are required: the code to be used to add the numbers up, and the two numbers to be added up.
 Finally, among the outputs, you can see the `sum` which contains the result of the addition.
 
