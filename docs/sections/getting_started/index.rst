@@ -62,5 +62,4 @@ Getting started
     :hidden:
 
     setup
-    Basics <basics>
-    test
+    basics
