@@ -3,14 +3,14 @@
 # Organising your data
 
 In this section of the tutorial we will focus on how to organise and explore the data in an AiiDA database.
-You will be using the previously created database entries for this tutorial.
+For this tutorial you will be loading and using the information of an external pre-existing database.
 To follow the tutorial, you can use the profile into which you have previously imported this data, or you may wish to create a fresh profile and import the archive into that.
 To do so, you can copy-paste the following code into a terminal after activating your AiiDA virtual environment:
 
 ```{code-block} console
 verdi quicksetup --profile data
 verdi profile setdefault data
-verdi import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
+verdi archive import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 ```
 
 ## How to group nodes
@@ -22,7 +22,7 @@ A typical use case is to store all nodes that share a common property in a singl
 
 ### Listing existing groups
 
-Lets explore the groups already present in the imported archive:
+Let's explore the groups already present in the imported archive, by executing the following command:
 
 ```{code-block} console
 $ verdi group list -a -A
@@ -81,28 +81,28 @@ PK    Label            Type string    User
 
 ### Creating and manipulating groups
 
-Lets make a new group:
+Let's make a new group:
 
 ```{code-block} console
 $ verdi group create a_group
 Success: Group created with PK = 8 and name 'a_group'
 ```
 
-If you want to change the name of the group at any time try:
+You can change the name of a group using the `verdi group relabel` command:
 
 ```{code-block} console
 $ verdi group relabel a_group my_group
 Success: Label changed to my_group
 ```
 
-Now you can add one or more nodes to it by listing any number of node PKs:
+Add one or more nodes to your new group using node PKs from the `tutorial_pbesol` group we inspected earlier:
 
 ```{code-block} console
 $ verdi group add-nodes -G my_group 380 1273
 Do you really want to add 2 nodes to Group<my_group>? [y/N]: y
 ```
 
-You can also copy the nodes from an existing group to another group:
+You can also copy *all* nodes from an existing group to another group using:
 
 ```{code-block} console
 $ verdi group copy tutorial_pbesol my_group
@@ -123,7 +123,7 @@ PK    Type         Created
 ...
 ```
 
-To remove nodes from the group is similar to adding them, try:
+Removing nodes from the group is similar to adding them, try:
 
 ```{code-block} console
 $ verdi group remove-nodes -G my_group 74
@@ -149,12 +149,12 @@ The same happens if you remove nodes from the group -- they will remain in the d
 ## Organising groups in hierarchies
 
 Earlier we mentioned that groups are like files in folders on your filesystem.
-Then as with folders and sub-folders, as the amount of groups you have grows, you may also wish to structure your groups in a hierarchy.
+Similar to folders and sub-folders, you may wish to structure your groups in a hierarchy once the number of groups in your database grows larger.
 Groups in AiiDA are inherently "flat", meaning groups may only contain nodes and not other groups.
 However, it is possible to construct *virtual* group hierarchies based on delimited group labels, using the `grouppath` utility.
 
-Like folder paths on Unix systems `grouppath` requires delimitation by forward slash (`/`) characters.
-Lets copy and rename the three tutorial groups:
+Like folder paths on Unix systems, `grouppath` requires delimitation by forward slash (`/`) characters.
+Let's copy and rename the three tutorial groups:
 
 ```{code-block} console
 verdi group copy tutorial_lda tutorial/lda/basic
@@ -180,7 +180,7 @@ In the terminal, paths that contain nodes are listed in bold.
 
 :::
 
-You can see that the actual groups that are created do not appear, only the initial part of the "path", and how many sub-groups that path contains.
+You can see that the actual groups we just created do not appear, only the initial part of the path (`tutorial`), and how many subgroups that path contains.
 You can then step into a path:
 
 ```{code-block} console
