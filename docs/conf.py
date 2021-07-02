@@ -58,14 +58,20 @@ myst_enable_extensions = [
     # "linkify",
     # "replacements",
     # "smartquotes",
-    # "substitution",
+    "substitution",
     # "tasklist",
 ]
+
+myst_substitutions = {
+    "download": '<img src="../../_static/download.png" height="15">',
+    "python": '<img src="../../_static/python.png" height="15">',
+    "aiida": '<img src="../../_static/aiida_logo.png" height="15">',
+}
 
 ipython_mplbackend = ""
 
 copybutton_selector = "div:not(.no-copy)>div.highlight pre"
-copybutton_prompt_text = ">>> |\\\\$ |In \\\\[\\\\d+\\\\]: |\\\\s+\\.\\.\\.: "
+copybutton_prompt_text = ">>> |\.\.\. |\$ |In \[\d*\]: | {2,5}\.\.\.: | {5,8}: "
 copybutton_prompt_is_regexp = True
 
 todo_include_todos = True
@@ -114,7 +120,7 @@ author = "The AiiDA team."
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ["build/*", "assets/*", "**/.ipynb_checkpoints/"]
+exclude_patterns = ["build/*", "assets/*", "**/.ipynb_checkpoints/", "**/clipboard.md"]
 exclude_patterns.append("sections/calculations/reference.md")
 
 # The reST default role (used for this markup: `text`) to use for all documents.

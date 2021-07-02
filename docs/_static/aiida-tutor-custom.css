@@ -1,3 +1,18 @@
+.aiida-green {
+    color: #32B805;
+    font-weight: bold;
+}
+
+.aiida-blue {
+    color: #0496DE;
+    font-weight: bold;
+}
+
+.aiida-orange {
+    color: #FF7D16;
+    font-weight: bold;
+}
+
 div.highlight-console div.highlight {
     background-color: aliceblue;
 }
@@ -7,7 +22,8 @@ div.highlight-bash div.highlight {
 }
 
 .header-text {
-    font-size: 18px
+    font-size: 18px;
+    margin-bottom: 30px;
 }
 
 .text-right {
