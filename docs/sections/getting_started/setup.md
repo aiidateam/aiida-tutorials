@@ -44,6 +44,18 @@ After that it will be shut down and **all data will be removed**.
 Please see the instructions below to download your data from the server.
 ```
 
+## How download your data
+
+To download your data from the server prior to its destruction:
+
+  1. Open a terminal by clicking on "Terminal" on the start screen.
+  2. Execute `zip -r home.zip .`.
+  3. Right-click on the `home.zip` file within the file browser tab.
+  4. Click on "Download".
+
+```{tip} You do not have to download the whole home directory of course, you can just download the files or directories that you would like to preserve.
+```
+
 # Setup on your own machine
 
 ```{warning} The tutorial was tested on the AiiDAlab server introduced above.
