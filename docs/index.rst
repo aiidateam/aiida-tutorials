@@ -9,7 +9,7 @@ Below you can find the tutorial schedule, as well as the AiiDA cheat sheet, whic
 
    ------
    :column: col-lg-6 pl-0 pr-0
-   :download:`The Tutorial Schedule <include/images/schedule.png>`
+   :download:`The Tutorial Schedule <include/images/schedule.pdf>`
 
    -------
    :column: col-lg-6 pl-0 pr-0
