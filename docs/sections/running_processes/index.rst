@@ -21,7 +21,7 @@ Running processes
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    This base module will take you through the procedures for running your first calcjob.
+    This base module will take you through the procedures for running your first calculation job with Quantum ESPRESSO.
     You will learn how to prepare the inputs for the calculation, submit it to the engine, follow its status, and analyze its results.
 
     +++++++++++++
@@ -30,15 +30,16 @@ Running processes
         :class: footer-table
         :header-rows: 0
 
+        * -
+          - :badge:`Quantum ESPRESSO,badge-qe text-white`
         * - |time| 60 min
           - |aiida| :aiida-green:`Basic`
 
     ---
     :column: col-lg-12
 
-    :badge:`Quantum ESPRESSO,badge-qe text-white`
-    || Alternatives:
-    :link-badge:`https://aiida-vasp.readthedocs.io/en/latest/calculations/vasp.html, "VASP",cls=badge-vasp text-white, tooltip=Go to the VASP version.`
+    Alternatives:
+    :link-badge:`https://aiida-vasp.readthedocs.io/en/latest/tutorials/fcc_si_step1.html, "VASP",cls=badge-vasp text-white, tooltip=Go to a similar tutorial for the VASP plugin.`
 
 .. panels::
     :header: panel-header-text
@@ -62,6 +63,8 @@ Running processes
         :class: footer-table
         :header-rows: 0
 
+        * -
+          - :badge:`Quantum ESPRESSO,badge-qe text-white`
         * - |time| 15 min
           - |aiida| :aiida-blue:`Intermediate`
 
@@ -82,6 +85,8 @@ Running processes
         :class: footer-table
         :header-rows: 0
 
+        * -
+          - :badge:`Quantum ESPRESSO,badge-qe text-white`
         * - |time| 15 min
           - |aiida| :aiida-blue:`Intermediate`
 

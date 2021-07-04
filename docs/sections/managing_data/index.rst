@@ -4,10 +4,10 @@ Managing data
 .. rst-class:: header-text
 
     In this section you can find modules that explain how to work with data in AiiDA.
-    This includes how to organise data, look for data and back up your data.
+    This includes how to organise your data and look for the results of interest in your database via queries.
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
@@ -20,7 +20,7 @@ Managing data
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^
 
-    This module teaches you how to organise your data in Groups.
+    This module teaches you how to organise your data in AiiDA Groups.
 
     +++
     .. list-table::
@@ -29,10 +29,10 @@ Managing data
         :header-rows: 0
 
         * - |time| 20 min
-          - Basic
+          - |aiida| :aiida-green:`Basic`
 
 .. panels::
-    :header: header-text
+    :header: panel-header-text
     :body: bg-light
     :footer: bg-light border-0
 
@@ -54,7 +54,7 @@ Managing data
         :header-rows: 0
 
         * - |time| 40 min
-          - Intermediate
+          - |aiida| :aiida-green:`Basic`
 
 .. toctree::
     :hidden:

@@ -67,11 +67,13 @@ Writing workflows
     ------
     :column: col-lg-6
 
-    .. link-button:: debugging
-        :type: ref
+    .. link-button:: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/memes/mossfire.gif
+        :type: url
         :text: Debugging work chains
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
+
+    **Under construction** 🔨
 
     Debugging common mistakes in AiiDA work chains.
 
@@ -101,6 +103,8 @@ Writing workflows
         :class: footer-table
         :header-rows: 0
 
+        * -
+          - :badge:`Quantum ESPRESSO,badge-qe text-white`
         * - |time| 30 min
           - |aiida| :aiida-blue:`Intermediate`
 
@@ -112,11 +116,13 @@ Writing workflows
     ------
     :column: col-lg-6
 
-    .. link-button:: validation
-        :type: ref
+    .. link-button:: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/memes/mossfire.gif
+        :type: url
         :text: Input validation
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
+
+    **Under construction** 🔨
 
     Here we explain how to write a *validator* that can check inputs before running a calculation or workflow.
 

@@ -134,7 +134,7 @@ Now you should be ready to run your first work chain!
 ### Run the work chain
 
 In the terminal, navigate to the folder where you saved the `my_first_workchain.py` file with the `OutputInputWorkChain` work chain and open a `verdi shell`.
-Then run the work chain as you have seen in the **TODO ADD LINK**:
+Then run the work chain as you have seen in the {ref}`AiiDA basics section on running calculation jobs<started-basics-calcjobs-run>`:
 
 ```{code-block} ipython
 In [1]: from aiida.engine import run
@@ -306,9 +306,9 @@ As the error message explains, the work chain is trying to create new `Data`.
 However, in order to preserve the _data_ provenance, data can only be created by `calculation functions` or `calculation jobs`.
 So, to correctly create the new data inside the work chain, we'll have to add a calculation function to our script.
 
-### Cleaning up
+<!-- ### Cleaning up
 
-**TODO: Add example on how to kill/delete a process to clean up erroneous `AddWorkChain` run.**
+**TODO: Add example on how to kill/delete a process to clean up erroneous `AddWorkChain` run.** -->
 
 (workflows-workchain-creating-data)=
 
@@ -697,7 +697,7 @@ To do this, we need to add the directory that contains this file to the `PYTHONP
 Make sure you are in the directory that contains the `addcalcjobworkchain.py` file and execute:
 
 ```{code-block} console
-$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> **TODO FIX THIS PATH**
+$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> **TODO ADD PATH**
 $ verdi daemon restart --reset
 ```
 
