@@ -19,7 +19,7 @@ Getting started
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^
 
-    Explanation on all setup required to run the tutorial.
+    Steps required to be ready to follow the tutorial.
 
     +++
     .. list-table::
@@ -27,7 +27,7 @@ Getting started
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 45 min
+        * - |time| 20 min
           - Basic
 
 .. panels::

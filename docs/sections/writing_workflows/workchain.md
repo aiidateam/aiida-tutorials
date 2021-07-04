@@ -706,7 +706,7 @@ The code snippet above only works for the `base` environment on the AiiDAlab Jup
 If you are working in a different environment, or on your local machine, you have to replace the path of the `activate` script to that of your environment.
 :::
 
-Also double check that you have set up the `add` code used in the `ref`{AiiDA basics module <fundamentals-basics-calcjobs>}:
+Also double check that you have set up the `add` code used in the {ref}`AiiDA basics module <started-basics-calcjobs>`:
 
 ```{code-block} console
 $ verdi code list
@@ -724,7 +724,7 @@ Setting up the `add` code on the `localhost` computer can be done with the follo
 $ verdi code setup -L add --on-computer --computer=tutor -P arithmetic.add --remote-abs-path=/bin/bash -n
 ```
 
-See the {ref}`calculation jobs section <fundamentals-basics-calcjobs>` in the AiiDA basics module for mode details.
+See the {ref}`calculation jobs section <started-basics-calcjobs>` in the AiiDA basics module for more details.
 
 :::
 

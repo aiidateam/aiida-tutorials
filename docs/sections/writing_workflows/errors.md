@@ -7,7 +7,6 @@ In this hands-on, we'll be looking at some more advanced concepts related to wor
 :::{important}
 
 Just as in the {ref}`workflows-workchain` section, we will be using the computers and codes set up in the first two hands-on sessions.
-Make sure you have the profile you {ref}`set up at the start of the tutorial<fundamentals-setup-profile>` set as the default.
 
 :::
 
