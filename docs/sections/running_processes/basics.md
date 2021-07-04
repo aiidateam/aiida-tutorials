@@ -1,255 +1,282 @@
 (calculations-basics)=
 
-# Running calculations
+# Running external codes
 
-In this section we'll be learning how to run external codes with AiiDA through calculation plugins.
+In this section you will learn how to run external codes with AiiDA through a calculation plugin.
 
-We will use the [Quantum ESPRESSO](<https://www.quantum-espresso.org/>) package to launch a simple [density functional theory](<https://en.wikipedia.org/wiki/Density_functional_theory>) calculation of a silicon crystal using the {doi}`PBE exchange-correlation functional <10.1103/PhysRevLett.77.3865>` and check its results.
+You will use the [Quantum ESPRESSO](<https://www.quantum-espresso.org/>) package to launch a simple [density functional theory](<https://en.wikipedia.org/wiki/Density_functional_theory>) (DFT) calculation and check its results.
+More specifically, you will be performing a self-consistent field (SCF) electronic relaxation for a silicon crystal using the {doi}`PBE exchange-correlation functional <10.1103/PhysRevLett.77.3865>`.
 
-Note that besides the [aiida-quantumespresso](<https://github.com/aiidateam/aiida-quantumespresso>) plugin, AiiDA comes with plugins for many other codes, all of which are listed in the [AiiDA plugin registry](<https://aiidateam.github.io/aiida-registry/>).
+The typical way one would do this without AiiDA is by writing an input file and feeding it to the `pw.x` code of the [Quantum ESPRESSO][quantum espresso] package.
+This input would contain the information of the cristal structure (atomic coordinates, cell vectors) as well as any other parameters that need to be specified for it to run (type of calculation, energy cutoffs, kpoint grid, etc).
+It looks something like this:
 
-(calculations-basics-provenance-graph)=
+```{code-block}
+# test_run.in
 
-## The provenance graph
+&CONTROL
+  calculation = 'scf'
+  outdir = './out/'
+  prefix = 'test_run'
+  pseudo_dir = './pseudo/'
+/
 
-{numref}`fig-qe-calc-graph` shows a typical example of a Quantum ESPRESSO calculation represented in an AiiDA graph.
-Have a look to the figure and its caption before moving on.
+&SYSTEM
+  ecutrho =   2.4000000000d+02
+  ecutwfc =   3.0000000000d+01
+  ibrav = 0
+  nat = 2
+  ntyp = 1
+/
+
+ATOMIC_SPECIES
+Si     28.085 Si.pbe-n-rrkjus_psl.1.0.0.UPF
+
+ATOMIC_POSITIONS angstrom
+Si           5.8004619750       3.3488982827       2.3680286852
+Si           3.8669746500       2.2325988551       1.5786857901
+
+K_POINTS automatic
+4 4 4 0 0 0
+
+CELL_PARAMETERS angstrom
+      3.8669746500       0.0000000000       0.0000000000
+      1.9334873250       3.3488982827       0.0000000000
+      1.9334873250       1.1162994276       3.1573715803
+
+```
+
+One would also need to provide the [pseudopotentials][pseudopotentials] for all atomic species present (in this case, just `Si`) inside of the `pseudo_dir` (in this case, a folder `pseudo` inside the same directory).
+When all of this is in place, the only thing left would be to run the code:
+
+```{code-block} console
+
+$ pw.x < test_run.in > test_run.out
+
+```
+
+:::{admonition} Try it yourself!
+
+If you are not very familiar with [Quantum ESPRESSO][quantum espresso], it might be helpful to first manually run this example by yourself.
+You can do this by creating a new `test_run` folder and copying inside of it the `test_run.in` file shown above.
+You will also need to make a `pseudo` subfolder and put the pseudopotential for silicon there (you can download one from {download}`here<include/data/Si.pbe-n-rrkjus_psl.1.0.0.UPF>`).
+
+It should look something like this:
+
+```{code-block} console
+
+test_run/
+├── pseudo/
+│   └── Si.pbe-n-rrkjus_psl.1.0.0.UPF
+└── test_run.in
+
+```
+
+Now you can just run the code as instructed above and check the outputs generated: mainly the `test_run.out` file, but there might also be some interesting data in the files inside of the `out` subfolder.
+
+:::
+
+## Running with AiiDA
+
+:::{margin} {{ aiida }} **AiiDA plugin packages**
+Besides [aiida-quantumespresso](<https://github.com/aiidateam/aiida-quantumespresso>), there are many other AiiDA plugin packages available for simulation codes, all of which are listed in the [AiiDA plugin registry](<https://aiidateam.github.io/aiida-registry/>).
+:::
+
+To run [Quantum ESPRESSO](<https://www.quantum-espresso.org/>) through AiiDA you will make use of the [aiida-quantumespresso](<https://github.com/aiidateam/aiida-quantumespresso>) package, which contains everything needed for both codes to be able to interact with one another.
+You will not create the input file yourself, but provide AiiDA with the input nodes that contain the information that you want to use and then just instruct it to run them.
+AiiDA will then create the input file, run the calculation, and extract all relevant data from the output files into output nodes automatically.
+
+{numref}`fig-qe-calc-graph` shows the resulting provenance graph associated with the procedure described above applied to our original example.
+This one was drawn by hand, but you will later generate one using AiiDA tools.
 
 (fig-qe-calc-graph)=
 
-```{figure} include/images/batio3-graph-full.png
-:width: 100%
+```{figure} include/images/Si_example.png
+:width: 80%
 
-Graph with all inputs (data, circles; and code, diamond) to the Quantum ESPRESSO calculation (square) that you will create in this module.
-Besides the inputs, the graph also shows the outputs that the engine will create and connect automatically.
-The `RemoteData` node is created during submission and can be thought as a symbolic link to the remote folder in which the calculation runs on the cluster.
-The other nodes are created when the calculation has finished, after retrieval and parsing.
-The node with linkname `retrieved` contains the relevant raw output files stored in the AiiDA repository; all other nodes are added by the parser.
-Additional nodes (symbolized in gray) can be added by the parser: e.g., an output `StructureData` if you performed a relaxation calculation, a `TrajectoryData` for molecular dynamics, etc.
+Graph representing the provenance for a typical Quantum ESPRESSO calculation.
 
 ```
 
-{numref}`fig-qe-calc-graph` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to `verdi node graph generate <IDENTIFIER>`, or using the {ref}`graph's python API <aiida:how-to:data:visualise-provenance>`.
-Remember that identifiers in AiiDA can come in several forms:
+You can see the calculation node represented by a square, while all the data nodes are represented by circles.
+The input data nodes are the ones above the calculation node, with arrows pointing towards it, while the output data nodes are the ones below, and have the arrows coming from the calculation node.
+Symbolized in gray are additional optional output nodes that might be present or not depending on the type of calculation performed (e.g., an output `StructureData` if you performed a relaxation calculation, a `TrajectoryData` for molecular dynamics, etc.).
+You can also see in a black box the label for all the links that connect the calculation with the data.
 
-* "Primary Key" (PK): An integer, e.g. `723`, that identifies your entity within your database (automatically assigned)
-* [Universally Unique Identifier](<https://en.wikipedia.org/wiki/Universally_unique_identifier#Version_4_(random)>) (UUID): A string, e.g. `ce81c420-7751-48f6-af8e-eb7c6a30cec3` that identifies your entity globally (automatically assigned)
-* Label: A human-readable string, e.g. `test_qe_calculation` (manually assigned)
+You will notice that the information that goes into the `test_run.in` input file can be dispersed into different data nodes, such as:
 
-Any `verdi` command that expects an identifier will accept a PK, a UUID or a label (although not all entities have a label by default).
-While PKs are often shorter than UUIDs and can be easier to remember, they are only unique within your database.
-**Whenever you intend to share your data with others, use UUIDs to refer to nodes.**
+* the `StructureData` node with link label `structure` node contains the data for the blocks *ATOMIC_POSITIONS* and the *CELL_PARAMETERS*.
+* the `KpointsData` node with link label `kpoints` contains the data for the *K_POINTS* block.
+* the `UpfData` node with link label `pseudos_Si` contains the data for the *ATOMIC_SPECIES* block (including the pseudopotential file to be copied in the `pseudo_dir`).
+* the `Dict` node with link label `parameters` contains the rest of the data (for the *&CONTROL* and *&SYSTEM* namelists).
 
-```{note}
+Once the inputs files are prepared from these nodes, they are copied into the computer or cluster where the calculation will run.
+AiiDA immediately generates a `RemoteData` node as part of this submission procedure; this node can be thought as a symbolic link to the remote folder where the files are copied.
 
-For UUIDs, it is sufficient to specify a subset (starting at the beginning) as long as it can already be uniquely resolved.
-For more information on identifiers in `verdi` and AiiDA in general, see the [documentation](<https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/cli.html#topics-cli-identifiers>).
+The other ouput nodes are created once the calculation has finished, after the retrieval and parsing steps.
+The `retrieved` node contains the relevant raw output files copied back and stored into the AiiDA repository; all other output nodes are added by the parser and contain information taken from those files.
 
-```
+In the following sections you will first deal with setting up the inputs: you will learn to create, import, load, etc. the data nodes themselves, and then you will see how to *connect* them to the calculation before launching it.
+Afterwards you will see how to submit the calculation to the engine, follow its advancement, and analyze the resulting output nodes.
 
-## Importing a structure and inspecting it
+### Codes and plugins
 
-First, download the Si structure file: {download}`Si.cif <include/data/Si.cif>`.
-You can download the file easily using `wget`:
+You may have noticed that we did not mention anything about the `Code` input when describing {numref}`fig-qe-calc-graph` in the previous section.
+Indeed, before we go further, it is important to take a minute to point out and understand the distinction between several related entities involved in the launching of a calculation.
+These entities are:
+
+  1. The actual code (`pw.x` from [Quantum ESPRESSO](<https://www.quantum-espresso.org/>))
+  2. The calculation plugin (`quantumespresso.pw` from [aiida-quantumespresso](https://aiida-quantumespresso.readthedocs.io/en/latest/))
+  3. The code node
+  4. The calculation node
+
+The code (**1**) is the program that knows how to perform the procedure one wants to apply (in this case, the SCF DFT).
+This can be used with or without AiiDA, and needs to already be installed and configured independently from your AiiDA environment.
+
+The calculation plugin (**2**) contains the instructions that indicate to AiiDA how a code (**1**) works *in general*.
+This includes information about what the input files look like, how to generate them from data (input) nodes, what outputs are produced, and how to parse them into data (output) nodes.
+This is what you get when you `pip install` one of AiiDA's [plugin packages](https://aiidateam.github.io/aiida-registry/).
+
+The code node (**3**) is a data node that contains the instructions for AiiDA to execute a specific instalation of the code (**1**).
+It does have a reference to which plugin (**2**) it needs to use, but on top of that it also includes: the path to the installed executable, any environment variable required to run it, etc.
+As this is a data node, it then becomes part of the provenance of every process that uses it (**4**).
+
+Finally, a calculation node (**4**) stands for a specific execution of the code (**1**).
+It uses the general information of the code plugin (**2**) when it is being setup, and the specifics of its input code node (**3**) for running the actual code.
+
+:::{important}
+
+Both the Quantum Mobile virtual machine and the AiiDAlab cluster come pre-configured with all that you need related to codes.
+That is, they already include:
+
+* The [Quantum ESPRESSO][quantum espresso] code with `pw.x`
+* The `aiida-quantumespresso` plugin package with `quantumespresso.pw`
+* A pre-configured code node ready to use the local `pw.x` code
+
+You can check this by running the following:
 
 ```{code-block} console
+$ verdi code list
+# List of configured codes:
+# (use 'verdi code show CODEID' to see the details)
+* pk 192 - pw@localhost
+* pk 193 - projwfc@localhost
+* pk 194 - dos@localhost
+```
 
+**Make a note of the PK or label of the pw code** (in the case above, `pw@localhost`) since you'll need to replace it in code snippets later in this tutorial.
+
+:::
+
+:::{dropdown} **Setting up a new pw code**
+
+If by any chance you do not have a pw code node already set up in your environment or you need to set up a new one, you can do so with the following commands:
+
+```{code-block} console
+$ verdi code setup --label pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
+Success: Code<2> pw@localhost created
+```
+
+You now should be able to see this new code when you execute ``verdi code list``.
+
+:::
+
+
+## Structure and pseudos
+
+Besides of the code, there are other two nodes of the ones shown in on {numref}`fig-qe-calc-graph` that require special consideration: the `structure` and the `pseudos`.
+This is because they contain important physical information and it is hard to create them from scratch.
+
+We will first see how to easily import a `structure` from a file into the AiiDA database.
+Download this {download}`Si.cif <include/data/Si.cif>` structure file in your work environment.
+You can open this file and check it out with your editor of choice as it has the information in a human-readable format.
+
+:::{tip}
+
+You can download any file directly into the AiiDAlab cluster using `wget`.
+All you need to do is copy the link for the download (for example, left clicking on the link above and selecting "Copy link") and then just call `wget` with it:
+
+```{code-block} console
 $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2021-abc/_downloads/1383def58ffe702e2911585fea20e33d/Si.cif
-
 ```
 
-```{note}
+:::
 
-You may have noticed that on the top right of each code block there a button for copying the contents of the block.
-This nifty feature will only copy the commands that needs to be executed, but note that in some code snippets you might still have to replace some of the content!
-On the AiiDAlab cluster you will be able to use the usual short-key of your operating system to paste the contents (Ctrl+V or Command+V), but in the terminal of the Quantum Mobile machine you will need to add Shift (Shift+Ctrl+V).
+Now import it into your database with the `verdi` CLI.
 
-```
-
-Next, you can import it into your database with the `verdi` CLI.
-
-```{code-block} console
-
+:::{code-block} console
 $ verdi data structure import ase Si.cif
   Successfully imported structure Si2 (PK = 1)
+:::
 
-```
+The output of `verdi data structure import` shows the PK of the structure node you just created (your value may be different from the one shown here).
+**Make a note of this PK**, as you will need to replace it in code snippets later in this tutorial.
+Should you forget it, you can always have a look at the structures in the database using:
 
-Each piece of data in AiiDA gets a PK number (a "primary key") that identifies it in your database.
-This is printed out on the screen by the `verdi data structure import` command.
-It's a good idea to mark it down, but should you forget, you can always have a look at the structures in the database using:
-
-```{code-block} console
-
+:::{code-block} console
 $ verdi data structure list
   Id  Label    Formula
 ----  -------  ---------
    1           Si2
-
-```
-
-The first column (marked `Id`) are the PK's of the `StructureData` nodes.
-
-:::{important}
-
-If you are starting this tutorial with an empty database, as in this example, the Si structure node PK will also be 1.
-If not, the PK numbers shown throughout this tutorial will be different for your database!
-Throughout this section, replace the string `<PK>` with the appropriate PK number.
-
 :::
 
-Let us first inspect the node you just created:
+For managing [pseudopotentials][pseudopotentials], there is another plugin package installed in the provided environments: the `aiida-pseudo`.
+This package comes with its own CLI (that uses `aiida-pseudo <command>` instead of `verdi <command>`) to interact with its features.
 
-```{code-block} console
+To get a list of all available [pseudopotentials][pseudopotentials], simply run:
 
-$ verdi node show <PK>
-Property     Value
------------  ------------------------------------
-type         StructureData
-pk           1
-uuid         ddb8c21c-2d3f-4374-aa86-44f8bb84aa3f
-label
-description
-ctime        2021-02-09 20:57:03.304174+00:00
-mtime        2021-02-09 20:57:03.421210+00:00
-
-```
-
-You can see some information on the node, including its type (`StructureData`, the AiiDA data type for storing crystal structures), a label and a description (empty for now, can be changed), a creation time (`ctime`) and a last modification time (`mtime`), the PK of the node and its UUID (universally unique identifier).
-The PK and UUID both reference the node with the only difference that the PK is unique *for your local database only*, whereas the UUID is a globally unique identifier and can therefore be used between *different* databases.
-
-:::{important}
-
-The UUIDs are generated randomly and are therefore **guaranteed** to be different from the ones shown here.
-In the commands that follow, remember to replace `<PK>`, or `<UUID>` by the appropriate identifier.
-
+:::{code-block} console
+$ aiida-pseudo list
+Label                                Type string                Count
+-----------------------------------  -------------------------  -------
+SSSP/1.1/PBEsol/precision            pseudo.family.sssp         85
+SSSP/1.1/PBEsol/efficiency           pseudo.family.sssp         85
+SSSP/1.1/PBE/precision               pseudo.family.sssp         85
+SSSP/1.1/PBE/efficiency              pseudo.family.sssp         85
 :::
 
-## Running a calculation
+You can see above that the AiiDAlab cluster already comes with
 
-We'll start with running a simple self-consistent field calculation (SCF) with [Quantum ESPRESSO][quantum espresso] for the structure we just imported.
-First, we'll need to make sure we have set up the [Quantum ESPRESSO][quantum espresso] code in our database.
-This will depend on whether you are running the tutorial in the Quantum Mobile or the AiiDAlab cluster:
+::::{note}
 
-```{eval-rst}
-.. tabs::
-
-    .. tab:: Quantum Mobile
-
-        Let's have a look at the codes in our database with the ``verdi shell``:
-
-        .. code-block:: console
-
-            $ verdi code list
-            # List of configured codes:
-            # (use 'verdi code show CODEID' to see the details)
-            * pk 1 - qe-3.4.0-pw@localhost
-            * pk 2 - qe-3.4.0-cp@localhost
-            * pk 3 - qe-3.4.0-pp@localhost
-            * pk 4 - qe-3.4.0-ph@localhost
-            * pk 5 - qe-3.4.0-neb@localhost
-            * pk 6 - qe-3.4.0-projwfc@localhost
-            * pk 7 - qe-3.4.0-pw2wannier90@localhost
-            * pk 8 - qe-3.4.0-q2r@localhost
-            * pk 9 - qe-3.4.0-dos@localhost
-            * pk 10 - qe-3.4.0-matdyn@localhost
-
-        As you can see, this Quantum Mobile virtual machine already comes with all of the Quantum ESPRESSO codes set up in the AiiDA database.
-        The code we will be running is the ``pw.x`` code, set up under the label ``qe-3.4.0-pw`` on the ``localhost`` computer.
-        Make a note of the PK or label of the code, since you'll need to replace it in code snippets later in this tutorial.
-
-    .. tab:: AiiDAlab cluster
-
-        Let's have a look at the codes in our database with the ``verdi shell``:
-
-        .. code-block:: console
-
-            $ verdi code list
-            # List of configured codes:
-            # (use 'verdi code show CODEID' to see the details)
-            # No codes found matching the specified criteria.
-
-        We can see that no code has been installed yet.
-        To install the Quantum ESPRESSO ``pw.x`` code, we can use the following ``verdi`` CLI command:
-
-        .. code-block:: console
-
-            $ verdi code setup --label pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
-            Success: Code<2> pw@localhost created
-
-        You now should see the code we have just set up when you execute ``verdi code list``:
-
-        .. code-block:: console
-
-            $ verdi code list
-            # List of configured codes:
-            # (use 'verdi code show CODEID' to see the details)
-            * pk 2 - pw@localhost
-
-        Make a note of the PK or label of the code, since you'll need to replace it in code snippets later in this tutorial.
-```
-
-To run the SCF calculation, we'll also need to provide the family of pseudopotentials.
-These can be installed easily using the `aiida-pseudo` package:
+If you are using the Quantum Mobile virtual machine, you will need to install the `SSSP` [pseudopotentials][pseudopotentials].
+Luckily, doing it with `aiida-pseudo` is easy!
+All you need to do is run:
 
 ```{code-block} console
-
 $ aiida-pseudo install sssp
 Info: downloading selected pseudo potentials archive...  [OK]
 Info: downloading selected pseudo potentials metadata...  [OK]
 Info: unpacking archive and parsing pseudos...  [OK]
 Success: installed `SSSP/1.1/PBE/efficiency` containing 85 pseudo potentials
-
 ```
 
-This command will install the [SSSP library version 1.1][sssp library version 1.1].
-To see if the pseudopotential families have been installed correctly, do:
+The output already indicates the process was successful and shows you the label for the new family group.
+You can always run `aiida-pseudo list` if you want to double check or if you later forget the ID.
+
+::::
+
+### Exercise
+
+Follow the previous procedure to install the `pseudo-dojo` family; you will need it for other exercises!
+Remember that you can run `aiida-pseudo install -h` to get more information should you need it.
+
+:::{dropdown} **Solution**
 
 ```{code-block} console
-
-$ aiida-pseudo list
-Label                    Type string         Count
------------------------  ------------------  -------
-SSSP/1.1/PBE/efficiency  pseudo.family.sssp  85
-
+$ aiida-pseudo install pseudo-dojo
+Info: downloading selected pseudopotentials archive...  [OK]
+Info: downloading selected pseudopotentials metadata archive...  [OK]
+Info: unpacking archive and parsing pseudos...  [OK]
+Info: unpacking metadata archive and parsing metadata... [OK]
+Success: installed `PseudoDojo/0.4/PBE/SR/standard/psp8` containing 72 pseudopotentials
 ```
 
-Along with the PK of the `StructureData` node for the silicon structure that we imported in the previous section, we now have everything to set up the calculation step by step.
-Before doing so we will first shut down the AiiDA *daemon*.
-The daemon is a program that runs in the background and manages submitted calculations until they are *terminated*.
-Check the status of the daemon using the `verdi` CLI:
+:::
 
-```{code-block} console
+## Preparing the calculation
 
-$ verdi daemon status
-
-```
-
-If the daemon is running, the output will be something like the following:
-
-```{code-block} bash
-
-Profile: default
-Daemon is running as PID 1033 since 2020-11-29 14:37:59
-Active workers [1]:
-PID    MEM %    CPU %  started
------  -------  -------  -------------------
-1036    0.415        0  2020-11-29 14:38:00
-
-```
-
-In this case, let's stop it for now:
-
-```{code-block} console
-
-$ verdi daemon stop
-Profile: default
-Waiting for the daemon to shut down... OK
-
-```
-
-We will set up the calculation in the `verdi shell`, an interactive IPython shell that has many basic AiiDA classes pre-loaded.
-To start the IPython shell, simply type in the terminal:
+The setup for preparing a calculation must be done through the Python ORM, so let's start the `verdi shell`:
 
 ```{code-block} console
 
@@ -257,101 +284,122 @@ $ verdi shell
 
 ```
 
-First, we'll load the code from the database using its `PK`:
+There are several ways to setup and launch processes with AiiDA.
+We will now show you how to do it using a *builder*, which is a tool that is particullarly convenient when manually preparing the inputs.
+The simplest way to get a builder for a calculation is from a code node, so load the one we checked at the begining of this module:
 
-```{code-block} ipython
+:::{margin}
+**Remember:** you need to replace `<CODE_PK>` with the PK of the `pw.x` code in your database!
+You can also use the label.
+:::
+
+:::{code-block} ipython
 
 In [1]: code = load_code(<CODE_PK>)
 
-```
+:::
 
-Be sure to replace `<CODE_PK>` with the primary key of the `pw.x` code in your database!
-Every code has a convenient tool for setting up the required input, called the *builder*.
-It can be obtained by using the `get_builder` method:
+Now to get a builder for the calculation all you have to do is use the `get_builder()` method of the code node:
 
-```{code-block} ipython
+:::{code-block} ipython
 
 In [2]: builder = code.get_builder()
 
-```
+:::
 
-Let's supply the builder with the structure we just imported.
-Replace the `<STRUCTURE_PK>` with that of the structure we imported at the start of the section:
+All possible inputs for the process are properties of the builder object called _ports_.
+You can set them up and access them by using the `builder.<input_name>` syntax.
+Moreover, when you use the `get_builder()` method to get a calculation builder, it already comes with the code node in the adequate input port:
 
-```{code-block} ipython
+:::{code-block} ipython
 
-In [3]: structure = load_node(<STRUCTURE_PK>)
-   ...: builder.structure = structure
-
-```
-
-:::{note}
-
-One nifty feature of the builder is the ability to use tab completion for the inputs.
-Try it out by typing `builder.` + `<TAB>` in the verdi shell.
+In [3]: builder.code
+Out[3]: <Code: Remote code 'qe-pw-6.5' on localhost, pk: 7, uuid: 72655d43-5b17-4547-be38-0338773eaced>
 
 :::
 
-You can get more information on an input by adding a question mark `?`:
+One nifty feature of the builder is the ability to use tab completion.
+Try it out by typing `builder.` + `<TAB>` in the verdi shell (you can navigate the options with the keyboard arrows).
+You can also get more information on an input by adding a question mark `?` and hitting enter.
+For example:
 
-```{code-block} ipython
+:::{code-block} ipython
 
 In [4]: builder.structure?
 Type:        property
 String form: <property object at 0x7f3393e81050>
 Docstring:   {"name": "structure", "required": "True", "valid_type": "<class 'aiida.orm.nodes.data.structure.StructureData'>", "help": "The input structure.", "non_db": "False"}
 
-```
+:::
 
-Here you can see that the `structure` input is required, needs to be of the `StructureData` type and is stored in the database (`"non_db": "False"`).
+In the output `Docstring` you can see that the `structure` input is *required* (as opposed to being optional) and needs to be of node type `StructureData`.
+Unlike what happened with the `code` input, the rest of the ports (like the `structure`) don't come with anything pre-loaded on them.
+You can check this by, for example, executing `builder.structure` and getting an empty output.
 
-Next, we'll need a dictionary that maps the elements to the pseudopotentials we want to use.
-Let's first load the pseudopotential family we installed before with `aiida-pseudo`:
+### Input selection
 
-```{code-block} ipython
+Let's supply the builder with the structure we just imported.
 
-In [5]: pseudo_family = load_group('SSSP/1.1/PBE/efficiency')
+:::{margin}
+**Remember:** you need to replace `<STRUCTURE_PK>` with that of the structure we imported in the previous section.
+:::
 
-```
+:::{code-block} ipython
 
-:::{note}
-
-Notice how we use the `load_group` command here.
-An AiiDA `Group` is a convenient way of organizing your data.
-We'll see more on how to use groups in the section on {ref}`Working with data <data-groups>`.
+In [3]: structure = load_node(<STRUCTURE_PK>)
+   ...: builder.structure = structure
 
 :::
 
-The required pseudos for any structure can be easily obtained using the `get_pseudos()` method of the `pseudo_family`:
+Next, for the `pseudos` input, you will need a dictionary that maps the elements (`Si`) to the pseudopotentials you want to use.
+Let's first load the pseudopotential family we installed before with `aiida-pseudo`:
 
-```{code-block} ipython
+:::{margin}
+An AiiDA `Group` is a convenient way of organizing your data.
+We will see more on how to use groups in the module on {ref}`Working with data <data-groups>`.
+:::
+
+:::{code-block} ipython
+
+In [5]: pseudo_family = load_group(<FAMILY_LABEL>)
+
+:::
+
+The selection of pseudos for any structure can be easily performed using the `get_pseudos()` method of the `pseudo_family`:
+
+:::{code-block} ipython
 
 In [6]: pseudos = pseudo_family.get_pseudos(structure=structure)
 
-```
+:::
 
-If we check the contents of the `pseudos` variable:
+If we now check the contents of the `pseudos` variable:
 
-```{code-block} ipython
+:::{code-block} ipython
 
 In [6]: pseudos
 Out[6]: {'Si': <UpfData: uuid: afa12680-efd3-4e9a-b4a7-b7a69ee2da51 (pk: 69)>}
 
-```
+:::
 
 We can see that it is a simple dictionary that maps the `'Si'` element to a `UpfData` node, which contains the pseudopotential for silicon in the database.
 Let's pass the `pseudos` to the builder:
 
-```{code-block} ipython
+:::{code-block} ipython
 
 In [7]: builder.pseudos = pseudos
 
-```
+:::
 
-Of course, we also have to set some computational parameters.
-We'll first set up a dictionary with a simple set of input parameters for Quantum ESPRESSO:
+Of course, we also have to set the computational parameters of the calculation.
+You will first set up a dictionary with a simple set of input keywords for Quantum ESPRESSO:
 
-```{code-block} ipython
+:::{margin}
+Not all of the keywords that appeared in the `&CONTROL` and `&SYSTEM` namelists of the input file are here.
+Some of these have default values, while other are automatically populated by AiiDA and won't even be accepted.
+:::
+
+:::{code-block} ipython
 
 In [8]: parameters = {
    ...:   'CONTROL': {
@@ -363,59 +411,86 @@ In [8]: parameters = {
    ...:   },
    ...: }
 
-```
+:::
 
-In order to store them in the database, they **must** be passed to the builder as a `Dict` node:
+The `builder.parameters` port requires a `Dict` node (you can verify this by running `builder.parameters?`), so this previous content **must** be converted to one before being passed to the builder:
 
-```{code-block} ipython
+:::{code-block} ipython
 
 In [9]: builder.parameters = Dict(dict=parameters)
 
-```
+:::
+
+:::{note}
+
+The node assigned to `builder.parameters` does not necessarily need to be stored in the database.
+Whenever you launch the calculation, AiiDA will take care of storing any unstored input node.
+
+:::
 
 The k-points mesh can be supplied via a `KpointsData` node.
-Load the corresponding class using the `DataFactory`:
+To create it, you will first load the corresponding class using the `DataFactory`, a useful and robust tool which recognizes data types based on their *entry point* (e.g. `'array.kpoints'` in this case):
 
-```{code-block} ipython
+:::{code-block} ipython
 
 In [10]: KpointsData = DataFactory('array.kpoints')
 
-```
+:::
 
-The `DataFactory` is a useful and robust tool for loading data types based on their *entry point*, e.g. `'array.kpoints'` in this case.
 Once the class is loaded, defining the k-points mesh and passing it to the builder is easy:
 
-```{code-block} ipython
+:::{code-block} ipython
 
 In [11]: kpoints = KpointsData()
     ...: kpoints.set_kpoints_mesh([4,4,4])
     ...: builder.kpoints = kpoints
 
-```
+:::
 
-Finally, we can also specify the resources we want to use for our calculation.
-These are stored in the *metadata*:
+Finally, we can also specify the resources we want to use for our calculation from the computer or cluster where we will be running.
+These details are stored in a sub-port of the *metadata*:
 
-```{code-block} ipython
+:::{code-block} ipython
 
 In [12]: builder.metadata.options.resources = {'num_machines': 1}
 
-```
+:::
 
-Great, we're all set!
+The `resources` port (or more generally, the whole `metadata` port) does not expect a Node but a regular Python Dict.
+Indeed, not all inputs for a calculation will require AiiDA Nodes.
+
+## Submitting the calculation
+
+Great, you are all set!
 Now all that is left to do is to *submit* the builder to the daemon.
 
-```{code-block} ipython
-
+:::{code-block} ipython
 In [13]: from aiida.engine import submit
     ...: calcjob_node = submit(builder)
+:::
 
-```
+Let's exit the `verdi shell` using the `exit()` command and have a look how your calculation is doing.
+You can check the list of processes stored in your database using `verdi process list`:
 
-Let's exit the `verdi shell` using the `exit()` command and check the list of processes stored in your database with `verdi process list`:
+:::{code-block} console
+$ verdi process list
+  PK  Created    Process label    Process State    Process status
+----  ---------  ---------------  ---------------  ----------------
+  90  6s ago     PwCalculation    ⏹ Waiting        Monitoring scheduler: job state RUNNING
+
+Total results: 1
+
+Info: last time an entry changed state: 6s ago (at 23:14:25 on 2021-02-09)
+:::
+
+We can see above the `PwCalculation` you have just set up, i.e. the process that runs a Quantum ESPRESSO `pw.x` calculation, which is shown to be in the `Waiting` state.
+
+:::{note}
+
+If the state of the calculation is `Created` instead, it may be that the daemon is not running.
+In this case you should also see a warning at the end of the output:
 
 ```{code-block} console
-
 $ verdi process list
   PK  Created    Process label    Process State    Process status
 ----  ---------  ---------------  ---------------  ----------------
@@ -425,30 +500,27 @@ Total results: 1
 
 Info: last time an entry changed state: 36s ago (at 23:14:25 on 2021-02-09)
 Warning: the daemon is not running
-
 ```
 
-We can see the `PwCalculation` we have just set up, i.e. the process that runs a Quantum ESPRESSO `pw.x` calculation.
-It's currently in the `Created` state.
-In order to run the calculation, we have to start the daemon:
+If this is the case, you need to start the daemon using:
 
 ```{code-block} console
-
 $ verdi daemon start
-
+Starting the daemon... RUNNING
 ```
 
-From this point onwards, the AiiDA daemon will take care of your calculation: creating the necessary input files, running the calculation, and parsing its results.
-The calculation should take less than one minute to complete.
+:::
 
-## Analyzing the outputs of a calculation
-
-Let's have a look how your calculation is doing!
-By default `verdi process list` only shows the *active* processes.
+If you see an empty list, you calculation may already be over (it should take less than one minute to complete) and so it won't show by default in the `verdi process list`.
 To see *all* processes, use the `--all` option:
 
-```{code-block} console
+:::{margin}
+As you run more calculations and workflows, the list of processes may become very long.
+You can also add `-p1` to show the processes that have finished within the last day.
+For more filtering options, check out `verdi process list -h`.
+:::
 
+:::{code-block} console
 $ verdi process list --all
   PK  Created    Process label    Process State    Process status
 ----  ---------  ---------------  ---------------  ----------------
@@ -457,13 +529,13 @@ $ verdi process list --all
 Total results: 1
 
 Info: last time an entry changed state: 22s ago (at 23:22:07 on 2021-02-09)
+:::
 
-```
+## Exploring the results
 
 Use the PK of the `PwCalculation` to get more information on it:
 
-```{code-block} console
-
+:::{code-block} console
 $ verdi process show <PK>
 Property     Value
 -----------  ------------------------------------
@@ -493,11 +565,19 @@ output_parameters    95  Dict
 output_trajectory    94  TrajectoryData
 remote_folder        91  RemoteData
 retrieved            92  FolderData
-
-```
+:::
 
 As you can see, AiiDA has tracked all the inputs provided to the calculation, allowing you (or anyone else) to reproduce it later on.
-AiiDA's record of a calculation is best displayed in the form of a provenance graph:
+
+AiiDA's record of a calculation is best displayed in the form of a provenance graph.
+You can generate one by running the following verdi command using the PK of **your calculation node**:
+
+:::{code-block} console
+$ verdi node graph generate <PK>
+:::
+
+The command will write the provenance graph to a file named `<PK>.dot.pdf`.
+It should look like this:
 
 :::{figure} include/images/demo_calc.png
 :width: 100%
@@ -506,74 +586,66 @@ Provenance graph for a single [Quantum ESPRESSO][quantum espresso] calculation.
 
 :::
 
-To reproduce the figure using the PK of your calculation, you can use the following verdi command:
-
-```{code-block} console
-
-$ verdi node graph generate <PK>
-
-```
-
-The command will write the provenance graph to a `.pdf` file.
-How you can open this file will depend on the platform you are running the tutorial on:
-
-```{eval-rst}
-.. tabs::
-
-    .. tab:: Quantum Mobile
-
-        You can simply use the ``evince`` command to open the ``.pdf`` that contains the provenance graph:
-
-        .. code-block::
-
-            $ evince <PK>.dot.pdf
-
-    .. tab:: AiiDAlab cluster
-
-        If you open a *file manager* on the starting page of the AiiDA JupyterHub:
-
-        .. figure:: include/images/AiiDAlab_header-file_manager.png
-            :width: 100%
-
-        You should be able to use the file manager to navigate to and open the PDF.
-```
-
 Let's have a look at one of the outputs, i.e. the `output_parameters`.
 You can get the contents of this dictionary easily using the `verdi shell`:
 
-```{code-block} ipython
-
+:::{code-block} ipython
 In [1]: node = load_node(<PK>)
    ...: d = node.get_dict()
    ...: d['energy']
 Out[1]: -310.56907438957
-
-```
+:::
 
 Moreover, you can also easily access the input and output files of the calculation using the `verdi` CLI:
 
-```{code-block} console
-
+:::{code-block} console
 $ verdi calcjob inputls <PK>     # Shows the list of input files
 $ verdi calcjob inputcat <PK>    # Shows the input file of the calculation
 $ verdi calcjob outputls <PK>    # Shows the list of output files
 $ verdi calcjob outputcat <PK>   # Shows the output file of the calculation
 $ verdi calcjob res <PK>         # Shows the parser results of the calculation
+:::
 
-```
+%{numref}`fig-qe-calc-graph` was drawn by hand but you can generate a similar graph automatically by passing the **identifier** of a calculation node to `verdi node graph generate <IDENTIFIER>`, or using the {ref}`graph's python API <aiida:how-to:data:visualise-provenance>`.
 
-**Exercise:** A few questions you could answer using these commands (optional):
+### Exercises
+
+(1) A few questions you could answer using these commands:
 
 * How many atoms did the structure contain? How many electrons?
 * How many k-points were specified? How many k-points were actually computed? Why?
 * How many SCF iterations were needed for convergence?
 * How long did [Quantum ESPRESSO][quantum espresso] actually run (wall time)?
 
+:::{dropdown} **Solution**
+
+He-he need to check
+
+:::
+
+(2) Now launch another pw calculation, except this time instead of using the `SSSP` [pseudopotentials][pseudopotentials] you can use the `pseudo-dojo`. Which has the highes energy? Or something like that...
+
+:::{dropdown} **Solution**
+
+He-he need to check
+
+:::
+
+:::{important} **Key takeaways**
+
+ - Input information will be distributed differently among data nodes.
+ - Necessary data nodes can be imported from files, managed by special plugins, or created from scratch specifically for running a calculation.
+ - The `verdi` CLI allows you to follow the state of your calculations, the ORM lets you prepare and launch the calculations and get the information from the output nodes.
+
+:::
+
 <!---
 Links
 -->
 
 [aiidalab]: https://www.materialscloud.org/work/aiidalab
+
+[pseudopotentials]: https://en.wikipedia.org/wiki/Pseudopotential
 
 [sssp library version 1.1]: https://www.materialscloud.org/discover/sssp/table/efficiency
 
