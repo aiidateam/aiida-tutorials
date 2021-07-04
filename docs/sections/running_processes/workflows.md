@@ -141,10 +141,110 @@ Band structure computed by the `PwBandsWorkChain`.
 
 :::
 
+## Overriding the inputs
+
+Sometimes you may want to take advantage of the convenience of getting a pre-populated `builder` from the `get_builder_from_protocol()` method while still being able to customize some of the inputs.
+
+The trivial way to do this is by taking the `builder` and overriding its ports with the desired inputs.
+
+```{code-block} ipython
+
+In [1]: PwBandsWorkChain = WorkflowFactory('quantumespresso.pw.bands')
+   ...: code = load_code(<CODE_PK>)
+   ...: structure = load_node(<STRUCTURE_PK>)
+   ...: builder = PwBandsWorkChain.get_builder_from_protocol(code=code, structure=structure)
+   ...: builder['bands']['metadata'] = {'label': 'This is a PwBaseWorkChain'}
+   ...: builder['bands']['scf'] = {'label': 'This is a PwBaseWorkChain'}
+   ...: builder['bands']['relax']['base'] = {'label': 'This is a PwBaseWorkChain'}
+
+```
+
+This might be a good option for simple modifications, but for more complex and powerful customizations, the `get_builder_from_protocol()` method also offers the option for overrides.
+
+:::{important}
+
+For the following demonstration you will need the pseudo-dojo pseudopotentials you used for the exercises of the module on {ref}`running calculations <calculations-basics-structpseudo>`.
+You can check if it is available and its label by running the following command in the terminal:
+
+```{code-block} ipython
+
+$ aiida-pseudo list
+Label                                Type string                Count
+-----------------------------------  -------------------------  -------
+PseudoDojo/0.4/PBE/SR/standard/upf   pseudo.family.pseudo_dojo  72
+SSSP/1.1/PBEsol/precision            pseudo.family.sssp         85
+SSSP/1.1/PBEsol/efficiency           pseudo.family.sssp         85
+SSSP/1.1/PBE/precision               pseudo.family.sssp         85
+SSSP/1.1/PBE/efficiency              pseudo.family.sssp         85
+
+```
+
+If you see no pseudo-dojo entry, you can check the dropdown box below to see how to install them.
+
+:::
+
+:::{dropdown} **Installing the pseudo-dojo pseudopotentials**
+
+You can use the tools of the `aiida-pseudo` package to easily install the pseudo-dojo pseudopotentials:
+
+```{code-block} console
+$ aiida-pseudo install pseudo-dojo -f upf
+Info: downloading selected pseudopotentials archive...  [OK]
+Info: downloading selected pseudopotentials metadata archive...  [OK]
+Info: unpacking archive and parsing pseudos...  [OK]
+Info: unpacking metadata archive and parsing metadata... [OK]
+Success: installed `PseudoDojo/0.4/PBE/SR/standard/upf` containing 72 pseudopotentials
+```
+
+You should now be able to see these new pseudos when you execute `aiida-pseudo list`.
+
+:::
+
+Overrides allow access to some of the underlying construction features of internal methods, such as the `pseudo_family` input of the many `PwBaseWorkChain` being used by the `PwBandsWorkChain`.
+
+```{code-block} ipython
+
+In [2]: pseudo_family = <PSEUDO_DOJO_GROUP_LABEL>
+   ...: overrides = {
+   ...:     'relax': {'base': {'pseudo_family': pseudo_family}},
+   ...:     'scf': {'pseudo_family': pseudo_family},
+   ...:     'bands': {'pseudo_family': pseudo_family},
+   ...: }
+   ...: builder2 = PwBandsWorkChain.get_builder_from_protocol(code=code, structure=structure, overrides=overrides)
+
+```
+
+In this way you will notice that not only the `pseudos` inputs in `builder['bands']['pw']`, `builder['scf']['pw']` and `builder['relax']['base']['pw']` are different, but also the `ecutwfc` and `ecutrho` have been adapted to values better suited for the new pseudopotentials.
+
+
+```{code-block} ipython
+
+In [3]: builder['scf']['pw']['parameters']['SYSTEM']
+Out[3]:
+{'nosym': False,
+ 'occupations': 'smearing',
+ 'smearing': 'cold',
+ 'degauss': 0.01,
+ 'ecutwfc': 30.0,
+ 'ecutrho': 240.0}
+
+In [4]: builder2['scf']['pw']['parameters']['SYSTEM']
+Out[4]:
+{'nosym': False,
+ 'occupations': 'smearing',
+ 'smearing': 'cold',
+ 'degauss': 0.01,
+ 'ecutwfc': 36.0,
+ 'ecutrho': 144.0}
+
+```
+
+
 :::{important} **Key takeaways**
 
  - Work chains can be prepared from a builder and submitted similar to calculations.
  - The method `get_builder_from_protocol()` can return a pre-populated builder from minimal inputs.
  - In addition to `verdi process list`, you can see a hierarchical overview of a workflow by using `verdi process status`.
+ - You can customize the builder returned by `get_builder_from_protocol()` by providing the `overrides` optional argument.
 
 :::

@@ -181,6 +181,7 @@ You now should be able to see this new code when you execute ``verdi code list``
 
 :::
 
+(calculations-basics-structpseudo)=
 
 ## Structure and pseudos
 
@@ -259,17 +260,18 @@ You can always run `aiida-pseudo list` if you want to double check or if you lat
 ### Exercise
 
 Follow the previous procedure to install the `pseudo-dojo` family; you will need it for other exercises!
-Remember that you can run `aiida-pseudo install -h` to get more information should you need it.
+Remember that you can run `aiida-pseudo install -h` to check the exact command needed for the family you want.
+Since we need the pseudopotentials to be in the UPF format, be sure to also run the help command once you know the family name to find the option required for this (`aiida-pseudo install <FAMILY_NAME> -h`).
 
 :::{dropdown} **Solution**
 
 ```{code-block} console
-$ aiida-pseudo install pseudo-dojo
+$ aiida-pseudo install pseudo-dojo -f upf
 Info: downloading selected pseudopotentials archive...  [OK]
 Info: downloading selected pseudopotentials metadata archive...  [OK]
 Info: unpacking archive and parsing pseudos...  [OK]
 Info: unpacking metadata archive and parsing metadata... [OK]
-Success: installed `PseudoDojo/0.4/PBE/SR/standard/psp8` containing 72 pseudopotentials
+Success: installed `PseudoDojo/0.4/PBE/SR/standard/upf` containing 72 pseudopotentials
 ```
 
 :::
