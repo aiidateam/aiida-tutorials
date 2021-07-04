@@ -51,7 +51,7 @@ You can find the instructions in the dropdown below!
 :::{dropdown} **Try it yourself!**
 
 Create a new `test_run` folder and copy the inputs shown above into the `qe.in` file.
-Next, make a `pseudo` subfolder and download the pseudopotential for silicon there:
+Next, make a `pseudo` subfolder and download the {download}`pseudopotential for silicon<include/data/Si.pbe-n-rrkjus_psl.1.0.0.UPF>` there:
 
 ```{code-block} console
 $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2021-intro/_downloads/ea4486c5b943d172e522da9bc9dc56ae/Si.pbe-n-rrkjus_psl.1.0.0.UPF
