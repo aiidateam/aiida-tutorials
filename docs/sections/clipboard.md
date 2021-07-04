@@ -1,3 +1,26 @@
+
+## (Optional section) Comments
+
+AiiDA offers the possibility to attach comments to a any node, in order to be able to remember more easily its details.
+Node with UUID prefix `ce81c420` should have no comments, but you can add a very instructive one by typing in the terminal:
+
+```{code-block} console
+
+$ verdi node comment add "vc-relax of a BaTiO3 done with QE pw.x" -N <IDENTIFIER>
+
+```
+
+Now, if you ask for a list of all comments associated to that calculation by typing:
+
+```{code-block} console
+
+$ verdi node comment show <IDENTIFIER>
+
+```
+
+the comment that you just added will appear together with some useful information such as its creator and creation date.
+We let you play with the other options of `verdi node comment` command to learn how to update or remove comments.
+
 ===
 
 # Running workflows
