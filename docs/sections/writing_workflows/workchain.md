@@ -378,7 +378,7 @@ $ verdi process list -a -p 1
 Next, check the _status_ of the process that corresponds to the `AddWorkChain`:
 
 ```{code-block} console
-$ verdi process process status 1988
+$ verdi process status <PK>
 AddWorkChain<1988> Finished [0] [None]
     └── addition<1989> Finished [0]
 ```
@@ -453,6 +453,23 @@ Provenance graph of the `AddWorkChain`.
 ```
 
 Notice how there now is a new `Int` node, _created_ by the `addition()` calculation function (note the `CREATE` link), but _returned_ by the `AddWorkChain` (note the `RETURN` link).
+You might be wondering why there are no `INPUT` links from the `Int` nodes to the calculation function.
+This is because we targeted the work chain when using `verdi node graph generate`.
+You can either target the `addition()` calculation function, or simply add the `-i, --process-in` option to show these links as well:
+
+```{code-block} console
+$ verdi node graph generate -i <PK>
+```
+
+The graph should look like the following:
+
+```{figure} include/images/workchain/addworkchain_input_links.png
+:width: 500px
+
+Provenance graph of the `AddWorkChain` using `-i, --process-in`.
+
+```
+
 Take a bit of time to compare the information shown by `verdi process show` with the provenance graph.
 Maybe also use the command to show more details for the `addition()` calculation function.
 
@@ -527,7 +544,7 @@ Try to adapt the `AddWorkChain` into the `MultiplyAddWorkChain` yourself, and ru
 Once you managed to run the work chain, the `status` should have both the `multiply` and `add` calculation functions in the hierarchy:
 
 ```{code-block} console
-$ verdi process status 203
+$ verdi process status <PK>
 MultiplyAddWorkChain<203> Finished [0] [2:result]
     ├── multiplication<204> Finished [0]
     └── addition<206> Finished [0]
@@ -683,7 +700,7 @@ This result is then attached as the `workchain_result` output:
 
 ```{literalinclude} include/code/workchain/addcalcjobworkchain.py
 :language: python
-:lines: 38
+:lines: 39
 ```
 
 And that's all!
@@ -697,14 +714,10 @@ To do this, we need to add the directory that contains this file to the `PYTHONP
 Make sure you are in the directory that contains the `addcalcjobworkchain.py` file and execute:
 
 ```{code-block} console
-$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> **TODO ADD PATH**
+$ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> $HOME/.bashrc
+$ source $HOME/.bashrc
 $ verdi daemon restart --reset
 ```
-
-:::{important}
-The code snippet above only works for the `base` environment on the AiiDAlab JupyterHub cluster.
-If you are working in a different environment, or on your local machine, you have to replace the path of the `activate` script to that of your environment.
-:::
 
 Also double check that you have set up the `add` code used in the {ref}`AiiDA basics module <started-basics-calcjobs>`:
 
@@ -745,7 +758,7 @@ In [2]: add_code = load_code(label='add@localhost')
 Then we can submit the work chain:
 
 ```{code-block} ipython
-In [3]: workchain_node = submit(AddWorkChain, x=Int(1), y=Int(2), code=add_code)
+In [3]: workchain_node = submit(AddCalcjobWorkChain, x=Int(1), y=Int(2), code=add_code)
 ```
 
 Note that just like for the `self.submit()` method executed _inside_ the work chain, the bare `submit()` function also returns the process _node_:
@@ -755,7 +768,7 @@ In [4]: workchain_node
 Out[4]: <WorkChainNode: uuid: 0936f2b4-01af-46bb-98f8-da828ce706eb (pk: 324) (addcalcjobworkchain.AddCalcjobWorkChain)>
 ```
 
-In this case it is the node of the `AddCalcjobWorkChain` we have just submitted.
+In this case, it is the node of the `AddCalcjobWorkChain` we have just submitted.
 
 ### Exercises
 
