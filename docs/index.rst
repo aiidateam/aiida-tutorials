@@ -9,9 +9,9 @@ The official home of AiiDA tutorial materials and videos.
    ------
    :column: col-lg-12 pl-0 pr-0
 
-   .. link-button:: 2020_Intro_Week_Homepage
-      :type: ref
-      :text: In-Depth: 2020 Introductory Virtual tutorial
+   .. link-button:: https://aiida-tutorials.readthedocs.io/en/tutorial-2021-intro/
+      :type: url
+      :text: Ongoing: 2021 Introductory Virtual tutorial
       :classes: btn-link btn-block stretched-link
 
    -------
