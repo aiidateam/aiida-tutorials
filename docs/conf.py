@@ -66,6 +66,7 @@ myst_substitutions = {
     "download": '<img src="../../_static/download.png" height="15">',
     "python": '<img src="../../_static/python.png" height="15">',
     "aiida": '<img src="../../_static/aiida_logo.png" height="15">',
+    "linux": '<img src="../../_static/linux.png" height="15">',
 }
 
 ipython_mplbackend = ""

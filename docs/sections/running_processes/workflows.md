@@ -1,3 +1,8 @@
+---
+substitutions:
+  seekpath: "[SeeK-path](https://www.materialscloud.org/work/tools/seekpath)"
+---
+
 (quantum-espresso-run-workflows)=
 
 # Running workflows
@@ -17,15 +22,14 @@ You can see it on the list as `quantumespresso.pw.bands`, which is the *entry po
 This is a fully automated workflow that will:
 
 1. Run a calculation on the cell to relax both the cell and the atomic positions (`vc-relax`).
-2. Refine the symmetry of the relaxed structure, and find a standardized cell using [SeeK-path][seek-path].
+2. Refine the symmetry of the relaxed structure, and find a standardized cell using {{ seekpath }}.
 3. Run a self-consistent field calculation on the refined structure.
-4. Run a band structure calculation at a fixed Kohn-Sham potential along a standard path between high-symmetry k-points determined by [SeeK-path][seek-path].
+4. Run a band structure calculation at a fixed Kohn-Sham potential along a standard path between high-symmetry k-points determined by {{ seekpath }}.
 
 
 ## Submitting a work chain
 
-In order to run this work chain, you should again open the `verdi shell`.
-You should then load the work chain using its entry point and the `WorkflowFactory`:
+In order to run this work chain, open the `verdi shell` and load the work chain using its entry point and the `WorkflowFactory`:
 
 ```{code-block} ipython
 
@@ -38,7 +42,9 @@ Instead, we are going to use one of the protocols that has been set up for the w
 To do this, all we need to provide is the code and initial structure we are going to run:
 
 :::{margin}
+
 Replace `<CODE_PK>` and `<STRUCTURE_PK>` with the respective PKs of the code and structure you used in the base module of this section.
+
 :::
 
 ```{code-block} ipython
@@ -48,6 +54,13 @@ In [2]: code = load_code(<CODE_PK>)
 
 ```
 
+:::{tip}
+
+Forgot the PK of the `Code` or `StructureData` nodes?
+Remember that you can use `verdi code list` and `verdi data structure list` to retrieve them!
+
+:::
+
 Next, we use the `get_builder_from_protocol()` method to obtain a prepopulated builder for the workflow:
 
 ```{code-block} ipython
@@ -56,8 +69,8 @@ In [3]: builder = PwBandsWorkChain.get_builder_from_protocol(code=code, structur
 
 ```
 
-The default protocol uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the [SSSP library version 1.1][sssp library version 1.1] we installed earlier.
-Finally, we just need to submit the builder in the same way as we did for the calculation:
+The default protocol uses the PBE exchange-correlation functional with suitable pseudopotentials and energy cutoffs from the [SSSP library version 1.1](https://www.materialscloud.org/discover/sssp/table/efficiency) we installed earlier.
+Finally, we just need to submit the builder in the same way as we did for the calculation job:
 
 ```{code-block} ipython
 
@@ -119,11 +132,45 @@ PwBandsWorkChain<113> Finished [0] [7:results]
 The bracket `[7:result]` indicates the current step in the outline of the `PwBandsWorkChain` (step 7, with name `result`).
 The `process status` is particularly useful for debugging complex work chains, since it helps pinpoint where a problem occurred.
 
+:::{margin} {{ linux }} The `watch` command
+
+The `watch` command in Linux executes a program periodically.
+You can find out more about it [here](https://www.geeksforgeeks.org/watch-command-in-linux-with-examples/).
+
+:::
+
+:::{tip}
+
+You can combine `verdi process status` with the `watch` command to continuously monitor the work chain status:
+
+```{code-block} console
+$ watch verdi process status <PK>
+```
+
+:::
+
+The work chain might take a couple minutes to complete.
+While you wait, you can try uploading your `.cif` file to the [SeeK-path tool on Materials Cloud](https://www.materialscloud.org/work/tools/seekpath).
 
 ## Displaying the results
 
-Once the work chain has finished running, use `verdi process show <PK>` to inspect the `PwBandsWorkChain` and find the PK of its `band_structure` output.
-You can also plot the band structure using the `verdi shell`:
+Once the work chain has finished running, use `verdi process show <PK>` to inspect the `PwBandsWorkChain` and find the PK of its `band_structure` output:
+
+```{code-block} console
+$ verdi process show <PK>
+(...)
+Outputs                PK  Type
+-------------------  ----  -------------
+band_parameters       352  Dict
+band_structure        350  BandsData
+primitive_structure   327  StructureData
+scf_parameters        341  Dict
+seekpath_parameters   325  Dict
+(...)
+```
+
+Look for the PK of the output with link `band_structure` of type `BandsData`.
+You can then plot the band structure using the `verdi shell`:
 
 ```{code-block} console
 
@@ -131,7 +178,7 @@ $ verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
 
 ```
 
-Use the `evince` command or the JupyterHub file manager to open the `band_structure.pdf` file.
+Open the `band_structure.pdf` file with a viewer at your disposal.
 It should look similar to the one shown here:
 
 :::{figure} include/images/si_bands.png
@@ -141,11 +188,19 @@ Band structure computed by the `PwBandsWorkChain`.
 
 :::
 
-## Overriding the inputs
+:::{important}
 
-Sometimes you may want to take advantage of the convenience of getting a pre-populated `builder` from the `get_builder_from_protocol()` method while still being able to customize some of the inputs.
+The protocols and the `get_builder_from_protocol()` have only been fairly recently implemented in `aiida-quantumespresso`!
+Be sure to check [the open issues on GitHub](https://github.com/aiidateam/aiida-quantumespresso/issues?q=is%3Aopen+is%3Aissue+label%3Atopic%2Fprotocol) related to this feature and run some tests before starting calculations in production.
 
-The trivial way to do this is by taking the `builder` and overriding its ports with the desired inputs.
+:::
+
+## Customizing the inputs
+
+Sometimes you may want to take advantage of the convenience of getting a prepopulated `builder` from the `get_builder_from_protocol()` method while still being able to customize some of the inputs.
+
+The straightforward way to do this is by first obtaining the prepopulated `builder` and overriding its inputs with the desired values.
+First use the `get_builder_from_protocol()` method to obtain the `builder`:
 
 ```{code-block} ipython
 
@@ -153,20 +208,49 @@ In [1]: PwBandsWorkChain = WorkflowFactory('quantumespresso.pw.bands')
    ...: code = load_code(<CODE_PK>)
    ...: structure = load_node(<STRUCTURE_PK>)
    ...: builder = PwBandsWorkChain.get_builder_from_protocol(code=code, structure=structure)
-   ...: builder['bands']['metadata'] = {'label': 'This is a PwBaseWorkChain'}
-   ...: builder['bands']['scf'] = {'label': 'This is a PwBaseWorkChain'}
-   ...: builder['bands']['relax']['base'] = {'label': 'This is a PwBaseWorkChain'}
 
 ```
 
-This might be a good option for simple modifications, but for more complex and powerful customizations, the `get_builder_from_protocol()` method also offers the option for overrides.
+Next, have a look at the top-level `bands_kpoints_distance` input, used by the work chain to determine the linear density along the k-point path constructed using {{ seekpath }}:
+
+
+```{code-block} ipython
+
+In [2]: builder.bands_kpoints_distance
+Out[2]: <Float: uuid: ab9eb3f6-7c61-4a6d-964c-5b55964e306c (unstored) value: 0.025>
+
+```
+
+Say you're only doing a test calculation, and want to increase the distance between the k-points.
+Simply adapt the `Float` input to the desired value:
+
+```{code-block} ipython
+
+In [3]: builder.bands_kpoints_distance = Float(0.2)
+
+```
+
+and once again submit the `builder` to the AiiDA engine:
+
+```{code-block} ipython
+
+In [3]: from aiida.engine import submit
+   ...: workchain_node = submit(builder)
+
+```
+
+Once the work chain is complete, you can have a look at the newly calculated band structure and compare it with the old one.
+
+### Using the `overrides` argument
+
+Adapting the `builder` might be a good option for small modifications, but for more complex and powerful customizations, the `get_builder_from_protocol()` method also offers the option to use the `overrides` argument.
 
 :::{important}
 
 For the following demonstration you will need the pseudo-dojo pseudopotentials you used for the exercises of the module on {ref}`running calculations <calculations-basics-structpseudo>`.
 You can check if it is available and its label by running the following command in the terminal:
 
-```{code-block} ipython
+```{code-block} console
 
 $ aiida-pseudo list
 Label                                Type string                Count
@@ -183,9 +267,10 @@ If you see no pseudo-dojo entry, you can check the dropdown box below to see how
 
 :::
 
-:::{dropdown} **Installing the pseudo-dojo pseudopotentials**
+:::{dropdown} **Installing the `pseudo-dojo` pseudopotentials**
 
-You can use the tools of the `aiida-pseudo` package to easily install the pseudo-dojo pseudopotentials:
+You can use the tools of the `aiida-pseudo` package to easily install the pseudo-dojo pseudopotentials.
+Since the default format for these pseudopotentials is _not_ UPF, you have to use the `-f, --pseudo-format` option to make sure they are installed in the correct format:
 
 ```{code-block} console
 $ aiida-pseudo install pseudo-dojo -f upf
@@ -200,11 +285,11 @@ You should now be able to see these new pseudos when you execute `aiida-pseudo l
 
 :::
 
-Overrides allow access to some of the underlying construction features of internal methods, such as the `pseudo_family` input of the many `PwBaseWorkChain` being used by the `PwBandsWorkChain`.
+Overrides allow access to some of the underlying construction features of internal methods, such as the `pseudo_family` input of the `PwBaseWorkChain`s launched by the `PwBandsWorkChain`:
 
 ```{code-block} ipython
 
-In [2]: pseudo_family = <PSEUDO_DOJO_GROUP_LABEL>
+In [2]: pseudo_family = "PseudoDojo/0.4/PBE/SR/standard/upf"
    ...: overrides = {
    ...:     'relax': {'base': {'pseudo_family': pseudo_family}},
    ...:     'scf': {'pseudo_family': pseudo_family},
@@ -214,7 +299,7 @@ In [2]: pseudo_family = <PSEUDO_DOJO_GROUP_LABEL>
 
 ```
 
-In this way you will notice that not only the `pseudos` inputs in `builder['bands']['pw']`, `builder['scf']['pw']` and `builder['relax']['base']['pw']` are different, but also the `ecutwfc` and `ecutrho` have been adapted to values better suited for the new pseudopotentials.
+By investigating the inputs, you will notice that not only the `pseudos` inputs in `builder['bands']['pw']`, `builder['scf']['pw']` and `builder['relax']['base']['pw']` are different, but also the `ecutwfc` and `ecutrho` have been adapted to the hints provided by [the Pseudo-dojo library](http://www.pseudo-dojo.org/):
 
 
 ```{code-block} ipython
@@ -239,6 +324,7 @@ Out[4]:
 
 ```
 
+As a final exercise, run the `PwBandsWorkChain` with the pseudo-dojo pseudos, and compare the resulting band structure with the one obtained using the [SSSP library version 1.1](https://www.materialscloud.org/discover/sssp/table/efficiency).
 
 :::{important} **Key takeaways**
 
@@ -248,3 +334,6 @@ Out[4]:
  - You can customize the builder returned by `get_builder_from_protocol()` by providing the `overrides` optional argument.
 
 :::
+
+Even after only running a couple of work chains, you can already see that it becomes more and more difficult to find the data that you are looking for.
+In the {ref}`"Organising your data" module <data-groups>`, you will learn how to use `Group`s to keep your database more tidy.
