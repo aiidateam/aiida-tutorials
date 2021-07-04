@@ -152,6 +152,13 @@ $ watch verdi process status <PK>
 The work chain might take a couple minutes to complete.
 While you wait, you can try uploading your `.cif` file to the [SeeK-path tool on Materials Cloud](https://www.materialscloud.org/work/tools/seekpath).
 
+:::{important}
+
+The protocols and the `get_builder_from_protocol()` have only been fairly recently implemented in `aiida-quantumespresso`!
+Be sure to check [the open issues on GitHub](https://github.com/aiidateam/aiida-quantumespresso/issues?q=is%3Aopen+is%3Aissue+label%3Atopic%2Fprotocol) related to this feature and run some tests before starting calculations in production.
+
+:::
+
 ## Displaying the results
 
 Once the work chain has finished running, use `verdi process show <PK>` to inspect the `PwBandsWorkChain` and find the PK of its `band_structure` output:
@@ -185,13 +192,6 @@ It should look similar to the one shown here:
 :width: 100%
 
 Band structure computed by the `PwBandsWorkChain`.
-
-:::
-
-:::{important}
-
-The protocols and the `get_builder_from_protocol()` have only been fairly recently implemented in `aiida-quantumespresso`!
-Be sure to check [the open issues on GitHub](https://github.com/aiidateam/aiida-quantumespresso/issues?q=is%3Aopen+is%3Aissue+label%3Atopic%2Fprotocol) related to this feature and run some tests before starting calculations in production.
 
 :::
 
