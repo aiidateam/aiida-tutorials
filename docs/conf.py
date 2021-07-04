@@ -155,8 +155,8 @@ html_css_files = [
 ]
 html_theme_options = {
     "home_page_in_toc": False,
-    "repository_url": "https://github.com/aiidateam/aiida-pseudo",
-    "repository_branch": "master",
+    "repository_url": "https://github.com/aiidateam/aiida-tutorials",
+    "repository_branch": "tutorial-2021-intro",
     "use_repository_button": True,
     "use_issues_button": True,
     "path_to_docs": "docs",

@@ -18,7 +18,7 @@ Below you can find the tutorial schedule, as well as the AiiDA cheat sheet, whic
 Presentations
 -------------
 
-For this virtual tutorial, all presentations have been recorded beforehand, so you can watch them at the time that is most convenient for you.
+For this virtual tutorial, most presentations have been recorded beforehand, so you can watch them at the time that is most convenient for you.
 However, you are required to watch certain presentations before the hands-on sessions of certain days.
 These are tabulated below:
 
@@ -86,7 +86,7 @@ For easy access, you can find the modules for the first hands-on session below:
 
    .. link-button:: fundamentals-basics
       :type: ref
-      :text: First hands-on: Getting started - AiiDA basics
+      :text: First hands-on: AiiDA basics
       :classes: btn-link btn-block stretched-link
 
 Contributed talks
