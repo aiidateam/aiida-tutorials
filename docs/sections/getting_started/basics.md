@@ -233,7 +233,7 @@ $ verdi process list
 
 The returned list will be empty, but don't worry!
 By default, `verdi process list` only returns the *active* processes.
-If you want to see *all* processes (i.e. also the processes that are *terminated*), simply add the `-a` option:
+If you want to see *all* processes (i.e. also the processes that are *terminated*), simply add the `-a/--all` option:
 
 ```{code-block} console
 
