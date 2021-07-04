@@ -117,6 +117,13 @@ In [6]: from aiida.engine import run
 
 ```
 
+:::{important}
+
+Since we'll be correcting the builder later, don't exit the `verdi shell`, else you'll have to execute the commands again.
+Instead, open a new terminal to follow the instructions below.
+
+:::
+
 This creates a folder of the form `submit_test/[date]-0000[x]` in the current directory.
 The folder contains all the inputs as they would be used by AiiDA to run the code in the target computer.
 You can open a second terminal and do the following quick checks before continuing:
@@ -171,7 +178,7 @@ You will see this represented by a non-zero error code in brackets near the "Fin
 
 :::{note}
 
-If the daemon is not running, the calculation will remain in the `NEW` state until you start it by executing `verdi daemon start` in the command line.
+If the daemon is not running, the calculation will remain in the `Created` state until you start it by executing `verdi daemon start` in the command line.
 
 :::
 
@@ -184,7 +191,11 @@ First start by using `verdi process show` to display a more detailed summary of 
 
 ```{code-block} console
 
-$ verdi process show <pk_number>
+$ verdi process show <PK>
+
+```
+
+```{code-block} bash
 Property     Value
 -----------  --------------------------------------------------------------------------------
 type         PwCalculation
@@ -220,14 +231,14 @@ Run 'verdi process report 2060' to see them
 
 ```
 
-The last part of the output alerts you to the fact that there are some log messages waiting for you, if you run `verdi process report <pk>`.
+The last part of the output alerts you to the fact that there are some log messages waiting for you, if you run `verdi process report <PK>`.
 
 If you read the report, you will see that it says that the output files could not be parsed.
 In this case you can also try inspecting directly the output file of PWscf.
 
 ```{code-block} console
 
-$ verdi calcjob outputcat <pk_number> | less
+$ verdi calcjob outputcat <PK> | less
 
 ```
 
@@ -241,17 +252,16 @@ We can first check the content of the calculation folder by running:
 
 ```{code-block} console
 
-$ verdi calcjob inputls <pk_number> -c
+$ verdi calcjob inputls <PK> -c
 
 ```
 
-where `<pk_number>` corresponds to the PK number of your calculation.
 This will list the files and subfolders inside of the input directory (`-c` prints folders in color).
 You can also check the content of the input file with:
 
 ```{code-block} console
 
-$ verdi calcjob inputcat <pk_number> | less
+$ verdi calcjob inputcat <PK> | less
 
 ```
 
