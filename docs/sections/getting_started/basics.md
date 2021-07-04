@@ -19,7 +19,9 @@ $ verdi status -h
 ::::
 
 :::{margin} {{ aiida }} **Further reading**
+
 More details on the `verdi` CLI can be found in the {ref}`AiiDA documentation <aiida:topics:cli>`.
+
 :::
 
 ## Provenance
@@ -125,8 +127,14 @@ The UUIDs are generated randomly and are therefore **guaranteed** to be differen
 Next, let's leave the IPython shell by typing `exit()` and then enter.
 Back in the terminal, use the `verdi` command line interface (CLI) to check the data node we have just created:
 
+:::{margin}
+
+Make sure you replace `<PK>` with the PK of the `Int` node in your database!
+
+:::
+
 ```{code-block} console
-$ verdi node show 1
+$ verdi node show <PK>
 ```
 
 This prints something like the following:
@@ -166,8 +174,10 @@ def multiply(x, y):
 ```
 
 :::{margin} {{ python }} **Decorators**
+
 A decorator can be used to add functionality to an existing function.
 You can read more about them [here](https://pythonbasics.org/decorators/).
+
 :::
 
 will give the desired result when applied to two `Int` nodes, but the calculation will not be stored in the provenance graph.
@@ -188,11 +198,13 @@ This converts the `multiply` function into an AiIDA *calculation function*, the 
 Next, load the `Int` node you have created in the previous section using the `load_node` function and the PK of the data node:
 
 :::{margin}
-Remember that the PK of the data node can be different for your database!
+
+Don't forget to replace the `<PK>`!
+
 :::
 
 ```{code-block} ipython
-In [2]: x = load_node(pk=1)
+In [2]: x = load_node(pk=<PK>)
 ```
 
 Of course, we need another integer to multiply with the first one.
@@ -226,9 +238,7 @@ Similarly, the returned `Int` node with value 6 has been stored with PK = 4.
 Let's once again leave the IPython shell with `exit()` and look for the process we have just run using the `verdi` CLI:
 
 ```{code-block} console
-
 $ verdi process list
-
 ```
 
 The returned list will be empty, but don't worry!
@@ -236,9 +246,7 @@ By default, `verdi process list` only returns the *active* processes.
 If you want to see *all* processes (i.e. also the processes that are *terminated*), simply add the `-a/--all` option:
 
 ```{code-block} console
-
 $ verdi process list -a
-
 ```
 
 You should now see something like the following output:
@@ -262,9 +270,7 @@ The provenance graph can be automatically generated using the verdi CLI.
 Let's generate the provenance graph for the `multiply` calculation function we have just run with PK = 3:
 
 ```{code-block} console
-
-$ verdi node graph generate 3
-
+$ verdi node graph generate <PK>
 ```
 
 The command will write the provenance graph to a `.pdf` file.
@@ -286,7 +292,7 @@ Provenance graph of the `multiply` calculation function.
 
 ## CalcJobs
 
-When running calculations that require an external code or run on a remote machine, a simple calculation function is no longer sufficient.
+When running calculations that require a (possibly non-Python) code external to AiiDA and/or run on a remote machine, a simple calculation function is no longer sufficient.
 For this purpose, AiiDA provides the `CalcJob` process class.
 
 To see all calculations available from the AiiDA packages installed in your environment you can use the `verdi plugin` command:
@@ -319,7 +325,7 @@ $ verdi plugin list aiida.calculations arithmetic.add
 
 There is a lot of information we obtain with this command:
 
-```{code-block} console
+```{code-block} bash
 Description:
 
 	`CalcJob` implementation to add two numbers using bash for testing and demonstration purposes.
@@ -352,7 +358,7 @@ Finally, note the `sum` among the outputs, which contains the result of the addi
 
 Now that we understand what our `CalcJob` does and what it needs, let's see what we need to do to run it.
 
-### Preliminary setups
+### Preliminary setup
 
 Before you run a `CalcJob`, you need to have two things: a `code` to run the desired calculation and a `computer` for the calculation to run on.
 Most of our tutorial environments already have the `localhost` computer set up.
@@ -406,10 +412,10 @@ $ verdi code list
 # List of configured codes:
 # (use 'verdi code show CODEID' to see the details)
 (...)
-* pk 5 - add@localhost
+* pk 1 - add@localhost
 ```
 
-In the output above you can see a the code `add@localhost`, with PK = 5, in the printed list.
+In the output above you can see a the code `add@localhost`, with PK = 1, in the printed list.
 Again, in your output you may have other codes listed or a different PK depending on your specific setup, but you should still be able to identify the code by its label.
 The `add@localhost` identifier indicates that the code with label `add` is run on the computer with label `localhost`.
 To see more details about the computer, you can use the following `verdi` command:
@@ -470,13 +476,14 @@ In [2]: code = load_code(label='add@localhost')
 Let's use the `Int` node that was created by our previous `calcfunction` as one of the inputs and a new node as the second input:
 
 ```{code-block} ipython
-In [3]: x = load_node(pk=4)
+In [3]: x = load_node(pk=<PK>)
    ...: y = Int(5)
 ```
 
 :::{tip}
 
-In case that your nodes' PKs are different and you don't remember the PK of the output node from the previous calculation, check the provenance graph you generated earlier and use the UUID of the output node instead:
+In case you don't remember the PK of the output node from the previous calculation, check the provenance graph you generated earlier and use the UUID of the output node instead.
+For example (remember that your UUID is _guaranteed_ to be different!):
 
 ```{code-block} ipython
 In [3]: x = load_node(uuid='42541d38')
@@ -519,7 +526,7 @@ Grab the PK of the `ArithmeticAddCalculation`, and generate the provenance graph
 The result should look like the graph shown in {numref}`fig-calcjob-graph`.
 
 ```{code-block} console
-$ verdi node graph generate 7
+$ verdi node graph generate <PK>
 ```
 
 (fig-calcjob-graph)=
@@ -534,9 +541,9 @@ Provenance graph of the `ArithmeticAddCalculation` CalcJob, with one input provi
 
 You can see more details on any process, including its inputs and outputs, using the verdi shell:
 
-:::{code-block} console
-$ verdi process show 7
-:::
+```{code-block} console
+$ verdi process show <PK>
+```
 
 ### Submitting to the daemon
 
@@ -578,7 +585,7 @@ In [1]: from aiida.engine import submit
    ...:
    ...: ArithmeticAdd = CalculationFactory('arithmetic.add')
    ...: code = load_code(label='add@localhost')
-   ...: x = load_node(pk=4)
+   ...: x = load_node(pk=<PK>)
    ...: y = Int(5)
    ...:
    ...: submit(ArithmeticAdd, code=code, x=x, y=y)
@@ -639,7 +646,7 @@ Info: last time an entry changed state: 14s ago (at 09:07:45 on 2020-05-13)
 So far we have executed each process manually.
 AiiDA allows us to automate these steps by linking them together in a *workflow*, whose provenance is stored to ensure reproducibility.
 For this tutorial we have prepared a basic `WorkChain` that is already implemented in `aiida-core`.
-You will see the details of this code in the {ref}`module on writing work chains <workflows-workchain>`.
+You will see more details on how to write such a work chain in {ref}`the module on writing work chains <workflows-workchain>`.
 
 :::{note}
 
@@ -730,10 +737,10 @@ We can see that the `MultiplyAddWorkChain` is currently waiting for its *child p
 Check the process list again for *all* processes (You should know how by now!).
 After about half a minute, all the processes should be in the `Finished` state.
 
-We can now generate the full provenance graph for the `WorkChain` with:
+We can now generate the full provenance graph for the `WorkChain` using the `<PK>` of the `MultiplyAddWorkChain`:
 
 ```{code-block} console
-$ verdi node graph generate 19
+$ verdi node graph generate <PK>
 ```
 
 Open the generated pdf file.

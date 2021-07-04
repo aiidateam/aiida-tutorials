@@ -86,7 +86,7 @@ For easy access, you can find the modules for the first hands-on session below:
 
    .. link-button:: fundamentals-basics
       :type: ref
-      :text: First hands-on: Getting started - AiiDA basics
+      :text: First hands-on: AiiDA basics
       :classes: btn-link btn-block stretched-link
 
 Contributed talks
