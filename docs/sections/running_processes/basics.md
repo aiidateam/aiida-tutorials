@@ -51,6 +51,14 @@ You can find the instructions in the dropdown below!
 :::{dropdown} **Try it yourself!**
 
 Create a new `test_run` folder and copy the inputs shown above into the `qe.in` file.
+
+This can be donne with:
+
+```{code-block} console
+$ cat <<EOF > qe.in
+```
+Finish with `EOF`.
+
 Next, make a `pseudo` subfolder and download the {download}`pseudopotential for silicon<include/data/Si.pbe-n-rrkjus_psl.1.0.0.UPF>` there:
 
 ```{code-block} console
