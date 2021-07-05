@@ -1,9 +1,0 @@
----
-label: "add"
-description: "addition code"
-input_plugin: "arithmetic.add"
-on_computer: true
-remote_abs_path: "/home/fdossantos/codes/aiida-core/aiida/calculations/arithmetic/add.py"
-computer: "localhost"
-prepend_text: "ulimit -s unlimited"
-append_text: " "
