@@ -3,7 +3,7 @@ from aiida.engine import WorkChain
 
 
 class OutputInputWorkChain(WorkChain):
-    """WorkChain to output the input."""
+    """Toy WorkChain that simply passes the input as an output."""
 
     @classmethod
     def define(cls, spec):
@@ -15,10 +15,7 @@ class OutputInputWorkChain(WorkChain):
         spec.output("workchain_result", valid_type=Int)
 
     def result(self):
-        """Parse the result."""
-
-        if True:
-            print("Hi there!")
+        """Pass the input as an output."""
 
         # Declaring the output
-        self.out("workchain_result", self.inputs.x)
+        self.out("workchain_output", self.inputs.x)
