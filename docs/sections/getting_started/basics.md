@@ -509,7 +509,7 @@ Once it is done, it will return a dictionary with the output nodes:
 Out[4]:
 {'sum': <Int: uuid: 7d5d781e-8f17-498a-b3d5-dbbd3488b935 (pk: 8) value: 11>,
 'remote_folder': <RemoteData: uuid: 888d654a-65fb-4da0-b3bc-d63f0374f274 (pk: 9)>,
-'retrieved': <FolderData: uuid: 4733aa78-2e2f-4aeb-8e09-c5cfb58553db (pk: 10s)>}
+'retrieved': <FolderData: uuid: 4733aa78-2e2f-4aeb-8e09-c5cfb58553db (pk: 10)>}
 ```
 
 Besides the sum of the two `Int` nodes, the calculation function also returns two other outputs: one of type `RemoteData` and one of type `FolderData`.
@@ -707,7 +707,7 @@ And finally we will submit it to the daemon using the `submit` function from the
 
 ```{code-block} ipython
 In [3]: from aiida.engine import submit
-   ...: submit(MultiplyAddWorkChain, code=code, x=x, y=x, z=z)
+   ...: submit(MultiplyAddWorkChain, code=code, x=x, y=y, z=z)
 ```
 
 Now quickly leave the IPython shell and check the process list:
