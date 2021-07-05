@@ -44,7 +44,7 @@ This means that at that time **all data will be removed**.
 Please see the instructions below to download your data from the server.
 ```
 
-## How download your data
+## How to download your data
 
 To download your data from the server prior to its destruction:
 
