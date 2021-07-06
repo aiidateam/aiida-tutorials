@@ -4,6 +4,7 @@
 *.pyc
 
 .vscode
+.tox
 docs/build
 docs/_build
 
