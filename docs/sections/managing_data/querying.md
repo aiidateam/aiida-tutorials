@@ -217,7 +217,7 @@ For example, all the crystal structures stored in the database are saved in node
 If instead of all the nodes, we would rather like to count only the crystal structure nodes, we simply tell a `QueryBuilder` instance to narrow its scope only to objects of type `StructureData`.
 Since we want to create a new independent query, you must create a new instance of the `QueryBuilder`.
 
-#### Exercise
+### Exercise
 
 In the next cell, we have typed part of the code to count all the structure nodes.
 See if you can finish the line with the comment, to tell the `QueryBuilder` that you are only interested in `StructureData` nodes.
@@ -287,7 +287,8 @@ For example, you may want to count the number of entries for each of the `Node` 
 ```{code-cell} ipython3
 class_list = [Node, StructureData, KpointsData, Dict, UpfData, Code]
 ```
-#### Exercise
+
+### Exercise
 
 Using the tools you have learned so far, it is possible to build a table of the number of occurrences of each of these `Node` classes that are stored in the database.
 You can loop over the `class_list` list and create a `QueryBuilder` instance for each `Node` (sub-)class.
@@ -336,7 +337,7 @@ query.all()
 By using the `project` keyword in the `append` call, you are specifying `query` to inform AiiDA that you are only interested in the `uuid` property of the `Node` class.
 Note that the value assigned to `project` is a list, since we may want to specify more than one property.
 
-#### Exercise
+### Exercise
 
 See if you can get the `QueryBuilder` to return *both* the PK and the UUID of the first 5 nodes in the following cell.
 
@@ -420,7 +421,7 @@ Operator             | Data type             | Example                          
 
 +++
 
-#### Exercise
+### Exercise
 
 Try to write a query below that will retrieve all `Group` nodes whose `label` property starts with the string `tutorial`.
 
@@ -508,7 +509,7 @@ Node        | User      | with_user        | The node was created by a user
 
 +++
 
-#### Exercise
+### Exercise
 
 See if you can write a query that will return all the `UpfData` nodes that are a member of a `Group` whose name starts with the string `SSSP`.
 
@@ -569,7 +570,7 @@ print('Extras dictionary:', node.extras)
 
 The chemical element symbol of a pseudopotential represented by a `UpfData` node is stored in the `element` attribute.
 
-#### Exercise
+### Exercise
 
 Using the knowledge on how filtering on `attributes` works, see if you can write a query that will search your database for pseudopotentials for silicon.
 
