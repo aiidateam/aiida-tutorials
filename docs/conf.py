@@ -117,7 +117,13 @@ author = "The AiiDA team."
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ["build/*", "assets/*", "**/.ipynb_checkpoints/", "**/clipboard.md", "sections/managing_data/querying.md"]
+exclude_patterns = [
+    "build/*",
+    "assets/*",
+    "**/.ipynb_checkpoints/",
+    "**/clipboard.md",
+    "sections/managing_data/querying.md",
+]
 exclude_patterns.append("sections/running_processes/reference.md")
 
 # The reST default role (used for this markup: `text`) to use for all documents.
