@@ -216,6 +216,9 @@ Now as you may have learned in previous sections of the tutorial, nodes come in 
 For example, all the crystal structures stored in the database are saved in nodes that are of the type `StructureData`.
 If instead of all the nodes, we would rather like to count only the crystal structure nodes, we simply tell a `QueryBuilder` instance to narrow its scope only to objects of type `StructureData`.
 Since we want to create a new independent query, you must create a new instance of the `QueryBuilder`.
+
+#### Exercise
+
 In the next cell, we have typed part of the code to count all the structure nodes.
 See if you can finish the line with the comment, to tell the `QueryBuilder` that you are only interested in `StructureData` nodes.
 
@@ -284,6 +287,7 @@ For example, you may want to count the number of entries for each of the `Node` 
 ```{code-cell} ipython3
 class_list = [Node, StructureData, KpointsData, Dict, UpfData, Code]
 ```
+#### Exercise
 
 Using the tools you have learned so far, it is possible to build a table of the number of occurrences of each of these `Node` classes that are stored in the database.
 You can loop over the `class_list` list and create a `QueryBuilder` instance for each `Node` (sub-)class.
@@ -331,6 +335,9 @@ query.all()
 
 By using the `project` keyword in the `append` call, you are specifying `query` to inform AiiDA that you are only interested in the `uuid` property of the `Node` class.
 Note that the value assigned to `project` is a list, since we may want to specify more than one property.
+
+#### Exercise
+
 See if you can get the `QueryBuilder` to return *both* the PK and the UUID of the first 5 nodes in the following cell.
 
 ```{important}
@@ -377,30 +384,27 @@ The value is a dictionary, where the keys indicate the node property it operates
 The value of that key is again itself a dictionary, where the key indicates the logical operator *EQUAL TO* via two equality signs (`==`), and the value corresponds to the desired value of the property.
 
 You may have multiple criteria that you want to filter for, in which case you can use the logical `or` and `and` operators.
-Lets say, for example, you want the `QueryBuilder` to retrieve all the crystal structure nodes (`StructureData`) that have a certain `label` **and** were created no longer than 12 days ago.
+Let's say, for example, you want the `QueryBuilder` to retrieve all the crystal structure nodes (`StructureData`) that were created no longer than 12 days ago **and** have an `a` in their UUID.
 You can express this criterion by making use of the `and` operator, which allows you to specify multiple filters that all have to be satisfied.
-
-```{note}
-You may need to `import` the `datetime` and `timedelta` from the built-in `datetime` package: `from datetime import datetime, timedelta`.
-```
 
 ```{code-cell} ipython3
 :tags: [hide-output]
+from datetime import datetime, timedelta
 
 query = QueryBuilder()
 query.append(
-    Node,
+    StructureData,
     filters={
         'and': [
             {'ctime': {'>': datetime.now() - timedelta(days=12)}},
-            {'label': {'==':'graphene'}}
+            {'uuid': {'like': '%a%'}}
         ]
     }
 )
 query.all()
 ```
 
-You may have noticed that the *LESS THAN* (`>`) operator, and its related operators, can work with Python `datetime` objects.
+You may have noticed that the _greater than_ (`>`) operator, and its related operators, can work with Python `datetime` objects.
 These are just a few of the operators that `QueryBuilder` understands.
 Below you find a table with some of the logical operators that you can use:
 
@@ -416,7 +420,9 @@ Operator             | Data type             | Example                          
 
 +++
 
-As an exercise, try to write a query below that will retrieve all `Group` nodes whose `label` property starts with the string `tutorial`.
+#### Exercise
+
+Try to write a query below that will retrieve all `Group` nodes whose `label` property starts with the string `tutorial`.
 
 ```{code-cell} ipython3
 # Write your query here
@@ -502,7 +508,9 @@ Node        | User      | with_user        | The node was created by a user
 
 +++
 
-As an exercise, see if you can write a query that will return all the `UpfData` nodes that are a member of a `Group` whose name starts with the string `SSSP`.
+#### Exercise
+
+See if you can write a query that will return all the `UpfData` nodes that are a member of a `Group` whose name starts with the string `SSSP`.
 
 ```{code-cell} ipython3
 :tags: [hide-output]
@@ -560,6 +568,9 @@ print('Extras dictionary:', node.extras)
 ```
 
 The chemical element symbol of a pseudopotential represented by a `UpfData` node is stored in the `element` attribute.
+
+#### Exercise
+
 Using the knowledge on how filtering on `attributes` works, see if you can write a query that will search your database for pseudopotentials for silicon.
 
 ```{code-cell} ipython3
@@ -676,6 +687,13 @@ print("Groups:", ', '.join([g for g, in query.all()]))
 generate_query_graph(query.get_json_compatible_queryhelp(), 'query3.png')
 Image(filename='query3.png')
 ```
+
+:::{important}
+
+Most of the code cells below are incomplete, and need to be completed as an exercise.
+Look for the comments for more instructions.
+
+:::
 
 ### Append the calculations that are members of each group
 
