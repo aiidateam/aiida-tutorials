@@ -11,10 +11,6 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 # pylint: disable=invalid-name
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
-
 import os
 import subprocess
 import pathlib
@@ -121,7 +117,7 @@ author = "The AiiDA team."
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ["build/*", "assets/*", "**/.ipynb_checkpoints/", "**/clipboard.md"]
+exclude_patterns = ["build/*", "assets/*", "**/.ipynb_checkpoints/", "**/clipboard.md", "sections/managing_data/querying.md"]
 exclude_patterns.append("sections/running_processes/reference.md")
 
 # The reST default role (used for this markup: `text`) to use for all documents.

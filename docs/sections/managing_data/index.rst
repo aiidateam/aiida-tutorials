@@ -39,7 +39,7 @@ Managing data
     ---
     :column: col-lg-12
 
-    .. link-button:: querying
+    .. link-button:: querying-executed
         :type: ref
         :text: Querying
         :classes: btn-light text-left stretched-link font-weight-bold
@@ -60,4 +60,4 @@ Managing data
     :hidden:
 
     groups
-    querying
+    querying-executed

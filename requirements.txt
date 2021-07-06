@@ -4,5 +4,3 @@ sphinx-copybutton~=0.4.0
 sphinx-panels
 sphinx-tabs
 myst-nb==0.13.0a1
-pre-commit
-black
