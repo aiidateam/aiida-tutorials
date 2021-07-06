@@ -14,6 +14,20 @@ language_info:
   name: "python"
 ---
 
+:::{important}
+
+The "Querying for data" module is written in a Jupyter notebook format.
+On this page you can find a rendered version of the notebook, but you can download the `.ipynb` file using the following command:
+
+```{code-block} console
+$ wget https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/permanent/querying.ipynb
+```
+
+**Note that not all cells are complete!**
+Many are exercises for you to solve.
+
+:::
+
 # Querying for data
 
 The notebook will show you how the `QueryBuilder` can be used to query your database for specific data.
