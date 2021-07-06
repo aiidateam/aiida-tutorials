@@ -3,6 +3,7 @@
 *.swp
 *.pyc
 
+.aiida
 .vscode
 .tox
 docs/build

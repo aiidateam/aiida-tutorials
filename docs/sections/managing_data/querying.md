@@ -25,7 +25,7 @@ Make sure to execute the cell below this one (it may be hidden)
 ```
 
 ```{code-cell} ipython3
-:tags: [hide-input]
+:tags: [hide-input, hide-output]
 
 from IPython.display import Image
 from datetime import datetime, timedelta
@@ -198,6 +198,8 @@ But this use will be demonstrated more fully in a few steps.
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query.append(Node)
 ```
 
@@ -205,6 +207,8 @@ We have now narrowed down the scope of `query` to just the nodes that are presen
 To learn how many nodes there are exactly, you can use the `count()` method:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query.count()
 ```
 
@@ -216,6 +220,8 @@ In the next cell, we have typed part of the code to count all the structure node
 See if you can finish the line with the comment, to tell the `QueryBuilder` that you are only interested in `StructureData` nodes.
 
 ```{code-cell} ipython3
+:tags: [raises-exception, remove-output]
+
 query = QueryBuilder()
 query.append() # How do we finish this line to tell the query builder to count only the structure nodes?
 query.count()
@@ -225,6 +231,8 @@ Instead of just counting how many crystal structure nodes exist, we may also act
 This is as easy as telling the `QueryBuilder` that we are not interested in the `count` but rather that we want to retrieve `all` the nodes.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(StructureData)
 query.all()
@@ -235,6 +243,8 @@ One solution is to tell the `QueryBuilder` that we are, for example, only intere
 This can be done with the `limit()` method as follows:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(StructureData)
 query.limit(5)
@@ -248,6 +258,8 @@ When you want performance, use the functionality native to the `QueryBuilder`, l
 The following will return the first 7 results.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query.limit(None)
 query.all()[:7]
 ```
@@ -256,6 +268,8 @@ If you want to know a little bit more about the retrieved crystal structure node
 This allows you, for instance, to print the formula of the structures:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(StructureData)
 query.limit(5)
@@ -276,6 +290,8 @@ You can loop over the `class_list` list and create a `QueryBuilder` instance for
 See if you can finish the following loop by completing the line with the comment, printing the count of each `Node` (sub-)class.
 
 ```{code-cell} ipython3
+:tags: [remove-output]
+
 for class_name in class_list:
     query = QueryBuilder()
     query.append(class_name)
@@ -305,6 +321,8 @@ We can tell the `QueryBuilder` which properties we would like to be returned, by
 For example, you may only want to get the universally unique identifiers (UUIDs) of a set of nodes, which is stored in the `uuid` attribute.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(Node, project=['uuid'])
 query.limit(5)
@@ -320,6 +338,8 @@ In the context of the `QueryBuilder`, the PK of a node is called `id` and the UU
 ```
 
 ```{code-cell} ipython3
+:tags: [raises-exception, remove-output]
+
 query = QueryBuilder()
 query.append(Node, project=)#? What should the value be for the project key
 query.limit(5)
@@ -345,6 +365,8 @@ For example, we may have the PK of a certain node and we would like to know when
 You can tell the `QueryBuilder` instance to select nodes that only match that criterion, by telling it to **filter** based on that property.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(Node, project=['ctime', 'mtime'], filters={'id': {'==': 1}})
 query.all()
@@ -363,6 +385,8 @@ You may need to `import` the `datetime` and `timedelta` from the built-in `datet
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(
     Node,
@@ -417,6 +441,8 @@ Since this is a very common pattern, the `QueryBuilder` allows to directly appen
 ```
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(PwCalculation, tag='calculation')
 ```
@@ -427,6 +453,8 @@ Therefore, you gave it a tag with the `tag` keyword.
 This can now be used in the following line:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query.append(StructureData, with_incoming='calculation')
 ```
 
@@ -438,6 +466,8 @@ Note how you expressed this relation by the `with_incoming` keyword, because we 
 What remains to do is execute the query:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query.limit(5)
 query.all()
 ```
@@ -445,6 +475,8 @@ query.all()
 What you have done can be visualized schematically, thanks to a little tool included in the very first notebook cell (i.e., if the following doesn't work, you should re-run the very first cell and try again).
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 generate_query_graph(query.get_json_compatible_queryhelp(), 'query1.png')
 Image(filename='query1.png')
 ```
@@ -473,6 +505,8 @@ Node        | User      | with_user        | The node was created by a user
 As an exercise, see if you can write a query that will return all the `UpfData` nodes that are a member of a `Group` whose name starts with the string `SSSP`.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 # Visualize what is going on:
 generate_query_graph(query.get_json_compatible_queryhelp(), 'query2.png')
@@ -496,6 +530,8 @@ To project for this particular `attribute`, one can use exactly the same syntax 
 Demonstration:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(PwCalculation, tag='pw')
 query.append(Dict, with_incoming='pw', project=["attributes.wfc_cutoff"])
@@ -514,6 +550,8 @@ For instance, you can do `node.attributes_keys()` to get only the attribute keys
 Similarly, for `extras`, you have `node.extras`, `node.extras_keys()`, and `node.get_attribute('SOME_EXTRA_KEY')`.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(PwCalculation)
 node, = query.first()
@@ -539,6 +577,8 @@ We can also visualise sections of the provenance in a more customisable way, usi
 For example, lets query for a calculation, then use methods of the `Graph` class to visualise the inputs and outputs of this calculation:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(PwCalculation)
 node, = query.first()
@@ -555,6 +595,8 @@ The `Graph` class also has methods for recursing up or down the provenance tree.
 In this example, let's query for a pseudopotential, and visualise which processes it is used in:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(UpfData, filters={'attributes.element': {'==': 'Si'}})
 node, = query.first()
@@ -601,6 +643,8 @@ As you learned previously in the tutorial, AiiDA allows to organize calculations
 Once more check the list of groups in your database by typing:
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 !verdi group list -a -A
 ```
 
@@ -616,6 +660,8 @@ To this, you can `append` the groups of interest, which means that you should se
 The query can be executed after this `append` (this will not affect the final results) to check whether 3 groups are retrieved.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 query = QueryBuilder()
 query.append(
     Group,
@@ -636,6 +682,8 @@ Image(filename='query3.png')
 Try to complete the incomplete lines below:
 
 ```{code-cell} ipython3
+:tags: [raises-exception, remove-output]
+
 # Retrieve every PwCalculation that is a member of the specified groups:
 query.append(PwCalculation, tag='calculation', with_group=) # Complete the function call with the correct relationship-tag!
 # Visualize:
@@ -654,6 +702,8 @@ For simplicity the formulas have been added in the `extras` of each crystal stru
 Try to finish the code block below to project the formula, stored in the `extras` under the key `formula`.
 
 ```{code-cell} ipython3
+:tags: [raises-exception, remove-output]
+
 query.append(StructureData, project=, tag='structure', with_outgoing=) # Complete the function call with the correct relationship-tag!
 # Visualize:
 generate_query_graph(query.get_json_compatible_queryhelp(), 'query5.png')
@@ -679,6 +729,8 @@ In particular, project (in this order):
 (To know the projection keys, you can try to load one `CalcJobNode` from one of the groups, get its output `Dict` and inspect its `attributes` as discussed before, to see the key/value-pairs that have been parsed.)
 
 ```{code-cell} ipython3
+:tags: [raises-exception, remove-output]
+
 query.append(Dict, tag='results', project=['attributes.energy_smearing', ...], with_incoming=) # Complete the function call with the correct relationship-tag!
 # Visualize:
 generate_query_graph(query.get_json_compatible_queryhelp(), 'query6.png')
@@ -690,6 +742,8 @@ Image(filename='query6.png')
 You can print the results to see if everything worked as expected.
 
 ```{code-cell} ipython3
+:tags: [hide-output]
+
 results = query.all()
 for item in results:
     print(', '.join(map(str, item)))
@@ -702,5 +756,7 @@ To help you, we have already prepared a function that visualizes the results of 
 Run the following cell and you should get a graph with the results of your queries.
 
 ```{code-cell} ipython3
+:tags: [raises-exception, remove-output]
+
 plot_results(results)
 ```
