@@ -7,7 +7,8 @@ version: 2
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
   configuration: docs/conf.py
-
+  builder: html
+  fail_on_warning: true
 
 # Disabling all unneeded formats (note that HTML and JSON are always built)
 # See https://docs.readthedocs.io/en/latest/yaml-config.html#formats
@@ -15,6 +16,6 @@ formats: []
 
 # Optionally set the version of Python and requirements required to build your docs
 python:
-  version: 3.8
+  version: "3.8"
   install:
     - requirements: requirements.txt
