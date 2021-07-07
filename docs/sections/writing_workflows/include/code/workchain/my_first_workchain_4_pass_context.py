@@ -23,7 +23,7 @@ class AddWorkChain(WorkChain):
     def add(self):
         """Sum the inputs."""
 
-        # Call `addition` using a variable from the context and one of the inputs
+        # Call `addition` using the two inputs
         addition_result = addition(self.inputs.x, self.inputs.y)
 
         # Passing to context to be used by other functions
