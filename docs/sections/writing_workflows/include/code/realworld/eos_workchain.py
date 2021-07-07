@@ -28,7 +28,7 @@ class EquationOfState(WorkChain):
     @classmethod
     def define(cls, spec):
         """Specify inputs and outputs."""
-        super(EquationOfState, cls).define(spec)
+        super().define(spec)
         spec.input("code", valid_type=Code)
         spec.input("pseudo_family_label", valid_type=Str)
         spec.input("structure", valid_type=StructureData)

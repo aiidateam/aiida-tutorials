@@ -1,6 +1,6 @@
 (workflows-errors)=
 
-# Error handling
+# Dealing with Errors
 
 In this hands-on, we'll be looking at some more advanced concepts related to workflows.
 
