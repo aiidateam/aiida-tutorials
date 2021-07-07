@@ -2,16 +2,20 @@
 
 # Organising your data
 
-In this section of the tutorial we will focus on how to organise and explore the data in an AiiDA database.
-For this tutorial you will be loading and using the information of an external pre-existing database.
-To follow the tutorial, you can use the profile into which you have previously imported this data or import the archive now.
-To do so, you can copy-paste the following code into a terminal after activating your AiiDA virtual environment:
+In this module of the tutorial we will focus on how to organise the data in an AiiDA database.
+To explain these concepts, we will be importing and using the information of an external pre-existing database.
+Start by importing the archive that contains this data using the following CLI command:
 
 ```{code-block} console
-verdi quicksetup --profile data
-verdi profile setdefault data
-verdi archive import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
+$ verdi archive import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
 ```
+
+:::{note}
+
+This command can take some time to complete on the AiiDAlab JupyterHub cluster.
+This is perfectly normal, just have a ☕️ and start reading the hands-on while AiiDA is importing the data.
+
+:::
 
 ## How to group nodes
 
@@ -28,6 +32,7 @@ Let's explore the groups already present in the imported archive, by executing t
 $ verdi group list -a -A
 PK    Label            Type string    User
 ----  ---------------  -------------  ---------------
+(...)
    1  tutorial_pbesol  core           aiida@localhost
    2  tutorial_lda     core           aiida@localhost
    3  tutorial_pbe     core           aiida@localhost
@@ -37,13 +42,17 @@ PK    Label            Type string    User
    7  20200705-071658  core.import    aiida@localhost
 ```
 
+:::{important}
+
+Similar to the _node_ PKs, the _group_ PKs in the examples will differ from those in your database.
+
+:::
+
 The default table shows us four pieces of information:
 
 * **PK**: The Primary Key of the group.
 * **Label**: The label by which the group can be identified.
 * **Type string**: This tells us what type of group this is.
-  Type strings can be used to class certain types of data, for example here we have general groups (`core`), groups containing pseudopotentials (`core.upf`), and an auto-generated group containing the nodes we imported from the archive (`core.import`).
-  For advanced use, you can create your own group type plugins, with specialised methods by sub-classing the general `Group` class.
 * **User**: The email of the user that created this group.
 
 :::{tip}
@@ -109,6 +118,11 @@ $ verdi group copy tutorial_pbesol my_group
 Warning: Destination group<my_group> already exists and is not empty.
 Do you wish to continue anyway? [y/N]: y
 Success: Nodes copied from group<tutorial_pbesol> to group<my_group>
+```
+
+Double check that the nodes have been added to your new group:
+
+```{code-block} console
 $ verdi group show my_group
 -----------------  ----------------
 Group label        my_group
@@ -126,14 +140,14 @@ PK    Type         Created
 Removing nodes from the group is similar to adding them, try:
 
 ```{code-block} console
-$ verdi group remove-nodes -G my_group 74
+$ verdi group remove-nodes -G my_group <PK>
 Do you really want to remove 1 nodes from Group<my_group>? [y/N]: y
 ```
 
 and finally to remove the group entirely:
 
 ```{code-block} console
-$ verdi group delete --clear my_group
+$ verdi group delete my_group
 Are you sure to delete Group<my_group>? [y/N]: y
 Success: Group<my_group> deleted.
 ```
@@ -157,9 +171,9 @@ Like folder paths on Unix systems, `grouppath` requires delimitation by forward 
 Let's copy and rename the three tutorial groups:
 
 ```{code-block} console
-verdi group copy tutorial_lda tutorial/lda/basic
-verdi group copy tutorial_pbe tutorial/gga/pbe
-verdi group copy tutorial_pbesol tutorial/gga/pbesol
+$ verdi group copy tutorial_lda tutorial/lda/basic
+$ verdi group copy tutorial_pbe tutorial/gga/pbe
+$ verdi group copy tutorial_pbesol tutorial/gga/pbesol
 ```
 
 You can now list the groups in a new way:
@@ -207,3 +221,13 @@ In [2]: for subpath in GroupPath("tutorial/gga").walk(return_virtual=False):
 Please see the {ref}`corresponding section in the documentation <aiida:how-to:data:organize>` for more details on groups and how to use them.
 
 :::
+
+## Cleaning up
+
+Before moving on to the next module, let's clean up these duplicated group paths:
+
+```{code-block} console
+$ verdi group delete  -f tutorial/lda/basic
+$ verdi group delete  -f tutorial/gga/pbe
+$ verdi group delete  -f tutorial/gga/pbesol
+```

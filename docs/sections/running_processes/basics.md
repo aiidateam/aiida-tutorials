@@ -178,7 +178,7 @@ $ verdi code list
 If by any chance you do not have a pw code node already set up in your environment or you need to set up a new one, you can do so with the following commands:
 
 ```{code-block} console
-$ verdi code setup --label pw --computer localhost --remote-abs-path /usr/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
+$ verdi code setup --label pw --computer localhost --remote-abs-path /opt/conda/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
 Success: Code<2> pw@localhost created
 ```
 

@@ -32,7 +32,7 @@ These are tabulated below:
      - **Title**
    * - **Monday July 5th**
      - Marnik Bercx
-     - Welcome + AiiDA Tutorial Overview (LIVE)
+     - `Welcome and AiiDA Tutorial Overview (LIVE)`_
    * -
      - Francisco Ramirez
      - `Introduction to AiiDA`_
@@ -119,8 +119,10 @@ Here is a list of all the contributed talks:
      - `The aiida-kkr plugin`_
    * - Miki Bonacci
      - `The Yambo-AiiDA plugin`_
+   * - Leonid Kahle
+     - `Using AiiDA to screen for solid-state Li-ion conductors`_
 
-.. _AiiDA Tutorial Overview: https://www.youtube.com/watch?v=RtdXXWFLvF8
+.. _Welcome and AiiDA Tutorial Overview (LIVE): https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/permanent/AiiDA-intro.mp4
 .. _Introduction to AiiDA: https://www.youtube.com/watch?v=jigMCyWGNAE
 .. _Setting up an environment with Quantum Mobile Cloud: https://www.youtube.com/watch?v=vlmjVwGJgEU
 .. _Provenance and workflows in AiiDA: https://www.youtube.com/watch?v=KpiLIA8ge1w
@@ -136,3 +138,4 @@ Here is a list of all the contributed talks:
 .. _Introducing aiida-siesta: https://www.youtube.com/watch?v=0S7rvut8gpE
 .. _The aiida-kkr plugin: https://www.youtube.com/watch?v=ccmEWKgVfVc
 .. _The Yambo-AiiDA plugin: https://www.youtube.com/watch?v=NzhN5ce0Sc8
+.. _Using AiiDA to screen for solid-state Li-ion conductors: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/permanent/aiida-kahle.mp4

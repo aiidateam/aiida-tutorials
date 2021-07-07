@@ -1,13 +1,20 @@
+from aiida.engine import calcfunction
+
+
+@calcfunction
 def rescale(structure, scale):
     """Calculation function to rescale a structure
 
-    :param structure: An AiiDA structure to rescale
+    :param structure: An AiiDA `StructureData` to rescale
     :param scale: The scale factor (for the lattice constant)
     :return: The rescaled structure
     """
-    from aiida import orm
+    from aiida.orm import StructureData
 
-    ase = structure.get_ase()
-    ase.set_cell(ase.get_cell() * float(scale), scale_atoms=True)
+    ase_structure = structure.get_ase()
+    scale_value = scale.value
 
-    return orm.StructureData(ase=ase)
+    new_cell = ase_structure.get_cell() * scale_value
+    ase_structure.set_cell(new_cell, scale_atoms=True)
+
+    return StructureData(ase=ase_structure)
