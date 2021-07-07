@@ -67,15 +67,14 @@ Writing workflows
     ------
     :column: col-lg-6
 
-    .. link-button:: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/memes/mossfire.gif
-        :type: url
+    .. link-button:: debugging
+        :type: ref
         :text: Debugging work chains
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    **Under construction** 🔨
-
-    Debugging common mistakes in AiiDA work chains.
+    When writing your own work chain, things are bound to go wrong!
+    Here we list some common issues with AiiDA work chains, what to expect, and how to debug them.
 
     +++++++++++++
     .. list-table::
@@ -107,32 +106,6 @@ Writing workflows
           - :badge:`Quantum ESPRESSO,badge-qe text-white`
         * - |time| 30 min
           - |aiida| :aiida-blue:`Intermediate`
-
-
-.. panels::
-    :header: header-text
-    :body: bg-light
-    :footer: bg-light border-0
-
-    ------
-    :column: col-lg-12
-
-    .. link-button:: debugging
-        :type: ref
-        :text: Debugging work chains
-        :classes: btn-light text-left stretched-link font-weight-bold
-    ^^^^^^^^^^^^
-
-    Debugging common mistakes in AiiDA work chains.
-
-    +++++++++++++
-    .. list-table::
-        :widths: 50 50
-        :class: footer-table
-        :header-rows: 0
-
-        * - |time| 30 min
-          - Basic
 
 
 .. panels::

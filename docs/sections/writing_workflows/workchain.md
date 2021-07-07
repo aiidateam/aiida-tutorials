@@ -707,6 +707,8 @@ And that's all!
 Copy the _full_ code snippet for the work chain to a Python file, for example `addcalcjobworkchain.py`.
 Now we're ready to launch our work chain.
 
+(workflows-workchain-submit-workchain)=
+
 ### Submit the work chain
 
 When _submitting_ work chains to the AiiDA daemon, it's important that it knows where to find the work chain module, i.e. the `.py` file that contains the work chain code.
