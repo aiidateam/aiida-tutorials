@@ -30,7 +30,7 @@ Writing workflows
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 20 min
+        * - |time| 30 min
           - |aiida| :aiida-green:`Basic`
 
 .. panels::
@@ -82,7 +82,7 @@ Writing workflows
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 30 min
+        * - |time| 20 min
           - |aiida| :aiida-blue:`Intermediate`
 
     ------
@@ -152,7 +152,7 @@ Writing workflows
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 30 min
+        * - |time| 60 min
           - |aiida| :aiida-orange:`Advanced`
 
 .. toctree::
