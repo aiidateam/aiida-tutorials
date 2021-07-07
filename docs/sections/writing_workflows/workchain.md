@@ -690,7 +690,7 @@ When submitting a calculation job or work chain inside a work chain, it is **ess
 
 Since the result of the addition is only available once the calculation job is finished, the `submit()` method returns the {class}`~aiida.orm.nodes.process.calculation.calcjob.CalcJobNode` of the `ArithmeticAddCalculation` process.
 To make sure the work chain waits for this process to finish before continuing, we return the `ToContext` container.
-Here, we have specified that the calculation job node stored in `calc_job_node` should be assigned to the `'summation_calc_job'` context key.
+Here, we have specified that the calculation job node stored in `calc_job_node` should be assigned to the `'add_node'` context key.
 
 Once the `ArithmeticAddCalculation` calculation job is finished, the work chain will execute the `result` step.
 The outputs of the calculation job are stored in the `outputs` attribute of the calculation job node.
