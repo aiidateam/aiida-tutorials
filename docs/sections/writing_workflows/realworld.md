@@ -104,7 +104,7 @@ Don't forget to replace the `<PK>` with that of your structure!
 In [1]: from rescale import rescale
    ...:
    ...: structure = load_node(pk=<PK>)  # If you still have the structure variable loaded, not need to load it again!
-   ...: rescaled_structures = [rescale(structure, Float(factor)) for factor in (0.98, 0.99, 1.0, 1.1, 1.2)]
+   ...: rescaled_structures = [rescale(structure, Float(factor)) for factor in (0.98, 0.99, 1.0, 1.01, 1.02)]
 
 ```
 
