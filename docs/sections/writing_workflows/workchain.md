@@ -674,7 +674,7 @@ To allow this, we have added a `code` input to the work chain `spec`, which must
 
 ```{literalinclude} include/code/workchain/addcalcjobworkchain.py
 :language: python
-:lines: 17
+:lines: 18
 ```
 
 In the `add()` method, we now _submit_ the `ArithmeticAddCalculation` calculation _job_ instead of _running_ the `addition()` calculation _function_:
