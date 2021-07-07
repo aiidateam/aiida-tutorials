@@ -2,9 +2,6 @@
 """Helper functions."""
 import numpy as np
 from aiida.plugins import CalculationFactory, DataFactory
-from aiida_quantumespresso.utils.pseudopotential import (
-    validate_and_prepare_pseudos_inputs,
-)
 
 Dict = DataFactory("dict")
 KpointsData = DataFactory("array.kpoints")
@@ -39,13 +36,7 @@ def generate_scf_input_params(structure, code, pseudo_family):
     builder.structure = structure
     builder.kpoints = kpoints
     builder.parameters = Dict(dict=parameters)
-    builder.pseudos = validate_and_prepare_pseudos_inputs(
-        structure, pseudo_family=pseudo_family
-    )
-    builder.metadata.label = "PW test"
-    builder.metadata.description = (
-        "My first AiiDA calculation of Silicon with Quantum ESPRESSO"
-    )
+    builder.pseudos = pseudo_family.get_pseudos(structure=structure)
     builder.metadata.options.resources = {"num_machines": 1}
     builder.metadata.options.max_wallclock_seconds = 30 * 60
 

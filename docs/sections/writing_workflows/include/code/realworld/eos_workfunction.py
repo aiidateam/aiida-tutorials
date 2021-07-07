@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """Simple workflow example"""
 from aiida.engine import run, Process, calcfunction, workfunction
-from aiida.orm import Dict, Float
+from aiida.orm import Dict, Float, load_group
 from aiida.plugins import CalculationFactory
 
 from rescale import rescale
-from common_wf import generate_scf_input_params
+from utils import generate_scf_input_params
 
 # Load the calculation class 'PwCalculation' using its entry point 'quantumespresso.pw'
 PwCalculation = CalculationFactory("quantumespresso.pw")
@@ -28,7 +28,7 @@ def create_eos_dictionary(**kwargs):
 
 
 @workfunction
-def run_eos_wf(code, pseudo_family, structure):
+def run_eos_wf(code, pseudo_family_label, structure):
     """Run an equation of state of a bulk crystal structure for the given element."""
 
     # This will print the pk of the work function
@@ -36,6 +36,7 @@ def run_eos_wf(code, pseudo_family, structure):
 
     scale_factors = (0.96, 0.98, 1.0, 1.02, 1.04)
     labels = ["c1", "c2", "c3", "c4", "c5"]
+    pseudo_family = load_group(pseudo_family_label.value)
 
     calculations = {}
 

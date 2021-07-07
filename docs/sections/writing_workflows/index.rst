@@ -116,15 +116,14 @@ Writing workflows
     ------
     :column: col-lg-6
 
-    .. link-button:: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/memes/mossfire.gif
+    .. link-button:: https://aiida.readthedocs.io/projects/aiida-core/en/latest/howto/write_workflows.html#extending-workflows
         :type: url
-        :text: Input validation
+        :text: Extending work chains
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
-    **Under construction** 🔨
-
-    Here we explain how to write a *validator* that can check inputs before running a calculation or workflow.
+    Work chains are designed to be modular and reusable.
+    This how-to *from the AiiDA documentation* explains how to efficiently extend our work chains.
 
     +++++++++++++
     .. list-table::
@@ -154,6 +153,34 @@ Writing workflows
 
         * - |time| 60 min
           - |aiida| :aiida-orange:`Advanced`
+
+
+.. panels::
+    :header: panel-header-text
+    :body: bg-light
+    :footer: bg-light border-0
+
+    ------
+    :column: col-lg-6
+
+    .. link-button:: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/memes/mossfire.gif
+        :type: url
+        :text: Input validation
+        :classes: btn-light text-left stretched-link font-weight-bold
+    ^^^^^^^^^^^^
+
+    **Under construction** 🔨
+
+    Here we explain how to write a *validator* that can check inputs before running a calculation or workflow.
+
+    +++++++++++++
+    .. list-table::
+        :widths: 50 50
+        :class: footer-table
+        :header-rows: 0
+
+        * - |time| 20 min
+          - |aiida| :aiida-blue:`Intermediate`
 
 .. toctree::
     :hidden:

@@ -10,6 +10,8 @@ In this section, you will learn to:
 1. Understand how to add simple python functions to the provenance.
 2. Learn how to write and launch a simple workflow in AiiDA.
 
+ (workflows-workfunction-calcfunction)=
+
 ## Calculation functions
 
 :::{margin} {{ python }} **Decorators**
@@ -112,30 +114,30 @@ AttributeError: 'StructureData' object has no attribute 'get_cell'
 
 The reason for these failures is that we need to adjust the `rescale` function further, to make sure it can both accept AiiDA nodes as _inputs_, as well as _returns_ an AiiDA node:
 
-```{literalinclude} include/code/rescale.py
+```{literalinclude} include/code/realworld/rescale.py
 :language: python
-:emphasize-lines: 11, 13-14, 19
+:emphasize-lines: 12, 14-15, 20
 ```
 
 Let's explain the required changes in more detail:
 
-```{literalinclude} include/code/rescale.py
+```{literalinclude} include/code/realworld/rescale.py
 :language: python
-:lines: 11
+:lines: 12
 ```
 
 Here the `StructureData` class is imported, since we need it later to convert the ASE `Atoms` structure into a `StructureData` node so we can output it.
 
-```{literalinclude} include/code/rescale.py
+```{literalinclude} include/code/realworld/rescale.py
 :language: python
-:lines: 13-14
+:lines: 14-15
 ```
 
 These two lines simply convert the inputs, which _have_ to be AiiDA nodes, into the corresponding ASE `Atoms` structure and the Python `float` base type that we need to scale the unit cell.
 
-```{literalinclude} include/code/rescale.py
+```{literalinclude} include/code/realworld/rescale.py
 :language: python
-:lines: 19
+:lines: 20
 ```
 
 After the `ase_structure` has been rescaled, we need to convert it back into a `StructureData` node that is then _returned_ by the `rescale` function as an output.

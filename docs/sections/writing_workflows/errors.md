@@ -36,7 +36,7 @@ They consist of two parts: a positive integer, called the exit status, and a mes
 If the exit status is zero, which is the default, the process is said to have terminated nominally and *finished successfully*.
 A non-zero exit status is often used to communicate that there was some kind of a problem during the execution of the process and in that case it is said to be *failed*.
 However, the severity of the problem can vary and a non-zero exit status can also be used to just give a warning and does not necessarily mean the process suffered a critical error.
-Still, in AiiDA, a non-zero exit status technically marks a process as failed and the {meth}`~aiida.orm.nodes.process.ProcessNode.is_failed` property will return {}`True`.
+Still, in AiiDA, a non-zero exit status technically marks a process as failed and the {meth}`~aiida.orm.nodes.process.ProcessNode.is_failed` property will return `True`.
 
 Exit codes can be defined using the {meth}`~aiida.engine.processes.process_spec.ProcessSpec.exit_code` method during the process specification in the {meth}`~aiida.engine.processes.process.Process.define` method.
 It takes three arguments: the exit status, an exit label for easy reference and the exit message.
@@ -49,7 +49,7 @@ Take the `MultiplyAddWorkChain` as an example:
 
 ```
 
-It defines the `ERROR_NEGATIVE_NUMBER` exit code with status `410` and message {}`'The result is a negative number.'`.
+It defines the `ERROR_NEGATIVE_NUMBER` exit code with status `410` and message `'The result is a negative number.'`.
 This exit code is used in the `validate_result` step, where the sum produced by the `ArithmeticAddCalculation` is validated.
 
 ```{literalinclude} include/code/multiply_add.py
@@ -67,10 +67,10 @@ In principle, you can use any positive integer when you define an exit code, how
 Note that these are not enforced and so you can decide to ignore them, however, that might complicate interoperability with other plugins.
 The following integer ranges are reserved or suggested:
 
-> > * 0 -  99: Reserved for internal use by `aiida-core`
-> * 100 - 199: Reserved for errors parsed from scheduler output of calculation jobs
-> * 200 - 299: Suggested to be used for process input validation errors
-> * 300 - 399: Suggested for critical process errors
+* 0 -  99: Reserved for internal use by `aiida-core`
+* 100 - 199: Reserved for errors parsed from scheduler output of calculation jobs
+* 200 - 299: Suggested to be used for process input validation errors
+* 300 - 399: Suggested for critical process errors
 
 For any other exit codes, one can use the integers from 400 and up.
 

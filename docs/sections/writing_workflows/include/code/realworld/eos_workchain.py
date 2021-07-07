@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """Equation of State WorkChain."""
 from aiida.engine import WorkChain, ToContext, calcfunction
-from aiida.orm import Code, Dict, Float, Str, StructureData
+from aiida.orm import Code, Dict, Float, Str, StructureData, load_group
 from aiida.plugins import CalculationFactory
 
 from rescale import rescale
-from common_wf import generate_scf_input_params
+from utils import generate_scf_input_params
 
 PwCalculation = CalculationFactory("quantumespresso.pw")
 scale_facs = (0.96, 0.98, 1.0, 1.02, 1.04)
@@ -30,7 +30,7 @@ class EquationOfState(WorkChain):
         """Specify inputs and outputs."""
         super(EquationOfState, cls).define(spec)
         spec.input("code", valid_type=Code)
-        spec.input("pseudo_family", valid_type=Str)
+        spec.input("pseudo_family_label", valid_type=Str)
         spec.input("structure", valid_type=StructureData)
         spec.output("eos", valid_type=Dict)
         spec.outline(
@@ -45,11 +45,13 @@ class EquationOfState(WorkChain):
 
         calculations = {}
 
+        pseudo_family = load_group(self.inputs.pseudo_family_label.value)
+
         for label, factor in zip(labels, scale_facs):
 
             rescaled_structure = rescale(structure, Float(factor))
             inputs = generate_scf_input_params(
-                rescaled_structure, self.inputs.code, self.inputs.pseudo_family
+                rescaled_structure, self.inputs.code, pseudo_family
             )
 
             self.report(
@@ -57,8 +59,8 @@ class EquationOfState(WorkChain):
                     structure.get_formula(), factor
                 )
             )
-            future = self.submit(PwCalculation, **inputs)
-            calculations[label] = future
+            calcjob_node = self.submit(PwCalculation, **inputs)
+            calculations[label] = calcjob_node
 
         # Ask the workflow to continue when the results are ready and store them in the context
         return ToContext(**calculations)
