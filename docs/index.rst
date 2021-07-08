@@ -127,7 +127,7 @@ Here is a list of all the contributed talks:
    * - Jens Bröder
      - `Introduction to AiiDA-Fleur`_
 
-.. _Welcome and AiiDA Tutorial Overview (LIVE): https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/permanent/AiiDA-intro.mp4
+.. _Welcome and AiiDA Tutorial Overview (LIVE): https://youtu.be/0lWYphVDSJc
 .. _Introduction to AiiDA: https://www.youtube.com/watch?v=jigMCyWGNAE
 .. _Setting up an environment with Quantum Mobile Cloud: https://www.youtube.com/watch?v=vlmjVwGJgEU
 .. _Provenance and workflows in AiiDA: https://www.youtube.com/watch?v=KpiLIA8ge1w
@@ -143,6 +143,6 @@ Here is a list of all the contributed talks:
 .. _Introducing aiida-siesta: https://www.youtube.com/watch?v=0S7rvut8gpE
 .. _The aiida-kkr plugin: https://www.youtube.com/watch?v=ccmEWKgVfVc
 .. _The Yambo-AiiDA plugin: https://www.youtube.com/watch?v=NzhN5ce0Sc8
-.. _Using AiiDA to screen for solid-state Li-ion conductors: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/permanent/aiida-kahle.mp4
+.. _Using AiiDA to screen for solid-state Li-ion conductors: https://youtu.be/UFC2UWwIHwE
 .. _Introduction to AiiDA-Fleur: https://www.youtube.com/watch?v=qPVWA2motO4
 .. _AiiDA Installation Tutorial: https://youtu.be/skx9VZierbk
