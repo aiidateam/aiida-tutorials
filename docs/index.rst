@@ -51,6 +51,9 @@ These are tabulated below:
    * -
      - Casper Andersen
      - `AiiDA and OPTIMADE`_
+   * -
+     - Chris Sewell
+     - `AiiDA Installation Tutorial`_
 
 Hands-on sessions
 -----------------
@@ -142,3 +145,4 @@ Here is a list of all the contributed talks:
 .. _The Yambo-AiiDA plugin: https://www.youtube.com/watch?v=NzhN5ce0Sc8
 .. _Using AiiDA to screen for solid-state Li-ion conductors: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/permanent/aiida-kahle.mp4
 .. _Introduction to AiiDA-Fleur: https://www.youtube.com/watch?v=qPVWA2motO4
+.. _AiiDA Installation Tutorial: https://youtu.be/skx9VZierbk
