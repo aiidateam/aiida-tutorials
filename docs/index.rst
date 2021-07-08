@@ -126,6 +126,8 @@ Here is a list of all the contributed talks:
      - `Using AiiDA to screen for solid-state Li-ion conductors`_
    * - Jens Bröder
      - `Introduction to AiiDA-Fleur`_
+   * - Espen Flage-Larsen
+     - `Introduction to AiiDA-VASP`_
 
 .. _Welcome and AiiDA Tutorial Overview (LIVE): https://youtu.be/0lWYphVDSJc
 .. _Introduction to AiiDA: https://www.youtube.com/watch?v=jigMCyWGNAE
@@ -146,3 +148,4 @@ Here is a list of all the contributed talks:
 .. _Using AiiDA to screen for solid-state Li-ion conductors: https://youtu.be/UFC2UWwIHwE
 .. _Introduction to AiiDA-Fleur: https://www.youtube.com/watch?v=qPVWA2motO4
 .. _AiiDA Installation Tutorial: https://youtu.be/skx9VZierbk
+.. _Introduction to AiiDA-VASP: https://youtu.be/iH7KJgdkPTE
