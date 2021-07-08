@@ -121,6 +121,8 @@ Here is a list of all the contributed talks:
      - `The Yambo-AiiDA plugin`_
    * - Leonid Kahle
      - `Using AiiDA to screen for solid-state Li-ion conductors`_
+   * - Jens Bröder
+     - `Introduction to AiiDA-Fleur`_
 
 .. _Welcome and AiiDA Tutorial Overview (LIVE): https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/permanent/AiiDA-intro.mp4
 .. _Introduction to AiiDA: https://www.youtube.com/watch?v=jigMCyWGNAE
@@ -139,3 +141,4 @@ Here is a list of all the contributed talks:
 .. _The aiida-kkr plugin: https://www.youtube.com/watch?v=ccmEWKgVfVc
 .. _The Yambo-AiiDA plugin: https://www.youtube.com/watch?v=NzhN5ce0Sc8
 .. _Using AiiDA to screen for solid-state Li-ion conductors: https://filedn.com/lsOzB8TTUIDz2WkFj8o6qhp/permanent/aiida-kahle.mp4
+.. _Introduction to AiiDA-Fleur: https://www.youtube.com/watch?v=qPVWA2motO4
