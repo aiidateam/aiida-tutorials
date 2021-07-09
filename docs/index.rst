@@ -67,6 +67,7 @@ The material for the hands-on sessions is divided in 5 units:
    sections/managing_data/index
    sections/writing_workflows/index
    sections/creating_plugins/index
+   sections/hackathon
 
 These are also accessible via the sidebar on the left.
 During the first four days of the tutorial (Monday to Thursday) each of the hands-on sessions will work on the corresponding unit.
@@ -149,3 +150,17 @@ Here is a list of all the contributed talks:
 .. _Introduction to AiiDA-Fleur: https://www.youtube.com/watch?v=qPVWA2motO4
 .. _AiiDA Installation Tutorial: https://youtu.be/skx9VZierbk
 .. _Introduction to AiiDA-VASP: https://youtu.be/iH7KJgdkPTE
+
+Hackathon
+---------
+
+.. panels::
+  :body: bg-light text-center
+
+  ------
+  :column: col-lg-12 pl-0 pr-0
+
+  .. link-button:: hackathon
+     :type: ref
+     :text: Hackathon examples
+     :classes: btn-link btn-block stretched-link
