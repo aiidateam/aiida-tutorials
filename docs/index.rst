@@ -11,7 +11,7 @@ The official home of AiiDA tutorial materials and videos.
 
    .. link-button:: https://aiida-tutorials.readthedocs.io/en/tutorial-2021-intro/
       :type: url
-      :text: Ongoing: 2021 Introductory Virtual tutorial
+      :text: Latest: 2021 Introductory virtual tutorial
       :classes: btn-link btn-block stretched-link
 
    -------
