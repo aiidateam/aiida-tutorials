@@ -394,7 +394,7 @@ suppress_warnings = ["misc.highlighting_failure"]
 
 def setup(app):
     """Setup function called by sphinx."""
-    app.add_stylesheet("css/custom.css")
+    app.add_css_file("css/custom.css")
 
 
 # We are not installing a full aiida environment

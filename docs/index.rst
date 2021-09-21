@@ -1,8 +1,8 @@
 AiiDA virtual tutorial 2021
 ===========================
 
-Welcome to the official home of the tutorial materials and videos of the AiiDA virtual tutorial, organised from 5-9 July 2021!
-Below you can find the tutorial schedule, as well as the AiiDA cheat sheet, which will come in handy during the hands-on sessions:
+Welcome to the official home of the latest tutorial materials and videos of the AiiDA virtual tutorial, which was organised from 5-9 July 2021!
+Below you can find the schedule of the tutorial, as well as the AiiDA cheat sheet, which will come in handy as you are working through the material:
 
 .. panels::
    :body: bg-light text-center large-text
@@ -14,6 +14,11 @@ Below you can find the tutorial schedule, as well as the AiiDA cheat sheet, whic
    -------
    :column: col-lg-6 pl-0 pr-0
    :download:`AiiDA Cheat Sheet <cheatsheet/cheatsheet.pdf>`
+
+.. note::
+
+   Although the material on this page was used for the 2021 tutorial event, it has been reworked significantly to also allow new AiiDA users to learn all about the software outside of the scope of a live tutorial.
+   We aim to replace the material on the main AiiDA tutorials website by this content soon, removing all event-related information.
 
 Presentations
 -------------
@@ -67,12 +72,10 @@ The material for the hands-on sessions is divided in 5 units:
    sections/managing_data/index
    sections/writing_workflows/index
    sections/creating_plugins/index
-   sections/hackathon
 
 These are also accessible via the sidebar on the left.
-During the first four days of the tutorial (Monday to Thursday) each of the hands-on sessions will work on the corresponding unit.
-
-For easy access, you can find the modules for the first hands-on session below:
+The tutorial can be run on your own work station, or on the Quantum Mobile virtual machine.
+See the "Set up" section, also accessible by clicking below, along with the module for the first hands-on topic.
 
 .. panels::
    :body: bg-light text-center
@@ -82,7 +85,7 @@ For easy access, you can find the modules for the first hands-on session below:
 
    .. link-button:: fundamentals-setup
       :type: ref
-      :text: Getting started: JupyterHub setup
+      :text: Set up
       :classes: btn-link btn-block stretched-link
 
    ------
@@ -150,17 +153,3 @@ Here is a list of all the contributed talks:
 .. _Introduction to AiiDA-Fleur: https://www.youtube.com/watch?v=qPVWA2motO4
 .. _AiiDA Installation Tutorial: https://youtu.be/skx9VZierbk
 .. _Introduction to AiiDA-VASP: https://youtu.be/iH7KJgdkPTE
-
-Hackathon
----------
-
-.. panels::
-  :body: bg-light text-center
-
-  ------
-  :column: col-lg-12 pl-0 pr-0
-
-  .. link-button:: hackathon
-     :type: ref
-     :text: Hackathon examples
-     :classes: btn-link btn-block stretched-link

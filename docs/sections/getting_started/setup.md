@@ -1,58 +1,14 @@
 (fundamentals-setup)=
 
-# Setup on AiiDAlab
+# Set up
 
-We recommend that participants run the tutorial material on the dedicated AiiDAlab instance accessible at [https://aiida-intro-tutorial-2021.aiidalab.net](https://aiida-intro-tutorial-2021.aiidalab.net).
-This instance of AiiDAlab is pre-configured with all the software and versions needed for the tutorial and is the fastest way to get started for anyone who does not already have AiiDA installed and configured on their own machine.
+## Running on Quantum Mobile
 
-This is how you access the server:
+Quantum Mobile is a virtual machine that provides a ready-to-run environment for computational materials science.
+You can find the version of Quantum Mobile for running this tutorial [via this link](https://quantum-mobile.readthedocs.io/en/latest/releases/versions/21.06.04.html).
+All instructions for getting Quantum Mobile up and running via Docker or VirtualBox can be found there!
 
-  1. If you do not have a GitHub account yet, create one at [https://github.com/login](https://github.com/login).
-  2. Open [https://aiida-intro-tutorial-2021.aiidalab.net](https://aiida-intro-tutorial-2021.aiidalab.net) in your browser (we tested Firefox and Chrome).
-  3. Click on "Sign in with GitHub".
-  4. At this point you might be asked to log into your GitHub account unless you are already logged in.
-     If you do not have an account yet, create one now.
-  5. When asked to authorize the "AiiDA Intro Tutorial 2021" app, click on "Authorize aiidalab".
-  6. The server is then prepared for your account, and you will be redirected to the JupyterLab interface after 1-2 minutes.
-
-Subsequent logins should take you directly to the server as long as you have cookies enabled within your browser.
-
-```{figure} include/images/first-login.gif
-:align: center
-
-Demonstration of the (first) login procedure.
-
-```
-
-```{important} The tutorial server will be shut down on **Friday July 9 at 23:59 CEST**.
-This means that at that time **all data will be removed**.
-Please see the instructions below to download your data from the server.
-```
-
-## How to download your data
-
-To download your data from the server prior to its destruction:
-
-  1. Open a terminal by clicking on "Terminal" on the start screen.
-  2. Execute `zip -r home.zip .`.
-  3. Right-click on the `home.zip` file within the file browser tab.
-  4. Click on "Download".
-
-```{tip} You do not have to download the whole home directory of course, you can just download the files or directories that you would like to preserve.
-```
-
-```{figure} include/images/download-data.gif
-:align: center
-
-Demonstration of the data download procedure.
-
-```
-
-# Setup on your own machine
-
-```{warning} The tutorial was tested on the AiiDAlab server introduced above.
-It might be advisable to follow the tutorial on the AiiDAlab instance even if you have AiiDA installed on your own machine.
-```
+## Setup on your own machine
 
 To run the tutorial on your own machine, you need to install
 

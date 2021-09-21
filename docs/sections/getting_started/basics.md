@@ -31,11 +31,10 @@ An AiiDA database does not only contain the results of your calculations, but al
 All of this information is stored in the form of a *directed acyclic graph* (DAG).
 As an example, {numref}`fig-intro-workchain-graph` shows the provenance of the calculations of the first part of this tutorial.
 
-(fig-intro-workchain-graph)=
-
-:::{figure} include/images/basics_workchain_graph.png
-:scale: 30
+:::{figure-md} fig-intro-workchain-graph
 :align: center
+
+<img src="include/images/basics_workchain_graph.png" alt="Basic workchain graph" width="100%">
 
 Provenance Graph of a basic AiiDA WorkChain.
 
@@ -280,15 +279,14 @@ The name of said file will start with the PK of your calculation node and have a
 
 The result should look something like the graph shown in {numref}`fig-calcfun-graph`.
 
-(fig-calcfun-graph)=
-
-```{figure} include/images/basics_calcfun_graph.png
-:scale: 50
+:::{figure-md} fig-calcfun-graph
 :align: center
+
+<img src="include/images/basics_calcfun_graph.png" alt="Basic calcfunction graph" width="100%">
 
 Provenance graph of the `multiply` calculation function.
 
-```
+:::
 
 (started-basics-calcjobs)=
 
@@ -531,11 +529,10 @@ The result should look like the graph shown in {numref}`fig-calcjob-graph`.
 $ verdi node graph generate <PK>
 ```
 
-(fig-calcjob-graph)=
-
-:::{figure} include/images/basics_calcjob_graph.png
-:scale: 35
+:::{figure-md} fig-calcjob-graph
 :align: center
+
+<img src="include/images/basics_calcjob_graph.png" alt="Basic calculation job graph" width="100%">
 
 Provenance graph of the `ArithmeticAddCalculation` CalcJob, with one input provided by the output of the `multiply` calculation function.
 
@@ -749,16 +746,14 @@ Open the generated pdf file.
 Look familiar?
 The provenance graph should be similar to the one we showed at the start of this tutorial ({numref}`fig-workchain-graph`).
 
-(fig-workchain-graph)=
-
-:::{figure} include/images/basics_workchain_graph.png
-:scale: 30
+:::{figure-md} fig-workchain-graph
 :align: center
+
+<img src="include/images/basics_workchain_graph.png" alt="Basic workchain graph" width="100%">
 
 Final provenance Graph of the basic AiiDA tutorial.
 
 :::
-
 ## Next steps
 
 Congratulations! You have completed the first step to becoming an AiiDA expert.

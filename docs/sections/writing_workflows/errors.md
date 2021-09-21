@@ -87,7 +87,9 @@ Nonetheless, if it *were* to fail, the work chain would except because the line 
 In this case, where the work chain just runs a single calculation that is not such a big deal, but for real-life work chains that run a number of calculations in sequence, having the work chain except will cause all the work up to that point to be lost.
 Take as an example a workflow that computes the phonons of a crystal structure using Quantum ESPRESSO:
 
-:::{figure} include/images/workflow_error_handling_basic_success.png
+:::{figure-md}
+
+<img src="include/images/workflow_error_handling_basic_success.png" width="100%">
 
 Schematic diagram of a workflow that computes the phonons of a crystal structure using Quantum ESPRESSO.
 The workflow consists of four consecutive calculations using the `pw.x`, `ph.x`, `q2r.x` and `matdyn.x` code, respectively.
@@ -98,7 +100,9 @@ If all calculations run without problems, the workflow itself will of course als
 But, now imagine the third calculation actually fails.
 If the workflow does not explicitly check for this case, but instead blindly assumes that the calculation will have produced the required results, it will fail itself, losing the progress it made with the first two calculations
 
-:::{figure} include/images/workflow_error_handling_basic_failed.png
+:::{figure-md}
+
+<img src="include/images/workflow_error_handling_basic_failed.png">
 
 Example execution of the Quantum ESPRESSO phonon workflow where the third step, the `q2r.x` code, failed, and because the workflow blindly assumed it would have finished without errors also fails.
 
@@ -120,9 +124,10 @@ Yes! Instead of directly running a calculation in a workflow, one should rather 
 This *base* work chain knows about the various failure modes of the calculation and can try to fix the problem and restart the calculation whenever it fails, until it finishes successfully.
 This logic of such a base work chain is very generic and can be applied to any calculation, and actually any process:
 
-:::{figure} include/images/workflow_error_handling_flow_base.png
+:::{figure-md}
 :align: center
-:height: 500px
+
+<img src="include/images/workflow_error_handling_flow_base.png" width="100%">
 
 Schematic flow diagram of the logic of a *base* work chain, whose job it is to run a subprocess repeatedly, fixing any potential errors, until it finishes successfully.
 
@@ -135,11 +140,10 @@ If, instead, the subprocess failed, the work chain should inspect the cause of f
 This cycle is repeated until the subprocess finishes successfully.
 Of course this runs the risk of entering into an infinite loop if the work chain never manages to fix the problem, so we want to build in a limit to the maximum number of calculations that can be re-run:
 
-(workflow-error-handling-flow-loop)=
-
-:::{figure} include/images/workflow_error_handling_flow_loop.png
+:::{figure-md} workflow-error-handling-flow-loop
 :align: center
-:height: 500px
+
+<img src="include/images/workflow_error_handling_flow_loop.png" alt="Restart flow diagram" width="100%">
 
 An improved flow diagram for the base work chain that limits the maximum number of iterations that the work chain can try and get the calculation to finish successfully.
 

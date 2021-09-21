@@ -94,14 +94,14 @@ AiiDA will then create the input file, run the calculation, and extract all rele
 {numref}`fig-qe-calc-graph` shows the resulting provenance graph associated with the procedure described above applied to our original example.
 This one was drawn by hand, but you will later generate one using AiiDA tools.
 
-(fig-qe-calc-graph)=
+:::{figure-md} fig-qe-calc-graph
+:align: center
 
-```{figure} include/images/Si_example.png
-:width: 80%
+<img src="include/images/Si_example.png" width="80%">
 
 Graph representing the provenance for a typical Quantum ESPRESSO calculation.
 
-```
+:::
 
 You can see the calculation node represented by a square, while all the data nodes are represented by circles.
 The input data nodes are the ones above the calculation node, with arrows pointing towards it, while the output data nodes are the ones below, and have the arrows coming from the calculation node.
@@ -593,8 +593,10 @@ $ verdi node graph generate <PK>
 The command will write the provenance graph to a file named `<PK>.dot.pdf`.
 It should look like this:
 
-:::{figure} include/images/demo_calc.png
-:width: 100%
+:::{figure-md}
+:align: center
+
+<img src="include/images/demo_calc.png" width="100%">
 
 Provenance graph for a single [Quantum ESPRESSO][quantum espresso] calculation.
 
