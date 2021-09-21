@@ -14,7 +14,7 @@ To run the tutorial on your own machine, you need to install
 
 - [AiiDA](https://aiida.readthedocs.io/projects/aiida-core/en/latest/intro/get_started.html) (version 1.6.3)
 - [aiida-quantumespresso](https://aiida-quantumespresso.readthedocs.io/en/latest/#installation) (version 3.4.2)
-- [QuantumEspresso](https://www.quantum-espresso.org/) (version 6.6)
+- [Quantum ESPRESSO](https://www.quantum-espresso.org/) (version 6.6)
 
 ```{note} Version numbers indicate the versions with which the tutorial was tested.
 ```
