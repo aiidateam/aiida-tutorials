@@ -53,7 +53,7 @@ myst-nb==0.10.1           # via -r requirements.txt
 myst-parser==0.12.10      # via myst-nb
 nbclient==0.5.1           # via jupyter-cache
 nbconvert==5.6.1          # via jupyter-sphinx, myst-nb, notebook
-nbdime==2.1.0             # via jupyter-cache
+nbdime==2.1.1             # via jupyter-cache
 nbformat==5.0.8           # via ipywidgets, jupyter-cache, jupyter-sphinx, jupytext, myst-nb, nbclient, nbconvert, nbdime, notebook
 nest-asyncio==1.4.3       # via nbclient
 nodeenv==1.5.0            # via pre-commit
