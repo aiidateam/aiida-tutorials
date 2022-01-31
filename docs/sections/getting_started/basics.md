@@ -378,7 +378,7 @@ If not, you can find instructions on how to do so in the dropdown below.
 You can set up the computer using the `verdi computer` subcommand:
 
 ```{code-block} console
-$ verdi computer setup -L localhost -H localhost -T local -S direct -w `echo $HOME/aiida_run` -n
+$ verdi computer setup -L localhost -H localhost -T local -S direct -w `echo $HOME/aiida_run` --mpiprocs-per-machine 1 -n
 $ verdi computer configure local localhost --safe-interval 5 -n
 ```
 
@@ -389,6 +389,7 @@ The first commands sets up the computer with the following options:
 * *transport* (`-T`): local
 * *scheduler* (`-S`): direct
 * *work-dir* (`-w`): The `aiida_run` subdirectory of the home directory
+* `--mpiprocs-per-machine`: The default number of MPI processes per machine is set to 1.
 
 The second command *configures* the computer with a minimum interval between connections (`--safe-interval`) of 5 seconds.
 For both commands, the *non-interactive* option (`-n`) is added to not prompt for extra input.
