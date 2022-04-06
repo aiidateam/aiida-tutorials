@@ -57,7 +57,7 @@ nbdime==2.1.1             # via jupyter-cache
 nbformat==5.0.8           # via ipywidgets, jupyter-cache, jupyter-sphinx, jupytext, myst-nb, nbclient, nbconvert, nbdime, notebook
 nest-asyncio==1.4.3       # via nbclient
 nodeenv==1.5.0            # via pre-commit
-notebook==6.4.1           # via nbdime, widgetsnbextension
+notebook==6.4.10           # via nbdime, widgetsnbextension
 packaging==20.4           # via bleach, sphinx
 pandocfilters==1.4.3      # via nbconvert
 pexpect==4.8.0            # via ipython
