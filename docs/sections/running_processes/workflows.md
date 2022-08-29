@@ -1,6 +1,7 @@
 ---
-substitutions:
-  seekpath: "[SeeK-path](https://www.materialscloud.org/work/tools/seekpath)"
+myst:
+   substitutions:
+     seekpath: "[SeeK-path](https://www.materialscloud.org/work/tools/seekpath)"
 ---
 
 (quantum-espresso-run-workflows)=

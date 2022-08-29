@@ -398,7 +398,7 @@ def setup(app):
 
 
 # We are not installing a full aiida environment
-jupyter_execute_notebooks = "off"
+nb_execution_mode = "off"
 
 # Intersphinx configuration
 intersphinx_mapping = {
@@ -414,17 +414,3 @@ print(
         universal_newlines=True,
     )
 )
-
-nb_render_priority = {
-    "gettext": (
-        "application/vnd.jupyter.widget-view+json",
-        "application/javascript",
-        "text/html",
-        "image/svg+xml",
-        "image/png",
-        "image/jpeg",
-        "text/markdown",
-        "text/latex",
-        "text/plain",
-    )
-}
