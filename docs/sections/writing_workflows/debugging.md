@@ -169,7 +169,7 @@ Note that this is "piped" (`|`) to the `less` command, since this file can be qu
      stopping ...
 ```
 
-In this case, is seems our calculation did not have enough bands.
+In this case, it seems our calculation did not have enough bands.
 
 :::
 
@@ -213,27 +213,27 @@ Using `verdi process report` will give you the final Traceback so you can unders
 
 ## Wrong data type for the input
 
-Here, we demonstrate what happens if you input a wrong data type to an work chian in the running or submission process.
+Here, we demonstrate what happens if you input a wrong data type to a work chain in the running or submission process.
 For that, we consider the `OutputInputWorkChain` written in the {ref}`Work chain section <workflows-workchain>`.
 
 {{ download }} **{download}`You can download the script here. <include/code/debugging/my_first_workchain_1_output_input.py>`**
 
-After downloading the work-chain script in your computer where you are running AiiDA, navigate to the folder where you have saved the script and run in the `verdi shell`
+After downloading the work chain script to your computer where you are running AiiDA, navigate to the folder where you have saved the script and run in the `verdi shell`
 
 ```{code-block} ipython
 In [1]: from aiida.engine import run
 In [2]: from my_first_workchain_1_output_input import OutputInputWorkChain
-In [3]: result = run(OutputInputWorkChain, x=4 )
+In [3]: result = run(OutputInputWorkChain, x=4)
 ---------------------------------------------------------------------------
 ValueError                                Traceback (most recent call last)
 <ipython-input-5-118afb74821c> in <module>
-----> 1 result = run(OutputInputWorkChain, x=4 )
+----> 1 result = run(OutputInputWorkChain, x=4)
 ...
 ValueError: Error occurred validating port 'inputs.x': value 'x' is not of the right type. Got '<class 'int'>', expected '<class 'aiida.orm.nodes.data.int.Int'>'
 ```
 
-In the third command line, we tried to run the OutputInputWorkChain passing an python integer as the input.
-However, the work chain is expecting an AiiDA integer data type, which can be created with the `Int()` method of the `data.int` class.
+In the third command line, we tried to run the `OutputInputWorkChain` passing a Python integer as the input.
+However, the work chain is expecting an AiiDA integer data type, which can be created using the `Int()` class.
 See the declaration of the input of the `OutputInputWorkChain`:
 
 ```{literalinclude} include/code/debugging/my_first_workchain_1_output_input.py
@@ -241,13 +241,13 @@ See the declaration of the input of the `OutputInputWorkChain`:
 :lines: 13
 ```
 
-When writing a work chain, specifying which type of data is expect is the first step of creating robust work chains.
+When writing a work chain, specifying which type of data is expected is the first step of creating robust work chains.
 
-The problem can be correct as in the following example:
+The problem can be corrected as in the following example:
 ```{code-block} ipython
 In [1]: from aiida.engine import run
 In [2]: from my_first_workchain_1_output_input import OutputInputWorkChain
-In [3]: result = run(OutputInputWorkChain, x=Int(4) )
+In [3]: result = run(OutputInputWorkChain, x=Int(4))
 ```
 
 ## Passing wrong data type to the output
@@ -259,8 +259,8 @@ Modify the `OutputWorkChain` declaring the output label `workchain_result` as of
 :emphasize-lines: 1,15
 ```
 
-The script will then try to output an `Int` where it is expected a `Float`.
-Run the following in the `verdi shell` to see which kind of problem this may cause:
+The script will then try to output an `Int` where a `Float` is expected instead.
+Run the following in the `verdi shell` to see what error this will generate:
 
 ```{code-block} ipython
 In [1]: from aiida.engine import run
@@ -292,7 +292,7 @@ ValueError                                Traceback (most recent call last)
 ...
 ```
 
-Of course, to correct this problem you have to make sure that you declared the right data types for the inputs and outputs, and that your work chain are passing the right data nodes to the outputs.
+Of course, to correct this problem you have to make sure that you declared the right data types for the inputs and outputs, and that your work chain passes the right data nodes to the outputs.
 Declaring the data type of the output is another good-practice towards robust work chains.
 
 ## Wrong output label
@@ -307,7 +307,7 @@ Alter your script file to match the example below:
 ```
 
 Note that in the `define` method, we specified an output labelled `workchain_result`.
-In the `result` step, the work chain is try to pass to an output labelled `workchain_output`, which was not declared.
+In the `result` step, the work chain is trying to record an output labelled `workchain_output`, which was not declared.
 If we try to run the work chain, we get the following error:
 
 ```{code-block} ipython
@@ -335,6 +335,6 @@ ValueError: Error validating output 'uuid: 584c88c4-bfb5-465f-a4d6-d455ce4e1f73 
 ...
 ```
 
-The error message explains that the work chain expected a `workchain_output`.
+The error message explains that the work chain received an output called `workchain_output`, which was unexpected, since it was not declared in the spec.
 It is possible to activate a dynamic namespace where you don't need to declare the outputs in the `define()` method.
 However, this feature is to be avoided unless you have a very good reason for doing so.
