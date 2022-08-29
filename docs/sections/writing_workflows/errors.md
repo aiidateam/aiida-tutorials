@@ -36,9 +36,9 @@ They consist of two parts: a positive integer, called the exit status, and a mes
 If the exit status is zero, which is the default, the process is said to have terminated nominally and *finished successfully*.
 A non-zero exit status is often used to communicate that there was some kind of a problem during the execution of the process and in that case it is said to be *failed*.
 However, the severity of the problem can vary and a non-zero exit status can also be used to just give a warning and does not necessarily mean the process suffered a critical error.
-Still, in AiiDA, a non-zero exit status technically marks a process as failed and the {meth}`~aiida.orm.nodes.process.ProcessNode.is_failed` property will return `True`.
+Still, in AiiDA, a non-zero exit status technically marks a process as failed and the `is_failed` property will return `True`.
 
-Exit codes can be defined using the {meth}`~aiida.engine.processes.process_spec.ProcessSpec.exit_code` method during the process specification in the {meth}`~aiida.engine.processes.process.Process.define` method.
+Exit codes can be defined using the `exit_code` method during the process specification in the {meth}`~aiida.engine.processes.process.Process.define` method.
 It takes three arguments: the exit status, an exit label for easy reference and the exit message.
 Take the `MultiplyAddWorkChain` as an example:
 
@@ -426,7 +426,7 @@ class ArithmeticAddBaseWorkChain(BaseRestartWorkChain):
 
 The method name can be anything as long as it is a valid Python method name and does not overlap with one of the base work chain's methods.
 For better readability, it is, however, recommended to have the method name start with `handle_`.
-In this example, we want to specifically check for a particular failure mode of the `ArithmeticAddCalculation`, so we compare the {meth}`~aiida.orm.nodes.process.process.ProcessNode.exit_status` of the node with that of the spec of the process.
+In this example, we want to specifically check for a particular failure mode of the `ArithmeticAddCalculation`, so we compare the `exit_status` of the node with that of the spec of the process.
 If the exit code matches, we know that the problem was due to the sum being negative.
 Fixing this fictitious problem for this example is as simple as making sure that the inputs are all positive, which we can do by taking the absolute value of them.
 We assign the new values to the `self.ctx.inputs` just as where we defined the original inputs in the `setup` step.
