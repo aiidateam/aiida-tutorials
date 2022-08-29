@@ -211,16 +211,16 @@ $ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2021-intro/_downloads/
 Now import it into your database with the `verdi` CLI.
 
 :::{code-block} console
-$ verdi data structure import ase Si.cif
+$ verdi data core.structure import ase Si.cif
   Successfully imported structure Si2 (PK = 1)
 :::
 
-The output of `verdi data structure import` shows the PK of the structure node you just created (your value may be different from the one shown here).
+The output of `verdi data core.structure import` shows the PK of the structure node you just created (your value may be different from the one shown here).
 **Make a note of this PK**, as you will need to replace it in code snippets later in this tutorial.
 Should you forget it, you can always have a look at the structures in the database using:
 
 :::{code-block} console
-$ verdi data structure list
+$ verdi data core.structure list
   Id  Label    Formula
 ----  -------  ---------
    1           Si2
@@ -436,11 +436,11 @@ Whenever you launch the calculation, AiiDA will take care of storing any unstore
 :::
 
 The k-points mesh can be supplied via a `KpointsData` node.
-To create it, you will first load the corresponding class using the `DataFactory`, a useful and robust tool which recognizes data types based on their *entry point* (e.g. `'array.kpoints'` in this case):
+To create it, you will first load the corresponding class using the `DataFactory`, a useful and robust tool which recognizes data types based on their *entry point* (e.g. `'core.array.kpoints'` in this case):
 
 :::{code-block} ipython
 
-In [10]: KpointsData = DataFactory('array.kpoints')
+In [10]: KpointsData = DataFactory('core.array.kpoints')
 
 :::
 

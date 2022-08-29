@@ -182,7 +182,7 @@ You can then plot the band structure using the `verdi shell`:
 
 ```{code-block} console
 
-$ verdi data bands export --format mpl_pdf --output band_structure.pdf <PK>
+$ verdi data core.bands export --format mpl_pdf --output band_structure.pdf <PK>
 
 ```
 
