@@ -2,7 +2,7 @@ from aiida.orm import Int, Code
 from aiida.engine import WorkChain, calcfunction, ToContext
 from aiida.plugins.factories import CalculationFactory
 
-ArithmeticAddCalculation = CalculationFactory("arithmetic.add")
+ArithmeticAddCalculation = CalculationFactory("core.arithmetic.add")
 
 
 class AddCalcjobWorkChain(WorkChain):
