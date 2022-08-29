@@ -221,7 +221,7 @@ Notice how the _same_ `Int` node is both the input and output of the work chain,
 Also note that labels of the _links_ (i.e. the arrows connecting the nodes) correspond to those we defined in the `spec` using the `spec.input()` and `spec.output()` methods.
 :::
 
-(2) Try to pass an integer for the `x` input when running the `OutputInputWorkChain`, instead of an `Int` _node_.
+(2) Try to pass a plain Python integer for the `x` input when running the `OutputInputWorkChain`, instead of an `Int` _node_.
 What happens?
 
 :::{dropdown} **Solution**
@@ -231,7 +231,7 @@ Running the following in the `verdi shell`:
 ```{code-block} ipython
 In [1]: from aiida.engine import run
 In [2]: from my_first_workchain import OutputInputWorkChain
-In [3]: result = run(OutputInputWorkChain, x=4 )
+In [3]: result = run(OutputInputWorkChain, x=4)
 ```
 
 Will result in a rather large error message.
@@ -736,7 +736,7 @@ If not, you can set it up with the instructions in the dropdown below.
 Setting up the `add` code on the `localhost` computer can be done with the following command:
 
 ```{code-block} console
-$ verdi code setup -L add --on-computer --computer=tutor -P arithmetic.add --remote-abs-path=/bin/bash -n
+$ verdi code setup -L add --on-computer --computer=localhost -P core.arithmetic.add --remote-abs-path=/bin/bash -n
 ```
 
 See the {ref}`calculation jobs section <started-basics-calcjobs>` in the AiiDA basics module for more details.
