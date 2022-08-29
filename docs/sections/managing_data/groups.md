@@ -7,7 +7,7 @@ To explain these concepts, we will be importing and using the information of an 
 Start by importing the archive that contains this data using the following CLI command:
 
 ```{code-block} console
-$ verdi archive import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2020_07_perovskites_v0.9.aiida
+$ verdi archive import https://object.cscs.ch/v1/AUTH_b1d80408b3d340db9f03d373bbde5c1e/marvel-vms/tutorials/aiida_tutorial_2022_10_perovskites_main_0001.aiida
 ```
 
 :::{note}
@@ -212,8 +212,8 @@ In [1]: from aiida.tools.groups import GroupPath
 In [2]: for subpath in GroupPath("tutorial/gga").walk(return_virtual=False):
    ...:     print(subpath.get_group())
    ...:
-"tutorial/gga/pbesol" [type core], of user aiida@localhost
-"tutorial/gga/pbe" [type core], of user aiida@localhost
+Group<tutorial/gga/pbe>
+Group<tutorial/gga/pbesol>
 ```
 
 :::{seealso}
