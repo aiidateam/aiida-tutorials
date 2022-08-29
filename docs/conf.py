@@ -87,9 +87,9 @@ templates_path = ["_templates"]
 master_doc = "index"
 
 # General information about the project.
-project = u"AiiDA Tutorials"
+project = "AiiDA Tutorials"
 # pylint: disable=redefined-builtin
-copyright = u"\
+copyright = "\
 2021, ECOLE POLYTECHNIQUE FEDERALE DE LAUSANNE (Theory and Simulation of Materials (THEOS) \
 and National Centre for Computational Design and Discovery of Novel Materials (NCCR MARVEL)), Switzerland. \
 All rights reserved"
@@ -272,7 +272,7 @@ latex_documents = [
     (
         "index",
         "aiida-tutorials.tex",
-        u"AiiDA Tutorials",
+        "AiiDA Tutorials",
         author.replace(",", r"\and"),
         "manual",
     ),
@@ -302,7 +302,7 @@ latex_documents = [
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [("index", "aiida", u"AiiDA Tutorials", [author], 1)]
+man_pages = [("index", "aiida", "AiiDA Tutorials", [author], 1)]
 
 # If true, show URL addresses after external links.
 # man_show_urls = False
@@ -316,7 +316,7 @@ texinfo_documents = [
     (
         "index",
         "aiida-tutorials",
-        u"AiiDA Tutorials",
+        "AiiDA Tutorials",
         author,
         "aiida-tutorials",
         "Tutorials and demos for AiiDA",
@@ -336,7 +336,7 @@ texinfo_documents = [
 # -- Options for Epub output ---------------------------------------------------
 
 # Bibliographic Dublin Core info.
-epub_title = u"AiiDA Tutorials"
+epub_title = "AiiDA Tutorials"
 epub_author = author
 epub_publisher = author
 epub_copyright = copyright
