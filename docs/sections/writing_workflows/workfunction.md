@@ -2,12 +2,12 @@
  # Work functions
 
 A *work function* is the simplest of the two types of workflows in AiiDA.
-It can call one or more calculation functions and *return* data that has been *created* by the calculation functions it has called.
-Moreover, work functions can also call other work functions, allowing you to write nested workflows.
+It can call one or more calculations and *return* data that has been *created* by the calculation it has called.
+Moreover, work functions can also call other workflows, allowing you to write nested workflows.
 
 In this section, you will learn to:
 
-1. Understand how to add simple python functions to the provenance.
+1. Understand how to add simple Python functions to the provenance.
 2. Learn how to write and launch a simple workflow in AiiDA.
 
  (workflows-workfunction-calcfunction)=
@@ -360,7 +360,7 @@ Default provenance graph for the `add_multiply` work function.
 :::
 
 (2) Try to generate the provenance graph again, but this time with the `-i, --process-in` option.
-You can use `verdi node graph generate -h` for more information about the various options of this command.
+You can use `verdi node graph generate --help` for more information about the various options of this command.
 
 :::{dropdown} **Solution**
 
