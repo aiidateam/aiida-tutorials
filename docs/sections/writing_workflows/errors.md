@@ -246,7 +246,7 @@ We can now launch it like any other work chain and the `BaseRestartWorkChain` wi
 
 ```{code-block} python
 
-submit(ArithmeticAddBaseWorkChain, x=Int(3), y=Int(4), code=load_code('add@tutor'))
+submit(ArithmeticAddBaseWorkChain, x=Int(3), y=Int(4), code=load_code('add@localhost'))
 
 ```
 
@@ -341,7 +341,7 @@ inputs = {
     'add': {
         'x': Int(3),
         'y': Int(4),
-        'code': load_code('add@tutor')
+        'code': load_code('add@localhost')
     }
 }
 submit(ArithmeticAddBaseWorkChain, **inputs)
@@ -370,7 +370,7 @@ Let's launch the work chain with inputs that will cause the calculation to fail,
 
 ```{code-block} python
 
-submit(ArithmeticAddBaseWorkChain, add={'x': Int(3), 'y': Int(-4), 'code': load_code('add@tutor')})
+submit(ArithmeticAddBaseWorkChain, add={'x': Int(3), 'y': Int(-4), 'code': load_code('add@localhost')})
 
 ```
 
