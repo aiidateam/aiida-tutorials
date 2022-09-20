@@ -26,7 +26,7 @@ Similar to data, calculation, and workflows, a database importer class can be lo
 ```{code-block} ipython
 
 In [1]: from aiida.plugins import DbImporterFactory
-   ...: CodDbImporter = DbImporterFactory('cod')
+   ...: CodDbImporter = DbImporterFactory('core.cod')
 
 ```
 
