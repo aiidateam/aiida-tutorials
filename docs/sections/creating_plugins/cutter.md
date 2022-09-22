@@ -12,5 +12,5 @@ This is is an open-ended task aimed at getting you through initial hurdles more 
 ## Useful resources
 
 * [Guidelines on plugin design](<https://aiida.readthedocs.io/projects/aiida-core/en/latest/topics/plugins.html#guidelines-for-plugin-design>)
-* Documentation on {ref}`how to package plugins <aiida:how-to:plugin-codes>`.
+* Documentation on {ref}`how to package plugins <aiida:how-to:plugins-develop>`.
 * Rundown of <a href="https://github.com/aiidateam/aiida-diff#repository-contents" target="_blank"> repository contents of the aiida-diff package</a> (the default output of the plugin cutter)
