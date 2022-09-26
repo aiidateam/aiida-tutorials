@@ -10,10 +10,10 @@ The `verdi` command supports **tab-completion**!
 In the terminal, type `verdi`, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
 Next, try typing `verdi st` and then press "Tab" again.
 This should _tab-complete_ into `verdi status`.
-For help on `verdi` or any of its subcommands, simply append the `--help/-h` flag, e.g.:
+For help on `verdi` or any of its subcommands, simply append the `--help` flag, e.g.:
 
 ```{code-block} console
-$ verdi status -h
+$ verdi status --help
 ```
 
 ::::
@@ -378,8 +378,8 @@ If not, you can find instructions on how to do so in the dropdown below.
 You can set up the computer using the `verdi computer` subcommand:
 
 ```{code-block} console
-$ verdi computer setup -L localhost -H localhost -T local -S direct -w `echo $HOME/aiida_run` --mpiprocs-per-machine 1 -n
-$ verdi computer configure local localhost --safe-interval 5 -n
+$ verdi computer setup -L localhost -H localhost -T core.local -S core.direct -w `echo $HOME/aiida_run` --mpiprocs-per-machine 1 -n
+$ verdi computer configure core.local localhost --safe-interval 0 -n
 ```
 
 The first commands sets up the computer with the following options:
@@ -391,7 +391,7 @@ The first commands sets up the computer with the following options:
 * *work-dir* (`-w`): The `aiida_run` subdirectory of the home directory
 * `--mpiprocs-per-machine`: The default number of MPI processes per machine is set to 1.
 
-The second command *configures* the computer with a minimum interval between connections (`--safe-interval`) of 5 seconds.
+The second command *configures* the computer with a minimum interval between connections (`--safe-interval`) of 0 seconds, since we are running the calculations locally anyways.
 For both commands, the *non-interactive* option (`-n`) is added to not prompt for extra input.
 
 :::
@@ -399,10 +399,10 @@ For both commands, the *non-interactive* option (`-n`) is added to not prompt fo
 Next, let's set up the code we're going to use for the tutorial:
 
 ```{code-block} console
-$ verdi code setup -L add --on-computer --computer=localhost -P arithmetic.add --remote-abs-path=/bin/bash -n
+$ verdi code setup -L add --on-computer --computer=localhost -P core.arithmetic.add --remote-abs-path=/bin/bash -n
 ```
 
-This command sets up a code with *label* `add` on the *computer* `localhost`, using the *plugin* `arithmetic.add`.
+This command sets up a code with *label* `add` on the *computer* `localhost`, using the *plugin* `core.arithmetic.add`.
 
 A typical real-world example of a computer is a remote supercomputing facility.
 Codes can be anything from a Python script to powerful *ab initio* codes such as Quantum ESPRESSO or machine learning tools like Tensorflow.
@@ -423,21 +423,22 @@ To see more details about the computer, you can use the following `verdi` comman
 
 ```{code-block} console
 $ verdi computer show localhost
-Computer name:     localhost
---------------  ------------------------------------
-Label           localhost
-PK              1
-UUID            b7ea4398-3c05-4a43-9214-9c4d91d40c8f
-Description     this computer
-Hostname        localhost
-Transport type  local
-Scheduler type  direct
-Work directory  /home/aiida/aiida_run/
-Shebang         #!/bin/bash
-Mpirun command  mpirun -np {tot_num_mpiprocs}
+---------------------------  ------------------------------------
+Label                        localhost
+PK                           1
+UUID                         b88f478b-d9c8-4677-a223-83559587e3ff
+Description                  this computer
+Hostname                     localhost
+Transport type               core.local
+Scheduler type               core.direct
+Work directory               /home/jovyan/aiida_run/
+Shebang                      #!/bin/bash
+Mpirun command
+Default #procs/machine       1
+Default memory (kB)/machine
 Prepend text
 Append text
---------------  ------------------------------------
+---------------------------  ------------------------------------
 ```
 
 We can see that the *Work directory* has been set up as the `aiida_run` subdirectory of the home directory.
@@ -455,10 +456,10 @@ So, the PKs for each entity type are unique for each database, but entities of d
 
 ### Running the CalcJob
 
-Let's now start up the `verdi shell` again and load the `arithmetic.add` calculations using the `CalculationFactory`:
+Let's now start up the `verdi shell` again and load the `core.arithmetic.add` calculations using the `CalculationFactory`:
 
 ```{code-block} ipython
-In [1]: ArithmeticAdd = CalculationFactory('arithmetic.add')
+In [1]: ArithmeticAdd = CalculationFactory('core.arithmetic.add')
 ```
 
 Now you need to gather the actual nodes that will be used as inputs for the calculation.
@@ -656,11 +657,11 @@ These are ideal for workflows that are not very computationally intensive and ca
 :::
 
 Just like we did for `aiida.calculations`, to see all available workflows you can run `verdi plugin list aiida.workflows`.
-You should be able to see the `arithmetic.multiply_add` entry point, among others.
+You should be able to see the `core.arithmetic.multiply_add` entry point, among others.
 Once again, to get the specific information for this work chain you just need to run:
 
 ```{code-block} console
-$ verdi plugin list aiida.workflows arithmetic.multiply_add
+$ verdi plugin list aiida.workflows core.arithmetic.multiply_add
 ```
 
 Which gives the following information on the work chain:
@@ -691,7 +692,7 @@ Just as we did before with the `CalculationFactory`, we will load the `MultiplyA
 Start up the `verdi shell` and run:
 
 ```{code-block} ipython
-In [1]: MultiplyAddWorkChain = WorkflowFactory('arithmetic.multiply_add')
+In [1]: MultiplyAddWorkChain = WorkflowFactory('core.arithmetic.multiply_add')
 ```
 
 We will now load the necessary nodes for each of the inputs required by the `WorkChain` (see the specifications above):
