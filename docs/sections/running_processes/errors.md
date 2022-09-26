@@ -3,9 +3,9 @@
 # Troubleshooting
 
 In this section we will intentionally introduce some bad input parameters when setting up our calculation.
-This will allow us to illustrate how to 'manually' debug problems that might arise while managing your computations with AiiDA.
+This will allow us to illustrate how to manually debug problems that might arise while managing your computations with AiiDA.
 You will learn where to look for the information of the errors and the steps you need to take to correct the issue.
-In subsequent tutorial sections you can then learn how to systematize this error handling when designing complex workflows.
+In later tutorial sections you can then learn how to systematize this error handling when designing complex workflows.
 
 :::{attention}
 
@@ -52,7 +52,7 @@ If you are running these tests on a cluster, you may need to set up account perm
 
 For the `structure` you can download the following {download}`silicon crystal<include/data/Si.cif>` and import it into your database.
 If you have already done so previously (as it is used in other tutorial sections), you may want to use that pre-existing node instead of saving a new node with repeated information.
-To do so you may search for its PK by running `verdi data structure list` and then use the function `load_node()` to retrieve it.
+To do so you may search for its PK by running `verdi data core.structure list` and then use the function `load_node()` to retrieve it.
 
 For the `pseudos` (or [pseudopotentials](https://en.wikipedia.org/wiki/Pseudopotential)), you can use the `SSSP/1.1/PBE/efficiency` family of the `aiida-pseudo` package.
 If you already have it installed, it is enough to use the `load_group()` function and then the `get_pseudos()` method of the loaded pseudo group.
@@ -90,7 +90,7 @@ Finally, wrap the standard Python dictionary `parameters_dictionary` in an AiiDA
 
 ```{code-block} ipython
 
-In [4]: builder.parameters = Dict(dict=parameters_dictionary)
+In [4]: builder.parameters = Dict(parameters_dictionary)
 
 ```
 
@@ -173,8 +173,8 @@ $ verdi process list -a -p1
 
 ```
 
-Your calculation should end up in a finished state, but with some error: this was expected in this case, since we used an invalid key in the input parameters.
-You will see this represented by a non-zero error code in brackets near the "Finished" status of the Process State.
+Your calculation should end up in a `Finished` state, but in this case the _exit code_ of the calculation, found after the `Finished` state, is `[305]` instead of zero (`[0]`).
+This indicates that the process did not complete successfully, which was expected since we used an invalid key in the input parameters.
 
 :::{note}
 
@@ -242,7 +242,18 @@ $ verdi calcjob outputcat <PK> | less
 
 ```
 
-You will see an error message complaining about the `mickeymouse` line in the input.
+You will see an error message complaining about the `mickeymouse` line in the input:
+
+```{code-block}
+     Reading input from aiida.in
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+     Error in routine  read_namelists (1):
+      bad line in namelist &system: "  mickeymouse =   2.4000000000d+02" (error could be in the previous line)
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+     stopping ...
+```
 
 ### Checking the inputs
 
@@ -283,13 +294,26 @@ In [9]: parameters_dictionary = {
    ...:        'electron_maxstep': 3,
    ...:    }
    ...: }
-   ...: builder.parameters = Dict(dict=parameters_dictionary)
+   ...: builder.parameters = Dict(parameters_dictionary)
    ...: calculation = submit(builder)
 
 ```
 
 Use `verdi process list -a -p1` to verify that the error code is different now.
 You can check again the outputs and the reports with the tools explained in this section and try to fix it yourself before going on to the next.
+
+:::{note}
+
+Curious which exit codes are defined for the `PwCalculation` plugin?
+You can see all exit codes for a calculation job using the `verdi plugin list` command:
+
+```{code-block} console
+
+verdi plugin list aiida.calculations quantumespresso.pw
+
+```
+
+:::
 
 
 ## Restarting calculations
@@ -332,7 +356,7 @@ The `aiida-quantumespresso` plugin supports restarting a calculation by setting 
 
 In [12]: parameters['CONTROL']['restart_mode'] = 'restart'
     ...: restart_builder.parent_folder = failed_calculation.outputs.remote_folder
-    ...: restart_builder.parameters = Dict(dict=parameters)
+    ...: restart_builder.parameters = Dict(parameters)
 
 ```
 
@@ -350,9 +374,18 @@ Finally, let's label this calculation as a restarted one and submit the new calc
 
 In [13]: from aiida.engine import submit
     ...: restart_builder.metadata.label = 'Restart from PwCalculation<{}>'.format(failed_calculation.pk)
-    ...: calculation = submit(restart_builder)
+    ...: calcjob_node = submit(restart_builder)
 
 ```
 
 Inspect the restarted calculation to verify that, this time, it completes successfully.
 You should see a "Finished" status with exit code zero (`0`) when running `verdi process list - a -p1`.
+
+:::{important} **Key takeaways**
+
+ - When a process fails, it will return a non-zero **exit code**.
+ - The logs of any process can be shown using `verdi process report`.
+   More clues of what went wrong in a failed calculation can be obtained by exploring the output files using `verdi calcjob outputcat`.
+ - A fully populated builder with the same inputs can be obtained with the `get_builder_restart()` method of any calcjob node.
+
+:::

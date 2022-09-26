@@ -241,11 +241,11 @@ SSSP/1.1/PBE/precision               pseudo.family.sssp         85
 SSSP/1.1/PBE/efficiency              pseudo.family.sssp         85
 :::
 
-You can see above that the AiiDAlab cluster already comes with
+The list of pseudopotential families might differ for you, depending on where you are running the tutorial.
 
 ::::{note}
 
-If you are using the Quantum Mobile virtual machine, you will need to install the `SSSP` [pseudopotentials][pseudopotentials].
+If you do not see any pseudopotential families in the list, you will need to install the `SSSP` [pseudopotentials][pseudopotentials].
 Luckily, doing it with `aiida-pseudo` is easy!
 All you need to do is run:
 
@@ -296,13 +296,13 @@ We will now show you how to do it using a *builder*, which is a tool that is par
 The simplest way to get a builder for a calculation is from a code node, so load the one we checked at the begining of this module:
 
 :::{margin}
-**Remember:** you need to replace `<CODE_PK>` with the PK of the `pw.x` code in your database!
-You can also use the label.
+**Remember:** you need to replace `<CODE_LABEL>` with the label of the `pw.x` code in your database!
+You can also use the PK, but the label is probably easier to remember.
 :::
 
 :::{code-block} ipython
 
-In [1]: code = load_code(<CODE_PK>)
+In [1]: code = load_code(<CODE_LABEL>)
 
 :::
 
@@ -424,7 +424,7 @@ The `builder.parameters` port requires a `Dict` node (you can verify this by run
 
 :::{code-block} ipython
 
-In [9]: builder.parameters = Dict(dict=parameters)
+In [9]: builder.parameters = Dict(parameters)
 
 :::
 
@@ -624,6 +624,10 @@ Out[3]: -310.56907438957
 ```
 
 Moreover, you can also easily access the input and output files of the calculation using the `verdi` CLI:
+
+:::{margin}
+The `<PK>` here should correspond to the one of your calculation node.
+:::
 
 :::{code-block} console
 $ verdi calcjob inputls <PK>     # Shows the list of input files
