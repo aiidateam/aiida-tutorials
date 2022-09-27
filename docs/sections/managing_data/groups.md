@@ -156,7 +156,7 @@ Success: Group<my_group> deleted.
 
 Any deletion operation related to groups will not affect the nodes themselves.
 For example if you delete a group, the nodes that belonged to the group will remain in the database.
-The same happens if you remove nodes from the group -- they will remain in the database but won't belong to the group any more. 
+The same happens if you remove nodes from the group -- they will remain in the database but won't belong to the group any more.
 You can delete all nodes in the group along with the group itself by adding option `--delete-nodes` to the `verdi group delete` command.
 
 :::
