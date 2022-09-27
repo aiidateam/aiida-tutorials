@@ -104,7 +104,7 @@ $ verdi group relabel a_group my_group
 Success: Label changed to my_group
 ```
 
-Add one or more nodes to your new group using node PKs from the `tutorial_pbesol` group we inspected earlier (the PK might be different from your profile):
+Add one or more nodes to your new group using node PKs from the `tutorial_pbesol` group we inspected earlier (the PK might be different for your database):
 
 ```{code-block} console
 $ verdi group add-nodes -G my_group 380 1273
