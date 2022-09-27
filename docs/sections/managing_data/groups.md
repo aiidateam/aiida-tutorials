@@ -107,7 +107,7 @@ Success: Label changed to my_group
 Add one or more nodes to your new group using node PKs from the `tutorial_pbesol` group we inspected earlier (the PK might be different for your database):
 
 ```{code-block} console
-$ verdi group add-nodes -G my_group 380 1273
+$ verdi group add-nodes -G my_group <PK> <PK>
 Do you really want to add 2 nodes to Group<my_group>? [y/N]: y
 ```
 
@@ -140,7 +140,7 @@ PK    Type         Created
 Removing nodes from the group is similar to adding them, try:
 
 ```{code-block} console
-$ verdi group remove-nodes -G my_group 380
+$ verdi group remove-nodes -G my_group <PK>
 Do you really want to remove 1 nodes from Group<my_group>? [y/N]: y
 ```
 
