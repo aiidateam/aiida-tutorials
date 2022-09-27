@@ -10,10 +10,10 @@ The `verdi` command supports **tab-completion**!
 In the terminal, type `verdi`, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
 Next, try typing `verdi st` and then press "Tab" again.
 This should _tab-complete_ into `verdi status`.
-For help on `verdi` or any of its subcommands, simply append the `--help/-h` flag, e.g.:
+For help on `verdi` or any of its subcommands, simply append the `--help` flag, e.g.:
 
 ```{code-block} console
-$ verdi status -h
+$ verdi status --help
 ```
 
 ::::
@@ -302,12 +302,12 @@ $ verdi plugin list aiida.calculations
 ```
 
 This will show you a long list of _entry points_: strings that are used to identify each plugin within AiiDA.
-In this list you should be able to see the `arithmetic.add` entry point, which identifies the calculation job we want to run:
+In this list you should be able to see the `core.arithmetic.add` entry point, which identifies the calculation job we want to run:
 
 ```{code-block} console
 Registered entry points for aiida.calculations:
 (...)
-* arithmetic.add
+* core.arithmetic.add
 (...)
 
 Info: Pass the entry point as an argument to display detailed information
@@ -317,10 +317,10 @@ Info: Pass the entry point as an argument to display detailed information
 If you just run `verdi plugin list`, you will get a list of all possible plugin _groups_.
 :::
 
-To get more information about the inputs, outputs, etc. of this calculation job, just follow the instructions at the end of the output and pass the `arithmetic.add` entry point as an additional argument for the command:
+To get more information about the inputs, outputs, etc. of this calculation job, just follow the instructions at the end of the output and pass the `core.arithmetic.add` entry point as an additional argument for the command:
 
 ```{code-block} console
-$ verdi plugin list aiida.calculations arithmetic.add
+$ verdi plugin list aiida.calculations core.arithmetic.add
 ```
 
 There is a lot of information we obtain with this command:
@@ -328,13 +328,14 @@ There is a lot of information we obtain with this command:
 ```{code-block} bash
 Description:
 
-	`CalcJob` implementation to add two numbers using bash for testing and demonstration purposes.
+    `CalcJob` implementation to add two numbers using bash for testing and demonstration purposes.
 
 Inputs:
-           code:  required  Code             The `Code` to use for this job.
               x:  required  Int, Float       The left operand.
               y:  required  Int, Float       The right operand.
+           code:  optional  Code             The `Code` to use for this job. This input is required, unless the `remote_ ...
        metadata:  optional
+  remote_folder:  optional  RemoteData       Remote directory containing the results of an already completed calculation ...
 Outputs:
   remote_folder:  required  RemoteData       Input files necessary to run the process will be stored in this folder node ...
       retrieved:  required  FolderData       Files that are retrieved by the daemon will be stored in this node. By defa ...
@@ -352,8 +353,16 @@ Exit codes:
             410:  The sum of the operands is a negative number.
 ```
 
+:::{margin} {{ aiida }} **Further reading**
+
+If you're interested, you can find our more about how to write importers for existing calculations {ref}`in the AiiDA documentation <how-to:plugin-codes:importers>`.
+
+:::
+
 The first is description of the calculation, which explains that it adds two numbers together.
-Then there are the inputs, of which 3 are required: the `code` to be used to add the numbers up, and the two numbers (`x` and `y`) to add.
+Then there are the inputs, of which 2 are required: the two numbers (`x` and `y`) to add.
+The `code` used to add the two numbers is technically not required, since AiiDA comes with features to import completed `Calcjob`s without running them.
+Below we will be running fresh calculations, so we'll have to provide the `code` as well.
 Finally, note the `sum` among the outputs, which contains the result of the addition.
 
 Now that we understand what our `CalcJob` does and what it needs, let's see what we need to do to run it.
@@ -378,8 +387,8 @@ If not, you can find instructions on how to do so in the dropdown below.
 You can set up the computer using the `verdi computer` subcommand:
 
 ```{code-block} console
-$ verdi computer setup -L localhost -H localhost -T local -S direct -w `echo $HOME/aiida_run` --mpiprocs-per-machine 1 -n
-$ verdi computer configure local localhost --safe-interval 5 -n
+$ verdi computer setup -L localhost -H localhost -T core.local -S core.direct -w `echo $HOME/aiida_run` --mpiprocs-per-machine 1 -n
+$ verdi computer configure core.local localhost --safe-interval 0 -n
 ```
 
 The first commands sets up the computer with the following options:
@@ -391,7 +400,7 @@ The first commands sets up the computer with the following options:
 * *work-dir* (`-w`): The `aiida_run` subdirectory of the home directory
 * `--mpiprocs-per-machine`: The default number of MPI processes per machine is set to 1.
 
-The second command *configures* the computer with a minimum interval between connections (`--safe-interval`) of 5 seconds.
+The second command *configures* the computer with a minimum interval between connections (`--safe-interval`) of 0 seconds, since we are running the calculations locally anyways.
 For both commands, the *non-interactive* option (`-n`) is added to not prompt for extra input.
 
 :::
@@ -399,10 +408,10 @@ For both commands, the *non-interactive* option (`-n`) is added to not prompt fo
 Next, let's set up the code we're going to use for the tutorial:
 
 ```{code-block} console
-$ verdi code setup -L add --on-computer --computer=localhost -P arithmetic.add --remote-abs-path=/bin/bash -n
+$ verdi code setup -L add --on-computer --computer=localhost -P core.arithmetic.add --remote-abs-path=/bin/bash -n
 ```
 
-This command sets up a code with *label* `add` on the *computer* `localhost`, using the *plugin* `arithmetic.add`.
+This command sets up a code with *label* `add` on the *computer* `localhost`, using the *plugin* `core.arithmetic.add`.
 
 A typical real-world example of a computer is a remote supercomputing facility.
 Codes can be anything from a Python script to powerful *ab initio* codes such as Quantum ESPRESSO or machine learning tools like Tensorflow.
@@ -423,21 +432,22 @@ To see more details about the computer, you can use the following `verdi` comman
 
 ```{code-block} console
 $ verdi computer show localhost
-Computer name:     localhost
---------------  ------------------------------------
-Label           localhost
-PK              1
-UUID            b7ea4398-3c05-4a43-9214-9c4d91d40c8f
-Description     this computer
-Hostname        localhost
-Transport type  local
-Scheduler type  direct
-Work directory  /home/aiida/aiida_run/
-Shebang         #!/bin/bash
-Mpirun command  mpirun -np {tot_num_mpiprocs}
+---------------------------  ------------------------------------
+Label                        localhost
+PK                           1
+UUID                         b88f478b-d9c8-4677-a223-83559587e3ff
+Description                  this computer
+Hostname                     localhost
+Transport type               core.local
+Scheduler type               core.direct
+Work directory               /home/jovyan/aiida_run/
+Shebang                      #!/bin/bash
+Mpirun command
+Default #procs/machine       1
+Default memory (kB)/machine
 Prepend text
 Append text
---------------  ------------------------------------
+---------------------------  ------------------------------------
 ```
 
 We can see that the *Work directory* has been set up as the `aiida_run` subdirectory of the home directory.
@@ -455,10 +465,10 @@ So, the PKs for each entity type are unique for each database, but entities of d
 
 ### Running the CalcJob
 
-Let's now start up the `verdi shell` again and load the `arithmetic.add` calculations using the `CalculationFactory`:
+Let's now start up the `verdi shell` again and load the `core.arithmetic.add` calculations using the `CalculationFactory`:
 
 ```{code-block} ipython
-In [1]: ArithmeticAdd = CalculationFactory('arithmetic.add')
+In [1]: ArithmeticAdd = CalculationFactory('core.arithmetic.add')
 ```
 
 Now you need to gather the actual nodes that will be used as inputs for the calculation.
@@ -583,7 +593,7 @@ This follows all the steps we did previously, but now uses the `submit` function
 ```{code-block} ipython
 In [1]: from aiida.engine import submit
    ...:
-   ...: ArithmeticAdd = CalculationFactory('arithmetic.add')
+   ...: ArithmeticAdd = CalculationFactory('core.arithmetic.add')
    ...: code = load_code(label='add@localhost')
    ...: x = load_node(pk=<PK>)
    ...: y = Int(5)
@@ -595,7 +605,7 @@ When using `submit` the calculation job is not run in the local interpreter but 
 Instead of the *result* of the calculation, it returns the node of the `CalcJob` that was just submitted:
 
 ```{code-block} ipython
-Out[1]: <CalcJobNode: uuid: e221cf69-5027-4bb4-a3c9-e649b435393b (pk: 12) (aiida.calculations:arithmetic.add)>
+Out[1]: <CalcJobNode: uuid: e221cf69-5027-4bb4-a3c9-e649b435393b (pk: 12) (aiida.calculations:core.arithmetic.add)>
 ```
 
 Let's exit the IPython shell and have a look at the process list:
@@ -656,11 +666,11 @@ These are ideal for workflows that are not very computationally intensive and ca
 :::
 
 Just like we did for `aiida.calculations`, to see all available workflows you can run `verdi plugin list aiida.workflows`.
-You should be able to see the `arithmetic.multiply_add` entry point, among others.
+You should be able to see the `core.arithmetic.multiply_add` entry point, among others.
 Once again, to get the specific information for this work chain you just need to run:
 
 ```{code-block} console
-$ verdi plugin list aiida.workflows arithmetic.multiply_add
+$ verdi plugin list aiida.workflows core.arithmetic.multiply_add
 ```
 
 Which gives the following information on the work chain:
@@ -691,7 +701,7 @@ Just as we did before with the `CalculationFactory`, we will load the `MultiplyA
 Start up the `verdi shell` and run:
 
 ```{code-block} ipython
-In [1]: MultiplyAddWorkChain = WorkflowFactory('arithmetic.multiply_add')
+In [1]: MultiplyAddWorkChain = WorkflowFactory('core.arithmetic.multiply_add')
 ```
 
 We will now load the necessary nodes for each of the inputs required by the `WorkChain` (see the specifications above):
