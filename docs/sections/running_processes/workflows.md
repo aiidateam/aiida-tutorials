@@ -58,7 +58,7 @@ In [2]: code = load_code(<CODE_PK>)
 :::{tip}
 
 Forgot the PK of the `Code` or `StructureData` nodes?
-Remember that you can use `verdi code list` and `verdi data structure list` to retrieve them!
+Remember that you can use `verdi code list` and `verdi data core.structure list` to retrieve them!
 
 :::
 
