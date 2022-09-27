@@ -104,10 +104,10 @@ $ verdi group relabel a_group my_group
 Success: Label changed to my_group
 ```
 
-Add one or more nodes to your new group using node PKs from the `tutorial_pbesol` group we inspected earlier:
+Add one or more nodes to your new group using node PKs from the `tutorial_pbesol` group we inspected earlier (the PK might be different for your database):
 
 ```{code-block} console
-$ verdi group add-nodes -G my_group 380 1273
+$ verdi group add-nodes -G my_group <PK> <PK>
 Do you really want to add 2 nodes to Group<my_group>? [y/N]: y
 ```
 
@@ -132,8 +132,8 @@ Group description  <no description>
 # Nodes:
 PK    Type         Created
 ----  -----------  -----------------
-74  CalcJobNode  2078D:17h:51m ago
-76  CalcJobNode  2078D:17h:57m ago
+ 380  CalcJobNode  2078D:17h:46m ago
+1273  CalcJobNode  2078D:18h:03m ago
 ...
 ```
 
@@ -157,6 +157,7 @@ Success: Group<my_group> deleted.
 Any deletion operation related to groups will not affect the nodes themselves.
 For example if you delete a group, the nodes that belonged to the group will remain in the database.
 The same happens if you remove nodes from the group -- they will remain in the database but won't belong to the group any more.
+You can delete all nodes in the group along with the group itself by adding option `--delete-nodes` to the `verdi group delete` command.
 
 :::
 
