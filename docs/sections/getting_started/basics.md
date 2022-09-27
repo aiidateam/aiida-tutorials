@@ -353,6 +353,12 @@ Exit codes:
             410:  The sum of the operands is a negative number.
 ```
 
+:::{margin} {{ aiida }} **Further reading**
+
+If you're interested, you can find our more about how to write importers for existing calculations {ref}`in the AiiDA documentation <how-to:plugin-codes:importers>`.
+
+:::
+
 The first is description of the calculation, which explains that it adds two numbers together.
 Then there are the inputs, of which 2 are required: the two numbers (`x` and `y`) to add.
 The `code` used to add the two numbers is technically not required, since AiiDA comes with features to import completed `Calcjob`s without running them.
