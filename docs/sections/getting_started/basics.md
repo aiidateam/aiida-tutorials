@@ -302,12 +302,12 @@ $ verdi plugin list aiida.calculations
 ```
 
 This will show you a long list of _entry points_: strings that are used to identify each plugin within AiiDA.
-In this list you should be able to see the `arithmetic.add` entry point, which identifies the calculation job we want to run:
+In this list you should be able to see the `core.arithmetic.add` entry point, which identifies the calculation job we want to run:
 
 ```{code-block} console
 Registered entry points for aiida.calculations:
 (...)
-* arithmetic.add
+* core.arithmetic.add
 (...)
 
 Info: Pass the entry point as an argument to display detailed information
@@ -317,10 +317,10 @@ Info: Pass the entry point as an argument to display detailed information
 If you just run `verdi plugin list`, you will get a list of all possible plugin _groups_.
 :::
 
-To get more information about the inputs, outputs, etc. of this calculation job, just follow the instructions at the end of the output and pass the `arithmetic.add` entry point as an additional argument for the command:
+To get more information about the inputs, outputs, etc. of this calculation job, just follow the instructions at the end of the output and pass the `core.arithmetic.add` entry point as an additional argument for the command:
 
 ```{code-block} console
-$ verdi plugin list aiida.calculations arithmetic.add
+$ verdi plugin list aiida.calculations core.arithmetic.add
 ```
 
 There is a lot of information we obtain with this command:
@@ -328,13 +328,14 @@ There is a lot of information we obtain with this command:
 ```{code-block} bash
 Description:
 
-	`CalcJob` implementation to add two numbers using bash for testing and demonstration purposes.
+    `CalcJob` implementation to add two numbers using bash for testing and demonstration purposes.
 
 Inputs:
-           code:  required  Code             The `Code` to use for this job.
               x:  required  Int, Float       The left operand.
               y:  required  Int, Float       The right operand.
+           code:  optional  Code             The `Code` to use for this job. This input is required, unless the `remote_ ...
        metadata:  optional
+  remote_folder:  optional  RemoteData       Remote directory containing the results of an already completed calculation ...
 Outputs:
   remote_folder:  required  RemoteData       Input files necessary to run the process will be stored in this folder node ...
       retrieved:  required  FolderData       Files that are retrieved by the daemon will be stored in this node. By defa ...
@@ -353,7 +354,9 @@ Exit codes:
 ```
 
 The first is description of the calculation, which explains that it adds two numbers together.
-Then there are the inputs, of which 3 are required: the `code` to be used to add the numbers up, and the two numbers (`x` and `y`) to add.
+Then there are the inputs, of which 2 are required: the two numbers (`x` and `y`) to add.
+The `code` used to add the two numbers is technically not required, since AiiDA comes with features to import completed `Calcjob`s without running them.
+Below we will be running fresh calculations, so we'll have to provide the `code` as well.
 Finally, note the `sum` among the outputs, which contains the result of the addition.
 
 Now that we understand what our `CalcJob` does and what it needs, let's see what we need to do to run it.
@@ -584,7 +587,7 @@ This follows all the steps we did previously, but now uses the `submit` function
 ```{code-block} ipython
 In [1]: from aiida.engine import submit
    ...:
-   ...: ArithmeticAdd = CalculationFactory('arithmetic.add')
+   ...: ArithmeticAdd = CalculationFactory('core.arithmetic.add')
    ...: code = load_code(label='add@localhost')
    ...: x = load_node(pk=<PK>)
    ...: y = Int(5)
@@ -596,7 +599,7 @@ When using `submit` the calculation job is not run in the local interpreter but 
 Instead of the *result* of the calculation, it returns the node of the `CalcJob` that was just submitted:
 
 ```{code-block} ipython
-Out[1]: <CalcJobNode: uuid: e221cf69-5027-4bb4-a3c9-e649b435393b (pk: 12) (aiida.calculations:arithmetic.add)>
+Out[1]: <CalcJobNode: uuid: e221cf69-5027-4bb4-a3c9-e649b435393b (pk: 12) (aiida.calculations:core.arithmetic.add)>
 ```
 
 Let's exit the IPython shell and have a look at the process list:
