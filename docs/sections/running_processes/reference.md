@@ -71,7 +71,7 @@ To load any data class, we can use AiiDA's `DataFactory` and the *entry point* o
 
 ```{code-block} ipython
 
-In [4]: Dict = DataFactory('dict')
+In [4]: Dict = DataFactory('core.dict')
    ...: new_params = Dict(dict=pw_dict)
 
 ```

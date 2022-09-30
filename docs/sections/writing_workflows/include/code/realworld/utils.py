@@ -3,8 +3,8 @@
 import numpy as np
 from aiida.plugins import CalculationFactory, DataFactory
 
-Dict = DataFactory("dict")
-KpointsData = DataFactory("array.kpoints")
+Dict = DataFactory("core.dict")
+KpointsData = DataFactory("core.array.kpoints")
 PwCalculation = CalculationFactory("quantumespresso.pw")
 
 
