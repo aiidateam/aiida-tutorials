@@ -17,6 +17,48 @@ However, the material is meant be instructive in understanding how to write work
 
 :::
 
+:::{dropdown} Requirements
+
+For the following sections you will need to have already set up the PW code and installed the corresponding pseudopotentials.
+If you already went through the previous sections (in particular, the one about {ref}`running processes <started-basics-calcjobs>`), you should already have these set up.
+
+You can check this by running:
+
+```{code-block} console
+$ verdi code list
+# List of configured codes:
+# (use 'verdi code show CODEID' to see the details)
+* pk 42 - add@localhost
+* pk 74 - pw@localhost # <- this is the relevant code
+```
+
+If you don't have the PW code available, you can set it up by running the following command (you may need to adapt the `--remote-abs-path` or even the `--computer` if you are running in a custom environment):
+
+```{code-block} console
+$ verdi code setup --label pw --computer localhost --remote-abs-path /opt/conda/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
+Success: Code<2> pw@localhost created
+```
+
+On the other hand, you can check the pseudopotentials by running:
+
+```{code-block} console
+aiida-pseudo list
+Label                    Type string         Count
+-----------------------  ------------------  -------
+SSSP/1.1/PBE/efficiency  pseudo.family.sssp  85
+```
+
+And install them with:
+
+```{code-block} console
+aiida-pseudo install sssp
+```
+
+You may also need the dojo pseudopotentials for one of the exercises, which are installed in the exact same way (use the `aiida-pseudo --help` command for further assistance).
+
+:::
+
+
 ## Importing a structure from the COD
 
 First, we'll need the structure of bulk silicon.
@@ -284,6 +326,7 @@ class EquationOfState(WorkChain):
     @classmethod
     def define(cls, spec):
         """Specify inputs and outputs."""
+        super().define(spec)
         # ADD THE DEFINE METHOD
 
     def run_eos(self):
@@ -420,7 +463,7 @@ $ echo "export PYTHONPATH=\$PYTHONPATH:$PWD" >> ~/.bashrc
 
 ```
 
-Next, it is **very important** to restart the daemon, so it can successfully set up the `PYTHONPATH` and find the `EquationOfState` work chain:
+Next, it is **very important** to run `source ~/.bashrc` and restart the daemon, so it can successfully set up the `PYTHONPATH` and find the `EquationOfState` work chain:
 
 ```{code-block} bash
 

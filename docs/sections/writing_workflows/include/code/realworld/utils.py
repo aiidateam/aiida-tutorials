@@ -97,4 +97,5 @@ def plot_eos(eos_pk):
     pl.xlabel("Volume (ang^3)")
     # I take the last value in the list of units assuming units do not change
     pl.ylabel("Energy ({})".format(units))  # pylint: disable=undefined-loop-variable
+    pl.savefig(f"EOS-{eos_pk}.pdf")
     pl.show()
