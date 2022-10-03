@@ -52,6 +52,10 @@ You can find all instructions on the corresponding GitHub repository:
 
 :::
 
+## Setup using AiiDAlab Launch
+
+AiiDAlab Launch makes it easy to run AiiDAlab on your own workstation or laptop.
+
 ## Setup on your own machine
 
 To run the tutorial on your own machine, you need to install:
@@ -62,3 +66,36 @@ To run the tutorial on your own machine, you need to install:
 
 ```{note} Version numbers indicate the versions with which the tutorial was tested.
 ```
+
+### using AiiDAlab Launch
+
+AiiDAlab Launch makes it easy to run AiiDAlab on your own workstation or laptop.
+
+To use AiiDAlab launch you will have to
+
+1. [Install Docker on your workstation or laptop.](https://docs.docker.com/get-docker/)
+2. Install AiiDAlab launch with [pipx](https://pypa.github.io/pipx/installation/) (**recommended**):
+
+   ```console
+   pipx install aiidalab-launch
+   ```
+
+   _Or directly with pip (`pip install aiidalab-launch`)._
+
+3. Create a profile for tutorial
+
+    ```console
+    aiidalab-launch profiles add tutorial
+    ```
+
+    It will ask you to edit the profile, since for the tutorial we only need the AiiDA environment, answer `Y` and let's remove the `aiidalab-widgets-base` from the `default_apps` list (or the whole `default_apps` line).
+
+
+3. Start AiiDAlab for `tutorial` profile with
+
+    ```console
+    aiidalab-launch start -p tutorial
+    ```
+4. Follow the instructions on screen to open AiiDAlab in the browser.
+
+See `aiidalab-launch --help` for detailed help.
