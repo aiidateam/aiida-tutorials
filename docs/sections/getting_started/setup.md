@@ -52,10 +52,6 @@ You can find all instructions on the corresponding GitHub repository:
 
 :::
 
-## Setup using AiiDAlab Launch
-
-AiiDAlab Launch makes it easy to run AiiDAlab on your own workstation or laptop.
-
 ## Setup on your own machine
 
 To run the tutorial on your own machine, you need to install:
