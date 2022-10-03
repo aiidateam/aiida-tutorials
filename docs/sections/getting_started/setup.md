@@ -4,7 +4,7 @@
 
 ## Running on Microsoft Azure Kubernetes deployment
 
-For the tutorial running from 4-7 October 2022, we have set up a JupyterHub deployment based on the [AiiDAlab docker stack](https://github.com/aiidalab/aiidalab-docker-stack) and a [Kubernetes cluster on Microsoft Azure](https://azure.microsoft.com/en-us/products/kubernetes-service/).
+For the tutorial running from 4-7 October 2022, we have set up a JupyterHub deployment based on the [AiiDAlab docker stack](https://github.com/aiidalab/aiidalab-docker-stack) and a [Kubernetes cluster on Microsoft Azure](https://github.com/aiidalab/aiidalab-on-azure).
 The JupyterHub is accessible via the following link:
 
 [https://aiida-tutorial-2022.aiidalab.io/](https://aiida-tutorial-2022.aiidalab.io/)
@@ -40,6 +40,15 @@ If you see all green checkmarks, everything is set up successfully and you shoul
 :::{important}
 
 As the tutorial has been fully tested on the Azure JupyterHub deployment, we highly recommend tutorial participants to run the tutorial material here!
+
+:::
+
+:::{note} **Deploying AiiDAlab on Microsoft Azure**
+
+Interested in having your own deployment of AiiDAlab on the Microsoft Azure Kubernetes Service?
+You can find all instructions on the corresponding GitHub repository:
+
+[https://github.com/aiidalab/aiidalab-on-azure](https://github.com/aiidalab/aiidalab-on-azure)
 
 :::
 
