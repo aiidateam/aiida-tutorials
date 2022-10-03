@@ -114,6 +114,8 @@ Here is a list of all the contributed talks:
      - `Introducing AiiDA-Siesta`_
    * - **Bonan Zhu**
      - `Introducing AiiDA-Castep`_
+   * - **Chris Sewell**
+     - `AiiDA common workflows`_
    * - Miki Bonacci
      - `The Yambo-AiiDA plugin`_
    * - Dou Du
@@ -146,6 +148,7 @@ Here is a list of all the contributed talks:
 .. _Introduction to AiiDA-Fleur: https://www.youtube.com/watch?v=qPVWA2motO4
 .. _AiiDA Installation Tutorial: https://youtu.be/skx9VZierbk
 .. _Introduction to AiiDA-VASP: https://youtu.be/iH7KJgdkPTE
+.. _AiiDA common workflows: https://youtu.be/DD-g9ETU_sE
 
 Acknowledgements
 ----------------
