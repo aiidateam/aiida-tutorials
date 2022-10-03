@@ -46,7 +46,7 @@ These are tabulated below:
      - Francisco Ramirez
      - `The AiiDA Plugin Ecosystem`_
    * -
-     - Aliaksandr Yakotovich
+     - Aliaksandr Yakutovich
      - AiiDA lab (In progress 🛠)
 
 .. _The Materials Cloud: https://youtu.be/KPOCEczHPps
