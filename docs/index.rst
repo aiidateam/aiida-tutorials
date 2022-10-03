@@ -2,18 +2,14 @@ AiiDA virtual tutorial 2022
 ===========================
 
 Welcome to the official home of the latest tutorial materials and videos of the AiiDA virtual tutorial, which is being organised from 4-7 October 2022!
-Below you can find the schedule of the tutorial, as well as the AiiDA cheat sheet, which will come in handy as you are working through the material:
+Below you can find the schedule of the tutorial:
 
 .. panels::
    :body: bg-light text-center large-text
 
    ------
-   :column: col-lg-6 pl-0 pr-0
+   :column: col-lg-12 pl-0 pr-0
    :download:`The Tutorial Schedule <include/images/schedule.pdf>`
-
-   -------
-   :column: col-lg-6 pl-0 pr-0
-   :download:`AiiDA Cheat Sheet <cheatsheet/cheatsheet.pdf>`
 
 Presentations
 -------------
