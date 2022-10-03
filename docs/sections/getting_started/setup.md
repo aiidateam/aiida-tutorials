@@ -43,6 +43,15 @@ As the tutorial has been fully tested on the Azure JupyterHub deployment, we hig
 
 :::
 
+:::{note} **Deploying AiiDAlab on Microsoft Azure**
+
+Interested in having your own deployment of AiiDAlab on the Microsoft Azure Kubernetes Service?
+You can find all instructions on the corresponding GitHub repository:
+
+[https://github.com/aiidalab/aiidalab-on-azure](https://github.com/aiidalab/aiidalab-on-azure)
+
+:::
+
 ## Setup on your own machine
 
 To run the tutorial on your own machine, you need to install:
