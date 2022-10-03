@@ -35,22 +35,26 @@ These are tabulated below:
      - (LIVE) Welcome and AiiDA Tutorial Overview
    * - **Wednesday October 5th**
      - Kristjan Eimre
-     - The Materials Cloud
+     - `The Materials Cloud`_
    * -
      - Jusong Yu
-     - AiiDA and OPTIMADE
+     - `AiiDA and OPTIMADE`_
    * - **Thursday October 6th**
-     - Marnik Bercx
-     - Provenance and workflows in AiiDA
-   * -
-     - Jusong Yu
-     - Creating your development environment
+     - Sebastiaan P. Huber
+     - `Provenance and workflows in AiiDA`_
    * - **Friday October 7th**
-     - Jusong Yu
-     - The AiiDA Plugin Ecosystem
+     - Francisco Ramirez
+     - `The AiiDA Plugin Ecosystem`_
    * -
      - Aliaksandr Yakotovich
-     - AiiDA lab
+     - AiiDA lab (In progress 🛠)
+
+.. _The Materials Cloud: https://youtu.be/KPOCEczHPps
+.. _The AiiDA Plugin Ecosystem: https://youtu.be/-RGYCwYjydE
+.. _AiiDA and OPTIMADE: https://youtu.be/RQ6aopfuMOs
+.. _Provenance and workflows in AiiDA: https://www.youtube.com/watch?v=KpiLIA8ge1w
+.. _AiiDA lab: https://www.youtube.com/watch?v=BwtxyTAVugY
+
 
 Hands-on sessions
 -----------------
@@ -102,44 +106,45 @@ Here is a list of all the contributed talks:
 
    * - **Presenter**
      - **Title**
-   * - Emanuele Bosoni
-     - `Introducing aiida-siesta`_
+   * - **Lorenzo Bastonero**
+     - `Phonons with AiiDA-Phonopy v1.0`_
+   * - **Philipp Rüßmann**
+     - `Automated multi-scale modelling with the AiiDA-KKR and AiiDA-Spirit plugins`_
+   * -
+     - `The AiiDA-KKR plugin`_
+   * - **Leonid Kahle**
+     - `Using AiiDA to screen for solid-state Li-ion conductors`_
+   * - **Emanuele Bosoni**
+     - `Introducing AiiDA-Siesta`_
+   * - **Bonan Zhu**
+     - `Introducing AiiDA-Castep`_
+   * - Miki Bonacci
+     - `The Yambo-AiiDA plugin`_
    * - Dou Du
      - `OSSCAR`_
    * - Daniele Ongari
      - `Using AiiDA to study gas adsorption in microporous crystals`_
-   * - Dominik Gresch
-     - `Introduction to aiida-optimize`_
-   * - Atsushi Togo
-     - `Harmonic phonon calculation using AiiDA AiiDA-VASP and AiiDA-phonopy`_
-   * - Bonan Zhu
-     - `Introducing aiida-castep`_
-   * - Philipp Rüßmann
-     - `The aiida-kkr plugin`_
-   * - Miki Bonacci
-     - `The Yambo-AiiDA plugin`_
-   * - Leonid Kahle
-     - `Using AiiDA to screen for solid-state Li-ion conductors`_
    * - Jens Bröder
      - `Introduction to AiiDA-Fleur`_
    * - Espen Flage-Larsen
      - `Introduction to AiiDA-VASP`_
+   * - Dominik Gresch
+     - `Introduction to aiida-optimize`_
 
-.. _Welcome and AiiDA Tutorial Overview (LIVE): https://youtu.be/0lWYphVDSJc
-.. _Introduction to AiiDA: https://www.youtube.com/watch?v=jigMCyWGNAE
-.. _Setting up an environment with Quantum Mobile Cloud: https://www.youtube.com/watch?v=vlmjVwGJgEU
-.. _Provenance and workflows in AiiDA: https://www.youtube.com/watch?v=KpiLIA8ge1w
-.. _The AiiDA Plugin Ecosystem: https://www.youtube.com/watch?v=bjTUnHXZ6oY
-.. _The Materials Cloud: https://www.youtube.com/watch?v=_T8HBuOYUyc
-.. _AiiDA lab: https://www.youtube.com/watch?v=BwtxyTAVugY
-.. _AiiDA and OPTIMADE: https://www.youtube.com/watch?v=F0e3cQHNbNM
+.. note::
+
+  Unfortunately not all contributers are able to participate to the Q&A sessions.
+  Those that have indicated their availability have their names in boldface.
+
+.. _Phonons with AiiDA-Phonopy v1.0: https://youtu.be/2Gls4P4SqpA
 .. _OSSCAR: https://www.youtube.com/watch?v=3rkhzYBUuA4
+.. _Automated multi-scale modelling with the AiiDA-KKR and AiiDA-Spirit plugins: https://youtu.be/38C9enLB0bQ
 .. _Using AiiDA to study gas adsorption in microporous crystals: https://www.youtube.com/watch?v=9p_krkdEz_A
 .. _Introduction to aiida-optimize: https://www.youtube.com/watch?v=YzHuIrYhyFI
 .. _Harmonic phonon calculation using AiiDA AiiDA-VASP and AiiDA-phonopy: https://www.youtube.com/watch?v=Uqz-i29JD5U
-.. _Introducing aiida-castep: https://www.youtube.com/watch?v=X18SiQwVPQo
-.. _Introducing aiida-siesta: https://www.youtube.com/watch?v=0S7rvut8gpE
-.. _The aiida-kkr plugin: https://www.youtube.com/watch?v=ccmEWKgVfVc
+.. _Introducing AiiDA-Castep: https://www.youtube.com/watch?v=X18SiQwVPQo
+.. _Introducing AiiDA-Siesta: https://www.youtube.com/watch?v=0S7rvut8gpE
+.. _The AiiDA-KKR plugin: https://youtu.be/wCR3vHYzU20
 .. _The Yambo-AiiDA plugin: https://www.youtube.com/watch?v=NzhN5ce0Sc8
 .. _Using AiiDA to screen for solid-state Li-ion conductors: https://youtu.be/UFC2UWwIHwE
 .. _Introduction to AiiDA-Fleur: https://www.youtube.com/watch?v=qPVWA2motO4
