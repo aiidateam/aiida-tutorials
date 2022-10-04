@@ -151,38 +151,32 @@ It uses the general information of the code plugin (**2**) when it is being setu
 
 :::{important}
 
-Both the Quantum Mobile virtual machine and the AiiDAlab cluster come pre-configured with all that you need related to codes.
-That is, they already include:
+Both the Quantum Mobile virtual machine and the AiiDAlab cluster come with:
 
 * The [Quantum ESPRESSO][quantum espresso] code with `pw.x`
 * The `aiida-quantumespresso` plugin package with `quantumespresso.pw`
-* A pre-configured code node ready to use the local `pw.x` code
 
-You can check this by running the following:
-
-```{code-block} console
-$ verdi code list
-# List of configured codes:
-# (use 'verdi code show CODEID' to see the details)
-* pk 192 - pw@localhost
-* pk 193 - projwfc@localhost
-* pk 194 - dos@localhost
-```
-
-**Make a note of the PK or label of the pw code** (in the case above, `pw@localhost`) since you'll need to replace it in code snippets later in this tutorial.
-
-:::
-
-:::{dropdown} **Setting up a new pw code**
-
-If by any chance you do not have a pw code node already set up in your environment or you need to set up a new one, you can do so with the following commands:
+However, you will still have to set up the code to run it with AiiDA.
+This can be done with:
 
 ```{code-block} console
 $ verdi code setup --label pw --computer localhost --remote-abs-path /opt/conda/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
 Success: Code<2> pw@localhost created
 ```
 
-You now should be able to see this new code when you execute ``verdi code list``.
+You now should be able to see this new code when you execute ``verdi code list``:
+
+You can check this by running `verdi code list`:
+
+```{code-block} console
+$ verdi code list
+# List of configured codes:
+# (use 'verdi code show CODEID' to see the details)
+* pk 607 - add@localhost
+* pk 727 - pw@localhost
+```
+
+**Make a note of the PK or label of the pw code** (in the case above, `pw@localhost`) since you'll need to replace it in code snippets later in this tutorial.
 
 :::
 
@@ -203,7 +197,7 @@ You can download any file directly into the AiiDAlab JupyterHub cluster using `w
 All you need to do is copy the link for the download (for example, right clicking on the link above and selecting "Copy link") and then just use `wget`:
 
 ```{code-block} console
-$ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2021-intro/_downloads/92e2828a59fc133b391bbf62f0fd1b59/Si.cif
+$ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2022-intro/_downloads/92e2828a59fc133b391bbf62f0fd1b59/Si.cif
 ```
 
 :::
