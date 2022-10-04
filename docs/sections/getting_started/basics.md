@@ -8,8 +8,15 @@ This module will give you a first taste of some of the features of AiiDA, and he
 
 The `verdi` command supports **tab-completion**!
 In the terminal, type `verdi`, followed by a space and press the 'Tab' key twice to show a list of all the available sub commands.
-Next, try typing `verdi st` and then press "Tab" again.
+Next, try typing `verdi sta` and then press "Tab" again.
 This should _tab-complete_ into `verdi status`.
+If not, try running the following commands:
+
+```{code-block} console
+echo 'eval "$(_VERDI_COMPLETE=bash_source verdi)"' > ~/.profile
+source ~/.profile
+```
+
 For help on `verdi` or any of its subcommands, simply append the `--help` flag, e.g.:
 
 ```{code-block} console
