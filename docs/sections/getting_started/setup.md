@@ -40,7 +40,7 @@ If you see all green checkmarks, everything is set up successfully and you shoul
 :::{important}
 
 As the tutorial has been fully tested on the Azure JupyterHub deployment, we highly recommend tutorial participants to run the tutorial material here!
-However, **the Azure cluster will be taken down on Monday October 10th at 23:59 CEST**.
+However, **the Azure cluster will be taken down on Sunday October 16th at 23:59 CEST**.
 
 To download your files from the server prior to its destruction:
 
