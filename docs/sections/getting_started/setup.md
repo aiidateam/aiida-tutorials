@@ -40,6 +40,26 @@ If you see all green checkmarks, everything is set up successfully and you shoul
 :::{important}
 
 As the tutorial has been fully tested on the Azure JupyterHub deployment, we highly recommend tutorial participants to run the tutorial material here!
+However, **the Azure cluster will be taken down on Monday October 10th at 23:59 CEST**.
+
+To download your files from the server prior to its destruction:
+
+  1. Open a terminal by clicking on "Terminal" on the start screen.
+  2. Execute `zip -r home.zip .`
+  3. Right-click on the `home.zip` file within the file browser tab.
+  4. Click on "Download".
+
+You do not have to download the whole home directory of course, you can just download the files or directories that you would like to preserve.
+
+If you want to export your full AiiDA profile into an archive, you can use:
+
+```{code-block} console
+
+$ verdi archive create --all tutorial.aiida
+
+```
+
+and then simply download the file from the JupyterHub cluster and import it wherever you want to continue working on the material.
 
 :::
 
