@@ -275,6 +275,21 @@ In [1]: from add_multiply import add_multiply
 
 ```
 
+```{important}
+
+If you're running the verdi shell commands in a Jupyter notebook, you need to restart the notebook kernel before it will recognise any new Python modules, or changes in a Python module.
+The notebook can be restarted with the circular arrow button at the top or by pressing zero `0` twice in quick succession.
+
+::::{figure-md} fig-restart-notebook
+:align: center
+
+<img src="include/images/restart-notebook.png" alt="Restarting the Jupyter notebook" width="60%">
+
+Restarting the Jupyter Notebook.
+
+::::
+
+```
 
 Similar to a calculation function, running a work function is as simple as calling a typical Python function: simply call it with the required input arguments:
 
