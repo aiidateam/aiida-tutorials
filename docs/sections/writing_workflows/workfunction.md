@@ -30,8 +30,6 @@ $ verdi data core.structure import ase Si.cif
 Note that the output of `verdi data core.structure import` will probably show a different value for the PK of the structure node you just created: **make a note of this PK**, as you will need to replace it in code snippets later in this tutorial.
 You can also manually download the {{ download }} {download}`Si.cif <include/data/Si.cif>` structure file and copy it in your work environment instead of using `wget`.
 
-:::
-
  (workflows-workfunction-calcfunction)=
 
 ## Calculation functions
