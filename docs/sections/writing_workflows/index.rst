@@ -82,8 +82,8 @@ Writing workflows
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 20 min
-          - |aiida| :aiida-blue:`Intermediate`
+        * - |time| 30 min
+          - |aiida| :aiida-green:`Basic`
 
     ------
     :column: col-lg-6
@@ -104,7 +104,7 @@ Writing workflows
 
         * -
           - :badge:`Quantum ESPRESSO,badge-qe text-white`
-        * - |time| 30 min
+        * - |time| 45 min
           - |aiida| :aiida-blue:`Intermediate`
 
 
@@ -131,7 +131,7 @@ Writing workflows
         :class: footer-table
         :header-rows: 0
 
-        * - |time| 20 min
+        * - |time| 30 min
           - |aiida| :aiida-blue:`Intermediate`
 
     ------
