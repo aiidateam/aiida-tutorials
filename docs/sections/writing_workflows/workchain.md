@@ -430,7 +430,7 @@ How is it different from the `AddWorkChain`?
 The `OutputInputWorkChain` status is just a single line:
 
 ```{code-block} console
-$ verdi process process status <PK>
+$ verdi process status <PK>
 OutputInputWorkChain<1982> Finished [0] [None]
 ```
 

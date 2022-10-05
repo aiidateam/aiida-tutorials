@@ -1,7 +1,7 @@
 ---
 label: "add"
 description: "addition code"
-input_plugin: "arithmetic.add"
+input_plugin: "core.arithmetic.add"
 on_computer: true
 remote_abs_path: "/home/fdossantos/codes/aiida-core/aiida/calculations/arithmetic/add.py"
 computer: "localhost"

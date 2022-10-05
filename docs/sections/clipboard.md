@@ -295,7 +295,7 @@ This can be obtained by using the `get_builder()` method, which is implemented f
 ```{code-block} ipython
 
 In [1]: from aiida.plugins import WorkflowFactory, DataFactory
-   ...: Int = DataFactory('int')
+   ...: Int = DataFactory('core.int')
    ...: MultiplyAddWorkChain = WorkflowFactory('arithmetic.multiply_add')
    ...: builder = MultiplyAddWorkChain.get_builder()
 

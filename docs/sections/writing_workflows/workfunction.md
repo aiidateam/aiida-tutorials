@@ -10,6 +10,26 @@ In this section, you will learn to:
 1. Understand how to add simple Python functions to the provenance.
 2. Learn how to write and launch a simple workflow in AiiDA.
 
+:::{dropdown} Requirements
+
+For the following sections you will require to have a `StructureData` node in your database.
+If you already went through the previous sections (in particular, the one about {ref}`running processes <started-basics-calcjobs>`), you should already have a Si structure for which we know the instructions work fine.
+If you haven't done these, you can get this structure by running:
+
+```{code-block} console
+$ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2022-intro/_downloads/92e2828a59fc133b391bbf62f0fd1b59/Si.cif
+```
+
+And then import it into your database with the `verdi` CLI.
+
+:::{code-block} console
+$ verdi data core.structure import ase Si.cif
+  Successfully imported structure Si2 (PK = 1)
+:::
+
+Note that the output of `verdi data core.structure import` will probably show a different value for the PK of the structure node you just created: **make a note of this PK**, as you will need to replace it in code snippets later in this tutorial.
+You can also manually download the {{ download }} {download}`Si.cif <include/data/Si.cif>` structure file and copy it in your work environment instead of using `wget`.
+
  (workflows-workfunction-calcfunction)=
 
 ## Calculation functions
@@ -179,7 +199,7 @@ we can see that the lattice cell vectors are twice as large as initially, which 
 :::{dropdown} **Solution**
 
 In the case of the `multiply` function, the `x` and `y` inputs are simply multiplied using `*`.
-Since `x` and `y` are AiiDA `Int` nodes, this results in a new `Int` node whose value is the product of the two nodes:
+Since `x` and `y` are AiiDA `Int` nodes and the multiplication operator has already been overloaded to handle them, this automatically results in a new `Int` node whose value is the product of the two nodes:
 
 ```{code-block} ipython
 In [12]: Int(2) * Int(3)
