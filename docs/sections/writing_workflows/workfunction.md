@@ -12,12 +12,12 @@ In this section, you will learn to:
 
 :::{dropdown} Requirements
 
-For the following sections you will require to have a good structure already loaded in your database.
-If you already went through the previous sections (in particular, the one about {ref}`running processes <started-basics-calcjobs>`), you should already have a Si structure for which we know the following procedures work.
+For the following sections you will require to have a `StructureData` node in your database.
+If you already went through the previous sections (in particular, the one about {ref}`running processes <started-basics-calcjobs>`), you should already have a Si structure for which we know the instructions work fine.
 If you haven't done these, you can get this structure by running:
 
 ```{code-block} console
-$ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2021-intro/_downloads/92e2828a59fc133b391bbf62f0fd1b59/Si.cif
+$ wget https://aiida-tutorials.readthedocs.io/en/tutorial-2022-intro/_downloads/92e2828a59fc133b391bbf62f0fd1b59/Si.cif
 ```
 
 And then import it into your database with the `verdi` CLI.
