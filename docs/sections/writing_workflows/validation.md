@@ -78,7 +78,6 @@ For example, we can add a `validator` to the `x` input of the `OutputInputWorkCh
 
 
 :::{margin}
-</br></br></br></br></br></br></br></br>
 
 {{ aiida }} **Ports and Port namespaces**
 
@@ -87,7 +86,6 @@ You can read about the ports and port namespace concepts in the [AiiDA documenta
 :::
 
 :::{margin}
-</br>
 
 {{ python }} **The underscore `_` character**
 
