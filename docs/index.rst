@@ -43,13 +43,13 @@ These are tabulated below:
      - `The AiiDA Plugin Ecosystem`_
    * -
      - Aliaksandr Yakutovich
-     - AiiDAlab (In progress 🛠)
+     - `AiiDAlab`_
 
 .. _The Materials Cloud: https://youtu.be/KPOCEczHPps
 .. _The AiiDA Plugin Ecosystem: https://youtu.be/-RGYCwYjydE
 .. _AiiDA and OPTIMADE: https://youtu.be/RQ6aopfuMOs
 .. _Provenance and workflows in AiiDA: https://www.youtube.com/watch?v=KpiLIA8ge1w
-.. _AiiDAlab: https://www.youtube.com/watch?v=BwtxyTAVugY
+.. _AiiDAlab: https://youtu.be/Oqo5buk6Om8
 
 
 Hands-on sessions
