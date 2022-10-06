@@ -2,32 +2,13 @@
 
 # Dealing with Errors
 
-In this hands-on, we'll be looking at some more advanced concepts related to workflows.
+In this hands-on, we'll be looking at some more advanced concepts related to workflows and error handling.
 
 :::{important}
 
-Just as in the {ref}`workflows-workchain` section, we will be using the computers and codes set up in the first two hands-on sessions.
+Just as in the {ref}`workflows-workchain` section, we will be using the `add` code set up in the basics section.
 
 :::
-
-* the **exit codes** of the work chain, specified using the `spec.exit_code()` method.
-  Exit codes are used to clearly communicate known failure modes of the work chain to the user.
-  The first and second arguments define the `exit_status` of the work chain in case of failure (`400`) and the string that the developer can use to reference the exit code (`ERROR_NEGATIVE_NUMBER`).
-  A descriptive exit message can be provided using the `message` keyword argument.
-  For the `MultiplyAddWorkChain`, we demand that the final result is not a negative number, which is checked in the `validate_result` step of the outline.
-
-```{literalinclude} include/code/multiply_add.py
-:language: python
-:pyobject: MultiplyAddWorkChain.validate_result
-:dedent: 4
-
-```
-
-Once the `ArithmeticAddCalculation` calculation job is finished, the next step in the work chain is to validate the result, i.e. verify that the result is not a negative number.
-After the `addition` node has been extracted from the context, we take the `sum` node from the `ArithmeticAddCalculation` outputs and store it in the `result` variable.
-In case the value of this `Int` node is negative, the `ERROR_NEGATIVE_NUMBER` exit code - defined in the `define()` method - is returned.
-Note that once an exit code is returned during any step in the outline, the work chain will be terminated and no further steps will be executed.
-
 
 ## Exit Codes
 
@@ -49,7 +30,7 @@ Take the `MultiplyAddWorkChain` as an example:
 
 ```
 
-It defines the `ERROR_NEGATIVE_NUMBER` exit code with status `410` and message `'The result is a negative number.'`.
+It defines the `ERROR_NEGATIVE_NUMBER` exit code with status `400` and message `'The result is a negative number.'`.
 This exit code is used in the `validate_result` step, where the sum produced by the `ArithmeticAddCalculation` is validated.
 
 ```{literalinclude} include/code/multiply_add.py
@@ -202,7 +183,7 @@ def define(cls, spec):
 ```
 
 The inputs and output that we define are essentially determined by the sub process that the work chain will be running.
-Since the `ArithmeticAddCalculation` requires the inputs `x` and `y`, and produces the `sum` as output, we {}`mirror` those in the specification of the work chain, otherwise we wouldn't be able to pass the necessary inputs.
+Since the `ArithmeticAddCalculation` requires the inputs `x` and `y`, and produces the `sum` as output, we mirror those in the specification of the work chain, otherwise we wouldn't be able to pass the necessary inputs.
 Finally, we define the logical outline, which if you look closely, resembles the logical flow chart presented in {numref}`workflow-error-handling-flow-loop` a lot.
 We start by *setting up* the work chain and then enter a loop: *while* the subprocess has not yet finished successfully *and* we haven't exceeded the maximum number of iterations, we *run* another instance of the process and then *inspect* the results.
 The while conditions are implemented in the `should_run_process` outline step.
