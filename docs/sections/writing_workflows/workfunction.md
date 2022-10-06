@@ -82,6 +82,12 @@ In [3]: ase_structure = structure.get_ase()
 
 Let's have a look at what structure we found:
 
+:::{margin}
+
+The structure you found can of course be different!
+
+:::
+
 ```{code-block} ipython
 In [4]: ase_structure
 Out[4]: Atoms(symbols='NaNbO3', pbc=True, cell=[3.9761497211, 3.9761497211, 3.9761497211], masses=...)
