@@ -151,3 +151,14 @@ Take the `MultiplyAddWorkChain` from the {ref}`exercise in the work chains secti
 * Allow the `x` and `y` inputs to _also_ be `Float` nodes.
 * Make sure `z` is not zero.
 * Make sure the sum of `x` and `y` is not zero.
+
+:::{dropdown} **Solution**
+
+```{literalinclude} include/code/validation/validated_multiple_add.py
+:language: python
+:emphasize-lines: 14-17, 19-22, 32-35, 38-39
+```
+
+Note how the `valid_type` of the _outputs_ also has to be more flexible!
+
+:::
