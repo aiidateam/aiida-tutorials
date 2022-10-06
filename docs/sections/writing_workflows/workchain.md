@@ -320,7 +320,7 @@ You can see the highlighted changes below:
 
 ```{literalinclude} include/code/workchain/my_first_workchain_3_add_calcfunc.py
 :language: python
-:emphasize-lines: 2, 5-7, 27
+:emphasize-lines: 2, 5-7, 27, 30
 ```
 
 :::{margin} {{ python }} **Decorators**
