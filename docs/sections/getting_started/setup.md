@@ -85,7 +85,7 @@ To run the tutorial on your own machine, you need to install:
 
 ### using AiiDAlab Launch
 
-AiiDAlab Launch makes it easy to run AiiDAlab on your own workstation or laptop.
+AiiDAlab Launch makes it easy to run AiiDA on your own workstation or laptop.
 
 To use AiiDAlab launch you will have to
 
