@@ -10,11 +10,11 @@ jobs:
     timeout-minutes: 30
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.7
+        python-version: 3.9
     - name: Install python dependencies
       run: |
         pip install --upgrade pip
@@ -34,7 +34,7 @@ jobs:
       fail-fast: false
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Install latexpdf dependencies
       if: ${{ matrix.format == 'latexpdf' }}
       run: |
@@ -51,10 +51,10 @@ jobs:
           latexmk \
           dvipng \
           dvidvi
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
       with:
-        python-version: 3.7
+        python-version: 3.9
     - name: Install python dependencies
       run: |
         pip install --upgrade pip
