@@ -9,7 +9,7 @@ exclude: >
       .*tex
     )$
 repos:
-  - repo: git://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.2.3
     hooks:
     - id: check-yaml
@@ -31,11 +31,9 @@ repos:
       language: system
 
   - repo: https://github.com/myint/rstcheck
-    rev: 'master'
+    rev: 'main'
     hooks:
     - id: rstcheck
-      additional_dependencies:
-        - sphinx==2.4.4
 
   - repo: https://github.com/markdownlint/markdownlint
     rev: 'v0.9.0'
