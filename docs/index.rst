@@ -1,61 +1,12 @@
-AiiDA virtual tutorial 2022
-===========================
+AiiDA tutorials
+===============
 
-Welcome to the official home of the latest tutorial materials and videos of the AiiDA virtual tutorial, which is being organised from 4-7 October 2022!
-Below you can find the schedule of the tutorial:
+Welcome to the official home of the latest tutorial material and videos for AiiDA virtual tutorial, based on our latest virtual tutorial organised 4-7 October 2022!
 
-.. panels::
-   :body: bg-light text-center large-text
-
-   ------
-   :column: col-lg-12 pl-0 pr-0
-   :download:`The Tutorial Schedule <include/images/schedule.pdf>`
-
-Presentations
--------------
-
-For this virtual tutorial, most presentations have been recorded beforehand, so you can watch them at the time that is most convenient for you.
-However, you are required to watch certain presentations before the hands-on sessions of certain days.
-These are tabulated below:
-
-.. list-table::
-   :widths: 30 25 45
-   :class: skinny-table
-   :header-rows: 1
-
-   * - **Date**
-     - **Presenter**
-     - **Title**
-   * - **Tuesday October 4th**
-     - Marnik Bercx
-     - (LIVE) Welcome and AiiDA Tutorial Overview
-   * - **Wednesday October 5th**
-     - Kristjan Eimre
-     - `The Materials Cloud`_
-   * -
-     - Jusong Yu
-     - `AiiDA and OPTIMADE`_
-   * - **Thursday October 6th**
-     - Sebastiaan P. Huber
-     - `Provenance and workflows in AiiDA`_
-   * - **Friday October 7th**
-     - Francisco Ramirez
-     - `The AiiDA Plugin Ecosystem`_
-   * -
-     - Aliaksandr Yakutovich
-     - `AiiDAlab`_
-
-.. _The Materials Cloud: https://youtu.be/KPOCEczHPps
-.. _AiiDA and OPTIMADE: https://youtu.be/RQ6aopfuMOs
-.. _Provenance and workflows in AiiDA: https://www.youtube.com/watch?v=KpiLIA8ge1w
-.. _The AiiDA Plugin Ecosystem: https://youtu.be/-RGYCwYjydE
-.. _AiiDAlab: https://youtu.be/Oqo5buk6Om8
-
-
-Hands-on sessions
+Hands-on material
 -----------------
 
-The material for the hands-on sessions is divided in 5 units:
+The material is divided in 5 units:
 
 .. toctree::
 
@@ -66,8 +17,7 @@ The material for the hands-on sessions is divided in 5 units:
    sections/creating_plugins/index
 
 These are also accessible via the sidebar on the left.
-The tutorial will be run in your browser by accessing an AiiDAlab JupyterHub deployed on the `Azure Kubernetes Service`_.
-See the "Set up" section, also accessible by clicking below, along with the module for the first hands-on topic.
+The "Set up" section, also accessible by clicking below, is a good place to start, as it will tell you how to run the tutorial material.
 
 .. panels::
    :body: bg-light text-center
@@ -88,12 +38,39 @@ See the "Set up" section, also accessible by clicking below, along with the modu
       :text: First hands-on: AiiDA basics
       :classes: btn-link btn-block stretched-link
 
+Presentations
+-------------
+
+Below you can find the latest list of recorded talks:
+
+.. list-table::
+   :widths: 40 55
+   :class: skinny-table
+   :header-rows: 1
+
+   * - **Presenter**
+     - **Title**
+   * - Kristjan Eimre
+     - `The Materials Cloud`_
+   * - Jusong Yu
+     - `AiiDA and OPTIMADE`_
+   * - Sebastiaan P. Huber
+     - `Provenance and workflows in AiiDA`_
+   * - Francisco Ramirez
+     - `The AiiDA Plugin Ecosystem`_
+   * - Aliaksandr Yakutovich
+     - `AiiDAlab`_
+
+.. _The Materials Cloud: https://youtu.be/KPOCEczHPps
+.. _AiiDA and OPTIMADE: https://youtu.be/RQ6aopfuMOs
+.. _Provenance and workflows in AiiDA: https://www.youtube.com/watch?v=KpiLIA8ge1w
+.. _The AiiDA Plugin Ecosystem: https://youtu.be/-RGYCwYjydE
+.. _AiiDAlab: https://youtu.be/Oqo5buk6Om8
+
 Contributed talks
 -----------------
 
-Supplementing the presentations above, there are also contributed talks from plugin developers and experienced AiiDA users.
-These can be watched at any time, but please try to watch them **before Friday October 7th**, as we have planned a Q&A with the plugin developers at the start of the first hands-on session of that day.
-Here is a list of all the contributed talks:
+Supplementing the presentations above, there are also contributed talks from plugin developers and experienced AiiDA users:
 
 .. list-table::
    :widths: 30 70
@@ -102,19 +79,19 @@ Here is a list of all the contributed talks:
 
    * - **Presenter**
      - **Title**
-   * - **Lorenzo Bastonero**
+   * - Lorenzo Bastonero
      - `Phonons with AiiDA-Phonopy v1.0`_
-   * - **Philipp Rüßmann**
+   * - Philipp Rüßmann
      - `Automated multi-scale modelling with the AiiDA-KKR and AiiDA-Spirit plugins`_
    * -
      - `The AiiDA-KKR plugin`_
-   * - **Leonid Kahle**
+   * - Leonid Kahle
      - `Using AiiDA to screen for solid-state Li-ion conductors`_
-   * - **Emanuele Bosoni**
+   * - Emanuele Bosoni
      - `Introducing AiiDA-Siesta`_
-   * - **Bonan Zhu**
+   * - Bonan Zhu
      - `Introducing AiiDA-Castep`_
-   * - **Chris Sewell**
+   * - Chris Sewell
      - `AiiDA common workflows`_
    * - Miki Bonacci
      - `The Yambo-AiiDA plugin`_
@@ -128,11 +105,6 @@ Here is a list of all the contributed talks:
      - `Introduction to AiiDA-VASP`_
    * - Dominik Gresch
      - `Introduction to aiida-optimize`_
-
-.. note::
-
-  Unfortunately not all contributers are able to participate to the Q&A sessions.
-  Those that have indicated their availability have their names in boldface.
 
 .. _Phonons with AiiDA-Phonopy v1.0: https://youtu.be/2Gls4P4SqpA
 .. _OSSCAR: https://www.youtube.com/watch?v=3rkhzYBUuA4
@@ -153,7 +125,7 @@ Here is a list of all the contributed talks:
 Acknowledgements
 ----------------
 
-We are very grateful to our sponsors for helping to make this event possible:
+We are very grateful to our sponsors:
 
 The `MaX European Centre of Excellence`_, the `MARVEL National Centre of Competence in Research`_, the `swissuniversities P-5 project “Materials Cloud”`_, the `H2020 MARKETPLACE project`_, and the `BIG-MAP project`_.
 Computational resources on Azure were provided by `Microsoft Azure Quantum`_.
