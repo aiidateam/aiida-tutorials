@@ -11,7 +11,7 @@ The official home of AiiDA tutorial materials and videos.
 
    .. link-button:: https://aiida-tutorials.readthedocs.io/en/tutorial-2022-intro/
       :type: url
-      :text: Latest: 2021 Introductory virtual tutorial
+      :text: Latest: 2022 Introductory virtual tutorial
       :classes: btn-link btn-block stretched-link
 
    -------
