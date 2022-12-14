@@ -122,6 +122,71 @@ Supplementing the presentations above, there are also contributed talks from plu
 .. _Introduction to AiiDA-VASP: https://youtu.be/iH7KJgdkPTE
 .. _AiiDA common workflows: https://youtu.be/DD-g9ETU_sE
 
+Previous Tutorials
+------------------
+
+Below is a list of previous tutorials organised by the AiiDA team, with links to the corresponding tutorial material:
+
+.. list-table::
+   :widths: 10 50 20
+   :class: skinny-table
+   :header-rows: 1
+
+   * - **Year**
+     - **Location**
+     - **AiiDA version**
+   * - 2022
+     - `AiiDA virtual tutorial 2022 <https://aiida-tutorials.readthedocs.io/en/tutorial-2022-intro>`__
+     - ``2.0.4``
+   * - 2021
+     - `AiiDA virtual tutorial 2021 <https://aiida-tutorials.readthedocs.io/en/tutorial-2021-intro/>`__
+     - ``1.6.3``
+   * - 2020
+     - `BIG-MAP meeting <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2020_BIGMAP/index.html>`__
+     - ``1.4.3``
+   * - 2020
+     - `AiiDA tutorial week "Virtual Edition" <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2020_Intro_Week/index.html>`__
+     - ``1.3.0``
+   * - 2020
+     - `Wannier tutorial “Virtual Edition" <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2020_Oxford/index.html>`__
+     - ``1.3.0``
+   * - 2019
+     - `ISSP University of Tokyo, Chiba, Japan <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2019_ISSP_Chiba_Japan/index.html>`__
+     - ``1.0.1``
+   * - 2019
+     - `IIT Mandi, Mandi, India <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2019_IIT_Mandi_India/index.html>`__
+     - ``1.0.0b6``
+   * - 2019
+     - `SINTEF, Oslo, Norway <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2019_SINTEF/index.html>`__
+     - ``1.0.0b6``
+   * - 2019
+     - `Jožef Stefan Institute, Ljubljana, Slovenia <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2019_Ljubljana/index.html>`__
+     - ``1.0.0b6``
+   * - 2019
+     - `Xiamen University, Xiamen, China <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2019_Xiamen/index.html>`__
+     - ``1.0.0b6``
+   * - 2019
+     - `EPFL, Lausanne, Switzerland <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2019_MARVEL_Psik_MaX/index.html>`__
+     - ``1.0.0b3``
+   * - 2019
+     - `University of Amsterdam, Amsterdam, Netherlands <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2019_molsim_school_Amsterdam/index.html>`__
+     - ``0.12.2``
+   * - 2018
+     - `Cineca, Bologna, Italy <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2018_PRACE_MaX/index.html>`__
+     - ``1.0.0a1``
+   * - 2018
+     - `EPFL, Lausanne, Switzerland  <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2018_EPFL_molsim/index.html>`__
+     - ``0.11.4``
+   * - 2017
+     - `EPFL, Lausanne, Switzerland   <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2017_MARVEL_Psik_MaX/index.html>`__
+     - ``0.9.0``
+   * - 2017
+     - `ICTP, Trieste, Italy <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2017_ICTP/index.html>`__
+     - ``0.7.1``
+   * - 2016
+     - `EPFL, Lausanne, Switzerland   <https://aiida-tutorials.readthedocs.io/en/legacy/pages/2016_MARVEL_Psik_MaX/index.html>`__
+     - ``0.6.0``
+
 Acknowledgements
 ----------------
 
