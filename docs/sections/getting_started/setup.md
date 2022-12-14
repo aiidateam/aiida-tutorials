@@ -2,7 +2,7 @@
 
 # Set up
 
-## Setup on your own machine
+## Set up AiiDA on your own machine
 
 To run the tutorial material on your own machine, you need to install:
 
@@ -13,7 +13,16 @@ To run the tutorial material on your own machine, you need to install:
 ```{note} Version numbers indicate the versions with which the tutorial was tested.
 ```
 
-## using AiiDAlab Launch
+## Using Quantum Mobile
+
+The tutorial can be run in the Quantum Mobile virtual machine.
+Simply:
+
+1. Download the tutorial image via [this link](https://drive.google.com/file/d/1xaZ4AZuyXoJ-sLKkaZpJQwvmWpkiykMq/view?usp=sharing).
+2. Install [Virtual Box](https://www.virtualbox.org/) 6.1.6 or later.
+3. Import the virtual machine image into Virtualbox: `File => Import Appliance`
+
+## Using AiiDAlab Launch
 
 AiiDAlab Launch makes it easy to run AiiDA on your own workstation or laptop.
 
