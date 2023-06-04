@@ -164,7 +164,6 @@ html_theme_options = {
     "use_issues_button": True,
     "path_to_docs": "docs",
     "use_edit_page_button": True,
-    "extra_navbar": "",
 }
 html_domain_indices = True
 html_title = "AiiDA Tutorials"
@@ -402,7 +401,7 @@ nb_execution_mode = "off"
 
 # Intersphinx configuration
 intersphinx_mapping = {
-    "aiida": ("http://aiida-core.readthedocs.io/en/latest/", None),
+    "aiida": ("https://aiida.readthedocs.io/projects/aiida-core/en/latest/", None),
     "plumpy": ("https://plumpy.readthedocs.io/en/latest/", None),
 }
 
