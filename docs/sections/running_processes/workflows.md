@@ -257,10 +257,10 @@ $ aiida-pseudo list
 Label                                Type string                Count
 -----------------------------------  -------------------------  -------
 PseudoDojo/0.4/PBE/SR/standard/upf   pseudo.family.pseudo_dojo  72
-SSSP/1.1/PBEsol/precision            pseudo.family.sssp         85
-SSSP/1.1/PBEsol/efficiency           pseudo.family.sssp         85
-SSSP/1.1/PBE/precision               pseudo.family.sssp         85
-SSSP/1.1/PBE/efficiency              pseudo.family.sssp         85
+SSSP/1.3/PBEsol/precision            pseudo.family.sssp         85
+SSSP/1.3/PBEsol/efficiency           pseudo.family.sssp         85
+SSSP/1.3/PBE/precision               pseudo.family.sssp         85
+SSSP/1.3/PBE/efficiency              pseudo.family.sssp         85
 
 ```
 

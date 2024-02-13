@@ -32,10 +32,10 @@ $ verdi code list
 * pk 74 - pw@localhost # <- this is the relevant code
 ```
 
-If you don't have the PW code available, you can set it up by running the following command (you may need to adapt the `--remote-abs-path` or even the `--computer` if you are running in a custom environment):
+If you don't have the PW code available, you can set it up by running the following command (you may need to adapt the `--filepath-executable` or even the `--computer` if you are running in a custom environment):
 
 ```{code-block} console
-$ verdi code setup --label pw --computer localhost --remote-abs-path /opt/conda/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
+$ verdi code create core.code.installed --label pw --computer localhost --filepath-executable /opt/conda/bin/pw.x --default-calc-job-plugin quantumespresso.pw --non-interactive
 Success: Code<2> pw@localhost created
 ```
 
@@ -45,7 +45,7 @@ On the other hand, you can check the pseudopotentials by running:
 aiida-pseudo list
 Label                    Type string         Count
 -----------------------  ------------------  -------
-SSSP/1.1/PBE/efficiency  pseudo.family.sssp  85
+SSSP/1.3/PBE/efficiency  pseudo.family.sssp  85
 ```
 
 And install them with:
@@ -219,7 +219,7 @@ To run the workflow, we also have to specify the label of the family of pseudopo
 
 ```{code-block} ipython
 
-In [3]: pseudo_family_label = Str('SSSP/1.1/PBE/efficiency')
+In [3]: pseudo_family_label = Str('SSSP/1.3/PBE/efficiency')
 
 ```
 
@@ -477,7 +477,7 @@ Once the daemon has been restarted, it is time to *submit* the `EquationOfState`
 
 In [1]: from eos_workchain import EquationOfState
    ...: from aiida.engine import submit
-   ...: submit(EquationOfState, code=load_code('pw@localhost'), pseudo_family_label=Str('SSSP/1.1/PBE/efficiency'), structure=load_node(pk=<PK>))
+   ...: submit(EquationOfState, code=load_code('pw@localhost'), pseudo_family_label=Str('SSSP/1.3/PBE/efficiency'), structure=load_node(pk=<PK>))
 Out[1]: <WorkChainNode: uuid: 9e5c7c48-a47c-49fc-a8ab-fff081f250ee (pk: 665) (eos.workchain.EquationOfState)>
 
 ```

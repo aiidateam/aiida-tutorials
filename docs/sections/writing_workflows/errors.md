@@ -40,7 +40,7 @@ This exit code is used in the `validate_result` step, where the sum produced by 
 
 ```
 
-If the sum is negative, which is unacceptable in this fictitious example, the work chain return the exit code that corresponds to the label `ERROR_NEGATIVE_NUMBER`.
+If the sum is negative, which is unacceptable in this fictitious example, the work chain returns the exit code that corresponds to the label `ERROR_NEGATIVE_NUMBER`.
 Note that you can use the `self.exit_codes` property of the `WorkChain` to quickly retrieve the exit code using the corresponding label.
 Returning an exit code instructs the engine to abort the work chain, and set the corresponding exit status and message on the node in the provenance graph.
 
