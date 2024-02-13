@@ -115,7 +115,7 @@ You will notice that the information that goes into the `test_run.in` input file
 * the `UpfData` node with link label `pseudos_Si` contains the data for the *ATOMIC_SPECIES* block (including the pseudopotential file to be copied in the `pseudo_dir`).
 * the `Dict` node with link label `parameters` contains the rest of the data (for the *&CONTROL* and *&SYSTEM* namelists).
 
-Once the inputs files are prepared from these nodes, they are copied into the computer or cluster where the calculation will run.
+Once the input files are prepared from these nodes, they are copied into the computer or cluster where the calculation will run.
 AiiDA immediately generates a `RemoteData` node as part of this submission procedure; this node can be thought as a symbolic link to the remote folder where the files are copied.
 
 The other output nodes are created once the calculation has finished, after the retrieval and parsing steps.
@@ -160,7 +160,7 @@ However, you will still have to set up the code to run it with AiiDA.
 This can be done with:
 
 ```{code-block} console
-$ verdi code setup --label pw --computer localhost --remote-abs-path /opt/conda/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
+$ verdi code create core.code.installed --label pw --computer localhost --filepath-executable /opt/conda/bin/pw.x --default-calc-job-plugin quantumespresso.pw --non-interactive
 Success: Code<2> pw@localhost created
 ```
 
@@ -229,10 +229,10 @@ To get a list of all available [pseudopotentials][pseudopotentials], simply run:
 $ aiida-pseudo list
 Label                                Type string                Count
 -----------------------------------  -------------------------  -------
-SSSP/1.1/PBEsol/precision            pseudo.family.sssp         85
-SSSP/1.1/PBEsol/efficiency           pseudo.family.sssp         85
-SSSP/1.1/PBE/precision               pseudo.family.sssp         85
-SSSP/1.1/PBE/efficiency              pseudo.family.sssp         85
+SSSP/1.3/PBEsol/precision            pseudo.family.sssp         85
+SSSP/1.3/PBEsol/efficiency           pseudo.family.sssp         85
+SSSP/1.3/PBE/precision               pseudo.family.sssp         85
+SSSP/1.3/PBE/efficiency              pseudo.family.sssp         85
 :::
 
 The list of pseudopotential families might differ for you, depending on where you are running the tutorial.
@@ -248,7 +248,7 @@ $ aiida-pseudo install sssp
 Info: downloading selected pseudo potentials archive...  [OK]
 Info: downloading selected pseudo potentials metadata...  [OK]
 Info: unpacking archive and parsing pseudos...  [OK]
-Success: installed `SSSP/1.1/PBE/efficiency` containing 85 pseudo potentials
+Success: installed `SSSP/1.3/PBE/efficiency` containing 85 pseudo potentials
 ```
 
 The output already indicates the process was successful and shows you the label for the new family group.
@@ -362,7 +362,7 @@ We will see more on how to use groups in the module on {ref}`Organising your dat
 
 :::{code-block} ipython
 
-In [5]: pseudo_family = load_group('SSSP/1.1/PBE/efficiency')
+In [5]: pseudo_family = load_group('SSSP/1.3/PBE/efficiency')
 
 :::
 

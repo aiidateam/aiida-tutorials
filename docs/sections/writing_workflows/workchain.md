@@ -736,7 +736,7 @@ If not, you can set it up with the instructions in the dropdown below.
 Setting up the `add` code on the `localhost` computer can be done with the following command:
 
 ```{code-block} console
-$ verdi code setup -L add --on-computer --computer=localhost -P core.arithmetic.add --remote-abs-path=/bin/bash -n
+$ verdi code create core.code.installed -L add --computer=localhost -P core.arithmetic.add --filepath-executable=/bin/bash -n
 ```
 
 See the {ref}`calculation jobs section <started-basics-calcjobs>` in the AiiDA basics module for more details.

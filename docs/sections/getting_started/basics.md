@@ -415,7 +415,7 @@ For both commands, the *non-interactive* option (`-n`) is added to not prompt fo
 Next, let's set up the code we're going to use for the tutorial:
 
 ```{code-block} console
-$ verdi code setup -L add --on-computer --computer=localhost -P core.arithmetic.add --remote-abs-path=/bin/bash -n
+$ verdi code create core.code.installed -L add --computer=localhost -P core.arithmetic.add --filepath-executable=/bin/bash -n
 ```
 
 This command sets up a code with *label* `add` on the *computer* `localhost`, using the *plugin* `core.arithmetic.add`.
@@ -432,7 +432,7 @@ $ verdi code list
 * pk 1 - add@localhost
 ```
 
-In the output above you can see a the code `add@localhost`, with PK = 1, in the printed list.
+In the output above you can see the code `add@localhost`, with PK = 1, in the printed list.
 Again, in your output you may have other codes listed or a different PK depending on your specific setup, but you should still be able to identify the code by its label.
 The `add@localhost` identifier indicates that the code with label `add` is run on the computer with label `localhost`.
 To see more details about the computer, you can use the following `verdi` command:
