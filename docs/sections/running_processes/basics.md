@@ -164,10 +164,7 @@ $ verdi code setup --label pw --computer localhost --remote-abs-path /opt/conda/
 Success: Code<2> pw@localhost created
 ```
 
-In case you are using Quantum Mobile virtual machine, please note executable file `pw.x` is located in a different path 
-```{code-block} console
---remote-abs-path=/usr/local/bin/pw.x
-```
+In case you are using Quantum Mobile virtual machine, please note executable file `pw.x` is located in a different path `--remote-abs-path=/usr/local/bin/pw.x`
 
 You now should be able to see this new code when you execute ``verdi code list``:
 
