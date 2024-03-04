@@ -142,7 +142,7 @@ The calculation plugin (**2**) contains the instructions that indicate to AiiDA 
 This includes information about what the input files look like, how to generate them from data (input) nodes, what outputs are produced, and how to parse them into data (output) nodes.
 This is what you get when you `pip install` one of AiiDA's [plugin packages](https://aiidateam.github.io/aiida-registry/).
 
-The code node (**3**) is a data node that contains the instructions for AiiDA to execute a specific instalation of the code (**1**).
+The code node (**3**) is a data node that contains the instructions for AiiDA to execute a specific installation of the code (**1**).
 It does have a reference to which plugin (**2**) it needs to use, but on top of that it also includes: the path to the installed executable, any environment variable required to run it, etc.
 As this is a data node, it then becomes part of the provenance of every process that uses it (**4**).
 
@@ -162,6 +162,11 @@ This can be done with:
 ```{code-block} console
 $ verdi code setup --label pw --computer localhost --remote-abs-path /opt/conda/bin/pw.x --input-plugin quantumespresso.pw --non-interactive
 Success: Code<2> pw@localhost created
+```
+
+In case you are using Quantum Mobile virtual machine, please note executable file `pw.x` is located in a different path 
+```{code-block} console
+`--remote-abs-path=/usr/local/bin/pw.x`
 ```
 
 You now should be able to see this new code when you execute ``verdi code list``:
@@ -286,7 +291,7 @@ $ verdi shell
 ```
 
 There are several ways to setup and launch processes with AiiDA.
-We will now show you how to do it using a *builder*, which is a tool that is particullarly convenient when manually preparing the inputs.
+We will now show you how to do it using a *builder*, which is a tool that is particularly convenient when manually preparing the inputs.
 The simplest way to get a builder for a calculation is from a code node, so load the one we checked at the begining of this module:
 
 :::{margin}
