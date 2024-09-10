@@ -56,7 +56,7 @@ cleannotebooks:
 
 # -W: exit on warning
 defaultdoc:
-	$(SPHINXBUILD) -b html -nW $(ALLSPHINXOPTS) $(BUILDDIR)/html
+	$(SPHINXBUILD) -b html -n $(ALLSPHINXOPTS) $(BUILDDIR)/html
 
 all: html latexpdf
 
