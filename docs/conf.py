@@ -393,6 +393,7 @@ suppress_warnings = ["misc.highlighting_failure"]
 # Links we ignore, because they do not work temporary and we cannot fix it
 linkcheck_ignore = ["https://www.virtualbox.org/", "https://www.big-map.eu/"]
 
+
 def setup(app):
     """Setup function called by sphinx."""
     app.add_css_file("css/custom.css")
