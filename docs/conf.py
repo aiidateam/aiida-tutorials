@@ -399,14 +399,15 @@ def setup(app):
     app.add_css_file("css/custom.css")
 
 
-# We are not installing a full aiida environment
-nb_execution_mode = "off"
+nb_execution_mode = "on"
+nb_execution_mode = "auto"
 
 # Intersphinx configuration
 intersphinx_mapping = {
     "aiida": ("https://aiida.readthedocs.io/projects/aiida-core/en/latest/", None),
     "plumpy": ("https://plumpy.readthedocs.io/en/latest/", None),
 }
+
 
 # Compile all things needed before building the docs
 # For instance, convert the notebook templates to actual tutorial and solution versions
