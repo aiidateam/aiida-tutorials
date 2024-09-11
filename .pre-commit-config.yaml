@@ -16,11 +16,10 @@ repos:
       rev: '22.6.0'
       hooks:
       - id: black
-        language_version: python3.8
 
   - repo: https://github.com/myint/rstcheck
-    rev: v6.1.0
+    rev: v6.2.4
     hooks:
     - id: rstcheck
       additional_dependencies:
-        - sphinx==4.1.2
+        - sphinx~=8.0.0

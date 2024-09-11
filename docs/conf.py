@@ -390,6 +390,9 @@ nitpick_ignore = [("py:class", "Warning"), ("py:class", "exceptions.Warning")]
 
 suppress_warnings = ["misc.highlighting_failure"]
 
+# Links we ignore, because they do not work temporary and we cannot fix it
+linkcheck_ignore = ["https://www.big-map.eu/"]
+
 
 def setup(app):
     """Setup function called by sphinx."""

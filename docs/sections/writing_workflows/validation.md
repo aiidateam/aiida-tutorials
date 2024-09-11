@@ -90,7 +90,7 @@ You can read about the ports and port namespace concepts in the [AiiDA documenta
 {{ python }} **The underscore `_` character**
 
 The underscore character has quite a lot interesting use cases in Python!
-You can find out more about them [here](https://www.datacamp.com/tutorial/role-underscore-python).
+You can find out more about them [here](https://realpython.com/python-double-underscore/).
 
 :::
 
