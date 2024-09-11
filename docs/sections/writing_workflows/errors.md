@@ -49,7 +49,7 @@ Take the `MultiplyAddWorkChain` as an example:
 
 ```
 
-It defines the `ERROR_NEGATIVE_NUMBER` exit code with status `410` and message `'The result is a negative number.'`.
+It defines the `ERROR_NEGATIVE_NUMBER` exit code with status `400` and message `'The result is a negative number.'`.
 This exit code is used in the `validate_result` step, where the sum produced by the `ArithmeticAddCalculation` is validated.
 
 ```{literalinclude} include/code/multiply_add.py
