@@ -24,18 +24,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.12
-      uses: actions/setup-python@v2
+    - uses: conda-incubator/setup-miniconda@v3
       with:
-        python-version: 3.12
-    - name: Install python dependencies
-      run: |
-        pip install --upgrade pip
-        pip install -r requirements.txt
+        miniconda-version: "24.5.0"
+        activate-environment: base 
+        environment-file: environment.yml
+        python-version: "3.12"
+        auto-activate-base: true
     - name: "Build HTML docs"
       run: |
-        echo "SPHINX_LINKCHECK $SPHINX_LINKCHECK"
         make -C docs html linkcheck
       env:
         SPHINXOPTS: -nW --keep-going
-        SPHINX_LINKCHECK: on
