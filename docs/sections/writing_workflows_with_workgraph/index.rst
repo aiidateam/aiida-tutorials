@@ -19,7 +19,7 @@ Writing workflows with WorkGraph
 
     .. link-button:: zero_to_hero
         :type: ref
-        :text: Zero to hero 
+        :text: Zero to hero
         :classes: btn-light text-left stretched-link font-weight-bold
     ^^^^^^^^^^^^
 
@@ -94,4 +94,3 @@ Writing workflows with WorkGraph
     autogen/zero_to_hero
     autogen/qe
     autogen/eos
-      

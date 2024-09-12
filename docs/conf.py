@@ -42,7 +42,7 @@ extensions = [
     "sphinx_copybutton",
     "sphinx_panels",
     "sphinx_tabs.tabs",
-    "sphinx_gallery.gen_gallery"
+    "sphinx_gallery.gen_gallery",
 ]
 
 myst_enable_extensions = [
@@ -409,9 +409,7 @@ intersphinx_mapping = {
     "plumpy": ("https://plumpy.readthedocs.io/en/latest/", None),
 }
 
-gallery_src_relative_dir = (
-    "gallery"  # relative path of the gallery src wrt. sphinx src
-)
+gallery_src_relative_dir = "gallery"  # relative path of the gallery src wrt. sphinx src
 
 # we mimik the structure in the sphinx src directory in the gallery src directory
 sphinx_src_autogen_dirs = ["sections/writing_workflows_with_workgraph/autogen"]
@@ -419,7 +417,7 @@ sphinx_src_autogen_dirs = ["sections/writing_workflows_with_workgraph/autogen"]
 gallery_src_dirs = [
     os.path.join(gallery_src_relative_dir, autogen_dir)
     for autogen_dir in sphinx_src_autogen_dirs
-] # path of the python scripts that should be executed
+]  # path of the python scripts that should be executed
 sphinx_gallery_conf = {
     "filename_pattern": "/*",
     "examples_dirs": gallery_src_dirs,  # in sphinx-gallery doc referred as gallery source
@@ -445,6 +443,8 @@ print(
 
 import shutil
 from pathlib import Path
+
+
 def copy_html_files(app, exception):
     """
     Copy all .html files from source to build directory, maintaining the directory structure.
@@ -489,4 +489,3 @@ def copy_html_files(app, exception):
             print(f"Copy {html_file} to {destination_file}")
     except Exception as e:
         print(f"Failed to copy HTML files: {e}")
-

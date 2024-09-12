@@ -27,7 +27,7 @@ jobs:
     - uses: conda-incubator/setup-miniconda@v3
       with:
         miniconda-version: "Miniconda3-py312_24.5.0-0-Linux-x86_64.sh"
-        activate-environment: base 
+        activate-environment: base
         environment-file: environment.yml
         python-version: "3.12"
         auto-activate-base: true
