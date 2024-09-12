@@ -37,7 +37,7 @@ conda env create --quiet --name aiida-tutorials --file environment.yml
 conda activate aiida-tutorials
 pre-commit install   # enable pre-commit hooks (optional)
 make -C docs html # to build docs
-make -C docs html linkcheck # to run link checks
+make -C docs linkcheck # to run link checks (only for dev)
 
 # open build/html/index.html
 ```

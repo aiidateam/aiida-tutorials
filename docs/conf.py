@@ -399,7 +399,7 @@ linkcheck_ignore = [
     "http://127.0.0.1:8000/workgraph",
 ]
 
-# we don't want to run the notebook
+# We are not installing a full aiida environment
 nb_execution_mode = "off"
 
 # Intersphinx configuration
