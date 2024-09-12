@@ -412,14 +412,22 @@ intersphinx_mapping = {
 gallery_src_relative_dir = (
     "gallery"  # relative path of the gallery src wrt. sphinx src
 )
-sphinx_src_autogen_dirs = ["sections/writing_workflows_with_workgraph/autogen"]
-# we mimik the structure in the sphinx src directory in the gallery src directory
+# debug
+print("SPHINX_LINKCHECK", os.getenv("SPHINX_LINKCHECK"))
 
-# path of python scripts that should be executed
+# We don't want to build the gallery if sphinx linkcheck is only used
+if os.getenv("SPHINX_LINKCHECK"):
+    sphinx_src_autogen_dirs = []
+else:
+    sphinx_src_autogen_dirs = ["sections/writing_workflows_with_workgraph/autogen"]
+
+
+
+# we mimik the structure in the sphinx src directory in the gallery src directory
 gallery_src_dirs = [
     os.path.join(gallery_src_relative_dir, autogen_dir)
     for autogen_dir in sphinx_src_autogen_dirs
-]
+] # path of the python scripts that should be executed
 sphinx_gallery_conf = {
     "filename_pattern": "/*",
     "examples_dirs": gallery_src_dirs,  # in sphinx-gallery doc referred as gallery source
