@@ -10,7 +10,7 @@ build:
     python: "miniconda3-3.12-24.1" # note that libmamba-solver is available since 22.1
   jobs:
     post_create_environment:
-      - python -m pip install --exists-action=w --no-cache-dir -r requirements.txt
+      # - python -m pip install --exists-action=w --no-cache-dir -r requirements.txt
       - rabbitmq-server -detached
       - sleep 10
       - rabbitmq-diagnostics status
@@ -35,6 +35,6 @@ conda:
   environment: environment.yml
 
 # Optionally set the version of Python and requirements required to build your docs
-python:
-  install:
-    - requirements: requirements.txt
+#python:
+#  install:
+#    - requirements: requirements.txt

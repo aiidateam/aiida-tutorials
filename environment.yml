@@ -6,3 +6,6 @@ dependencies:
   - aiida-core
   - aiida-core.services
   - qe
+  - pip
+  - pip:
+    - -r requirements.txt
