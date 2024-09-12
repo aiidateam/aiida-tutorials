@@ -394,8 +394,8 @@ suppress_warnings = ["misc.highlighting_failure"]
 # Links we ignore, because they do not work temporary and we cannot fix it
 linkcheck_ignore = [
     "https://www.big-map.eu/",
-    "*concept/index.html",
-    "*howto/index.html",
+    r".*concept/index.html",
+    r".*howto/index.html",
     "http://127.0.0.1:8000/workgraph",
 ]
 
