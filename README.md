@@ -26,17 +26,19 @@ If you have a question, feel free to just [open an issue](https://github.com/aii
 
 ### Prerequisites
 
-* python 3.12 or greater
+* python 3.11
 
 ### Build instructions
 
 ```bash
 git clone https://github.com/aiidateam/aiida-tutorials.git
 cd aiida-tutorials
-pip install -r requirements.txt
+conda env create --quiet --name aiida-tutorials --file environment.yml 
+conda activate aiida-tutorials
 pre-commit install   # enable pre-commit hooks (optional)
-cd docs/
-make
+make -C docs html # to build docs
+make -C docs html linkcheck # to run link checks
+
 # open build/html/index.html
 ```
 
