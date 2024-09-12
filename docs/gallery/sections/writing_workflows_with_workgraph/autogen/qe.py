@@ -1,7 +1,7 @@
 """
-================================
+===============================
 Computational materials science
-================================
+===============================
 
 """
 
@@ -48,7 +48,7 @@ load_profile()
 # First workflow: calculate the energy of N2 molecule
 # ===================================================
 # Define a workgraph
-# -------------------
+# ------------------
 # aiida-quantumespresso provides a CalcJob: `PwCalculation` to run a PW calculation. we can use it directly in the WorkGraph. The inputs and outputs of the task is automatically generated based on the `PwCalculation` CalcJob.
 #
 
@@ -267,7 +267,7 @@ generate_node_graph(wg.pk)
 
 # %%
 # Use already existing workchain
-# ===============================
+# ==============================
 # Can we register a task from a workchain? Can we set the a input item of a namespace? Yes, we can!
 #
 # In the `PwRelaxWorkChain`, one can set the relax type (`calculation` key) in the input namespace `base.pw.parameters`. Now we create a new task to update the pw parameters.
@@ -317,7 +317,7 @@ wg.add_link(paras_task.outputs[0], pw_relax1.inputs["base.pw.parameters"])
 
 # %%
 # Use `protocol` to set input parameters (Experimental)
-# ====================================================
+# =====================================================
 # The aiida-quantumespresso package supports setting input parameters from protocol. For example, the PwRelaxWorkChain has a `get_builder_from_protocol` method. In this tutorial, we will show how to use the `protocol` to set the input parameters inside the WorkGraph.
 #
 
