@@ -16,10 +16,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.12
+    - name: Set up Python 3.11
       uses: actions/setup-python@v2
       with:
-        python-version: 3.12
+        python-version: 3.11
     - uses: pre-commit/action@v2.0.0
 
   build:
@@ -35,7 +35,7 @@ jobs:
         use-mamba: true
         channels: conda-forge, defaults
         environment-file: environment.yml
-        python-version: "3.12"
+        python-version: "3.11"
         auto-activate-base: true
         activate-environment: true
     - name: "Build HTML docs"
