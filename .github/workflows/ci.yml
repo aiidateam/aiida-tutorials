@@ -37,7 +37,7 @@ jobs:
         environment-file: environment.yml
         python-version: "3.12"
         auto-activate-base: true
-        activate-environment: ""
+        activate-environment: true
     - name: "Build HTML docs"
       run: |
         make -C docs html linkcheck
