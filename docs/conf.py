@@ -402,6 +402,7 @@ def setup(app):
 # we don't want to run the notebook during a linkcheck
 
 nb_execution_mode = "off" if os.getenv("SPHINX_LINKCHECK") is None else "auto"
+print("nb_execution_mode:", nb_execution_mode)
 nb_execution_excludepatterns = ["querying.ipynb"]
 
 # Intersphinx configuration
