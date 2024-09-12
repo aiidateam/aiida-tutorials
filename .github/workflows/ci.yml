@@ -37,11 +37,15 @@ jobs:
         environment-file: environment.yml
         python-version: "3.11"
         auto-activate-base: true
-        activate-environment: ""
+        activate-environment: base
     - name: "Build HTML docs"
       run: |
         ls
         tree
+        echo $CONDA_DEFAULT_ENV
+        echo $CONDA_PREFIX
+        conda info
+        conda list
         make -C docs html linkcheck
       env:
         SPHINXOPTS: -nW --keep-going
