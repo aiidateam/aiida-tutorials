@@ -17,7 +17,7 @@ Writing workflows with WorkGraph
     ------
     :column: col-lg-12
 
-    .. link-button:: zero_to_hero
+    .. link-button:: autogen/zero_to_hero
         :type: ref
         :text: Zero to hero
         :classes: btn-light text-left stretched-link font-weight-bold
@@ -43,7 +43,7 @@ Writing workflows with WorkGraph
     ------
     :column: col-lg-12
 
-    .. link-button:: qe
+    .. link-button:: autogen/qe
         :type: ref
         :text: Computational materials science
         :classes: btn-light text-left stretched-link font-weight-bold
@@ -70,7 +70,7 @@ Writing workflows with WorkGraph
     ------
     :column: col-lg-12
 
-    .. link-button:: eos
+    .. link-button:: autogen/eos
         :type: ref
         :text: A Real-world example - Equation of state
         :classes: btn-light text-left stretched-link font-weight-bold
