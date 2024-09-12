@@ -43,10 +43,9 @@ jobs:
         ls
         echo $CONDA_DEFAULT_ENV
         echo $CONDA_PREFIX
-        conda info
-        conda list
         conda env list
         conda init
+        source /home/runner/.bashrc
         conda activate aiida-tutorials
         make -C docs html linkcheck
       env:
