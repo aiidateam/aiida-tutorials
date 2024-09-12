@@ -33,7 +33,7 @@ If you have a question, feel free to just [open an issue](https://github.com/aii
 ```bash
 git clone https://github.com/aiidateam/aiida-tutorials.git
 cd aiida-tutorials
-conda env create --quiet --name aiida-tutorials --file environment.yml 
+conda env create --quiet --name aiida-tutorials --file environment.yml
 conda activate aiida-tutorials
 pre-commit install   # enable pre-commit hooks (optional)
 make -C docs html # to build docs
