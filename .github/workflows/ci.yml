@@ -36,17 +36,21 @@ jobs:
         channels: conda-forge, defaults
         environment-file: environment.yml
         python-version: "3.11"
-        auto-activate-base: true
-        activate-environment: aiida-tutorials
+        activate-environment: aiida-tutorials # updating base causes conflicts so we create a new env
     - name: "Build HTML docs"
       run: |
-        ls
-        echo $CONDA_DEFAULT_ENV
-        echo $CONDA_PREFIX
-        conda env list
         conda init
         source /home/runner/.bashrc
         conda activate aiida-tutorials
+        rabbitmq-server -detached
+        sleep 10
+        rabbitmq-diagnostics status
+        verdi presto
+        verdi daemon start
+        verdi status
+        aiida-pseudo install sssp -x PBEsol
+        verdi group list
+        cat /proc/cpuinfo | grep processor | wc -l
         make -C docs html linkcheck
       env:
         SPHINXOPTS: -nW --keep-going
