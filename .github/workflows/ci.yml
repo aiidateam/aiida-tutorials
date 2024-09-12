@@ -1,6 +1,11 @@
 name: continuous-integration
 
-on: [push, pull_request]
+on:
+  push:
+    # only pushes to main trigger
+    branches: [main]
+  pull_request:
+    # always triggered
 
 jobs:
 
