@@ -490,5 +490,6 @@ def copy_html_files(app, exception):
     except Exception as e:
         print(f"Failed to copy HTML files: {e}")
 
+
 def setup(app):
     app.connect("build-finished", copy_html_files)
