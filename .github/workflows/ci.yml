@@ -46,6 +46,8 @@ jobs:
         echo $CONDA_PREFIX
         conda info
         conda list
+        conde env list
+        conda activate base
         make -C docs html linkcheck
       env:
         SPHINXOPTS: -nW --keep-going
