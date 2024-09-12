@@ -8,3 +8,4 @@ myst-nb~=1.1.1
 # to run notebooks
 aiida-quantumespresso
 aiida-pseudo
+aiida-workgraph

@@ -37,3 +37,4 @@ jobs:
         make -C docs html linkcheck
       env:
         SPHINXOPTS: -nW --keep-going
+        SPHINX_LINKCHECK: on

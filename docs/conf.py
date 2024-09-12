@@ -399,8 +399,10 @@ def setup(app):
     app.add_css_file("css/custom.css")
 
 
-nb_execution_mode = "on"
-nb_execution_mode = "auto"
+# we don't want to run the notebook during a linkcheck
+
+nb_execution_mode = "off" if os.getenv("SPHINX_LINKCHECK") is None else "auto"
+nb_execution_excludepatterns = ["querying.ipynb"]
 
 # Intersphinx configuration
 intersphinx_mapping = {
