@@ -392,13 +392,12 @@ nitpick_ignore = [("py:class", "Warning"), ("py:class", "exceptions.Warning")]
 suppress_warnings = ["misc.highlighting_failure"]
 
 # Links we ignore, because they do not work temporary and we cannot fix it
-linkcheck_ignore = ["https://www.big-map.eu/"]
-
-
-def setup(app):
-    """Setup function called by sphinx."""
-    app.add_css_file("css/custom.css")
-
+linkcheck_ignore = [
+    "https://www.big-map.eu/",
+    "*concept/index.html",
+    "*howto/index.html",
+    "http://127.0.0.1:8000/workgraph",
+]
 
 # we don't want to run the notebook
 nb_execution_mode = "off"
@@ -492,4 +491,5 @@ def copy_html_files(app, exception):
 
 
 def setup(app):
+    app.add_css_file("css/custom.css")
     app.connect("build-finished", copy_html_files)
