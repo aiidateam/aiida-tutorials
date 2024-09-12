@@ -37,7 +37,7 @@ jobs:
         environment-file: environment.yml
         python-version: "3.11"
         auto-activate-base: true
-        activate-environment: true
+        activate-environment: ""
     - name: "Build HTML docs"
       run: |
         ls
