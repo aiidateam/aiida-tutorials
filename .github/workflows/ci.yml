@@ -40,6 +40,8 @@ jobs:
         activate-environment: true
     - name: "Build HTML docs"
       run: |
+        ls
+        tree
         make -C docs html linkcheck
       env:
         SPHINXOPTS: -nW --keep-going
