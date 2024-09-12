@@ -37,17 +37,17 @@ jobs:
         environment-file: environment.yml
         python-version: "3.11"
         auto-activate-base: true
-        activate-environment: true
+        activate-environment: aiida-tutorials
     - name: "Build HTML docs"
       run: |
         ls
-        tree
         echo $CONDA_DEFAULT_ENV
         echo $CONDA_PREFIX
         conda info
         conda list
         conda env list
-        conda activate base
+        conda init
+        conda activate aiida-tutorials
         make -C docs html linkcheck
       env:
         SPHINXOPTS: -nW --keep-going
