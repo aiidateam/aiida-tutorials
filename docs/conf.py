@@ -443,6 +443,8 @@ print(
     )
 )
 
+import shutil
+from pathlib import Path
 def copy_html_files(app, exception):
     """
     Copy all .html files from source to build directory, maintaining the directory structure.
