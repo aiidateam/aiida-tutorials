@@ -40,7 +40,7 @@ To use AiiDAlab launch you will have to
 3. Create a profile for tutorial
 
     ```console
-    aiidalab-launch profiles add tutorial
+    aiidalab-launch profile add tutorial
     ```
 
     It will ask you to edit the profile, since for the tutorial we only need the AiiDA environment, answer `Y` and let's remove the `aiidalab-widgets-base` from the `default_apps` list (or the whole `default_apps` line).
