@@ -14,6 +14,7 @@ The material is divided in 5 units:
    sections/running_processes/index
    sections/managing_data/index
    sections/writing_workflows/index
+   sections/writing_workflows_with_workgraph/index
    sections/creating_plugins/index
 
 These are also accessible via the sidebar on the left.
